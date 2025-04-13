@@ -1,11 +1,13 @@
 {
-  "name": "bags_server",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "name": "sklad_backend",
+  "scripts": {},
+  "type": "module",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongodb": "^6.15.0"
   },
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.14.1"
+  }
 }

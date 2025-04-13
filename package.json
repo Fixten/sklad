@@ -1,0 +1,11 @@
+{
+    "name": "sklad",
+    "workspaces": [
+        "backend*",
+        "frontend/"
+    ],
+    "devDependencies": {
+        "prettier": "3.5.3",
+        "typescript": "^5.8.3"
+    }
+}
