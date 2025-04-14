@@ -6,7 +6,8 @@
   ],
   "scripts": {
     "lint": "eslint backend/src/",
-    "lint:fix": "eslint --fix backend/src/"
+    "lint:fix": "eslint --fix backend/src/",
+    "backend:dev": "npm -w=backend exec -- npm start"
   },
   "devDependencies": {
     "@eslint/js": "^9.24.0",
