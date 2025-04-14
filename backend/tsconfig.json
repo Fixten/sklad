@@ -1,10 +1,11 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "module": "NodeNext",
-    "noImplicitAny": true,
-    "removeComments": true,
-    "sourceMap": true
+    "outDir": "build",
+    "baseUrl": "./src"
   },
   "include": ["src/**/*"],
-  "exclude": ["**/*.test.ts", "*/node_modules/*"]
+  "exclude": ["**/*.test.ts", "*/node_modules/*"],
+  "ts-node": { "esm": true, "files": true }
 }
