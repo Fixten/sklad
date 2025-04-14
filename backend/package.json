@@ -1,13 +1,19 @@
 {
   "name": "sklad_backend",
-  "scripts": {},
+  "scripts": {
+    "start": "ts-node-esm src/index.ts",
+    "build": "rm -rf build/* && tsc",
+    "prod": "node build/index.js"
+  },
   "type": "module",
   "dependencies": {
+    "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "mongodb": "^6.15.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
-    "@types/node": "^22.14.1"
+    "@types/node": "^22.14.1",
+    "ts-node": "^10.9.2"
   }
 }
