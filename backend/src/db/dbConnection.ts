@@ -17,8 +17,11 @@ export class DbConnection {
   get client() {
     return this.#client ?? this.#createNewClient();
   }
+  connect() {
+    this.#createNewClient();
+  }
   disconnect() {
-    this.#client?.close();
+    return this.#client?.close();
   }
 }
 

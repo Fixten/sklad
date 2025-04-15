@@ -1,4 +1,5 @@
 import { MongoClient } from "mongodb";
+
 import { DbConnection, createConnection } from "./dbConnection.js";
 
 jest.mock("mongodb");
@@ -7,11 +8,11 @@ const MongoClientMocked = MongoClient as jest.MockedClass<typeof MongoClient>;
 
 describe("dbConnection", () => {
   const connectionString = "mongodb://test:27017";
-  beforeEach(async () => {
+  beforeEach(() => {
     process.env.MONGO_CONNECTION_STRING = connectionString;
   });
 
-  afterEach(async () => {
+  afterEach(() => {
     delete process.env.MONGO_CONNECTION_STRING;
     MongoClientMocked.mockClear();
   });
@@ -34,7 +35,7 @@ describe("dbConnection", () => {
       dbConnection = new DbConnection();
     });
     test("should create a mongo client with the provided connection string", () => {
-      const { client } = dbConnection;
+      void dbConnection.client;
       expect(MongoClientMocked).toHaveBeenCalledWith(connectionString);
     });
     test("should create new connection only once", () => {
@@ -46,7 +47,7 @@ describe("dbConnection", () => {
     });
     test("should log that the mongo client was created", () => {
       const consoleSpy = jest.spyOn(console, "log");
-      const { client } = dbConnection;
+      void dbConnection.client;
       expect(consoleSpy).toHaveBeenCalledWith("Mongo client created");
     });
     test("should handle different connection strings", () => {
@@ -58,15 +59,27 @@ describe("dbConnection", () => {
       connectionStrings.forEach((currentConnectionString) => {
         process.env.MONGO_CONNECTION_STRING = currentConnectionString;
         dbConnection = new DbConnection();
-        const { client } = dbConnection;
+        void dbConnection.client;
         expect(MongoClientMocked).toHaveBeenCalledWith(currentConnectionString);
       });
     });
-    test("disconnect method calls close method of mongo client", () => {
+    test("disconnect method calls close method of mongo client", async () => {
       const closeMock = jest.spyOn(MongoClientMocked.prototype, "close");
-      const { client } = dbConnection;
-      dbConnection.disconnect();
+      void dbConnection.client;
+      await dbConnection.disconnect();
       expect(closeMock).toHaveBeenCalled();
+    });
+
+    describe("connect", () => {
+      test("creates new connection", () => {
+        dbConnection.connect();
+        expect(MongoClientMocked).toHaveBeenCalled();
+      });
+      test("creates new connection every time", () => {
+        dbConnection.connect();
+        dbConnection.connect();
+        expect(MongoClientMocked).toHaveBeenCalledTimes(2);
+      });
     });
   });
 });
