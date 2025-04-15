@@ -1,32 +1,19 @@
-import { Collection, Db } from "mongodb";
+import { Db } from "mongodb";
 
-import getNewDbConnection from "./getNewDbConnection.js";
+import dbConnection from "./dbConnection.js";
 
-function createConnection() {
-  const { MONGO_CONNECTION_STRING } = process.env;
-  if (MONGO_CONNECTION_STRING) {
-    return getNewDbConnection(MONGO_CONNECTION_STRING);
-  } else throw new Error("No Mongo connection string in env");
-}
+const dbName = "bags";
 
-interface DbManagerInterface {
-  getCollection: (collectionName: string) => Collection;
-}
-
-class DbManager implements DbManagerInterface {
-  #dbConnection?: Db;
-  #connect() {
-    this.#dbConnection = createConnection();
-    return this.#dbConnection;
+export class DbManager {
+  #db?: Db;
+  #setDb() {
+    this.#db = dbConnection.client.db(dbName);
+    console.log("Current DB is set");
+    return this.#db;
   }
-  #getDbConnection() {
-    return this.#dbConnection ?? this.#connect();
-  }
-  getCollection(collectionName: string) {
-    return this.#getDbConnection().collection(collectionName);
+  get db() {
+    return this.#db ?? this.#setDb();
   }
 }
 
-const dbManager = new DbManager();
-
-export default dbManager;
+export default new DbManager();
