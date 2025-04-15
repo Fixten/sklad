@@ -1,10 +1,10 @@
 {
   "name": "sklad_backend",
   "scripts": {
-    "start": "nodemon --exec ts-node-esm src/index.ts",
+    "start": "nodemon --exec node --import=./ts-node-register.mjs src/index.ts",
     "build": "rm -rf build/* && tsc",
     "prod": "node build/index.js",
-    "test": "jest"
+    "test": "jest --watch"
   },
   "type": "module",
   "dependencies": {
