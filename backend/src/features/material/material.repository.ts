@@ -1,8 +1,8 @@
-import dbManager from "db/dbManager.js";
-import { ObjectId } from "mongodb";
+import Repository from "db/repository.js";
+
+import { NewMaterial } from "./material.model.js";
 
 const collectionName = "material";
 
-const collection = dbManager.getCollection(collectionName);
-
-export const getMaterial = (_id: ObjectId) => collection.findOne({ _id });
+const materialRepository = new Repository<NewMaterial>(collectionName);
+export default materialRepository;

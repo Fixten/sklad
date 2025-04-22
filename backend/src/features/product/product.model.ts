@@ -1,7 +1,6 @@
 import { ObjectId } from "mongodb";
 
-export interface ProductModel {
-  _id: ObjectId;
+export interface NewProduct {
   name: string;
   description: string;
   instruction: string;
@@ -19,6 +18,10 @@ export interface ProductModel {
       quantity: number;
     },
   ];
+}
+
+export interface ProductModel extends NewProduct {
+  _id: ObjectId;
   created_at: string;
   updated_at: string;
 }
