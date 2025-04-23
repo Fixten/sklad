@@ -1,4 +1,5 @@
 import Repository from "db/repository.js";
+
 import { NewProduct } from "./product.model.js";
 
 const collectionName = "product";
