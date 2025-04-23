@@ -1,7 +1,9 @@
+import { MaterialTypeRepositoryType } from "./materialType.repository.js";
 import { MaterialTypeService } from "./materialType.service.js";
+
 import type { NewMaterialType } from "./materialType.model.js";
 
-jest.mock("./materialType.repository.js", () => {});
+jest.mock("./materialType.repository.js", () => ({}));
 
 const mockRepository = {
   getByValue: jest.fn(),
@@ -16,7 +18,9 @@ describe("MaterialTypeService", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    service = new MaterialTypeService(mockRepository);
+    service = new MaterialTypeService(
+      mockRepository as unknown as MaterialTypeRepositoryType
+    );
   });
 
   const newItem: NewMaterialType = { name: "meter" };
@@ -39,16 +43,16 @@ describe("MaterialTypeService", () => {
   });
 
   describe("delete", () => {
-    test("should call repository deleteByValue", () => {
-      service.delete(newItem);
+    test("should call repository deleteByValue", async () => {
+      await service.delete(newItem);
       expect(mockRepository.deleteByValue).toHaveBeenCalledWith(newItem);
     });
   });
 
   describe("update", () => {
-    test("should call repository updateByValue with correct parameters", () => {
+    test("should call repository updateByValue with correct parameters", async () => {
       const oldItem: NewMaterialType = { name: "abc" };
-      service.update(oldItem, newItem);
+      await service.update(oldItem, newItem);
       expect(mockRepository.updateByValue).toHaveBeenCalledWith(
         oldItem,
         newItem

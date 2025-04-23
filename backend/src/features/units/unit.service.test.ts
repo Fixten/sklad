@@ -1,7 +1,9 @@
+import { UnitRepositoryType } from "./unit.repository.js";
 import { UnitService } from "./unit.service.js";
+
 import type { NewUnit } from "./unit.model.js";
 
-jest.mock("./unit.repository.js", () => {});
+jest.mock("./unit.repository.js", () => ({}));
 
 const mockUnitRepository = {
   getByValue: jest.fn(),
@@ -16,7 +18,9 @@ describe("UnitService", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    unitService = new UnitService(mockUnitRepository);
+    unitService = new UnitService(
+      mockUnitRepository as unknown as UnitRepositoryType
+    );
   });
 
   const newUnit: NewUnit = { name: "meter" };
@@ -39,16 +43,16 @@ describe("UnitService", () => {
   });
 
   describe("delete", () => {
-    test("should call repository deleteByValue", () => {
-      unitService.delete(newUnit);
+    test("should call repository deleteByValue", async () => {
+      await unitService.delete(newUnit);
       expect(mockUnitRepository.deleteByValue).toHaveBeenCalledWith(newUnit);
     });
   });
 
   describe("update", () => {
-    test("should call repository updateByValue with correct parameters", () => {
+    test("should call repository updateByValue with correct parameters", async () => {
       const oldUnit: NewUnit = { name: "abc" };
-      unitService.update(oldUnit, newUnit);
+      await unitService.update(oldUnit, newUnit);
       expect(mockUnitRepository.updateByValue).toHaveBeenCalledWith(
         oldUnit,
         newUnit
