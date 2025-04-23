@@ -1,4 +1,5 @@
 import { Collection, Document, ObjectId } from "mongodb";
+
 import dbManager from "./dbManager.js";
 import Repository from "./repository.js";
 
@@ -63,14 +64,14 @@ describe("Repository", () => {
     test("should call findOne with correct id", async () => {
       mockCollection.findOne.mockResolvedValue(mockItem);
       const repository = new Repository<TestItem>(collectionName);
-      const result = await repository.get(mockId);
+      const result = await repository.getById(mockId);
       expect(mockCollection.findOne).toHaveBeenCalledWith({ _id: mockId });
       expect(result).toEqual(mockItem);
     });
     test("should return null when item is not found", async () => {
       mockCollection.findOne.mockResolvedValue(null);
       const repository = new Repository<TestItem>(collectionName);
-      const result = await repository.get(mockId);
+      const result = await repository.getById(mockId);
       expect(mockCollection.findOne).toHaveBeenCalledWith({
         _id: mockId,
       });
@@ -103,7 +104,7 @@ describe("Repository", () => {
         upsertedId: null,
       };
       mockCollection.updateOne.mockResolvedValue(mockResult);
-      const result = await repository.update(newItem, mockId);
+      const result = await repository.updateById(newItem, mockId);
       expect(mockCollection.updateOne).toHaveBeenCalledWith(
         { _id: mockId },
         newItem
@@ -121,7 +122,7 @@ describe("Repository", () => {
         deletedCount: 1,
       };
       mockCollection.deleteOne.mockResolvedValue(mockResult);
-      const result = await repository.deleteMaterial(mockId);
+      const result = await repository.deleteById(mockId);
       expect(mockCollection.deleteOne).toHaveBeenCalledWith({ _id: mockId });
       expect(result).toEqual(mockResult);
     });
@@ -133,7 +134,7 @@ describe("Repository", () => {
         deletedCount: 0,
       };
       mockCollection.deleteOne.mockResolvedValue(mockResult);
-      const result = await repository.deleteMaterial(mockId);
+      const result = await repository.deleteById(mockId);
       expect(mockCollection.deleteOne).toHaveBeenCalledWith({ _id: mockId });
       expect(result.deletedCount).toBe(0);
     });
