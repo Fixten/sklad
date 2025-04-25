@@ -1,7 +1,7 @@
 import { UnitRepositoryType } from "./unit.repository.js";
 import { UnitService } from "./unit.service.js";
 
-import type { NewUnit } from "./unit.model.js";
+import type { UnitModel } from "./unit.model.js";
 
 jest.mock("./unit.repository.js", () => ({}));
 
@@ -23,7 +23,7 @@ describe("UnitService", () => {
     );
   });
 
-  const newUnit: NewUnit = { name: "meter" };
+  const newUnit: UnitModel = { name: "meter" };
   describe("addNew", () => {
     test("should add new unit when it does not exist", async () => {
       mockUnitRepository.getByValue.mockResolvedValue(null);
@@ -51,7 +51,7 @@ describe("UnitService", () => {
 
   describe("update", () => {
     test("should call repository updateByValue with correct parameters", async () => {
-      const oldUnit: NewUnit = { name: "abc" };
+      const oldUnit: UnitModel = { name: "abc" };
       await unitService.update(oldUnit, newUnit);
       expect(mockUnitRepository.updateByValue).toHaveBeenCalledWith(
         oldUnit,

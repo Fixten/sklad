@@ -1,4 +1,4 @@
-import { NewSettings } from "./settings.model.js";
+import { SettingsModel } from "./settings.model.js";
 import settingsRepository from "./settings.repository.js";
 
 import type { SettingsRepository } from "./settings.repository.js";
@@ -8,7 +8,7 @@ export class SettingsService {
   constructor() {
     this.#repository = settingsRepository;
   }
-  update(newValue: NewSettings) {
+  update(newValue: SettingsModel) {
     return this.#repository.updateConfig(newValue);
   }
   getConfig() {

@@ -104,7 +104,7 @@ describe("Repository", () => {
         upsertedId: null,
       };
       mockCollection.updateOne.mockResolvedValue(mockResult);
-      const result = await repository.updateById(newItem, mockId);
+      const result = await repository.updateById(mockId, newItem);
       expect(mockCollection.updateOne).toHaveBeenCalledWith(
         { _id: mockId },
         newItem
@@ -113,7 +113,7 @@ describe("Repository", () => {
     });
   });
 
-  describe("deleteMaterial", () => {
+  describe("deleteById", () => {
     test("should call deleteOne with correct id", async () => {
       const repository = new Repository<TestItem>(collectionName);
 

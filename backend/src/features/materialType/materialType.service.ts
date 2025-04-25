@@ -1,4 +1,4 @@
-import { NewMaterialType } from "./materialType.model.js";
+import { MaterialTypeModel } from "./materialType.model.js";
 import materialTypeRepository from "./materialType.repository.js";
 
 import type { MaterialTypeRepositoryType } from "./materialType.repository.js";
@@ -8,15 +8,15 @@ export class MaterialTypeService {
   constructor(repository: MaterialTypeRepositoryType) {
     this.#repository = repository;
   }
-  async addNew(materialType: NewMaterialType) {
+  async addNew(materialType: MaterialTypeModel) {
     const current = await this.#repository.getByValue(materialType);
     if (current) throw new Error("This material type already exists");
     else return this.#repository.addNew(materialType);
   }
-  delete(materialType: NewMaterialType) {
+  delete(materialType: MaterialTypeModel) {
     return this.#repository.deleteByValue(materialType);
   }
-  update(oldValue: NewMaterialType, newValue: NewMaterialType) {
+  update(oldValue: MaterialTypeModel, newValue: MaterialTypeModel) {
     return this.#repository.updateByValue(oldValue, newValue);
   }
   getAll() {

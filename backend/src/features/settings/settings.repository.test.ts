@@ -2,7 +2,7 @@ import { Collection } from "mongodb";
 
 import dbManager from "db/dbManager.js";
 
-import { NewSettings } from "./settings.model.js";
+import { SettingsModel } from "./settings.model.js";
 import { SettingsRepository } from "./settings.repository.js";
 
 jest.mock("db/dbManager.js", () => ({
@@ -13,10 +13,10 @@ jest.mock("db/dbManager.js", () => ({
 
 const mockSettings = { work_hour_cost: 500 };
 
-const mockCollection: jest.Mocked<Collection<NewSettings>> = {
+const mockCollection: jest.Mocked<Collection<SettingsModel>> = {
   findOne: jest.fn(),
   updateOne: jest.fn(),
-} as unknown as jest.Mocked<Collection<NewSettings>>;
+} as unknown as jest.Mocked<Collection<SettingsModel>>;
 
 (dbManager.db.collection as jest.Mock).mockReturnValue(mockCollection);
 

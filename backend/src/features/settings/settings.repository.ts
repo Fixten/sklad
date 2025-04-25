@@ -2,19 +2,19 @@ import { Collection } from "mongodb";
 
 import dbManager from "db/dbManager.js";
 
-import { NewSettings } from "./settings.model.js";
+import { SettingsModel } from "./settings.model.js";
 
 const collectionName = "settings";
 
 export class SettingsRepository {
-  #collection: Collection<NewSettings>;
+  #collection: Collection<SettingsModel>;
   constructor() {
-    this.#collection = dbManager.db.collection<NewSettings>(collectionName);
+    this.#collection = dbManager.db.collection<SettingsModel>(collectionName);
   }
   getConfig() {
     return this.#collection.findOne({});
   }
-  updateConfig(updateItem: NewSettings) {
+  updateConfig(updateItem: SettingsModel) {
     return this.#collection.updateOne({}, updateItem, { upsert: true });
   }
 }

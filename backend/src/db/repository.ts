@@ -4,6 +4,7 @@ import {
   Filter,
   ObjectId,
   OptionalUnlessRequiredId,
+  UpdateFilter,
   WithId,
 } from "mongodb";
 
@@ -17,16 +18,18 @@ export default class Repository<NewItem extends Document> {
   getAll() {
     return this.#collection.find().toArray();
   }
-  getById(_id: ObjectId) {
-    return this.#collection.findOne({ _id } as WithId<NewItem>);
+  getById(_id: ObjectId, projection?: Document) {
+    return projection
+      ? this.#collection.findOne({ _id } as WithId<NewItem>, { projection })
+      : this.#collection.findOne({ _id } as WithId<NewItem>);
   }
-  getByValue(value: Filter<NewItem>) {
-    return this.#collection.findOne(value);
+  getByValue(value: Filter<NewItem>, projection?: Document) {
+    return this.#collection.findOne(value, { projection });
   }
   addNew(newItem: OptionalUnlessRequiredId<NewItem>) {
     return this.#collection.insertOne(newItem);
   }
-  updateById(updateItem: NewItem, id: ObjectId) {
+  updateById(id: ObjectId, updateItem: UpdateFilter<NewItem>) {
     return this.#collection.updateOne(
       { _id: id } as WithId<NewItem>,
       updateItem

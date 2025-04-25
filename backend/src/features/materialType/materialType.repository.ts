@@ -1,10 +1,12 @@
 import Repository from "db/repository.js";
 
-import { NewMaterialType } from "./materialType.model.js";
+import { MaterialTypeModel } from "./materialType.model.js";
 
 const collectionName = "material-type";
 
-export type MaterialTypeRepositoryType = Repository<NewMaterialType>;
+export type MaterialTypeRepositoryType = Repository<MaterialTypeModel>;
 
-const materialTypeRepository = new Repository<NewMaterialType>(collectionName);
+const materialTypeRepository = new Repository<MaterialTypeModel>(
+  collectionName
+);
 export default materialTypeRepository;

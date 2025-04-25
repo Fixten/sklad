@@ -1,8 +1,8 @@
 import Repository from "db/repository.js";
 
-import { NewProduct } from "./product.model.js";
+import { ProductModel } from "./product.model.js";
 
 const collectionName = "product";
 
-const productRepository = new Repository<NewProduct>(collectionName);
+const productRepository = new Repository<ProductModel>(collectionName);
 export default productRepository;
