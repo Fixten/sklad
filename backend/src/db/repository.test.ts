@@ -1,5 +1,6 @@
 import { Collection, Document, ObjectId } from "mongodb";
 
+import { WithDb } from "./CreateAndUpdateRepository/index.js";
 import dbManager from "./dbManager.js";
 import Repository from "./repository.js";
 
@@ -22,18 +23,15 @@ const mockItem = { ...newItem, _id: mockId };
 const mockItems = [mockItem];
 
 describe("Repository", () => {
-  let mockCollection: jest.Mocked<Collection<TestItem>>;
+  let mockCollection: jest.Mocked<Collection<WithDb<TestItem>>>;
   beforeEach(() => {
-    //     // Create mock collection with all required methods
     mockCollection = {
       find: jest.fn().mockReturnValue({
         toArray: jest.fn().mockResolvedValue(mockItems),
       }),
       findOne: jest.fn(),
-      insertOne: jest.fn(),
-      updateOne: jest.fn(),
       deleteOne: jest.fn(),
-    } as unknown as jest.Mocked<Collection<TestItem>>;
+    } as unknown as jest.Mocked<Collection<WithDb<TestItem>>>;
 
     // Set up the collection mock to be returned by dbManager.db.collection
     (dbManager.db.collection as jest.Mock).mockReturnValue(mockCollection);
@@ -79,40 +77,6 @@ describe("Repository", () => {
     });
   });
 
-  describe("addNew", () => {
-    test("should call insertOne with correct item", async () => {
-      const mockResult = {
-        acknowledged: true,
-        insertedId: new ObjectId(),
-      };
-      const repository = new Repository<TestItem>(collectionName);
-      mockCollection.insertOne.mockResolvedValue(mockResult);
-      const result = await repository.addNew(newItem);
-      expect(mockCollection.insertOne).toHaveBeenCalledWith(newItem);
-      expect(result).toEqual(mockResult);
-    });
-  });
-
-  describe("update", () => {
-    test("should call updateOne with correct id and item", async () => {
-      const repository = new Repository<TestItem>(collectionName);
-      const mockResult = {
-        acknowledged: true,
-        matchedCount: 1,
-        modifiedCount: 1,
-        upsertedCount: 0,
-        upsertedId: null,
-      };
-      mockCollection.updateOne.mockResolvedValue(mockResult);
-      const result = await repository.updateById(mockId, newItem);
-      expect(mockCollection.updateOne).toHaveBeenCalledWith(
-        { _id: mockId },
-        newItem
-      );
-      expect(result).toEqual(mockResult);
-    });
-  });
-
   describe("deleteById", () => {
     test("should call deleteOne with correct id", async () => {
       const repository = new Repository<TestItem>(collectionName);
@@ -124,7 +88,7 @@ describe("Repository", () => {
       mockCollection.deleteOne.mockResolvedValue(mockResult);
       const result = await repository.deleteById(mockId);
       expect(mockCollection.deleteOne).toHaveBeenCalledWith({ _id: mockId });
-      expect(result).toEqual(mockResult);
+      expect(result).toEqual(mockResult.acknowledged);
     });
     test("should return deleteCount 0 when item not found", async () => {
       const repository = new Repository<TestItem>(collectionName);
@@ -136,7 +100,7 @@ describe("Repository", () => {
       mockCollection.deleteOne.mockResolvedValue(mockResult);
       const result = await repository.deleteById(mockId);
       expect(mockCollection.deleteOne).toHaveBeenCalledWith({ _id: mockId });
-      expect(result.deletedCount).toBe(0);
+      expect(result).toBe(true);
     });
   });
 });

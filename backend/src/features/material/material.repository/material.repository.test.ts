@@ -8,7 +8,8 @@ import {
 
 import dbManager from "db/dbManager.js";
 
-import { MaterialModel, VariantModel } from "./material.model.js";
+import { MaterialModel, VariantModel } from "../material.model.js";
+
 import {
   MaterialRepository,
   VariantRepository,

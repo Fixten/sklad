@@ -9,15 +9,18 @@ import {
 } from "mongodb";
 
 import dbManager from "db/dbManager.js";
+import Repository from "db/repository.js";
 
-import { MaterialModel, VariantModel } from "./material.model.js";
+import { MaterialModel, VariantModel } from "../material.model.js";
 
 const collectionName = "material";
 
 export class VariantRepository {
   #collection: Collection<MaterialModel>;
+  #baseRepository: Repository<MaterialModel>;
   constructor(collectionName: string) {
     this.#collection = dbManager.db.collection<MaterialModel>(collectionName);
+    this.#baseRepository = new Repository(collectionName);
   }
   async createVariant(id: ObjectId, variant: VariantModel) {
     const result = await this.#collection.updateOne(
@@ -49,6 +52,41 @@ export class VariantRepository {
       }
     );
     return !!result.modifiedCount;
+  }
+
+  addSupply(
+    materialId: ObjectId,
+    variantName: VariantModel["variant"],
+    supplyId: ObjectId
+  ) {
+    return this.#baseRepository.updateByValue(
+      {
+        _id: materialId,
+        "variants.variant": variantName,
+      },
+      {
+        $push: {
+          "variants.$.supplies": supplyId,
+        },
+      }
+    );
+  }
+  deleteSupply(
+    materialId: ObjectId,
+    variantName: VariantModel["variant"],
+    supplyId: ObjectId
+  ) {
+    return this.#baseRepository.updateByValue(
+      {
+        _id: materialId,
+        "variants.variant": variantName,
+      },
+      {
+        $pull: {
+          "variants.$.supplies": supplyId,
+        },
+      }
+    );
   }
 }
 

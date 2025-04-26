@@ -29,6 +29,10 @@ export default tseslint.config(
       // Turn off the original rule for test files
       "@typescript-eslint/unbound-method": "off",
       "jest/unbound-method": "error",
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-unsafe-member-access": "off",
+      "@typescript-eslint/no-unsafe-call": "off",
+      "@typescript-eslint/no-unsafe-return": "off",
     },
   },
   {

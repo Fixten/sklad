@@ -10,7 +10,7 @@ export class SupplyService {
   constructor(repository: SupplyRepositoryType) {
     this.#repository = repository;
   }
-  async addNew(supply: SupplyModel) {
+  addNew(supply: SupplyModel) {
     return this.#repository.addNew(supply);
   }
   delete(id: ObjectId) {

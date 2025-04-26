@@ -8,12 +8,34 @@ import {
   WithId,
 } from "mongodb";
 
+import CreateAndUpdateRepository from "./CreateAndUpdateRepository/index.js";
 import dbManager from "./dbManager.js";
 
+import type { WithDb } from "./CreateAndUpdateRepository/index.js";
+
 export default class Repository<NewItem extends Document> {
-  #collection: Collection<NewItem>;
+  #collection: Collection<WithDb<NewItem>>;
+  #createAndUpdate: CreateAndUpdateRepository<NewItem>;
+
   constructor(collectionName: string) {
-    this.#collection = dbManager.db.collection<NewItem>(collectionName);
+    this.#collection = dbManager.db.collection<WithDb<NewItem>>(collectionName);
+    this.#createAndUpdate = new CreateAndUpdateRepository(this.#collection);
+  }
+  addNew(newItem: OptionalUnlessRequiredId<NewItem>) {
+    return this.#createAndUpdate.insertDoc(newItem);
+  }
+
+  updateById(id: ObjectId, updateItem: UpdateFilter<NewItem>) {
+    return this.#createAndUpdate.updateDoc(
+      { _id: id } as WithId<NewItem>,
+      updateItem
+    );
+  }
+  updateByValue(filter: Filter<WithDb<NewItem>>, value: UpdateFilter<NewItem>) {
+    return this.#createAndUpdate.updateDoc(filter, value);
+  }
+  upsert(filter: Filter<WithDb<NewItem>>, update: UpdateFilter<NewItem>) {
+    return this.#createAndUpdate.upsert(filter, update);
   }
   getAll() {
     return this.#collection.find().toArray();
@@ -23,26 +45,17 @@ export default class Repository<NewItem extends Document> {
       ? this.#collection.findOne({ _id } as WithId<NewItem>, { projection })
       : this.#collection.findOne({ _id } as WithId<NewItem>);
   }
-  getByValue(value: Filter<NewItem>, projection?: Document) {
+  getByValue(value: Filter<WithDb<NewItem>>, projection?: Document) {
     return this.#collection.findOne(value, { projection });
   }
-  addNew(newItem: OptionalUnlessRequiredId<NewItem>) {
-    return this.#collection.insertOne(newItem);
-  }
-  updateById(id: ObjectId, updateItem: UpdateFilter<NewItem>) {
-    return this.#collection.updateOne(
-      { _id: id } as WithId<NewItem>,
-      updateItem
-    );
-  }
-  updateByValue(oldValue: Filter<NewItem>, newValue: NewItem) {
-    return this.#collection.updateOne(oldValue, newValue);
-  }
-  deleteById(id: ObjectId) {
-    return this.#collection.deleteOne({ _id: id } as WithId<NewItem>);
+  async deleteById(id: ObjectId) {
+    const result = await this.#collection.deleteOne({
+      _id: id,
+    } as WithId<NewItem>);
+    return result.acknowledged;
   }
 
-  deleteByValue(value: Filter<NewItem>) {
+  deleteByValue(value: Filter<WithDb<NewItem>>) {
     return this.#collection.deleteOne(value);
   }
 }
