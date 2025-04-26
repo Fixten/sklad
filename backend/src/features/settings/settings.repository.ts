@@ -1,21 +1,20 @@
-import { Collection } from "mongodb";
-
-import dbManager from "db/dbManager.js";
+import Repository from "db/repository.js";
 
 import { SettingsModel } from "./settings.model.js";
 
 const collectionName = "settings";
 
 export class SettingsRepository {
-  #collection: Collection<SettingsModel>;
+  #baseRepository: Repository<SettingsModel>;
+
   constructor() {
-    this.#collection = dbManager.db.collection<SettingsModel>(collectionName);
+    this.#baseRepository = new Repository(collectionName);
   }
   getConfig() {
-    return this.#collection.findOne({});
+    return this.#baseRepository.getByValue({});
   }
   updateConfig(updateItem: SettingsModel) {
-    return this.#collection.updateOne({}, updateItem, { upsert: true });
+    return this.#baseRepository.upsert({}, updateItem);
   }
 }
 
