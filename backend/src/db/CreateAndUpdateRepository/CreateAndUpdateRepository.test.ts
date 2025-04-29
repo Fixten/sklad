@@ -1,8 +1,9 @@
 import { Collection, ObjectId } from "mongodb";
 
+import { WithDb } from "../WithDb.js";
+
 import { insert, update } from "./CreateAndUpdateRepository.js";
 import { upsertAndReturn } from "./upsertAndReturn.js";
-import { WithDb } from "./WithDb.js";
 
 interface ValueType {
   name: string;

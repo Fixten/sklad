@@ -8,8 +8,10 @@ import {
   WithId,
 } from "mongodb";
 
+import DbCollection from "../DbCollection/index.js";
+import { WithDb } from "../WithDb.js";
+
 import { upsertAndReturn } from "./upsertAndReturn.js";
-import { WithDb } from "./WithDb.js";
 
 export async function insert<T extends Document>(
   collection: Collection<WithDb<T>>,
@@ -44,20 +46,20 @@ export async function update<T extends Document>(
 }
 
 export default class CreateAndUpdateRepository<T extends Document> {
-  #collection: Collection<WithDb<T>>;
-  constructor(collection: Collection<WithDb<T>>) {
-    this.#collection = collection;
+  #db: DbCollection<T>;
+  constructor(dbCollection: DbCollection<T>) {
+    this.#db = dbCollection;
   }
 
   insertDoc(document: OptionalUnlessRequiredId<T>) {
-    return insert(this.#collection, document);
+    return insert(this.#db.collection, document);
   }
 
   updateDoc(filter: Filter<WithDb<T>>, value: UpdateFilter<T>) {
-    return update(this.#collection, filter, value);
+    return update(this.#db.collection, filter, value);
   }
 
   upsert(filter: Filter<WithDb<T>>, update: UpdateFilter<T>) {
-    return upsertAndReturn(this.#collection, filter, update);
+    return upsertAndReturn(this.#db.collection, filter, update);
   }
 }

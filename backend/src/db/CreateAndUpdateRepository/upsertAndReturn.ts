@@ -1,6 +1,6 @@
 import { Collection, Document, Filter, UpdateFilter } from "mongodb";
 
-import { WithDb } from "./WithDb.js";
+import { WithDb } from "../WithDb.js";
 
 /**
  * Upserts (inserts or updates) a document and returns the resulting document.

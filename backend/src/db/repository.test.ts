@@ -1,14 +1,27 @@
-import { Collection, Document, ObjectId } from "mongodb";
+import { Document, ObjectId } from "mongodb";
 
-import { WithDb } from "./CreateAndUpdateRepository/index.js";
-import dbManager from "./dbManager.js";
+import CreateAndUpdateRepository from "./CreateAndUpdateRepository/index.js";
 import Repository from "./repository.js";
+import DbCollection from "./DbCollection/index.js";
 
-jest.mock("./dbManager.js", () => ({
-  db: {
-    collection: jest.fn(),
-  },
-}));
+const mockCollection = {
+  find: jest.fn(),
+  findOne: jest.fn(),
+  deleteOne: jest.fn(),
+};
+
+jest.mock("./DbCollection/index.js", () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      collection: mockCollection,
+    };
+  });
+});
+
+const DbCollectionMock = DbCollection as jest.MockedClass<typeof DbCollection>;
+
+jest.mock("./CreateAndUpdateRepository/index.js");
+const CreateAndUpdateRepositoryMock = CreateAndUpdateRepository as jest.Mock;
 
 const collectionName = "testCollection";
 
@@ -23,28 +36,26 @@ const mockItem = { ...newItem, _id: mockId };
 const mockItems = [mockItem];
 
 describe("Repository", () => {
-  let mockCollection: jest.Mocked<Collection<WithDb<TestItem>>>;
   beforeEach(() => {
-    mockCollection = {
-      find: jest.fn().mockReturnValue({
-        toArray: jest.fn().mockResolvedValue(mockItems),
-      }),
-      findOne: jest.fn(),
-      deleteOne: jest.fn(),
-    } as unknown as jest.Mocked<Collection<WithDb<TestItem>>>;
-
-    // Set up the collection mock to be returned by dbManager.db.collection
-    (dbManager.db.collection as jest.Mock).mockReturnValue(mockCollection);
+    mockCollection.find.mockReturnValue({
+      toArray: jest.fn().mockResolvedValue(mockItems),
+    });
   });
-
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   describe("constructor", () => {
-    test("should get the correct collection from dbManager", () => {
+    test("DbCollection called with collectionName", () => {
       new Repository<TestItem>(collectionName);
-      expect(dbManager.db.collection).toHaveBeenCalledWith(collectionName);
+      expect(DbCollectionMock).toHaveBeenCalledWith(collectionName);
+    });
+
+    test("CreateAndUpdateRepository should get instance of DbCollection", () => {
+      new Repository<TestItem>(collectionName);
+      expect(CreateAndUpdateRepositoryMock).toHaveBeenCalledWith(
+        new DbCollectionMock(collectionName)
+      );
     });
   });
   describe("getAll", () => {
