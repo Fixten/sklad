@@ -9,7 +9,8 @@
     "lint:fix": "eslint --fix backend/src/",
     "backend:dev": "npm -w=backend exec -- npm start",
     "backend:build": "npm -w=backend exec -- npm run build",
-    "backend:test": "npm -w=backend exec -- npm test"
+    "backend:test": "npm -w=backend exec -- npm test",
+    "backend:prod": "npm -w=backend exec -- npm run prod"
   },
   "devDependencies": {
     "@babel/core": "^7.26.10",
