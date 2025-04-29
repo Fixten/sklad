@@ -1,7 +1,7 @@
 import { Request, Router } from "express";
 import { WithId } from "mongodb";
 
-import { WithDb } from "db/CreateAndUpdateRepository/WithDb.js";
+import { WithDb } from "@/db/WithDb.js";
 
 import { SettingsModel } from "./settings.model.js";
 import settingsService from "./settings.service.js";

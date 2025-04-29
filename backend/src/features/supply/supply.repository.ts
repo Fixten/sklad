@@ -1,4 +1,4 @@
-import Repository from "db/repository.js";
+import Repository from "@/db/repository.js";
 
 import { SupplyModel } from "./supply.model.js";
 

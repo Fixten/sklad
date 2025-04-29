@@ -8,8 +8,8 @@ import {
   WithId,
 } from "mongodb";
 
-import dbManager from "db/dbManager.js";
-import Repository from "db/repository.js";
+import dbManager from "@/db/dbManager.js";
+import Repository from "@/db/repository.js";
 
 import { MaterialModel, VariantModel } from "../material.model.js";
 

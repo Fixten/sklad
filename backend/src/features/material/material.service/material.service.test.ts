@@ -7,7 +7,7 @@ import { MaterialService } from "./material.service.js";
 
 import type { MaterialRepository } from "../material.repository/index.js";
 
-jest.mock("./material.repository/index.js", () => ({}));
+jest.mock("../material.repository/index.js", () => ({}));
 
 describe("MaterialService", () => {
   let materialService: MaterialService;

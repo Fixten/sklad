@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 
-import Repository from "db/repository.js";
+import Repository from "@/db/repository.js";
 
 import { SupplyService } from "./supply.service.js";
 

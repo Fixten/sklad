@@ -1,4 +1,4 @@
-import Repository from "db/repository.js";
+import Repository from "@/db/repository.js";
 
 import { MaterialTypeModel } from "./materialType.model.js";
 

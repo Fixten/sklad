@@ -6,7 +6,7 @@ import {
   WithId,
 } from "mongodb";
 
-import dbManager from "db/dbManager.js";
+import dbManager from "@/db/dbManager.js";
 
 import { MaterialModel, VariantModel } from "../material.model.js";
 
@@ -15,7 +15,7 @@ import {
   VariantRepository,
 } from "./material.repository.js";
 
-jest.mock("db/dbManager.js", () => ({
+jest.mock("@/db/dbManager.js", () => ({
   db: {
     collection: jest.fn(),
   },
