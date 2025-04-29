@@ -85,11 +85,13 @@ describe("CreateAndUpdateRepository", () => {
       expect(mockCollection.findOneAndUpdate).toHaveBeenCalledWith(
         mockValue,
         {
-          ...mockValue,
+          $set: {
+            ...mockValue,
+            updatedAt: expect.any(Date),
+          },
           $setOnInsert: {
             createdAt: expect.any(Date),
           },
-          updatedAt: expect.any(Date),
         },
         {
           upsert: true,

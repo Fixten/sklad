@@ -17,15 +17,16 @@ export async function upsertAndReturn<T extends Document>(
   update: UpdateFilter<T>
 ) {
   const timestamp = new Date();
-
   const result = await collection.findOneAndUpdate(
     filter,
     {
-      ...update,
+      $set: {
+        ...update,
+        updatedAt: timestamp,
+      } as WithDb<T>,
       $setOnInsert: {
         createdAt: timestamp,
       } as WithDb<T>,
-      updatedAt: timestamp,
     },
     {
       upsert: true,
