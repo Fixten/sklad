@@ -1,0 +1,12 @@
+services:
+  backend:
+    build: ./
+    restart: always
+    ports:
+      - "1100:1100"
+    networks:
+      - main
+networks:
+  main:
+    external: true
+    name: dbs_main
