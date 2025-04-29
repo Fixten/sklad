@@ -2,7 +2,7 @@ import { Db } from "mongodb";
 
 import dbConnection from "./dbConnection.js";
 
-const dbName = "bags";
+const dbName = process.env.NODE_ENV === "PROD" ? "bags" : "bags-test";
 
 export class DbManager {
   #db?: Db;

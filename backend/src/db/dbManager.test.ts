@@ -18,7 +18,7 @@ describe("dbManager", () => {
   });
   it("calls dbConnections's db property", () => {
     void dbManager.db;
-    expect(dbConnection.client.db).toHaveBeenCalledWith("bags");
+    expect(dbConnection.client.db).toHaveBeenCalledWith("bags-test");
   });
   it("prints console message if success", () => {
     const spy = jest.spyOn(console, "log");
