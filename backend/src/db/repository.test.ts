@@ -1,8 +1,8 @@
 import { Document, ObjectId } from "mongodb";
 
 import CreateAndUpdateRepository from "./CreateAndUpdateRepository/index.js";
-import Repository from "./repository.js";
 import DbCollection from "./DbCollection/index.js";
+import Repository from "./repository.js";
 
 const mockCollection = {
   find: jest.fn(),

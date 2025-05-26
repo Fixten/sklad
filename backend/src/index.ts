@@ -10,4 +10,4 @@ function startApp() {
   } else throw new Error("Environment variables are not set");
 }
 
-export default startApp();
+startApp()

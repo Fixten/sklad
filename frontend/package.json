@@ -1,3 +1,28 @@
 {
-    "name": "sklad_frontend"
-}  
+  "name": "sklad-client",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "vite --host",
+    "preview": "vite preview",
+    "lint": "eslint src/",
+    "lint:fix": "eslint --fix src/"
+  },
+  "dependencies": {
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
+    "@mui/icons-material": "^7",
+    "@mui/material": "^7",
+    "@mui/material-nextjs": "^7",
+    "@toolpad/core": "0.15.0",
+    "react": "^19",
+    "react-dom": "^19",
+    "react-router": "^7",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@vitejs/plugin-react": "^4.3.2",
+    "vite": "^6.3.5"
+  }
+}

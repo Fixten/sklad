@@ -5,12 +5,11 @@
     "frontend/"
   ],
   "scripts": {
-    "lint": "eslint backend/src/",
-    "lint:fix": "eslint --fix backend/src/",
     "backend:dev": "npm -w=backend exec -- npm start",
     "backend:build": "npm -w=backend exec -- npm run build",
     "backend:test": "npm -w=backend exec -- npm test",
-    "backend:prod": "npm -w=backend exec -- npm run prod"
+    "backend:prod": "npm -w=backend exec -- npm run prod",
+    "front:start": "npm -w=frontend exec -- npm run dev"
   },
   "devDependencies": {
     "@babel/core": "^7.26.10",

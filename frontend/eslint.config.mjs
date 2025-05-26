@@ -21,7 +21,7 @@ export default tseslint.config(
   },
   // Add Jest configuration for test files
   {
-    files: ["**/*.test.ts"],
+    files: ["**/*.test.ts", "**/*.test.tsx"],
     plugins: {
       jest: jestPlugin,
     },
@@ -38,8 +38,8 @@ export default tseslint.config(
     },
   },
   {
-    files: ["**/*.{js,ts}"],
-    ignores: ["eslint.config.js"],
+    files: ["**/*.{js,ts,jsx,tsx}"],
+    ignores: ["eslint.config.mjs"],
     languageOptions: {
       parser: tsParser,
       ecmaVersion: "latest",
@@ -70,7 +70,7 @@ export default tseslint.config(
   {
     settings: {
       "import-x/resolver-next": [
-        createTypeScriptImportResolver({ project: "./backend/tsconfig.json" }),
+        createTypeScriptImportResolver({ project: "tsconfig.json" }),
       ],
     },
   }

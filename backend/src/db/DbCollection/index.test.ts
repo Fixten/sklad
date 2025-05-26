@@ -2,7 +2,7 @@ import { Db } from "mongodb";
 
 import dbManager from "../dbManager.js";
 
-import DbCollection from ".";
+import DbCollection from "./index.js";
 
 const collectionName = "collectionName";
 

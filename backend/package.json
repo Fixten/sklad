@@ -1,6 +1,8 @@
 {
   "name": "sklad_backend",
   "scripts": {
+    "lint": "eslint src/",
+    "lint:fix": "eslint --fix src/",
     "start": "tsx watch src/index.ts",
     "build": "rm -rf build/* && tsc && tsc-alias",
     "prod": "node build/index.js",
