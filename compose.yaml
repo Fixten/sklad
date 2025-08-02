@@ -9,4 +9,4 @@ services:
 networks:
   main:
     external: true
-    name: dbs_main
+    name: sklad-db_main

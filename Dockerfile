@@ -3,7 +3,8 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 COPY backend/package.json ./backend/
 RUN npm ci
-COPY . .
+COPY ./backend ./backend
+COPY ./tsconfig.json ./tsconfig.json
 RUN npm run backend:build
 
 FROM node:23-alpine
