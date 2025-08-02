@@ -4,6 +4,7 @@ import * as pluginImportX from "eslint-plugin-import-x";
 import tsParser from "@typescript-eslint/parser";
 import jestPlugin from "eslint-plugin-jest";
 import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
+import reactQuery from "@tanstack/eslint-plugin-query";
 
 export default tseslint.config(
   eslint.configs.recommended,
@@ -11,6 +12,7 @@ export default tseslint.config(
   tseslint.configs.stylisticTypeChecked,
   pluginImportX.flatConfigs.recommended,
   pluginImportX.flatConfigs.typescript,
+  reactQuery.configs.recommended,
   {
     languageOptions: {
       parserOptions: {

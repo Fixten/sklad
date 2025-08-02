@@ -1,16 +1,20 @@
 import { ApiModel } from "./api.model";
 
-const getApiUrl = (path: string) =>
-  new URL(
-    path,
-    `${window.location.protocol}//${window.location.hostname}:${import.meta.env.VITE_BACKEND_PORT}`
-  );
+const pickCorrectBase = () =>
+  import.meta.env.VITE_BACKEND_URL ||
+  `${window.location.protocol}//${window.location.hostname}:${import.meta.env.VITE_BACKEND_PORT}`;
+
+const getApiUrl = (path: string) => new URL(path, pickCorrectBase());
 
 export type ResponseBody<B> = B & ApiModel;
 
-const fetchApi = <B>(url: URL) =>
-  fetch(url).then((response) => {
-    if (response.ok) return response.json() as Promise<ResponseBody<B>>;
+type Method = "GET" | "POST";
+
+const headers: HeadersInit = { "Content-Type": "application/json" };
+
+const fetchApi = <R>(url: URL, method: Method, body?: string) =>
+  fetch(url, { method, body, headers }).then((response) => {
+    if (response.ok) return response.json() as Promise<ResponseBody<R>>;
     else throw new Error("Network response was not ok");
   });
 
@@ -20,6 +24,10 @@ export default class Api<B> {
     this.#apiUrl = getApiUrl(path);
   }
   get() {
-    return fetchApi<B>(this.#apiUrl);
+    return fetchApi<B>(this.#apiUrl, "GET");
+  }
+  post<B, R>(body: B): Promise<R> {
+    console.log("wasaup", JSON.stringify(body));
+    return fetchApi<R>(this.#apiUrl, "POST", JSON.stringify(body));
   }
 }

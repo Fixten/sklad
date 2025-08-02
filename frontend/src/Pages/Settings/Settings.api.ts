@@ -3,15 +3,18 @@ import { SettingsModel } from "./Settings.model";
 
 const path = "/settings";
 
-class SettingsApi {
+export default class SettingsApi {
   #api: Api<SettingsModel>;
   constructor() {
     this.#api = new Api(path);
   }
 
-  async getAll() {
-    return await this.#api.get();
-  }
-}
+  getAll = () => {
+    return this.#api.get();
+  };
 
-export default new SettingsApi();
+  updateWorkHours = (hours: number) => {
+    console.log("update", hours);
+    return this.#api.post({ work_hour_cost: hours });
+  };
+}
