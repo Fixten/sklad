@@ -4,6 +4,7 @@ import { fileURLToPath } from "url";
 import bodyParser from "body-parser";
 import { config } from "dotenv";
 import express from "express";
+import cors from "cors";
 
 import dbConnection from "./db/dbConnection.js";
 import settingsRouter from "./features/settings/settings.route.js";
@@ -13,6 +14,7 @@ export default function getServer() {
   config({ path: resolve(__dirname, "../../.env") });
 
   const app = express();
+  app.use(cors());
   dbConnection.connect();
 
   app.use(bodyParser.json());
