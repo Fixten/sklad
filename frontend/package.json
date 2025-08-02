@@ -13,6 +13,7 @@
     "@mui/icons-material": "^7",
     "@mui/material": "^7",
     "@mui/material-nextjs": "^7",
+    "@tanstack/react-query": "^5.84.1",
     "@toolpad/core": "0.15.0",
     "react": "^19",
     "react-dom": "^19",
@@ -20,6 +21,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^4.39.1",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@vitejs/plugin-react": "^4.3.2",
