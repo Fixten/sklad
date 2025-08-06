@@ -2,8 +2,12 @@ import { Collection, ObjectId } from "mongodb";
 
 import { WithDb } from "../WithDb.js";
 
-import { insert, update } from "./CreateAndUpdateRepository.js";
+import CreateAndUpdateRepository, {
+  insert,
+  update,
+} from "./CreateAndUpdateRepository.js";
 import { upsertAndReturn } from "./upsertAndReturn.js";
+import DbCollection from "../DbCollection/index.js";
 
 interface ValueType {
   name: string;
@@ -98,6 +102,44 @@ describe("CreateAndUpdateRepository", () => {
           returnDocument: "after",
         }
       );
+    });
+  });
+
+  describe("class isntance", () => {
+    const mockDbCollection = {
+      collection: mockCollection,
+    } as unknown as DbCollection<ValueType>;
+    const mockInsert = jest.fn();
+    const mockUpdate = jest.fn();
+    const mockUpsertAndReturn = jest.fn();
+    const instance = new CreateAndUpdateRepository(
+      mockDbCollection,
+      mockInsert,
+      mockUpdate,
+      mockUpsertAndReturn
+    );
+
+    describe("insertDoc", () => {
+      test("throw if not acknowledged", async () => {
+        mockInsert.mockResolvedValue(null);
+        await expect(instance.insertDoc(mockValue)).rejects.toBeTruthy();
+      });
+    });
+    describe("updateDoc", () => {
+      it("throw if update failed", async () => {
+        mockUpdate.mockResolvedValue(null);
+        await expect(
+          instance.updateDoc(mockValue, mockValue)
+        ).rejects.toBeTruthy();
+      });
+    });
+    describe("upsert", () => {
+      it("throw if no value returned", async () => {
+        mockUpsertAndReturn.mockResolvedValue(null);
+        await expect(
+          instance.upsert(mockValue, mockValue)
+        ).rejects.toBeTruthy();
+      });
     });
   });
 });

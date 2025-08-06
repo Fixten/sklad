@@ -45,21 +45,42 @@ export async function update<T extends Document>(
   });
 }
 
+const nullError = "Db operation failed";
+
+async function throwIfNull<T>(dbResponse: Promise<T | null>): Promise<T> {
+  const result = await dbResponse;
+  if (result === null) throw new Error(nullError);
+  else return result;
+}
+
 export default class CreateAndUpdateRepository<T extends Document> {
   #db: DbCollection<T>;
-  constructor(dbCollection: DbCollection<T>) {
+  #insert: typeof insert;
+  #update: typeof update;
+  #upsertAndReturn: typeof upsertAndReturn;
+  constructor(
+    dbCollection: DbCollection<T>,
+    insertInjection?: typeof insert,
+    updateInjection?: typeof update,
+    upsertInjection?: typeof upsertAndReturn
+  ) {
     this.#db = dbCollection;
+    this.#insert = insertInjection || insert;
+    this.#update = updateInjection || update;
+    this.#upsertAndReturn = upsertInjection || upsertAndReturn;
   }
 
   insertDoc(document: OptionalUnlessRequiredId<T>) {
-    return insert(this.#db.collection, document);
+    return throwIfNull(this.#insert(this.#db.collection, document));
   }
 
   updateDoc(filter: Filter<WithDb<T>>, value: UpdateFilter<T>) {
-    return update(this.#db.collection, filter, value);
+    return throwIfNull(this.#update(this.#db.collection, filter, value));
   }
 
   upsert(filter: Filter<WithDb<T>>, update: UpdateFilter<T>) {
-    return upsertAndReturn(this.#db.collection, filter, update);
+    return throwIfNull(
+      this.#upsertAndReturn(this.#db.collection, filter, update)
+    );
   }
 }
