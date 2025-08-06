@@ -14,10 +14,11 @@ settingsRouter.get("/", async (req, res) => {
 settingsRouter.post(
   "/",
   async (
-    req: Request<void, WithId<WithDb<SettingsModel>> | null, SettingsModel>,
+    req: Request<void, WithId<WithDb<SettingsModel>>, SettingsModel>,
     res
   ) => {
-    res.send(await settingsService.update(req.body));
+    const result = await settingsService.update(req.body);
+    res.send(result);
   }
 );
 
