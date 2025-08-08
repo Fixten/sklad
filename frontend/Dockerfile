@@ -1,17 +1,17 @@
 FROM node:23-alpine AS builder
 WORKDIR /app
 COPY package.json package-lock.json ./
-COPY backend/package.json ./backend/
+COPY frontend/package.json ./frontend/
 RUN npm ci
-COPY ./backend ./backend
+COPY ./frontend ./frontend
 COPY ./tsconfig.json ./tsconfig.json
-RUN npm run backend:build
+RUN npm run frontend:build
 
 FROM node:23-alpine
 WORKDIR /app
 COPY package.json package-lock.json ./
-COPY backend/package.json ./backend/
+COPY frontend/package.json ./frontend/
 RUN npm ci --omit=dev
 COPY .env ./
-COPY --from=builder /app/backend/build ./backend/build
-CMD [ "npm", "run",  "backend:prod"]
+COPY --from=builder /app/frontend/build ./frontend/build
+CMD [ "npm", "run",  "frontend:prod"]

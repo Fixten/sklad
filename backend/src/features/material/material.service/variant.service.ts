@@ -35,15 +35,12 @@ export class VariantService {
     supply: SupplyModel
   ) {
     const addedSupply = await this.#supplyService.addNew(supply);
-    let result = null;
-    if (addedSupply) {
-      result = await this.#repository.addSupply(
+      const material = await this.#repository.addSupply(
         materialId,
         variant,
         addedSupply._id
       );
-    }
-    return { material: result, supply: addedSupply };
+    return { material, supply: addedSupply };
   }
   async deleteSupply(
     materialId: ObjectId,

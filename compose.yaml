@@ -1,11 +1,20 @@
 services:
   backend:
-    build: ./
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
     restart: always
     ports:
       - "1100:1100"
     networks:
       - main
+  # frontend:
+  #   build: ./frontend/Dockerfile
+  #   restart: always
+  #   ports:
+  #     - "1101:1101"
+  #   networks:
+  #     - main
 networks:
   main:
     external: true

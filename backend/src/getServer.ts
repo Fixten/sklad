@@ -2,9 +2,9 @@ import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
 
 import bodyParser from "body-parser";
+import cors from "cors";
 import { config } from "dotenv";
 import express from "express";
-import cors from "cors";
 
 import dbConnection from "./db/dbConnection.js";
 import settingsRouter from "./features/settings/settings.route.js";

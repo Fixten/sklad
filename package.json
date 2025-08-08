@@ -16,7 +16,6 @@
     "@babel/preset-env": "^7.26.9",
     "@babel/preset-typescript": "^7.27.0",
     "@eslint/js": "^9.24.0",
-    "@tsconfig/recommended": "^1.0.8",
     "@types/jest": "^29.5.14",
     "babel-jest": "^29.7.0",
     "eslint": "^9.24.0",
@@ -25,7 +24,10 @@
     "eslint-plugin-jest": "^28.11.0",
     "jest": "^29.7.0",
     "prettier": "^3.5.3",
-    "typescript": "^5.8.3",
     "typescript-eslint": "^8.29.1"
+  },
+  "dependencies": {
+    "@tsconfig/recommended": "^1.0.10",
+    "typescript": "^5.8.3"
   }
 }

@@ -65,9 +65,9 @@ export default class CreateAndUpdateRepository<T extends Document> {
     upsertInjection?: typeof upsertAndReturn
   ) {
     this.#db = dbCollection;
-    this.#insert = insertInjection || insert;
-    this.#update = updateInjection || update;
-    this.#upsertAndReturn = upsertInjection || upsertAndReturn;
+    this.#insert = insertInjection ?? insert;
+    this.#update = updateInjection ?? update;
+    this.#upsertAndReturn = upsertInjection ?? upsertAndReturn;
   }
 
   insertDoc(document: OptionalUnlessRequiredId<T>) {

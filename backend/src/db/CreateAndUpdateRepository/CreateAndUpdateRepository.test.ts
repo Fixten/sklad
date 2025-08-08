@@ -1,5 +1,6 @@
 import { Collection, ObjectId } from "mongodb";
 
+import DbCollection from "../DbCollection/index.js";
 import { WithDb } from "../WithDb.js";
 
 import CreateAndUpdateRepository, {
@@ -7,7 +8,6 @@ import CreateAndUpdateRepository, {
   update,
 } from "./CreateAndUpdateRepository.js";
 import { upsertAndReturn } from "./upsertAndReturn.js";
-import DbCollection from "../DbCollection/index.js";
 
 interface ValueType {
   name: string;

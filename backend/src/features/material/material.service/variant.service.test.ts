@@ -87,7 +87,7 @@ describe("VariantService", () => {
         expect(variantRepositoryMock.addSupply).toHaveBeenCalledWith(
           materialId,
           variantName,
-          result.supply?._id
+          result.supply._id
         );
       });
       test("should return correct data", async () => {

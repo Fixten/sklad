@@ -1,0 +1,12 @@
+FROM node:23-alpine AS builder
+WORKDIR /app
+COPY package.json package-lock.json .
+COPY backend/package.json ./backend/
+RUN npm ci --omit=dev
+COPY backend/tsconfig.json backend/tsconfig.build.json ./backend/
+COPY backend/src ./backend/src
+COPY tsconfig.json ./
+RUN npm run backend:build
+
+COPY .env ./
+CMD [ "npm", "run",  "backend:prod"]
