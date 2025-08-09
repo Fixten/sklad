@@ -1,11 +1,14 @@
 {
   "name": "sklad-client",
   "version": "0.1.0",
+  "type": "module",
   "scripts": {
     "dev": "vite --host",
     "preview": "vite preview",
     "lint": "eslint src/",
-    "lint:fix": "eslint --fix src/"
+    "lint:fix": "eslint --fix src/",
+    "build": "vite build",
+    "prod": "pm2-runtime server.js"
   },
   "dependencies": {
     "@emotion/react": "^11",

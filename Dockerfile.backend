@@ -7,6 +7,4 @@ COPY backend/tsconfig.json backend/tsconfig.build.json ./backend/
 COPY backend/src ./backend/src
 COPY tsconfig.json ./
 RUN npm run backend:build
-
-COPY .env ./
 CMD [ "npm", "run",  "backend:prod"]

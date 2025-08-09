@@ -9,7 +9,6 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, path.join(process.cwd(), envRelativePath), "");
 
   process.env.VITE_BACKEND_PORT = env.BACKEND_PORT;
-  process.env.VITE_FRONTEND_PORT = env.FRONTEND_PORT;
   return {
     plugins: [react()],
     envDir: envRelativePath,

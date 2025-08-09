@@ -9,7 +9,9 @@
     "backend:build": "npm -w=backend exec -- npm run build",
     "backend:test": "npm -w=backend exec -- npm test",
     "backend:prod": "npm -w=backend exec -- npm run prod",
-    "front:dev": "npm -w=frontend exec -- npm run dev"
+    "front:dev": "npm -w=frontend exec -- npm run dev",
+    "front:build": "npm -w=frontend exec -- npm run build",
+    "front:prod": "npm -w=frontend exec -- npm run prod"
   },
   "devDependencies": {
     "@babel/core": "^7.26.10",
@@ -28,6 +30,8 @@
   },
   "dependencies": {
     "@tsconfig/recommended": "^1.0.10",
+    "express": "^5.1.0",
+    "pm2": "^6.0.8",
     "typescript": "^5.8.3"
   }
 }

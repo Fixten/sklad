@@ -4,8 +4,10 @@ services:
       context: .
       dockerfile: Dockerfile.backend
     restart: always
+    env_file:
+      - .env
     ports:
-      - "1100:1100"
+      - "1100:${BACKEND_PORT}"
     networks:
       - main
   # frontend:
