@@ -1,3 +1,4 @@
+import CheckIcon from "@mui/icons-material/Check";
 import {
   Card,
   CardContent,
@@ -8,7 +9,6 @@ import {
   Box,
 } from "@mui/material";
 import { useState } from "react";
-import CheckIcon from "@mui/icons-material/Check";
 
 import useSettings from "./useSettings";
 
@@ -35,7 +35,7 @@ export default function SettingsPage() {
             <TextField
               error={isError}
               defaultValue={query.data?.work_hour_cost}
-              onBlur={(e) => onChange(e.currentTarget.value)}
+              onBlur={(e) => { onChange(e.currentTarget.value); }}
               onChange={mutation.reset}
             />
             {mutation.isSuccess && (

@@ -27,7 +27,6 @@ describe("dbManager", () => {
   });
   it("call dbConnections only once", () => {
     const firstDb = dbManager.db;
-    console.log(firstDb);
     expect(dbConnection.client.db).toHaveBeenCalled();
     const secondDb = dbManager.db;
     expect(dbConnection.client.db).toHaveBeenCalledTimes(1);

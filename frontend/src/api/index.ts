@@ -1,7 +1,7 @@
 import { ApiModel } from "./api.model";
 
 const pickCorrectBase = () =>
-  `${import.meta.env.VITE_BACKEND_URL}:${import.meta.env.VITE_BACKEND_PORT}`;
+  `${import.meta.env.VITE_BACKEND_URL as string}:${import.meta.env.VITE_BACKEND_PORT as string}`;
 
 const getApiUrl = (path: string) => new URL(path, pickCorrectBase());
 
@@ -25,8 +25,7 @@ export default class Api<B> {
   get() {
     return fetchApi<B>(this.#apiUrl, "GET");
   }
-  post<B, R>(body: B): Promise<R> {
-    console.log("wasaup", JSON.stringify(body));
+  post<R>(body: unknown): Promise<R> {
     return fetchApi<R>(this.#apiUrl, "POST", JSON.stringify(body));
   }
 }

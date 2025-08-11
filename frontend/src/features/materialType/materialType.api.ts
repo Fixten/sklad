@@ -1,11 +1,11 @@
 import Api from "../../api";
 
-import { UnitsModel } from "./units.model";
+import { MaterialTypeModel } from "./materialType.model";
 
-const path = "/units";
+const path = "/material-type";
 
-export default class UnitsApi {
-  #api: Api<UnitsModel[]>;
+export default class MaterialTypeApi {
+  #api: Api<MaterialTypeModel[]>;
   constructor() {
     this.#api = new Api(path);
   }
