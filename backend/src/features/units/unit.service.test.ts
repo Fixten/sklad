@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 import { UnitRepositoryType } from "./unit.repository.js";
 import { UnitService } from "./unit.service.js";
 
@@ -8,7 +10,7 @@ jest.mock("./unit.repository.js", () => ({}));
 const mockUnitRepository = {
   getByValue: jest.fn(),
   addNew: jest.fn(),
-  deleteByValue: jest.fn(),
+  deleteById: jest.fn(),
   updateByValue: jest.fn(),
   getAll: jest.fn(),
 };
@@ -43,9 +45,11 @@ describe("UnitService", () => {
   });
 
   describe("delete", () => {
-    test("should call repository deleteByValue", async () => {
-      await unitService.delete(newUnit);
-      expect(mockUnitRepository.deleteByValue).toHaveBeenCalledWith(newUnit);
+    test("should call repository deleteById", async () => {
+      const id = "abcabcabcabcabcabcabcabc";
+      const objectId = new ObjectId(id);
+      await unitService.delete(id);
+      expect(mockUnitRepository.deleteById).toHaveBeenCalledWith(objectId);
     });
   });
 

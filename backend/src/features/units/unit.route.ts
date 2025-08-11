@@ -21,4 +21,12 @@ unitRouter.post(
   }
 );
 
+unitRouter.delete(
+  "/:id",
+  async (req: Request<{ id: string }, { message: string }>, res) => {
+    await unitService.delete(req.params.id);
+    res.send({ message: `${req.params.id} deleted` });
+  }
+);
+
 export default unitRouter;

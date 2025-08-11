@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 import { UnitModel } from "./unit.model.js";
 import unitRepository from "./unit.repository.js";
 
@@ -13,8 +15,8 @@ export class UnitService {
     if (current) throw new Error("This unit already exists");
     else return this.#repository.addNew(unit);
   }
-  delete(unit: UnitModel) {
-    return this.#repository.deleteByValue(unit);
+  delete(id: string) {
+    return this.#repository.deleteById(new ObjectId(id));
   }
   update(oldValue: UnitModel, newValue: UnitModel) {
     return this.#repository.updateByValue(oldValue, newValue);

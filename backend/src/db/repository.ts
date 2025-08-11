@@ -7,6 +7,7 @@ import {
   WithId,
 } from "mongodb";
 
+import { throwIfNull } from "./CreateAndUpdateRepository/CreateAndUpdateRepository.js";
 import CreateAndUpdateRepository from "./CreateAndUpdateRepository/index.js";
 import DbCollection from "./DbCollection/index.js";
 import { WithDb } from "./WithDb.js";
@@ -48,11 +49,14 @@ export default class Repository<NewItem extends Document> {
   getByValue(value: Filter<WithDb<NewItem>>, projection?: Document) {
     return this.#db.collection.findOne(value, { projection });
   }
-  async deleteById(id: ObjectId) {
-    const result = await this.#db.collection.deleteOne({
-      _id: id,
-    } as WithId<NewItem>);
-    return result.acknowledged;
+  deleteById(id: ObjectId) {
+    return throwIfNull(
+      this.#db.collection
+        .deleteOne({
+          _id: id,
+        } as WithId<NewItem>)
+        .then((result) => result.acknowledged || null)
+    );
   }
 
   deleteByValue(value: Filter<WithDb<NewItem>>) {

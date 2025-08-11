@@ -35,11 +35,11 @@ export class VariantService {
     supply: SupplyModel
   ) {
     const addedSupply = await this.#supplyService.addNew(supply);
-      const material = await this.#repository.addSupply(
-        materialId,
-        variant,
-        addedSupply._id
-      );
+    const material = await this.#repository.addSupply(
+      materialId,
+      variant,
+      addedSupply._id
+    );
     return { material, supply: addedSupply };
   }
   async deleteSupply(
@@ -47,9 +47,7 @@ export class VariantService {
     variant: VariantModel["variant"],
     supplyId: ObjectId
   ) {
-    const supplyResult = await this.#supplyService.delete(supplyId);
-    if (supplyResult)
-      return this.#repository.deleteSupply(materialId, variant, supplyId);
-    else return null;
+    await this.#supplyService.delete(supplyId);
+    return this.#repository.deleteSupply(materialId, variant, supplyId);
   }
 }
