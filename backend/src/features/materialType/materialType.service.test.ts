@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 import { MaterialTypeRepositoryType } from "./materialType.repository.js";
 import { MaterialTypeService } from "./materialType.service.js";
 
@@ -8,7 +10,7 @@ jest.mock("./materialType.repository.js", () => ({}));
 const mockRepository = {
   getByValue: jest.fn(),
   addNew: jest.fn(),
-  deleteByValue: jest.fn(),
+  deleteById: jest.fn(),
   updateByValue: jest.fn(),
   getAll: jest.fn(),
 };
@@ -43,9 +45,11 @@ describe("MaterialTypeService", () => {
   });
 
   describe("delete", () => {
-    test("should call repository deleteByValue", async () => {
-      await service.delete(newItem);
-      expect(mockRepository.deleteByValue).toHaveBeenCalledWith(newItem);
+    test("should call repository deleteById", async () => {
+      const id = "abcabcabcabcabcabcabcabc";
+      const objectId = new ObjectId(id);
+      await service.delete(id);
+      expect(mockRepository.deleteById).toHaveBeenCalledWith(objectId);
     });
   });
 

@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 import { MaterialTypeModel } from "./materialType.model.js";
 import materialTypeRepository from "./materialType.repository.js";
 
@@ -13,8 +15,8 @@ export class MaterialTypeService {
     if (current) throw new Error("This material type already exists");
     else return this.#repository.addNew(materialType);
   }
-  delete(materialType: MaterialTypeModel) {
-    return this.#repository.deleteByValue(materialType);
+  delete(id: string) {
+    return this.#repository.deleteById(new ObjectId(id));
   }
   update(oldValue: MaterialTypeModel, newValue: MaterialTypeModel) {
     return this.#repository.updateByValue(oldValue, newValue);

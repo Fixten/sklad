@@ -9,6 +9,7 @@ import express from "express";
 import dbConnection from "./db/dbConnection.js";
 import settingsRouter from "./features/settings/settings.route.js";
 import unitRouter from "./features/units/unit.route.js";
+import materialTypeRouter from "./features/materialType/materialType.route.js";
 
 export default function getServer() {
   const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -25,6 +26,7 @@ export default function getServer() {
 
   app.use("/settings", settingsRouter);
   app.use("/units", unitRouter);
-  
+  app.use("/material-type", materialTypeRouter);
+
   return app;
 }
