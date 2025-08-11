@@ -14,7 +14,6 @@ export default class SettingsApi {
   };
 
   updateWorkHours = (hours: number) => {
-    console.log("update", hours);
     return this.#api.post({ work_hour_cost: hours });
   };
 }
