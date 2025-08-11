@@ -1,10 +1,24 @@
 FROM node:23-alpine AS builder
+
+
 WORKDIR /app
 COPY package.json package-lock.json .
 COPY frontend/package.json ./frontend/
 RUN npm ci --omit=dev
+
 COPY frontend/tsconfig.json frontend/index.html frontend/theme.ts frontend/vite.config.mts ./frontend/
 COPY frontend/src ./frontend/src
 COPY tsconfig.json ./
-RUN npm run frontend:build
-CMD [ "npm", "run",  "frontend:prod"]
+
+
+ARG BACKEND_PORT
+ARG FRONTEND_PORT
+ARG VITE_BACKEND_URL
+
+ENV BACKEND_PORT=$BACKEND_PORT
+ENV FRONTEND_PORT=$FRONTEND_PORT
+ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
+RUN npm run front:build
+
+COPY frontend/server.js ./frontend/
+CMD [ "npm", "run",  "front:prod"]

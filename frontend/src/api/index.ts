@@ -1,8 +1,7 @@
 import { ApiModel } from "./api.model";
 
 const pickCorrectBase = () =>
-  import.meta.env.VITE_BACKEND_URL ||
-  `${window.location.protocol}//${window.location.hostname}:${import.meta.env.VITE_BACKEND_PORT}`;
+  `${import.meta.env.VITE_BACKEND_URL}:${import.meta.env.VITE_BACKEND_PORT}`;
 
 const getApiUrl = (path: string) => new URL(path, pickCorrectBase());
 

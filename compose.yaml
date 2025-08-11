@@ -10,13 +10,23 @@ services:
       - "1100:${BACKEND_PORT}"
     networks:
       - main
-  # frontend:
-  #   build: ./frontend/Dockerfile
-  #   restart: always
-  #   ports:
-  #     - "1101:1101"
-  #   networks:
-  #     - main
+
+  frontend:
+    build: 
+      context: .
+      dockerfile: Dockerfile.frontend
+      args:
+        BACKEND_PORT: ${BACKEND_PORT}
+        FRONTEND_PORT: ${FRONTEND_PORT}
+        VITE_BACKEND_URL: ${VITE_BACKEND_URL}
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "1101:${FRONTEND_PORT}"
+    networks:
+      - main
+
 networks:
   main:
     external: true
