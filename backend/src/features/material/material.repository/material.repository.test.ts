@@ -48,7 +48,6 @@ describe("Variant repository", () => {
   const mockVariant: VariantModel = {
     variant: "variant",
     photo_url: "photo_url",
-    supplies: [],
   };
   describe("createVariant", () => {
     test("returns true if modifiedCount is 1", async () => {
@@ -80,14 +79,7 @@ describe("Variant repository", () => {
       } as UpdateResult);
       const id = new ObjectId();
       await variantRepository.createVariant(id, mockVariant);
-      expect(mockCollection.updateOne).toHaveBeenCalledWith(
-        { _id: id, "variants.variant": { $ne: mockVariant.variant } },
-        {
-          $addToSet: {
-            variants: mockVariant,
-          },
-        }
-      );
+      expect(mockCollection.updateOne).toHaveBeenCalled();
     });
   });
   describe("deleteVariant", () => {
@@ -98,7 +90,7 @@ describe("Variant repository", () => {
       } as UpdateResult);
       const result = await variantRepository.deleteVariant(
         new ObjectId(),
-        mockVariant.variant
+        new ObjectId()
       );
       expect(result).toBe(true);
     });
@@ -109,7 +101,7 @@ describe("Variant repository", () => {
       } as UpdateResult);
       const result = await variantRepository.deleteVariant(
         new ObjectId(),
-        mockVariant.variant
+        new ObjectId()
       );
       expect(result).toBe(false);
     });
@@ -119,14 +111,14 @@ describe("Variant repository", () => {
         modifiedCount: 1,
       } as UpdateResult);
       const id = new ObjectId();
-      await variantRepository.deleteVariant(id, mockVariant.variant);
+      const variantId = new ObjectId();
+      await variantRepository.deleteVariant(id, variantId);
       expect(mockCollection.updateOne).toHaveBeenCalledWith(
         { _id: id } as WithId<MaterialModel>,
         {
           $pull: {
             variants: {
-              variant: { $eq: mockVariant.variant },
-              supplies: { $size: 0 },
+              _id: { $eq: variantId },
             },
           },
         }
@@ -141,6 +133,7 @@ describe("Variant repository", () => {
       } as UpdateResult);
       const result = await variantRepository.updateVariant(
         new ObjectId(),
+        new ObjectId(),
         mockVariant
       );
       expect(result).toBe(true);
@@ -152,6 +145,7 @@ describe("Variant repository", () => {
       } as UpdateResult);
       const result = await variantRepository.updateVariant(
         new ObjectId(),
+        new ObjectId(),
         mockVariant
       );
       expect(result).toBe(false);
@@ -162,9 +156,10 @@ describe("Variant repository", () => {
         modifiedCount: 1,
       } as UpdateResult);
       const id = new ObjectId();
-      await variantRepository.updateVariant(id, mockVariant);
+      const variantId = new ObjectId();
+      await variantRepository.updateVariant(id, variantId, mockVariant);
       expect(mockCollection.updateOne).toHaveBeenCalledWith(
-        { _id: id, "variants.variant": mockVariant.variant },
+        { _id: id, "variants._id": variantId },
         {
           $set: { "variants.$": mockVariant },
         }

@@ -9,7 +9,6 @@ import {
 } from "mongodb";
 
 import dbManager from "@/db/dbManager.js";
-import Repository from "@/db/repository.js";
 
 import { MaterialModel, VariantModel } from "../material.model.js";
 
@@ -17,76 +16,43 @@ const collectionName = "material";
 
 export class VariantRepository {
   #collection: Collection<MaterialModel>;
-  #baseRepository: Repository<MaterialModel>;
   constructor(collectionName: string) {
     this.#collection = dbManager.db.collection<MaterialModel>(collectionName);
-    this.#baseRepository = new Repository(collectionName);
   }
   async createVariant(id: ObjectId, variant: VariantModel) {
     const result = await this.#collection.updateOne(
       { _id: id, "variants.variant": { $ne: variant.variant } },
       {
         $addToSet: {
-          variants: variant,
+          variants: { _id: new ObjectId(), ...variant },
         },
       }
     );
-    return !!result.modifiedCount;
+    return result.modifiedCount > 0;
   }
-  async deleteVariant(id: ObjectId, variantName: VariantModel["variant"]) {
+  async deleteVariant(id: ObjectId, variantId: ObjectId) {
     const result = await this.#collection.updateOne(
       { _id: id } as WithId<MaterialModel>,
       {
         $pull: {
-          variants: { variant: { $eq: variantName }, supplies: { $size: 0 } },
+          variants: { _id: { $eq: variantId } },
         },
       }
     );
-    return !!result.modifiedCount;
+    return result.modifiedCount > 0;
   }
-  async updateVariant(id: ObjectId, newVariant: Partial<VariantModel>) {
+  async updateVariant(
+    id: ObjectId,
+    variantId: ObjectId,
+    newVariant: VariantModel
+  ) {
     const result = await this.#collection.updateOne(
-      { _id: id, "variants.variant": newVariant.variant },
+      { _id: id, "variants._id": variantId },
       {
         $set: { "variants.$": newVariant },
       }
     );
-    return !!result.modifiedCount;
-  }
-
-  addSupply(
-    materialId: ObjectId,
-    variantName: VariantModel["variant"],
-    supplyId: ObjectId
-  ) {
-    return this.#baseRepository.updateByValue(
-      {
-        _id: materialId,
-        "variants.variant": variantName,
-      },
-      {
-        $push: {
-          "variants.$.supplies": supplyId,
-        },
-      }
-    );
-  }
-  deleteSupply(
-    materialId: ObjectId,
-    variantName: VariantModel["variant"],
-    supplyId: ObjectId
-  ) {
-    return this.#baseRepository.updateByValue(
-      {
-        _id: materialId,
-        "variants.variant": variantName,
-      },
-      {
-        $pull: {
-          "variants.$.supplies": supplyId,
-        },
-      }
-    );
+    return result.modifiedCount > 0;
   }
 }
 

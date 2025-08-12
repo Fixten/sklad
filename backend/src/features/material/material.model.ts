@@ -1,14 +1,13 @@
-import { ObjectId } from "mongodb";
+import { ObjectId, WithId } from "mongodb";
 
 export interface VariantModel {
   variant: string;
   photo_url: string;
-  supplies: ObjectId[];
 }
 
 export interface MaterialModel {
   name: string;
   description: string;
   materialType: ObjectId;
-  variants: VariantModel[];
+  variants: WithId<VariantModel>[];
 }
