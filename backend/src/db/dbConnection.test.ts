@@ -1,11 +1,20 @@
 import { MongoClient } from "mongodb";
 
-import { DbConnection, createConnection } from "./dbConnection.js";
+import {
+  DbConnection,
+  createConnection,
+  createMongooseConnection,
+  getConnectionString,
+} from "./dbConnection.js";
+import mongoose from "mongoose";
 
 jest.mock("mongodb");
+jest.mock("mongoose");
 
 const MongoClientMocked = MongoClient as jest.MockedClass<typeof MongoClient>;
-
+const mongooseConnect = mongoose.connect as jest.MockedFunction<
+  (typeof mongoose)["connect"]
+>;
 describe("dbConnection", () => {
   const connectionString = "mongodb://test:27017";
   beforeEach(() => {
@@ -15,17 +24,28 @@ describe("dbConnection", () => {
   afterEach(() => {
     delete process.env.MONGO_CONNECTION_STRING;
     MongoClientMocked.mockClear();
+    mongooseConnect.mockClear();
   });
 
-  describe("createConnection", () => {
+  describe("getConnectionString", () => {
+    it("gets connection string", () => {
+      expect(getConnectionString()).toBe(connectionString);
+    });
+    it("if no string throws an error", () => {
+      delete process.env.MONGO_CONNECTION_STRING;
+      expect(getConnectionString).toThrow();
+    });
+  });
+
+  describe("connection utils", () => {
     test("creates Mongo client with connection string", () => {
       createConnection();
       expect(MongoClientMocked).toHaveBeenCalledWith(connectionString);
     });
-    test("if no connection string in env, throws error", () => {
-      const error = "No Mongo connection string in env";
-      delete process.env.MONGO_CONNECTION_STRING;
-      expect(createConnection).toThrow(error);
+
+    test("creates Mongoose client with connection string", () => {
+      createMongooseConnection();
+      expect(mongooseConnect).toHaveBeenCalledWith(connectionString);
     });
   });
 
@@ -38,6 +58,12 @@ describe("dbConnection", () => {
       void dbConnection.client;
       expect(MongoClientMocked).toHaveBeenCalledWith(connectionString);
     });
+
+    test("should create a mongoose client with the provided connection string", async () => {
+      await dbConnection.getMongooseClinet();
+      expect(mongooseConnect).toHaveBeenCalledWith(connectionString);
+    });
+
     test("should create new connection only once", () => {
       const firstClient = dbConnection.client;
       expect(MongoClientMocked).toHaveBeenCalled();
@@ -71,14 +97,16 @@ describe("dbConnection", () => {
     });
 
     describe("connect", () => {
-      test("creates new connection", () => {
+      test("creates new connections", () => {
         dbConnection.connect();
         expect(MongoClientMocked).toHaveBeenCalled();
+        expect(mongooseConnect).toHaveBeenCalled();
       });
       test("creates new connection every time", () => {
         dbConnection.connect();
         dbConnection.connect();
         expect(MongoClientMocked).toHaveBeenCalledTimes(2);
+        expect(mongooseConnect).toHaveBeenCalledTimes(2);
       });
     });
   });
