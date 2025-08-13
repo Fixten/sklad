@@ -49,17 +49,18 @@ export default class Repository<NewItem extends Document> {
   getByValue(value: Filter<WithDb<NewItem>>, projection?: Document) {
     return this.#db.collection.findOne(value, { projection });
   }
-  deleteById(id: ObjectId) {
+
+  deleteByValue(value: Filter<WithDb<NewItem>>) {
     return throwIfNull(
       this.#db.collection
-        .deleteOne({
-          _id: id,
-        } as WithId<NewItem>)
+        .deleteOne(value)
         .then((result) => result.acknowledged || null)
     );
   }
 
-  deleteByValue(value: Filter<WithDb<NewItem>>) {
-    return this.#db.collection.deleteOne(value);
+  deleteById(id: ObjectId) {
+    return this.deleteByValue({
+      _id: id,
+    } as WithId<NewItem>);
   }
 }
