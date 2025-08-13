@@ -24,12 +24,9 @@ materialTypeRouter.post(
   }
 );
 
-materialTypeRouter.delete(
-  "/:id",
-  async (req: Request<{ id: string }, { message: string }>, res) => {
-    await materialTypeService.delete(req.params.id);
-    res.send({ message: `${req.params.id} deleted` });
-  }
-);
+materialTypeRouter.delete("/:id", async (req: Request<{ id: string }>, res) => {
+  await materialTypeService.delete(req.params.id);
+  res.send({ message: `${req.params.id} deleted` });
+});
 
 export default materialTypeRouter;
