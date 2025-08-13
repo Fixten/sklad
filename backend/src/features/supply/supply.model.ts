@@ -1,4 +1,7 @@
+import { ObjectId } from "mongodb";
+
 export interface SupplyModel {
+  variantId: ObjectId;
   description: string;
   supplier: string;
   supply_url: string;
