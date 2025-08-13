@@ -1,26 +1,19 @@
-import {
-  Collection,
-  Filter,
-  ObjectId,
-  OptionalUnlessRequiredId,
-  UpdateFilter,
-  UpdateOptions,
-  WithId,
-} from "mongodb";
+import { ObjectId, OptionalUnlessRequiredId, UpdateFilter } from "mongodb";
 
-import dbManager from "@/db/dbManager.js";
+import Repository from "@/db/repository.js";
 
 import { MaterialModel, VariantModel } from "../material.model.js";
 
 const collectionName = "material";
 
 export class VariantRepository {
-  #collection: Collection<MaterialModel>;
+  #baseRepository: Repository<VariantModel>;
   constructor(collectionName: string) {
-    this.#collection = dbManager.db.collection<MaterialModel>(collectionName);
+    this.#baseRepository = new Repository(collectionName);
   }
-  async createVariant(id: ObjectId, variant: VariantModel) {
-    const result = await this.#collection.updateOne(
+
+  createVariant(id: ObjectId, variant: VariantModel) {
+    return this.#baseRepository.updateByValue(
       { _id: id, "variants.variant": { $ne: variant.variant } },
       {
         $addToSet: {
@@ -28,79 +21,47 @@ export class VariantRepository {
         },
       }
     );
-    return result.modifiedCount > 0;
   }
-  async deleteVariant(id: ObjectId, variantId: ObjectId) {
-    const result = await this.#collection.updateOne(
-      { _id: id } as WithId<MaterialModel>,
-      {
-        $pull: {
-          variants: { _id: { $eq: variantId } },
-        },
-      }
-    );
-    return result.modifiedCount > 0;
+  deleteVariant(id: ObjectId, variantId: ObjectId) {
+    return this.#baseRepository.updateById(id, {
+      $pull: {
+        variants: { _id: { $eq: variantId } },
+      },
+    });
   }
-  async updateVariant(
-    id: ObjectId,
-    variantId: ObjectId,
-    newVariant: VariantModel
-  ) {
-    const result = await this.#collection.updateOne(
+
+  updateVariant(id: ObjectId, variantId: ObjectId, newVariant: VariantModel) {
+    return this.#baseRepository.updateByValue(
       { _id: id, "variants._id": variantId },
       {
         $set: { "variants.$": newVariant },
       }
     );
-    return result.modifiedCount > 0;
   }
 }
 
 export class MaterialRepository {
-  #collection: Collection<MaterialModel>;
   variantRepository: VariantRepository;
+  #baseRepository: Repository<MaterialModel>;
   constructor(collectionName: string) {
-    this.#collection = dbManager.db.collection<MaterialModel>(collectionName);
     this.variantRepository = new VariantRepository(collectionName);
+    this.#baseRepository = new Repository(collectionName);
   }
+
   getAll() {
-    return this.#collection.find().toArray();
+    return this.#baseRepository.getAll();
   }
-  updateById(
-    id: ObjectId,
-    updateItem: UpdateFilter<MaterialModel>,
-    options?: UpdateOptions
-  ) {
-    return options
-      ? this.#collection.updateOne(
-          { _id: id } as WithId<MaterialModel>,
-          updateItem,
-          options
-        )
-      : this.#collection.updateOne(
-          { _id: id } as WithId<MaterialModel>,
-          updateItem
-        );
+  updateById(id: ObjectId, updateItem: UpdateFilter<MaterialModel>) {
+    return this.#baseRepository.updateById(id, updateItem);
   }
   async deleteMaterial(id: ObjectId) {
-    const result = await this.#collection.deleteOne({
+    return this.#baseRepository.deleteByValue({
       _id: id,
       variants: { $size: 0 },
     });
-    return !!result.deletedCount;
   }
-  async createMaterial(
-    value: Filter<MaterialModel>,
-    material: OptionalUnlessRequiredId<MaterialModel>
-  ) {
-    const result = await this.#collection.updateOne(
-      value,
-      {
-        $setOnInsert: material,
-      },
-      { upsert: true }
-    );
-    return !!result.modifiedCount;
+  async createMaterial(material: OptionalUnlessRequiredId<MaterialModel>) {
+    return this.#baseRepository.addNew(material);
   }
 }
 
