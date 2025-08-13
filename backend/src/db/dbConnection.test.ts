@@ -1,4 +1,5 @@
 import { MongoClient } from "mongodb";
+import mongoose from "mongoose";
 
 import {
   DbConnection,
@@ -6,7 +7,6 @@ import {
   createMongooseConnection,
   getConnectionString,
 } from "./dbConnection.js";
-import mongoose from "mongoose";
 
 jest.mock("mongodb");
 jest.mock("mongoose");
@@ -43,8 +43,8 @@ describe("dbConnection", () => {
       expect(MongoClientMocked).toHaveBeenCalledWith(connectionString);
     });
 
-    test("creates Mongoose client with connection string", () => {
-      createMongooseConnection();
+    test("creates Mongoose client with connection string", async () => {
+      await createMongooseConnection();
       expect(mongooseConnect).toHaveBeenCalledWith(connectionString);
     });
   });
@@ -97,14 +97,14 @@ describe("dbConnection", () => {
     });
 
     describe("connect", () => {
-      test("creates new connections", () => {
-        dbConnection.connect();
+      test("creates new connections", async () => {
+        await dbConnection.connect();
         expect(MongoClientMocked).toHaveBeenCalled();
         expect(mongooseConnect).toHaveBeenCalled();
       });
-      test("creates new connection every time", () => {
-        dbConnection.connect();
-        dbConnection.connect();
+      test("creates new connection every time", async () => {
+        await dbConnection.connect();
+        await dbConnection.connect();
         expect(MongoClientMocked).toHaveBeenCalledTimes(2);
         expect(mongooseConnect).toHaveBeenCalledTimes(2);
       });

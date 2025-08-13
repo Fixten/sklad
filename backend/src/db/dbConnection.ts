@@ -41,8 +41,11 @@ export class DbConnection {
     return this.#mongooseClient ?? (await this.#createNewMongooseClient());
   }
 
-  connect() {
-    Promise.all([this.#createNewClient(), this.#createNewMongooseClient()]);
+  async connect() {
+    await Promise.all([
+      this.#createNewClient(),
+      this.#createNewMongooseClient(),
+    ]);
   }
   disconnect() {
     return this.#client?.close();

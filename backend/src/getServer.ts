@@ -7,17 +7,17 @@ import { config } from "dotenv";
 import express from "express";
 
 import dbConnection from "./db/dbConnection.js";
+import materialTypeRouter from "./features/materialType/materialType.route.js";
 import settingsRouter from "./features/settings/settings.route.js";
 import unitRouter from "./features/units/unit.route.js";
-import materialTypeRouter from "./features/materialType/materialType.route.js";
 
-export default function getServer() {
+export default async function getServer() {
   const __dirname = dirname(fileURLToPath(import.meta.url));
   config({ path: resolve(__dirname, "../../.env") });
 
   const app = express();
   app.use(cors());
-  dbConnection.connect();
+  await dbConnection.connect();
 
   app.use(bodyParser.json());
   app.get("/", (req, res) => {
