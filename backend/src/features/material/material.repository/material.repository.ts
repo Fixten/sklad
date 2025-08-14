@@ -12,9 +12,9 @@ export class VariantRepository {
     this.#baseRepository = new Repository(collectionName);
   }
 
-  createVariant(id: ObjectId, variant: VariantModel) {
+  createVariant(id: string, variant: VariantModel) {
     return this.#baseRepository.updateByValue(
-      { _id: id, "variants.variant": { $ne: variant.variant } },
+      { _id: new ObjectId(id), "variants.variant": { $ne: variant.variant } },
       {
         $addToSet: {
           variants: { _id: new ObjectId(), ...variant },
@@ -22,17 +22,17 @@ export class VariantRepository {
       }
     );
   }
-  deleteVariant(id: ObjectId, variantId: ObjectId) {
-    return this.#baseRepository.updateById(id, {
+  deleteVariant(id: string, variantId: string) {
+    return this.#baseRepository.updateById(new ObjectId(id), {
       $pull: {
         variants: { _id: { $eq: variantId } },
       },
     });
   }
 
-  updateVariant(id: ObjectId, variantId: ObjectId, newVariant: VariantModel) {
+  updateVariant(id: string, variantId: string, newVariant: VariantModel) {
     return this.#baseRepository.updateByValue(
-      { _id: id, "variants._id": variantId },
+      { _id: new ObjectId(id), "variants._id": variantId },
       {
         $set: { "variants.$": newVariant },
       }
@@ -51,12 +51,12 @@ export class MaterialRepository {
   getAll() {
     return this.#baseRepository.getAll();
   }
-  updateById(id: ObjectId, updateItem: UpdateFilter<MaterialModel>) {
-    return this.#baseRepository.updateById(id, updateItem);
+  updateById(id: string, updateItem: UpdateFilter<MaterialModel>) {
+    return this.#baseRepository.updateById(new ObjectId(id), updateItem);
   }
-  async deleteMaterial(id: ObjectId) {
+  async deleteMaterial(id: string) {
     return this.#baseRepository.deleteByValue({
-      _id: id,
+      _id: new ObjectId(id),
       variants: { $size: 0 },
     });
   }
