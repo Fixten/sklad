@@ -1,4 +1,5 @@
 import Repository from "@/db/repository.js";
+
 import { MaterialRepository } from "./material.repository.js";
 
 const collectionName = "collection-name";

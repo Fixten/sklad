@@ -55,10 +55,7 @@ export class MaterialRepository {
     return this.#baseRepository.updateById(new ObjectId(id), updateItem);
   }
   async deleteMaterial(id: string) {
-    return this.#baseRepository.deleteByValue({
-      _id: new ObjectId(id),
-      variants: { $size: 0 },
-    });
+    return this.#baseRepository.deleteById(new ObjectId(id));
   }
   async createMaterial(material: OptionalUnlessRequiredId<MaterialModel>) {
     return this.#baseRepository.addNew(material);

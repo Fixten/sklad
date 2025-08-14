@@ -1,6 +1,5 @@
-import { ObjectId } from "mongodb";
+import supplyService from "@/features/supply/supply.service.js";
 
-import supplyService from "../../supply/supply.service.js";
 import { MaterialModel } from "../material.model.js";
 import materialRepository from "../material.repository/index.js";
 
@@ -18,21 +17,13 @@ export class MaterialService {
       supplyService
     );
   }
-  async create(material: MaterialModel) {
-    const result = await this.#repository.createMaterial(
-      {
-        name: material.name,
-        materialType: material.materialType,
-      },
-      material
-    );
-    if (!result) throw new Error("Did not create material");
+  create(material: MaterialModel) {
+    return this.#repository.createMaterial(material);
   }
-  async deleteMaterial(id: ObjectId) {
-    const result = await this.#repository.deleteMaterial(id);
-    if (!result) throw new Error("Material was not deleted");
+  deleteMaterial(id: string) {
+    return this.#repository.deleteMaterial(id);
   }
-  updateMaterial(id: ObjectId, newMaterial: MaterialModel) {
+  updateMaterial(id: string, newMaterial: MaterialModel) {
     return this.#repository.updateById(id, {
       name: newMaterial.name,
       description: newMaterial.description,

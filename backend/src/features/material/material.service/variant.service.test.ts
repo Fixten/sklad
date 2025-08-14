@@ -1,9 +1,11 @@
 import { supplyServiceMock } from "@/features/supply/supply.service.mock.js";
 
 import { variantRepositoryMock } from "../material.repository/material.repository.mock.js";
-import type { VariantRepository } from "../material.repository/index.js";
 
 import { VariantService } from "./variant.service.js";
+
+import type { VariantRepository } from "../material.repository/index.js";
+
 
 const materialId = "id";
 
