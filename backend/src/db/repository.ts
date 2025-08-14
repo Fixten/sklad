@@ -47,7 +47,10 @@ export default class Repository<NewItem extends Document> {
       : this.#db.collection.findOne({ _id } as WithId<NewItem>);
   }
   getByValue(value: Filter<WithDb<NewItem>>, projection?: Document) {
-    return this.#db.collection.findOne(value, { projection });
+    return throwIfNull(
+      this.#db.collection.findOne(value, { projection }),
+      "Item was not found"
+    );
   }
 
   deleteByValue(value: Filter<WithDb<NewItem>>) {

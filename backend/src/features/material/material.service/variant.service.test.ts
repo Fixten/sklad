@@ -1,4 +1,5 @@
-import { supplyServiceMock } from "@/features/supply/supply.service.mock.js";
+import { getRepositoryMock, objectIdStringMock } from "@/db/repository.mock.js";
+import { SupplyModel } from "@/features/supply/supply.model.js";
 
 import { variantRepositoryMock } from "../material.repository/material.repository.mock.js";
 
@@ -6,8 +7,7 @@ import { VariantService } from "./variant.service.js";
 
 import type { VariantRepository } from "../material.repository/index.js";
 
-
-const materialId = "id";
+const repositoryMock = getRepositoryMock<SupplyModel>();
 
 describe("VariantService", () => {
   let variantService: VariantService;
@@ -16,15 +16,17 @@ describe("VariantService", () => {
     jest.clearAllMocks();
     variantService = new VariantService(
       variantRepositoryMock as unknown as VariantRepository,
-      supplyServiceMock
+      repositoryMock
     );
   });
 
-  const variantName = "Red";
   describe("deleteVariant", () => {
     test("should call deteleAllForVariant from supply service", async () => {
-      await variantService.deleteVariant(materialId, variantName);
-      expect(supplyServiceMock.deteleAllForVariant).toHaveBeenCalled();
+      await variantService.deleteVariant(
+        objectIdStringMock,
+        objectIdStringMock
+      );
+      expect(repositoryMock.deleteMany).toHaveBeenCalled();
     });
   });
 });

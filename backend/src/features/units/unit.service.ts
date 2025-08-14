@@ -10,16 +10,14 @@ export class UnitService {
   constructor(repository: UnitRepositoryType) {
     this.#repository = repository;
   }
-  async addNew(unit: UnitModel) {
-    const current = await this.#repository.getByValue(unit);
-    if (current) throw new Error("This unit already exists");
-    else return this.#repository.addNew(unit);
+  addNew(unit: UnitModel) {
+    return this.#repository.addNew(unit);
   }
   delete(id: string) {
     return this.#repository.deleteById(new ObjectId(id));
   }
-  update(oldValue: UnitModel, newValue: UnitModel) {
-    return this.#repository.updateByValue(oldValue, newValue);
+  update(id: string, value: UnitModel) {
+    return this.#repository.updateById(new ObjectId(id), value);
   }
   getAll() {
     return this.#repository.getAll();

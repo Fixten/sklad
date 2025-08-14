@@ -8,7 +8,7 @@ import unitService from "./unit.service.js";
 
 const unitRouter = Router();
 
-unitRouter.get("/", async (req, res) => {
+unitRouter.get("/", async (_, res) => {
   const result = await unitService.getAll();
   res.send(result);
 });

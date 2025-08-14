@@ -12,6 +12,10 @@ export class VariantRepository {
     this.#baseRepository = new Repository(collectionName);
   }
 
+  getById(id: string) {
+    return this.#baseRepository.getByValue({ "variants._id": { $eq: id } });
+  }
+
   createVariant(id: string, variant: VariantModel) {
     return this.#baseRepository.updateByValue(
       { _id: new ObjectId(id), "variants.variant": { $ne: variant.variant } },

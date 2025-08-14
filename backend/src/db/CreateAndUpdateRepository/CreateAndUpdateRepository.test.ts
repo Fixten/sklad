@@ -6,6 +6,7 @@ import { WithDb } from "../WithDb.js";
 import CreateAndUpdateRepository, {
   insert,
   update,
+  throwIfNull,
 } from "./CreateAndUpdateRepository.js";
 import { upsertAndReturn } from "./upsertAndReturn.js";
 
@@ -22,6 +23,18 @@ describe("CreateAndUpdateRepository", () => {
   const mockValue: ValueType = {
     name: "name",
   };
+
+  describe("throwIfNull", () => {
+    it("accepts message", async () => {
+      const customMessage = "customMessage";
+      try {
+        await throwIfNull(Promise.resolve(null), customMessage);
+      } catch (error) {
+        expect(error).toStrictEqual(new Error(customMessage));
+      }
+    });
+  });
+
   describe("insert", () => {
     test("return doc", async () => {
       mockCollection.insertOne.mockResolvedValue({ acknowledged: true });

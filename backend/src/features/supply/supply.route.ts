@@ -3,12 +3,10 @@ import { WithId } from "mongodb";
 
 import { WithDb } from "@/db/WithDb.js";
 
-import { SupplyModel } from "./supply.model.js";
+import { SupplyModel, SupplyModelDTO } from "./supply.model.js";
 import supplyService from "./supply.service.js";
 
 const supplyRouter = Router();
-
-// delete
 
 supplyRouter.get("/", async (req, res) => {
   res.send(await supplyService.getAll());
@@ -16,7 +14,10 @@ supplyRouter.get("/", async (req, res) => {
 
 supplyRouter.post(
   "/",
-  async (req: Request<void, WithId<WithDb<SupplyModel>>, SupplyModel>, res) => {
+  async (
+    req: Request<void, WithId<WithDb<SupplyModel>>, SupplyModelDTO>,
+    res
+  ) => {
     res.send(await supplyService.addNew(req.body));
   }
 );
@@ -24,7 +25,7 @@ supplyRouter.post(
 supplyRouter.post(
   "/:id",
   async (
-    req: Request<{ id: string }, WithId<WithDb<SupplyModel>>, SupplyModel>,
+    req: Request<{ id: string }, WithId<WithDb<SupplyModel>>, SupplyModelDTO>,
     res
   ) => {
     res.send(await supplyService.update(req.params.id, req.body));

@@ -10,16 +10,14 @@ export class MaterialTypeService {
   constructor(repository: MaterialTypeRepositoryType) {
     this.#repository = repository;
   }
-  async addNew(materialType: MaterialTypeModel) {
-    const current = await this.#repository.getByValue(materialType);
-    if (current) throw new Error("This material type already exists");
-    else return this.#repository.addNew(materialType);
+  addNew(materialType: MaterialTypeModel) {
+    return this.#repository.addNew(materialType);
   }
   delete(id: string) {
     return this.#repository.deleteById(new ObjectId(id));
   }
-  update(oldValue: MaterialTypeModel, newValue: MaterialTypeModel) {
-    return this.#repository.updateByValue(oldValue, newValue);
+  update(id: string, newValue: MaterialTypeModel) {
+    return this.#repository.updateById(new ObjectId(id), newValue);
   }
   getAll() {
     return this.#repository.getAll();

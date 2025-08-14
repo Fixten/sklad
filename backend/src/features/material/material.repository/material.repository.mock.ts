@@ -9,6 +9,5 @@ export const variantRepositoryMock = {
   createVariant: jest.fn(),
   deleteVariant: jest.fn(),
   updateVariant: jest.fn(),
-  addSupply: jest.fn(),
-  deleteSupply: jest.fn(),
+  getById: jest.fn(),
 };

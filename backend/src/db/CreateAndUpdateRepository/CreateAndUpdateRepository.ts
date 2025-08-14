@@ -47,9 +47,12 @@ export async function update<T extends Document>(
 
 const nullError = "Db operation failed";
 
-export async function throwIfNull<T>(dbResponse: Promise<T | null>): Promise<T> {
+export async function throwIfNull<T>(
+  dbResponse: Promise<T | null>,
+  message?: string
+): Promise<T> {
   const result = await dbResponse;
-  if (result === null) throw new Error(nullError);
+  if (result === null) throw new Error(message ?? nullError);
   else return result;
 }
 

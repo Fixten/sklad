@@ -1,6 +1,8 @@
 import { ObjectId } from "mongodb";
 
-import { SupplyModel } from "./supply.model.js";
+import { objectIdStringMock } from "@/db/repository.mock.js";
+
+import { SupplyModel, SupplyModelDTO } from "./supply.model.js";
 
 export const supplyModelMock: SupplyModel = {
   variantId: new ObjectId(),
@@ -10,4 +12,9 @@ export const supplyModelMock: SupplyModel = {
   unit: "unit",
   price: 100,
   count: 10,
+};
+
+export const supplyDTOMock: SupplyModelDTO = {
+  ...supplyModelMock,
+  variantId: objectIdStringMock,
 };

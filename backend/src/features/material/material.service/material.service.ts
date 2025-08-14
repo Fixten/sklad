@@ -1,21 +1,16 @@
-import supplyService from "@/features/supply/supply.service.js";
-
 import { MaterialModel } from "../material.model.js";
 import materialRepository from "../material.repository/index.js";
 
-import { VariantService } from "./variant.service.js";
+import variantService, { VariantService } from "./variant.service.js";
 
 import type { MaterialRepository } from "../material.repository/index.js";
 
 export class MaterialService {
   #repository: MaterialRepository;
   variant: VariantService;
-  constructor(repository: MaterialRepository) {
+  constructor(repository: MaterialRepository, variant: VariantService) {
     this.#repository = repository;
-    this.variant = new VariantService(
-      repository.variantRepository,
-      supplyService
-    );
+    this.variant = variant;
   }
   create(material: MaterialModel) {
     return this.#repository.createMaterial(material);
@@ -35,4 +30,4 @@ export class MaterialService {
   }
 }
 
-export default new MaterialService(materialRepository);
+export default new MaterialService(materialRepository, variantService);
