@@ -3,24 +3,31 @@ import { ObjectId } from "mongodb";
 import { SupplyModel } from "./supply.model.js";
 import supplyRepository from "./supply.repository.js";
 
-import type { SupplyRepositoryType } from "./supply.repository.js";
-
 export class SupplyService {
-  #repository: SupplyRepositoryType;
-  constructor(repository: SupplyRepositoryType) {
+  #repository: typeof supplyRepository;
+  constructor(repository: typeof supplyRepository) {
     this.#repository = repository;
   }
+  getById(id: string) {
+    return this.#repository.getById(new ObjectId(id));
+  }
+  getAll() {
+    return this.#repository.getAll();
+  }
+
   addNew(supply: SupplyModel) {
     return this.#repository.addNew(supply);
   }
-  delete(id: ObjectId) {
-    return this.#repository.deleteById(id);
+  update(id: string, newValue: SupplyModel) {
+    return this.#repository.updateById(new ObjectId(id), newValue);
   }
-  update(id: ObjectId, newValue: SupplyModel) {
-    return this.#repository.updateById(id, newValue);
+
+  delete(id: string) {
+    return this.#repository.deleteById(new ObjectId(id));
   }
-  getById(id: ObjectId) {
-    return this.#repository.getById(id);
+
+  deteleAllForVariant(variantId: string) {
+    return this.#repository.deleteMany({ variantId: new ObjectId(variantId) });
   }
 }
 

@@ -2,6 +2,7 @@ import { ObjectId } from "mongodb";
 
 import Repository from "@/db/repository.js";
 
+import { supplyModelMock } from "./supply.model.mock.js";
 import { SupplyService } from "./supply.service.js";
 
 import type { SupplyModel } from "./supply.model.js";
@@ -13,16 +14,9 @@ const mockRepository = {
   addNew: jest.fn(),
   deleteById: jest.fn(),
   updateById: jest.fn(),
+  getAll: jest.fn(),
 } as unknown as Repository<SupplyModel>;
 
-const newSupply: SupplyModel = {
-  description: "description",
-  supplier: "supplier",
-  supply_url: "supply_url",
-  unit: "unit",
-  price: 100,
-  count: 10,
-};
 describe("SupplyService", () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -31,8 +25,8 @@ describe("SupplyService", () => {
   describe("addNew", () => {
     test("should add new item", async () => {
       const supplyService = new SupplyService(mockRepository);
-      await supplyService.addNew(newSupply);
-      expect(mockRepository.addNew).toHaveBeenCalledWith(newSupply);
+      await supplyService.addNew(supplyModelMock);
+      expect(mockRepository.addNew).toHaveBeenCalledWith(supplyModelMock);
     });
   });
 
@@ -49,19 +43,33 @@ describe("SupplyService", () => {
     test("should call repository updateByValue with correct parameters", async () => {
       const supplyService = new SupplyService(mockRepository);
       const id = new ObjectId();
-      await supplyService.update(id, newSupply);
-      expect(mockRepository.updateById).toHaveBeenCalledWith(id, newSupply);
+      await supplyService.update(id, supplyModelMock);
+      expect(mockRepository.updateById).toHaveBeenCalledWith(
+        id,
+        supplyModelMock
+      );
     });
   });
 
   describe("getById", () => {
-    test("should return all units from repository", async () => {
+    test("should return unit from repository", async () => {
       const supplyService = new SupplyService(mockRepository);
-      (mockRepository.getById as jest.Mock).mockResolvedValue(newSupply);
+      (mockRepository.getById as jest.Mock).mockResolvedValue(supplyModelMock);
       const id = new ObjectId();
       const result = await supplyService.getById(id);
       expect(mockRepository.getById).toHaveBeenCalled();
-      expect(result).toEqual(newSupply);
+      expect(result).toEqual(supplyModelMock);
+    });
+  });
+
+  describe("getAll", () => {
+    test("should return all units from repository", async () => {
+      const resolvedValue = [supplyModelMock, supplyModelMock];
+      const supplyService = new SupplyService(mockRepository);
+      (mockRepository.getAll as jest.Mock).mockResolvedValue(resolvedValue);
+      const result = await supplyService.getAll();
+      expect(mockRepository.getAll).toHaveBeenCalled();
+      expect(result).toEqual(resolvedValue);
     });
   });
 });
