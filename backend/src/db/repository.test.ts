@@ -88,30 +88,29 @@ describe("Repository", () => {
     });
   });
 
-  describe("deleteById", () => {
-    test("should call deleteOne with correct id", async () => {
+  describe("deleteByValue", () => {
+    const filter = { name: "name" };
+    test("should call deleteOne with correct filter", async () => {
       const repository = new Repository<TestItem>(collectionName);
 
-      const mockResult = {
+      mockCollection.deleteOne.mockResolvedValue({
         acknowledged: true,
-        deletedCount: 1,
-      };
-      mockCollection.deleteOne.mockResolvedValue(mockResult);
-      const result = await repository.deleteById(mockId);
-      expect(mockCollection.deleteOne).toHaveBeenCalledWith({ _id: mockId });
-      expect(result).toEqual(mockResult.acknowledged);
-    });
-    test("should return deleteCount 0 when item not found", async () => {
-      const repository = new Repository<TestItem>(collectionName);
-
-      const mockResult = {
-        acknowledged: true,
-        deletedCount: 0,
-      };
-      mockCollection.deleteOne.mockResolvedValue(mockResult);
-      const result = await repository.deleteById(mockId);
-      expect(mockCollection.deleteOne).toHaveBeenCalledWith({ _id: mockId });
+      });
+      const result = await repository.deleteByValue(filter);
+      expect(mockCollection.deleteOne).toHaveBeenCalledWith(filter);
       expect(result).toBe(true);
+    });
+
+    test("should throw when result.acknowledged is false", async () => {
+      const repository = new Repository<TestItem>(collectionName);
+      mockCollection.deleteOne.mockResolvedValue({
+        acknowledged: false,
+      });
+      try {
+        await repository.deleteByValue(filter);
+      } catch (error) {
+        expect(error).toBeTruthy();
+      }
     });
   });
 });

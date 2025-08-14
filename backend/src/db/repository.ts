@@ -58,6 +58,14 @@ export default class Repository<NewItem extends Document> {
     );
   }
 
+  deleteMany(value: Filter<WithDb<NewItem>>) {
+    return throwIfNull(
+      this.#db.collection
+        .deleteMany(value)
+        .then((result) => result.acknowledged || null)
+    );
+  }
+
   deleteById(id: ObjectId) {
     return this.deleteByValue({
       _id: id,
