@@ -1,12 +1,18 @@
 import { ObjectId } from "mongodb";
 
-import { SupplyModel } from "./supply.model.js";
+import materialRepository, {
+  VariantRepository,
+} from "../material/material.repository/material.repository.js";
+
+import { SupplyModelDTO } from "./supply.model.js";
 import supplyRepository from "./supply.repository.js";
 
 export class SupplyService {
   #repository: typeof supplyRepository;
-  constructor(repository: typeof supplyRepository) {
+  #variant: VariantRepository;
+  constructor(repository: typeof supplyRepository, variant: VariantRepository) {
     this.#repository = repository;
+    this.#variant = variant;
   }
   getById(id: string) {
     return this.#repository.getById(new ObjectId(id));
@@ -15,11 +21,19 @@ export class SupplyService {
     return this.#repository.getAll();
   }
 
-  addNew(supply: SupplyModel) {
-    return this.#repository.addNew(supply);
+  async addNew(supply: SupplyModelDTO) {
+    await this.#variant.getById(supply.variantId);
+    return this.#repository.addNew({
+      ...supply,
+      variantId: new ObjectId(supply.variantId),
+    });
   }
-  update(id: string, newValue: SupplyModel) {
-    return this.#repository.updateById(new ObjectId(id), newValue);
+  async update(id: string, newValue: SupplyModelDTO) {
+    await this.#variant.getById(newValue.variantId);
+    return this.#repository.updateById(new ObjectId(id), {
+      ...newValue,
+      variantId: new ObjectId(newValue.variantId),
+    });
   }
 
   delete(id: string) {
@@ -31,4 +45,7 @@ export class SupplyService {
   }
 }
 
-export default new SupplyService(supplyRepository);
+export default new SupplyService(
+  supplyRepository,
+  materialRepository.variantRepository
+);
