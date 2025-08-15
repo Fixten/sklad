@@ -52,6 +52,10 @@ export class MaterialRepository {
     this.#baseRepository = new Repository(collectionName);
   }
 
+  getById(id: string) {
+    return this.#baseRepository.getById(new ObjectId(id));
+  }
+
   getAll() {
     return this.#baseRepository.getAll();
   }
@@ -61,8 +65,10 @@ export class MaterialRepository {
   async deleteMaterial(id: string) {
     return this.#baseRepository.deleteById(new ObjectId(id));
   }
-  async createMaterial(material: OptionalUnlessRequiredId<MaterialModel>) {
-    return this.#baseRepository.addNew(material);
+  async createMaterial(
+    material: OptionalUnlessRequiredId<Omit<MaterialModel, "variants">>
+  ) {
+    return this.#baseRepository.addNew({ ...material, variants: [] });
   }
 }
 

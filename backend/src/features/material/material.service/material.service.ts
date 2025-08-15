@@ -12,12 +12,19 @@ export class MaterialService {
     this.#repository = repository;
     this.variant = variant;
   }
-  create(material: MaterialModel) {
+  create(material: Omit<MaterialModel, "variants">) {
     return this.#repository.createMaterial(material);
   }
-  deleteMaterial(id: string) {
+
+  async deleteMaterial(id: string) {
+    const material = await this.#repository.getById(id);
+    const deletedVariants = material?.variants.map((variant) =>
+      this.variant.deleteVariant(id, variant._id.toString())
+    );
+    if (deletedVariants) await Promise.all(deletedVariants);
     return this.#repository.deleteMaterial(id);
   }
+
   updateMaterial(id: string, newMaterial: MaterialModel) {
     return this.#repository.updateById(id, {
       name: newMaterial.name,
