@@ -1,19 +1,34 @@
-import { MaterialModel } from "../material.model.js";
+import { ObjectId } from "mongodb";
+
+import { MaterialDTO } from "../material.model.js";
 import materialRepository from "../material.repository/index.js";
 
 import variantService, { VariantService } from "./variant.service.js";
 
 import type { MaterialRepository } from "../material.repository/index.js";
+import materialTypeRepository from "@/features/materialType/materialType.repository.js";
 
 export class MaterialService {
   #repository: MaterialRepository;
+  #materialType: typeof materialTypeRepository;
   variant: VariantService;
-  constructor(repository: MaterialRepository, variant: VariantService) {
+  constructor(
+    repository: MaterialRepository,
+    variant: VariantService,
+    materialType: typeof materialTypeRepository
+  ) {
     this.#repository = repository;
+    this.#materialType = materialType;
     this.variant = variant;
   }
-  create(material: Omit<MaterialModel, "variants">) {
-    return this.#repository.createMaterial(material);
+  async create(material: Omit<MaterialDTO, "variants">) {
+    const materialType = await this.#materialType.getById(
+      new ObjectId(material.materialType)
+    );
+    return this.#repository.createMaterial({
+      ...material,
+      materialType: materialType._id,
+    });
   }
 
   async deleteMaterial(id: string) {
@@ -25,11 +40,14 @@ export class MaterialService {
     return this.#repository.deleteMaterial(id);
   }
 
-  updateMaterial(id: string, newMaterial: MaterialModel) {
+  async updateMaterial(id: string, newMaterial: MaterialDTO) {
+    const materialType = await this.#materialType.getById(
+      new ObjectId(newMaterial.materialType)
+    );
     return this.#repository.updateById(id, {
       name: newMaterial.name,
       description: newMaterial.description,
-      materialType: newMaterial.materialType,
+      materialType: materialType._id,
     });
   }
   getAll() {
@@ -37,4 +55,8 @@ export class MaterialService {
   }
 }
 
-export default new MaterialService(materialRepository, variantService);
+export default new MaterialService(
+  materialRepository,
+  variantService,
+  materialTypeRepository
+);

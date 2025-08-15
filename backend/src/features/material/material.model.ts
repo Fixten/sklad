@@ -5,9 +5,16 @@ export interface VariantModel {
   photo_url: string;
 }
 
-export interface MaterialModel {
+export interface MaterialModelBase {
   name: string;
   description: string;
-  materialType: ObjectId;
   variants: WithId<VariantModel>[];
+}
+
+export interface MaterialModel extends MaterialModelBase {
+  materialType: ObjectId;
+}
+
+export interface MaterialDTO extends MaterialModelBase {
+  materialType: string;
 }

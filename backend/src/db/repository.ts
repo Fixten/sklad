@@ -40,11 +40,14 @@ export default class Repository<NewItem extends Document> {
     return this.#db.collection.find().toArray();
   }
   getById(_id: ObjectId, projection?: Document) {
-    return projection
-      ? this.#db.collection.findOne({ _id } as WithId<NewItem>, {
-          projection,
-        })
-      : this.#db.collection.findOne({ _id } as WithId<NewItem>);
+    return throwIfNull(
+      projection
+        ? this.#db.collection.findOne({ _id } as WithId<NewItem>, {
+            projection,
+          })
+        : this.#db.collection.findOne({ _id } as WithId<NewItem>),
+      "Item was not found"
+    );
   }
   getByValue(value: Filter<WithDb<NewItem>>, projection?: Document) {
     return throwIfNull(

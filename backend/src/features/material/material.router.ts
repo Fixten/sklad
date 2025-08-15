@@ -3,7 +3,7 @@ import { WithId } from "mongodb";
 
 import { WithDb } from "@/db/WithDb.js";
 
-import { MaterialModel } from "./material.model.js";
+import { MaterialDTO, MaterialModel } from "./material.model.js";
 import materialService from "./material.service/index.js";
 
 const materialRouter = Router();
@@ -18,7 +18,7 @@ materialRouter.post(
     req: Request<
       void,
       WithId<WithDb<MaterialModel>>,
-      Omit<MaterialModel, "variants">
+      Omit<MaterialDTO, "variants">
     >,
     res
   ) => {
@@ -29,7 +29,7 @@ materialRouter.post(
 materialRouter.post(
   "/:id",
   async (
-    req: Request<{ id: string }, WithId<WithDb<MaterialModel>>, MaterialModel>,
+    req: Request<{ id: string }, WithId<WithDb<MaterialModel>>, MaterialDTO>,
     res
   ) => {
     res.send(await materialService.updateMaterial(req.params.id, req.body));
