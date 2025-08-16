@@ -1,31 +1,33 @@
-import { getRepositoryMock, objectIdStringMock } from "@/db/repository.mock.js";
+import { objectIdStringMock } from "@/db/repository.mock.js";
 
 import { VariantRepository } from "../material/material.repository/material.repository.js";
-import { variantRepositoryMock } from "../material/material.repository/material.repository.mock.js";
 
-import { SupplyModel } from "./supply.model.js";
 import { supplyDTOMock } from "./supply.model.mock.js";
+import { SupplyRepository } from "./supply.repository.js";
 import { SupplyService } from "./supply.service.js";
 
-const repositoryMock = getRepositoryMock<SupplyModel>();
-
-const variantMock = variantRepositoryMock as unknown as VariantRepository;
+jest.mock("../material/material.repository/material.repository.js");
+jest.mock("./supply.repository.js");
 
 describe("supply service", () => {
   afterEach(() => {
     jest.resetAllMocks();
   });
+
+  const supplyRepo = new SupplyRepository();
+  const variantRepo = new VariantRepository("collection");
+
+  const service = new SupplyService(supplyRepo, variantRepo);
+
   describe("create", () => {
     it("variant id should be validated in variant service", async () => {
-      const service = new SupplyService(repositoryMock, variantMock);
       await service.addNew(supplyDTOMock);
-      expect(variantRepositoryMock.getById).toHaveBeenCalledWith(
-        supplyDTOMock.variantId
-      );
+      expect(variantRepo.getById).toHaveBeenCalledWith(supplyDTOMock.variantId);
     });
     it("if variant id is wrong throw error", async () => {
-      variantRepositoryMock.getById.mockRejectedValue({});
-      const service = new SupplyService(repositoryMock, variantMock);
+      (
+        variantRepo.getById as jest.MockedFunction<typeof variantRepo.getById>
+      ).mockRejectedValue({});
       try {
         await service.addNew(supplyDTOMock);
       } catch (error) {
@@ -36,15 +38,13 @@ describe("supply service", () => {
 
   describe("update", () => {
     it("variant id should be validated in variant service", async () => {
-      const service = new SupplyService(repositoryMock, variantMock);
       await service.update(objectIdStringMock, supplyDTOMock);
-      expect(variantRepositoryMock.getById).toHaveBeenCalledWith(
-        supplyDTOMock.variantId
-      );
+      expect(variantRepo.getById).toHaveBeenCalledWith(supplyDTOMock.variantId);
     });
     it("if variant id is wrong throw error", async () => {
-      variantRepositoryMock.getById.mockRejectedValue({});
-      const service = new SupplyService(repositoryMock, variantMock);
+      (
+        variantRepo.getById as jest.MockedFunction<typeof variantRepo.getById>
+      ).mockRejectedValue({});
       try {
         await service.addNew(supplyDTOMock);
       } catch (error) {

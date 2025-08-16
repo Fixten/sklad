@@ -5,10 +5,3 @@ export const materialRepositoryMock = {
   deleteMaterial: jest.fn(),
   createMaterial: jest.fn(),
 };
-
-export const variantRepositoryMock = {
-  createVariant: jest.fn(),
-  deleteVariant: jest.fn(),
-  updateVariant: jest.fn(),
-  getById: jest.fn(),
-};

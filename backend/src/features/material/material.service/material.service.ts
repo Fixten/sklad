@@ -1,30 +1,27 @@
-import { ObjectId } from "mongodb";
+import MaterialTypeRepository from "@/features/materialType/materialType.repository.js";
 
 import { MaterialDTO } from "../material.model.js";
-import materialRepository from "../material.repository/index.js";
+import materialRepository from "../material.repository/material.repository.js";
 
 import variantService, { VariantService } from "./variant.service.js";
 
-import type { MaterialRepository } from "../material.repository/index.js";
-import materialTypeRepository from "@/features/materialType/materialType.repository.js";
+import type { MaterialRepository } from "../material.repository/material.repository.js";
 
 export class MaterialService {
   #repository: MaterialRepository;
-  #materialType: typeof materialTypeRepository;
+  #materialType: MaterialTypeRepository;
   variant: VariantService;
   constructor(
     repository: MaterialRepository,
     variant: VariantService,
-    materialType: typeof materialTypeRepository
+    materialType: MaterialTypeRepository
   ) {
     this.#repository = repository;
     this.#materialType = materialType;
     this.variant = variant;
   }
   async create(material: Omit<MaterialDTO, "variants">) {
-    const materialType = await this.#materialType.getById(
-      new ObjectId(material.materialType)
-    );
+    const materialType = await this.#materialType.get(material.materialType);
     return this.#repository.createMaterial({
       ...material,
       materialType: materialType._id,
@@ -33,17 +30,15 @@ export class MaterialService {
 
   async deleteMaterial(id: string) {
     const material = await this.#repository.getById(id);
-    const deletedVariants = material?.variants.map((variant) =>
+    const deletedVariants = material.variants.map((variant) =>
       this.variant.deleteVariant(id, variant._id.toString())
     );
-    if (deletedVariants) await Promise.all(deletedVariants);
+    if (deletedVariants.length > 0) await Promise.all(deletedVariants);
     return this.#repository.deleteMaterial(id);
   }
 
   async updateMaterial(id: string, newMaterial: MaterialDTO) {
-    const materialType = await this.#materialType.getById(
-      new ObjectId(newMaterial.materialType)
-    );
+    const materialType = await this.#materialType.get(newMaterial.materialType);
     return this.#repository.updateById(id, {
       name: newMaterial.name,
       description: newMaterial.description,
@@ -58,5 +53,5 @@ export class MaterialService {
 export default new MaterialService(
   materialRepository,
   variantService,
-  materialTypeRepository
+  new MaterialTypeRepository()
 );

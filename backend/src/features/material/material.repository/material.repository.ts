@@ -60,7 +60,9 @@ export class MaterialRepository {
     return this.#baseRepository.getAll();
   }
   updateById(id: string, updateItem: UpdateFilter<MaterialModel>) {
-    return this.#baseRepository.updateById(new ObjectId(id), updateItem);
+    return this.#baseRepository.updateById(new ObjectId(id), {
+      $set: updateItem,
+    });
   }
   async deleteMaterial(id: string) {
     return this.#baseRepository.deleteById(new ObjectId(id));

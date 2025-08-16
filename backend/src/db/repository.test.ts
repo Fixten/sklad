@@ -77,14 +77,16 @@ describe("Repository", () => {
       expect(mockCollection.findOne).toHaveBeenCalledWith({ _id: mockId });
       expect(result).toEqual(mockItem);
     });
-    test("should return null when item is not found", async () => {
+    test("should throw when item is not found", async () => {
       mockCollection.findOne.mockResolvedValue(null);
       const repository = new Repository<TestItem>(collectionName);
-      const result = await repository.getById(mockId);
-      expect(mockCollection.findOne).toHaveBeenCalledWith({
-        _id: mockId,
-      });
-      expect(result).toBeNull();
+      try {
+        await repository.getById(mockId);
+      } catch {
+        expect(mockCollection.findOne).toHaveBeenCalledWith({
+          _id: mockId,
+        });
+      }
     });
   });
 

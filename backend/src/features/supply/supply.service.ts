@@ -1,5 +1,3 @@
-import { ObjectId } from "mongodb";
-
 import materialRepository, {
   VariantRepository,
 } from "../material/material.repository/material.repository.js";
@@ -15,7 +13,7 @@ export class SupplyService {
     this.#variant = variant;
   }
   getById(id: string) {
-    return this.#repository.getById(new ObjectId(id));
+    return this.#repository.getById(id);
   }
   getAll() {
     return this.#repository.getAll();
@@ -23,25 +21,19 @@ export class SupplyService {
 
   async addNew(supply: SupplyModelDTO) {
     await this.#variant.getById(supply.variantId);
-    return this.#repository.addNew({
-      ...supply,
-      variantId: new ObjectId(supply.variantId),
-    });
+    return this.#repository.addNew(supply);
   }
   async update(id: string, newValue: SupplyModelDTO) {
     await this.#variant.getById(newValue.variantId);
-    return this.#repository.updateById(new ObjectId(id), {
-      ...newValue,
-      variantId: new ObjectId(newValue.variantId),
-    });
+    return this.#repository.update(id, newValue);
   }
 
   delete(id: string) {
-    return this.#repository.deleteById(new ObjectId(id));
+    return this.#repository.delete(id);
   }
 
   deteleAllForVariant(variantId: string) {
-    return this.#repository.deleteMany({ variantId: new ObjectId(variantId) });
+    return this.#repository.deteleAllForVariant(variantId);
   }
 }
 

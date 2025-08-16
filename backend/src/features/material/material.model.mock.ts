@@ -1,7 +1,8 @@
 import { ObjectId } from "mongodb";
 
-import { MaterialDTO, MaterialModel, VariantModel } from "./material.model.js";
 import { objectIdStringMock } from "@/db/repository.mock.js";
+
+import { MaterialDTO, MaterialModel, VariantModel } from "./material.model.js";
 
 export const variantModelMock: VariantModel = {
   variant: "variant",

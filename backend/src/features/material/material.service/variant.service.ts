@@ -1,5 +1,3 @@
-import { ObjectId } from "mongodb";
-
 import supplyRepository from "@/features/supply/supply.repository.js";
 
 import { VariantModel } from "../material.model.js";
@@ -19,7 +17,7 @@ export class VariantService {
     return this.#repository.createVariant(id, variant);
   }
   async deleteVariant(id: string, variantId: string) {
-    await this.#supply.deleteMany({ variantId: new ObjectId(variantId) });
+    await this.#supply.deteleAllForVariant(variantId);
     return this.#repository.deleteVariant(id, variantId);
   }
 

@@ -1,6 +1,8 @@
 import { ObjectId, WithId } from "mongodb";
 
-import { getRepositoryMock, objectIdStringMock } from "@/db/repository.mock.js";
+import { objectIdStringMock } from "@/db/repository.mock.js";
+import { WithDb } from "@/db/WithDb.js";
+import { MaterialTypeModel } from "@/features/materialType/materialType.model.js";
 
 import { materialDTOMock, materialModelMock } from "../material.model.mock.js";
 import { MaterialRepository } from "../material.repository/material.repository.js";
@@ -9,15 +11,17 @@ import { materialRepositoryMock } from "../material.repository/material.reposito
 import { MaterialService } from "./material.service.js";
 import { VariantService } from "./variant.service.js";
 import { variantServiceMock } from "./variant.service.mock.js";
-import { MaterialTypeModel } from "@/features/materialType/materialType.model.js";
-import { WithDb } from "@/db/WithDb.js";
+import MaterialTypeRepository from "@/features/materialType/materialType.repository.js";
+
+jest.mock("@/features/materialType/materialType.repository.js");
 
 describe("material service", () => {
   afterEach(() => {
     jest.resetAllMocks();
   });
+
+  const materialTypeRepo = new MaterialTypeRepository();
   describe("material service class", () => {
-    const materialTypeRepo = getRepositoryMock<MaterialTypeModel>();
     const service = new MaterialService(
       materialRepositoryMock as unknown as MaterialRepository,
       variantServiceMock as unknown as VariantService,
@@ -26,20 +30,20 @@ describe("material service", () => {
     describe("create", () => {
       it("should check if material type exists", async () => {
         (
-          materialTypeRepo.getById as jest.MockedFunction<
-            typeof materialTypeRepo.getById
+          materialTypeRepo.get as jest.MockedFunction<
+            typeof materialTypeRepo.get
           >
         ).mockResolvedValueOnce(
           materialModelMock as unknown as WithId<WithDb<MaterialTypeModel>>
         );
         await service.create(materialDTOMock);
-        expect(materialTypeRepo.getById).toHaveBeenCalled();
+        expect(materialTypeRepo.get).toHaveBeenCalled();
         expect(materialRepositoryMock.createMaterial).toHaveBeenCalled();
       });
       it("if no material type throw and dont create material", async () => {
         (
-          materialTypeRepo.getById as jest.MockedFunction<
-            typeof materialTypeRepo.getById
+          materialTypeRepo.get as jest.MockedFunction<
+            typeof materialTypeRepo.get
           >
         ).mockRejectedValueOnce({});
         try {
