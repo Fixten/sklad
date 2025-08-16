@@ -3,6 +3,7 @@ import { ObjectId, WithId } from "mongodb";
 import { objectIdStringMock } from "@/db/repository.mock.js";
 import { WithDb } from "@/db/WithDb.js";
 import { MaterialTypeModel } from "@/features/materialType/materialType.model.js";
+import MaterialTypeRepository from "@/features/materialType/materialType.repository.js";
 
 import { materialDTOMock, materialModelMock } from "../material.model.mock.js";
 import { MaterialRepository } from "../material.repository/material.repository.js";
@@ -11,7 +12,6 @@ import { materialRepositoryMock } from "../material.repository/material.reposito
 import { MaterialService } from "./material.service.js";
 import { VariantService } from "./variant.service.js";
 import { variantServiceMock } from "./variant.service.mock.js";
-import MaterialTypeRepository from "@/features/materialType/materialType.repository.js";
 
 jest.mock("@/features/materialType/materialType.repository.js");
 

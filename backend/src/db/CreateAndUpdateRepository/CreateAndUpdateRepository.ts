@@ -35,11 +35,9 @@ export async function update<T extends Document>(
   filter: Filter<WithDb<T>>,
   value: UpdateFilter<T>
 ): Promise<WithId<WithDb<T>> | null> {
-  const actualUpdate = {
-    ...value,
-    updatedAt: new Date(),
-  };
-
+  const actualUpdate: UpdateFilter<WithDb<T>> = Object.assign({}, value, {
+    $currentDate: { updatedAt: { $type: "date" } },
+  });
   return await collection.findOneAndUpdate(filter, actualUpdate, {
     returnDocument: "after",
   });
