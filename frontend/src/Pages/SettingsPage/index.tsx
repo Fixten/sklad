@@ -5,7 +5,6 @@ import {
   CardHeader,
   TextField,
   CircularProgress,
-  Avatar,
   Box,
 } from "@mui/material";
 import { useState } from "react";
@@ -35,14 +34,12 @@ export default function SettingsPage() {
             <TextField
               error={isError}
               defaultValue={query.data?.work_hour_cost}
-              onBlur={(e) => { onChange(e.currentTarget.value); }}
+              onBlur={(e) => {
+                onChange(e.currentTarget.value);
+              }}
               onChange={mutation.reset}
             />
-            {mutation.isSuccess && (
-              <Avatar>
-                <CheckIcon color="success" />
-              </Avatar>
-            )}
+            {mutation.isSuccess && <CheckIcon color="success" />}
           </Box>
         )}
       </CardContent>

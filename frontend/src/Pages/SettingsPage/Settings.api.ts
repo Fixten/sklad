@@ -1,6 +1,6 @@
 import Api from "../../api";
 
-import { SettingsModel } from "./Settings.model";
+import type { SettingsModel } from "./Settings.model";
 
 const path = "/settings";
 

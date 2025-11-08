@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router";
+import CssBaseline from "@mui/material/CssBaseline";
 
 import router from "./router";
 
@@ -13,6 +14,7 @@ if (root)
   ReactDOM.createRoot(root).render(
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
+        <CssBaseline />
         <RouterProvider router={router} />
       </QueryClientProvider>
     </React.StrictMode>
