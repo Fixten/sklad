@@ -18,6 +18,9 @@ export class MaterialTypeService {
   getAll() {
     return this.#repository.getAll();
   }
+  get(id: string) {
+    return this.#repository.get(id);
+  }
 }
 
 export default new MaterialTypeService(new MaterialTypeRepository());

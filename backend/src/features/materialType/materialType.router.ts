@@ -13,6 +13,11 @@ materialTypeRouter.get("/", async (req, res) => {
   res.send(result);
 });
 
+materialTypeRouter.get("/id", async (req: Request<{ id: string }>, res) => {
+  const result = await materialTypeService.get(req.params.id);
+  res.send(result);
+});
+
 materialTypeRouter.post(
   "/",
   async (

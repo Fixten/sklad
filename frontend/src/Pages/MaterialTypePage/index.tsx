@@ -37,8 +37,7 @@ export default function MaterialTypePage() {
   }
 
   return (
-    <Card>
-      <CardHeader title="Тип материалов"></CardHeader>
+    <Card sx={{ p: 2 }}>
       <CardActions>
         <TextField
           label="Добавить новый"

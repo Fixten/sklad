@@ -1,5 +1,6 @@
 export default {
   home: "/",
   settings: "/settings",
-  material: "/material-type",
+  materialType: "/material-type",
+  material: "/material",
 };

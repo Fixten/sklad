@@ -22,15 +22,18 @@ export default class Api<B> {
   constructor(path: string) {
     this.#apiUrl = getApiUrl(path);
   }
-  get<G = B>() {
-    return fetchApi<ResponseBody<G>>(this.#apiUrl, "GET");
+  get<G = B>(slug?: string) {
+    return fetchApi<ResponseBody<G>>(
+      slug ? getApiUrl(`${this.#apiUrl.pathname}/${slug}`) : this.#apiUrl,
+      "GET"
+    );
   }
   getAll() {
     return fetchApi<ResponseBody<B>[]>(this.#apiUrl, "GET");
   }
-  post<R>(body: unknown) {
+  post<R>(body: unknown, slug?: string) {
     return fetchApi<ResponseBody<R>>(
-      this.#apiUrl,
+      slug ? getApiUrl(`${this.#apiUrl.pathname}/${slug}`) : this.#apiUrl,
       "POST",
       JSON.stringify(body)
     );

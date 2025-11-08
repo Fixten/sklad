@@ -16,6 +16,10 @@ const NAVIGATION: Navigation = [
     segment: "material-type",
     title: "Типы материалов",
   },
+  {
+    segment: "material",
+    title: "Материалы",
+  },
 ];
 
 export default function AppLayout() {

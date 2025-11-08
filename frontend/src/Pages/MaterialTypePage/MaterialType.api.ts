@@ -9,6 +9,10 @@ export default class MaterialTypeApi {
     this.#api = new Api(path);
   }
 
+  get = (id: string) => {
+    return this.#api.get(id);
+  };
+
   getAll = () => {
     return this.#api.getAll();
   };

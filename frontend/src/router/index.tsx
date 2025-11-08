@@ -5,6 +5,7 @@ import SettingsPage from "../Pages/SettingsPage";
 
 import pathsRouter from "./paths.router";
 import MaterialTypePage from "../Pages/MaterialTypePage";
+import MaterialPage from "../Pages/MaterialPage";
 
 const router = createBrowserRouter([
   {
@@ -19,8 +20,12 @@ const router = createBrowserRouter([
         Component: SettingsPage,
       },
       {
-        path: pathsRouter.material,
+        path: pathsRouter.materialType,
         Component: MaterialTypePage,
+      },
+      {
+        path: pathsRouter.material,
+        Component: MaterialPage,
       },
     ],
   },
