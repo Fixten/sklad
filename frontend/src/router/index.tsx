@@ -1,9 +1,10 @@
 import { createBrowserRouter } from "react-router";
 
 import AppLayout from "../App.layout";
-import SettingsPage from "../Pages/Settings";
+import SettingsPage from "../Pages/SettingsPage";
 
 import pathsRouter from "./paths.router";
+import MaterialPage from "../Pages/MaterialPage";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
       {
         path: pathsRouter.settings,
         Component: SettingsPage,
+      },
+      {
+        path: pathsRouter.material,
+        Component: MaterialPage,
       },
     ],
   },
