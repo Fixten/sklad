@@ -18,7 +18,7 @@ import CheckIcon from "@mui/icons-material/Check";
 
 import userMaterialType from "./useMaterialType";
 
-export default function MaterialType() {
+export default function MaterialTypePage() {
   const { query, addMutation, removeMutation } = userMaterialType();
   const [newItem, setNewItem] = useState<string>("");
 
@@ -39,41 +39,47 @@ export default function MaterialType() {
   return (
     <Card>
       <CardHeader title="Тип материалов"></CardHeader>
+      <CardActions>
+        <TextField
+          label="Добавить новый"
+          error={addMutation.isError}
+          value={newItem}
+          onChange={onChangeNewItem}
+          fullWidth
+        />
+        {newItem && (
+          <IconButton onClick={onCreate}>
+            <AddCircle />
+          </IconButton>
+        )}
+        {addMutation.isSuccess && <CheckIcon color="success" />}
+      </CardActions>
       <CardContent>
         {query.isLoading ? (
           <CircularProgress />
         ) : (
           <List>
-            {query.data?.map((v, i, arr) => (
-              <Fragment key={`${v}:${i}`}>
-                <ListItem
-                  secondaryAction={
-                    <IconButton onClick={() => removeMutation.mutate(v._id)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  }
-                >
-                  <ListItemText>{v.name}</ListItemText>
-                </ListItem>
-                {i < arr.length - 1 && <Divider />}
-              </Fragment>
-            ))}
+            {query.data?.map((v, i, arr) => {
+              const current = arr[arr.length - 1 - i];
+              return (
+                <Fragment key={current._id}>
+                  <ListItem
+                    secondaryAction={
+                      <IconButton
+                        onClick={() => removeMutation.mutate(current._id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    }
+                  >
+                    <ListItemText>{current.name}</ListItemText>
+                  </ListItem>
+                  {i < arr.length - 1 && <Divider />}
+                </Fragment>
+              );
+            })}
           </List>
         )}
-        <CardActions>
-          <TextField
-            label="Добавить новый"
-            error={addMutation.isError}
-            value={newItem}
-            onChange={onChangeNewItem}
-          />
-          {newItem && (
-            <IconButton onClick={onCreate}>
-              <AddCircle />
-            </IconButton>
-          )}
-          {addMutation.isSuccess && <CheckIcon color="success" />}
-        </CardActions>
       </CardContent>
     </Card>
   );

@@ -4,7 +4,7 @@ import AppLayout from "../App.layout";
 import SettingsPage from "../Pages/SettingsPage";
 
 import pathsRouter from "./paths.router";
-import MaterialPage from "../Pages/MaterialPage";
+import MaterialTypePage from "../Pages/MaterialTypePage";
 
 const router = createBrowserRouter([
   {
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
       },
       {
         path: pathsRouter.material,
-        Component: MaterialPage,
+        Component: MaterialTypePage,
       },
     ],
   },

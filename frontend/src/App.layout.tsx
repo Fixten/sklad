@@ -13,8 +13,8 @@ const NAVIGATION: Navigation = [
     title: "Настройки",
   },
   {
-    segment: "material",
-    title: "Материалы",
+    segment: "material-type",
+    title: "Типы материалов",
   },
 ];
 
