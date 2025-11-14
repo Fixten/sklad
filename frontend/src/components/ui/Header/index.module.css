@@ -1,0 +1,10 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--size4);
+}
+
+.list {
+    display: flex;
+    gap: var(--size5)
+}
