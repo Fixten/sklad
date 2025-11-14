@@ -21,11 +21,13 @@ export class MaterialService {
     this.variant = variant;
   }
   async create(material: Omit<MaterialDTO, "variants">) {
-    const materialType = await this.#materialType.get(material.materialType);
-    return this.#repository.createMaterial({
-      ...material,
-      materialType: materialType._id,
-    });
+    if (material.name) {
+      const materialType = await this.#materialType.get(material.materialType);
+      return this.#repository.createMaterial({
+        ...material,
+        materialType: materialType._id,
+      });
+    } else Promise.reject("name is required");
   }
 
   async deleteMaterial(id: string) {
