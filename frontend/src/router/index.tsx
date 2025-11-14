@@ -1,11 +1,11 @@
 import { createBrowserRouter } from "react-router";
 
-import AppLayout from "../App.layout";
-import SettingsPage from "../Pages/SettingsPage";
+import AppLayout from "../layout/App.layout";
+import SettingsPage from "../pages/SettingsPage";
 
 import pathsRouter from "./paths.router";
-import MaterialTypePage from "../Pages/MaterialTypePage";
-import MaterialPage from "../Pages/MaterialPage";
+import MaterialTypePage from "../pages/MaterialTypePage";
+import MaterialPage from "../pages/MaterialPage";
 
 const router = createBrowserRouter([
   {

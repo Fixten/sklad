@@ -1,6 +1,6 @@
 import Api from "../../api";
-import MaterialTypeApi from "../MaterialTypePage/MaterialType.api";
-import type { MaterialModel } from "./Material.model";
+import MaterialTypeApi from "./MaterialType/MaterialType.api";
+import type { MaterialDTO, MaterialModel } from "./Material.model";
 
 const path = "/material";
 
@@ -28,11 +28,11 @@ export default class MaterialApi {
     }));
   };
 
-  create = (value: Omit<MaterialModel, "variants">) => {
+  create = (value: MaterialDTO) => {
     return this.#api.post<MaterialModel>(value);
   };
 
-  update = (value: Omit<MaterialModel, "variants">, id: string) => {
+  update = (value: MaterialDTO, id: string) => {
     return this.#api.post(value, id);
   };
 

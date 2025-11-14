@@ -14,3 +14,5 @@ export interface MaterialModelBase {
 export interface MaterialModel extends MaterialModelBase {
   materialType: string;
 }
+
+export type MaterialDTO = Omit<MaterialModel, "variants">;

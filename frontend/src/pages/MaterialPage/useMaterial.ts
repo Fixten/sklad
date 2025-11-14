@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import MaterialApi from "./Material.api";
+import MaterialApi from "../../features/Material/Material.api";
 
 const api = new MaterialApi();
 

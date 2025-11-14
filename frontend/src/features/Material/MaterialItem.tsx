@@ -10,8 +10,7 @@ export default function MaterialItem(props: Props) {
   return (
     <Card>
       <CardHeader title={name} subheader={description} />
-      Тип Материала: {materialType}
-      <CardContent>123</CardContent>
+      <CardContent>Тип: {materialType}</CardContent>
     </Card>
   );
 }
