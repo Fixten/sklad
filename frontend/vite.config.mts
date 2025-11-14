@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import tailwindcss from "@tailwindcss/vite";
 
 const envRelativePath = "../";
 
@@ -10,7 +11,12 @@ export default defineConfig(({ mode }) => {
 
   process.env.VITE_BACKEND_PORT = env.BACKEND_PORT;
   return {
-    plugins: [react()],
+    plugins: [react(), tailwindcss()],
     envDir: envRelativePath,
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "./src"),
+      },
+    },
   };
 });
