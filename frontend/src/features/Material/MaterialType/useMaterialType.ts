@@ -4,7 +4,7 @@ import MaterialTypeApi from "./MaterialType.api";
 
 const api = new MaterialTypeApi();
 
-export default function userMaterialType() {
+export default function useMaterialType() {
   const query = useQuery({
     queryKey: ["material-type"],
     queryFn: api.getAll,

@@ -19,7 +19,7 @@ export default function SettingsPage() {
     }
   };
   return (
-    <Card.Wrapper className="max-w-xl m-auto">
+    <Card.Wrapper>
       <Card.CardHeader>
         <Card.CardTitle>Цена работы в час</Card.CardTitle>
       </Card.CardHeader>

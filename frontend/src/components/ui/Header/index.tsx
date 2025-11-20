@@ -1,7 +1,9 @@
+import clsx from "clsx";
 import Link from "../Link";
 import styles from "./index.module.css";
 
 type Props = {
+  className: string;
   navItems: {
     link: string;
     name: string;
@@ -10,7 +12,7 @@ type Props = {
 
 export default function Header(props: Props) {
   return (
-    <header className={styles.header}>
+    <header className={clsx(styles.header, props.className)}>
       Sklad
       <nav>
         <ul className={styles.list}>

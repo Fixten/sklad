@@ -1,15 +1,15 @@
 import { Fragment, useState } from "react";
 
-import userMaterialType from "../../features/Material/MaterialType/useMaterialType";
+import useMaterialType from "../../features/Material/MaterialType/useMaterialType";
 import Input from "ui/Input";
-import Button from "ui/button";
+import Button from "ui/Button";
 import { BadgePlus, Check, Delete } from "lucide-react";
 import Spinner from "ui/Spinner";
 import Card from "ui/Card";
 import Divider from "ui/Divider";
 
 export default function MaterialTypePage() {
-  const { query, addMutation, removeMutation } = userMaterialType();
+  const { query, addMutation, removeMutation } = useMaterialType();
   const [newItem, setNewItem] = useState<string>("");
 
   const onCreate: React.FormEventHandler<HTMLFormElement> = async (e) => {
@@ -26,7 +26,7 @@ export default function MaterialTypePage() {
   }
 
   return (
-    <section className="flex flex-col gap-8 max-w-10/12 mx-auto">
+    <section className="flex flex-col gap-8">
       <form className="flex items-end gap-8" onSubmit={onCreate}>
         <Input
           label="Добавить новый"

@@ -1,5 +1,5 @@
 import Select from "ui/Select";
-import userMaterialType from "./MaterialType/useMaterialType";
+import useMaterialType from "./MaterialType/useMaterialType";
 import Label from "ui/Label";
 import { useId } from "react";
 
@@ -12,7 +12,7 @@ type Props = {
 };
 
 export default function SelectMaterialType(props: Props) {
-  const { query } = userMaterialType();
+  const { query } = useMaterialType();
   const id = useId();
   return (
     <div className="grid w-full max-w-sm items-center gap-3">
