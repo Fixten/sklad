@@ -176,11 +176,18 @@ function SelectScrollDownButton({
 type Props = {
   options: { value: string; label: string; id: string | number }[];
   label: string;
+  required?: boolean;
+  value: string;
+  onChange: (v: string) => void;
 };
 
 export default function Select(props: Props) {
   return (
-    <SelectBase>
+    <SelectBase
+      required={props.required}
+      onValueChange={props.onChange}
+      value={props.value}
+    >
       <SelectTrigger className="w-[280px]">
         <SelectValue placeholder={props.label} />
       </SelectTrigger>

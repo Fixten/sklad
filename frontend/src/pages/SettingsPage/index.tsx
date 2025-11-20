@@ -1,13 +1,9 @@
-import CheckIcon from "@mui/icons-material/Check";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  TextField,
-  CircularProgress,
-  Box,
-} from "@mui/material";
 import { useState } from "react";
+import { Check } from "lucide-react";
+
+import Card from "ui/Card";
+import Spinner from "ui/Spinner";
+import Input from "ui/Input";
 
 import useSettings from "./useSettings";
 
@@ -22,27 +18,26 @@ export default function SettingsPage() {
       mutation.mutate(numbered);
     }
   };
-
   return (
-    <Card>
-      <CardHeader title="Цена работы в час"></CardHeader>
-      <CardContent>
+    <Card.Wrapper className="max-w-xl m-auto">
+      <Card.CardHeader>
+        <Card.CardTitle>Цена работы в час</Card.CardTitle>
+      </Card.CardHeader>
+      <Card.CardContent>
         {query.isLoading ? (
-          <CircularProgress />
+          <Spinner />
         ) : (
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <TextField
+          <div className="flex gap-2">
+            <Input
               error={isError}
               defaultValue={query.data?.work_hour_cost}
-              onBlur={(e) => {
-                onChange(e.currentTarget.value);
-              }}
+              onBlur={onChange}
               onChange={mutation.reset}
             />
-            {mutation.isSuccess && <CheckIcon color="success" />}
-          </Box>
+            {mutation.isSuccess && <Check />}
+          </div>
         )}
-      </CardContent>
-    </Card>
+      </Card.CardContent>
+    </Card.Wrapper>
   );
 }

@@ -6,6 +6,7 @@ import SettingsPage from "../pages/SettingsPage";
 import pathsRouter from "./paths.router";
 import MaterialTypePage from "../pages/MaterialTypePage";
 import MaterialPage from "../pages/MaterialPage";
+import Home from "@/pages/Home";
 
 const router = createBrowserRouter([
   {
@@ -13,7 +14,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: pathsRouter.home,
-        Component: () => null,
+        Component: Home,
       },
       {
         path: pathsRouter.settings,

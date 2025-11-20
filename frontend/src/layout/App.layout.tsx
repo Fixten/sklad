@@ -6,7 +6,7 @@ import Header from "@/components/ui/Header";
 
 import { ThemeProvider } from "./ThemeProvider";
 
-const navItems = [
+export const navItems = [
   { link: pathsRouter.home, name: "Главная" },
   {
     link: pathsRouter.settings,
@@ -26,7 +26,9 @@ export default function AppLayout() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <Header navItems={navItems} />
-      <Outlet />
+      <main className="container pt-16">
+        <Outlet />
+      </main>
     </ThemeProvider>
   );
 }

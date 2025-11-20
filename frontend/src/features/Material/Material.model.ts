@@ -7,7 +7,7 @@ export interface VariantModel {
 
 export interface MaterialModelBase {
   name: string;
-  description: string;
+  description?: string;
   variants: (ApiModel & VariantModel)[];
 }
 

@@ -1,24 +1,36 @@
-import Select from "@/components/ui/select";
+import Select from "ui/Select";
 import userMaterialType from "./MaterialType/useMaterialType";
+import Label from "ui/Label";
+import { useId } from "react";
 
 type Props = {
   value: string;
   onChange: (v: string) => void;
-  isError: boolean;
+  error?: React.ReactNode;
+  required?: boolean;
+  label?: string;
 };
 
 export default function SelectMaterialType(props: Props) {
   const { query } = userMaterialType();
+  const id = useId();
   return (
-    <Select
-      options={
-        query.data?.map((v) => ({
-          value: v._id,
-          label: v.name,
-          id: v._id,
-        })) || []
-      }
-      label="Тип материала"
-    />
+    <div className="grid w-full max-w-sm items-center gap-3">
+      {props.label && <Label htmlFor={id}>{props.label}</Label>}
+      <Select
+        value={props.value}
+        onChange={props.onChange}
+        required={props.required}
+        options={
+          query.data?.map((v) => ({
+            value: v._id,
+            label: v.name,
+            id: v._id,
+          })) || []
+        }
+        label="Тип материала"
+      />
+      {props.error}
+    </div>
   );
 }

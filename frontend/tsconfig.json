@@ -9,6 +9,7 @@
     "target": "ESNext",
     "baseUrl": ".",
     "paths": {
+      "ui/*": ["./src/components/ui/*"],
       "@/*": ["./src/*"]
     }
   },

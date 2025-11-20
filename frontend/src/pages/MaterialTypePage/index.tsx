@@ -1,83 +1,72 @@
-import {
-  Card,
-  CircularProgress,
-  Divider,
-  Grid,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  Stack,
-  TextField,
-} from "@mui/material";
 import { Fragment, useState } from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddCircle from "@mui/icons-material/AddCircleOutlineTwoTone";
-import CheckIcon from "@mui/icons-material/Check";
 
 import userMaterialType from "../../features/Material/MaterialType/useMaterialType";
+import Input from "ui/Input";
+import Button from "ui/button";
+import { BadgePlus, Check, Delete } from "lucide-react";
+import Spinner from "ui/Spinner";
+import Card from "ui/Card";
+import Divider from "ui/Divider";
 
 export default function MaterialTypePage() {
   const { query, addMutation, removeMutation } = userMaterialType();
   const [newItem, setNewItem] = useState<string>("");
 
-  async function onCreate() {
+  const onCreate: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
     if (newItem) {
       await addMutation.mutateAsync(newItem);
       setNewItem("");
     }
-  }
+  };
 
-  function onChangeNewItem(
-    e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>
-  ) {
-    setNewItem(e.currentTarget.value);
+  function onChangeNewItem(val: string) {
+    setNewItem(val);
     if (addMutation.isError || addMutation.isSuccess) addMutation.reset();
   }
 
   return (
-    <Stack useFlexGap spacing={2}>
-      <Grid container direction="row" alignItems="center" gap={2}>
-        <TextField
+    <section className="flex flex-col gap-8 max-w-10/12 mx-auto">
+      <form className="flex items-end gap-8" onSubmit={onCreate}>
+        <Input
           label="Добавить новый"
           error={addMutation.isError}
           value={newItem}
           onChange={onChangeNewItem}
         />
         {newItem && (
-          <IconButton onClick={onCreate}>
-            <AddCircle />
-          </IconButton>
+          <Button variant="outline" size="icon" type="submit">
+            <BadgePlus />
+          </Button>
         )}
-        {addMutation.isSuccess && <CheckIcon color="success" />}
-      </Grid>
+        {addMutation.isSuccess && <Check />}
+      </form>
       {query.isLoading ? (
-        <CircularProgress />
+        <Spinner />
       ) : (
-        <Card>
-          <List>
+        <Card.Wrapper>
+          <ul>
             {query.data?.map((v, i, arr) => {
               const current = arr[arr.length - 1 - i];
               return (
                 <Fragment key={current._id}>
-                  <ListItem
-                    secondaryAction={
-                      <IconButton
-                        onClick={() => removeMutation.mutate(current._id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    }
-                  >
-                    <ListItemText>{current.name}</ListItemText>
-                  </ListItem>
+                  <li className="p-2 flex items-center justify-between">
+                    {current.name}{" "}
+                    <Button
+                      onClick={() => removeMutation.mutate(current._id)}
+                      variant="outline"
+                      size="icon"
+                    >
+                      <Delete />
+                    </Button>
+                  </li>
                   {i < arr.length - 1 && <Divider />}
                 </Fragment>
               );
             })}
-          </List>
-        </Card>
+          </ul>
+        </Card.Wrapper>
       )}
-    </Stack>
+    </section>
   );
 }

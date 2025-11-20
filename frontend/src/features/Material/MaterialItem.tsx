@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader } from "@mui/material";
+import Card from "ui/Card";
 import { MaterialModel } from "./Material.model";
 
 type Props = {
@@ -8,9 +8,9 @@ type Props = {
 export default function MaterialItem(props: Props) {
   const { name, description, materialType } = props.value;
   return (
-    <Card>
-      <CardHeader title={name} subheader={description} />
-      <CardContent>Тип: {materialType}</CardContent>
-    </Card>
+    <Card.Wrapper>
+      <Card.CardHeader title={name}>{description}</Card.CardHeader>
+      <Card.CardContent>Тип: {materialType}</Card.CardContent>
+    </Card.Wrapper>
   );
 }

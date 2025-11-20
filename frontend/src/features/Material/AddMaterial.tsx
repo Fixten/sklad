@@ -1,13 +1,21 @@
-import { Button, Stack, TextField } from "@mui/material";
 import { useState } from "react";
+import * as z from "zod";
 
 import { MaterialDTO } from "./Material.model";
 import SelectMaterialType from "./SelectMaterialType";
+import Button from "ui/button";
+import Input from "ui/Input";
 
 type Props = {
   onSubmit: (v: MaterialDTO) => void;
   isError: boolean;
 };
+
+const Material = z.object({
+  name: z.string().min(3),
+  description: z.string().min(5).optional(),
+  materialType: z.string().min(1),
+});
 
 export default function AddMaterial(props: Props) {
   const [isShown, setIsShown] = useState<boolean>(false);
@@ -15,17 +23,18 @@ export default function AddMaterial(props: Props) {
   const [description, setDescription] = useState<string>("");
   const [type, setType] = useState<string>("");
 
-  const onChangeName: React.ChangeEventHandler<
-    HTMLInputElement | HTMLTextAreaElement
-  > = (e) => setName(e.target.value);
-
-  const onChangeDescription: React.ChangeEventHandler<
-    HTMLInputElement | HTMLTextAreaElement
-  > = (e) => setDescription(e.target.value);
-
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    props.onSubmit({ name, description, materialType: type });
+    const item = { name, description, materialType: type };
+    try {
+      console.log(Material.parse(item));
+      if (Material.parse(item)) props.onSubmit(item);
+      setName("");
+      setDescription("");
+      setType("");
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -37,26 +46,29 @@ export default function AddMaterial(props: Props) {
       }
       {isShown && (
         <form onSubmit={onSubmit}>
-          <Stack useFlexGap spacing={2}>
-            <TextField
+          <div className="flex items-end gap-4">
+            <Input
               label="Название"
               value={name}
-              onChange={onChangeName}
+              onChange={setName}
               error={props.isError}
+              required
             />
-            <TextField
+            <Input
               label="Описание"
               value={description}
-              onChange={onChangeDescription}
+              onChange={setDescription}
               error={props.isError}
             />
             <SelectMaterialType
               value={type}
               onChange={setType}
-              isError={props.isError}
+              error={props.isError}
+              required
+              label="Тип материала"
             />
             <Button type="submit">Создать</Button>
-          </Stack>
+          </div>
         </form>
       )}
     </>
