@@ -1,12 +1,11 @@
 FROM node:23-alpine AS builder
 
-
 WORKDIR /app
 COPY package.json package-lock.json .
 COPY frontend/package.json ./frontend/
 RUN npm ci --omit=dev
 
-COPY frontend/tsconfig.json frontend/index.html frontend/theme.ts frontend/vite.config.mts ./frontend/
+COPY frontend/tsconfig.json frontend/index.html frontend/vite.config.mts ./frontend/
 COPY frontend/src ./frontend/src
 COPY tsconfig.json ./
 
