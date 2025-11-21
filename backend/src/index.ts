@@ -3,7 +3,7 @@ import { config } from "dotenv";
 import getServer from "./getServer.js";
 
 async function startApp() {
-  config({ path: "../.env" });
+  config({ path: "../.env.development" });
 
   const server = await getServer();
   const { BACKEND_PORT } = process.env;

@@ -1,5 +1,5 @@
 .env
-.env.prod
+.env.development
 uploads/*
 backend/build/*
 node_modules
