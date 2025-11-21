@@ -1,22 +1,24 @@
+import { BadgePlus, Check, Delete } from "lucide-react";
 import { Fragment, useState } from "react";
 
-import useMaterialType from "../../features/Material/MaterialType/useMaterialType";
-import Input from "ui/Input";
 import Button from "ui/Button";
-import { BadgePlus, Check, Delete } from "lucide-react";
-import Spinner from "ui/Spinner";
 import Card from "ui/Card";
 import Divider from "ui/Divider";
+import Input from "ui/Input";
+import Spinner from "ui/Spinner";
+
+import useMaterialType from "../../features/Material/MaterialType/useMaterialType";
 
 export default function MaterialTypePage() {
   const { query, addMutation, removeMutation } = useMaterialType();
   const [newItem, setNewItem] = useState<string>("");
 
-  const onCreate: React.FormEventHandler<HTMLFormElement> = async (e) => {
+  const onCreate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (newItem) {
-      await addMutation.mutateAsync(newItem);
-      setNewItem("");
+      addMutation.mutateAsync(newItem).then(() => {
+        setNewItem("");
+      }, console.error);
     }
   };
 
@@ -53,7 +55,9 @@ export default function MaterialTypePage() {
                   <li className="p-2 flex items-center justify-between">
                     {current.name}{" "}
                     <Button
-                      onClick={() => removeMutation.mutate(current._id)}
+                      onClick={() => {
+                        removeMutation.mutate(current._id);
+                      }}
                       variant="outline"
                       size="icon"
                     >

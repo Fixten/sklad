@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Outlet } from "react-router";
 
-import pathsRouter from "@/router/paths.router";
 import Header from "@/components/ui/Header";
+import pathsRouter from "@/router/paths.router";
 
 import { ThemeProvider } from "./ThemeProvider";
 

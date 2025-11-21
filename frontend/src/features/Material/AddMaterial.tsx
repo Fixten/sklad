@@ -1,6 +1,8 @@
 import { ComponentProps, useState } from "react";
-import EditMaterial from "./EditMaterial";
+
 import Button from "ui/Button";
+
+import EditMaterial from "./EditMaterial";
 
 export default function AddMaterial(
   props: ComponentProps<typeof EditMaterial>
@@ -10,7 +12,7 @@ export default function AddMaterial(
   return (
     <>
       {
-        <Button onClick={() => setIsShown((prev) => !prev)}>
+        <Button onClick={() => { setIsShown((prev) => !prev); }}>
           {isShown ? "Скрыть форму" : "Создать новый"}
         </Button>
       }

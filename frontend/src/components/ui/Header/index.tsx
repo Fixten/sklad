@@ -1,18 +1,20 @@
-import clsx from "clsx";
+import classes from "clsx";
+
 import Link from "../Link";
+
 import styles from "./index.module.css";
 
-type Props = {
+interface Props {
   className: string;
   navItems: {
     link: string;
     name: string;
   }[];
-};
+}
 
 export default function Header(props: Props) {
   return (
-    <header className={clsx(styles.header, props.className)}>
+    <header className={classes(styles.header, props.className)}>
       Sklad
       <nav>
         <ul className={styles.list}>

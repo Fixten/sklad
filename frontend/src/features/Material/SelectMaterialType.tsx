@@ -1,15 +1,17 @@
-import Select from "ui/Select";
-import useMaterialType from "./MaterialType/useMaterialType";
-import Label from "ui/Label";
 import { useId } from "react";
 
-type Props = {
+import Label from "ui/Label";
+import Select from "ui/Select";
+
+import useMaterialType from "./MaterialType/useMaterialType";
+
+interface Props {
   value: string;
   onChange: (v: string) => void;
   error?: React.ReactNode;
   required?: boolean;
   label?: string;
-};
+}
 
 export default function SelectMaterialType(props: Props) {
   const { query } = useMaterialType();
@@ -26,7 +28,7 @@ export default function SelectMaterialType(props: Props) {
             value: v._id,
             label: v.name,
             id: v._id,
-          })) || []
+          })) ?? []
         }
         label="Тип материала"
       />

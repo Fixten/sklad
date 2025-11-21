@@ -1,9 +1,9 @@
 import Button from "./Button";
 
-type Props = {
+interface Props {
   children: React.ReactNode;
   onClick: () => void;
-};
+}
 
 export default function IconButton(props: Props) {
   return (

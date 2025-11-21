@@ -1,16 +1,18 @@
 import { useState } from "react";
 import * as z from "zod";
 
-import { MaterialDTO, MaterialModel } from "./Material.model";
-import SelectMaterialType from "./SelectMaterialType";
 import Button from "ui/Button";
+import Form from "ui/Form";
 import Input from "ui/Input";
 
-type Props = {
-  onSubmit: (v: MaterialDTO) => void;
+import { MaterialDTO, MaterialModel } from "./Material.model";
+import SelectMaterialType from "./SelectMaterialType";
+
+interface Props {
+  onSubmit: (v: MaterialDTO) => Promise<void>;
   isError: boolean;
   value?: MaterialModel;
-};
+}
 
 const Material = z.object({
   name: z.string().min(3),
@@ -19,21 +21,21 @@ const Material = z.object({
 });
 
 export default function EditMaterial(props: Props) {
-  const [name, setName] = useState<string>(props.value?.name || "");
+  const [name, setName] = useState<string>(props.value?.name ?? "");
   const [description, setDescription] = useState<string>(
-    props.value?.description || ""
+    props.value?.description ?? ""
   );
-  const [type, setType] = useState<string>(props.value?.materialType || "");
-  console.log(type);
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  const [type, setType] = useState<string>(props.value?.materialType ?? "");
+
+  async function onSubmit() {
     const item = {
       name,
       description: description || undefined,
       materialType: type,
     };
     try {
-      if (Material.parse(item)) props.onSubmit(item);
+      Material.parse(item);
+      await props.onSubmit(item);
       setName("");
       setDescription("");
       setType("");
@@ -43,7 +45,7 @@ export default function EditMaterial(props: Props) {
   }
 
   return (
-    <form onSubmit={onSubmit}>
+    <Form onSubmit={onSubmit}>
       <div className="flex items-end gap-4">
         <Input
           label="Название"
@@ -67,6 +69,6 @@ export default function EditMaterial(props: Props) {
         />
         <Button type="submit">{props.value ? "Изменить" : "Создать"}</Button>
       </div>
-    </form>
+    </Form>
   );
 }

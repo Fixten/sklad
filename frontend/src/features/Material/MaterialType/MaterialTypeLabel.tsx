@@ -1,8 +1,8 @@
 import useMaterialType from "./useMaterialType";
 
-type Props = {
+interface Props {
   id: string;
-};
+}
 
 export default function MaterialTypeLabel(props: Props) {
   const { query } = useMaterialType();

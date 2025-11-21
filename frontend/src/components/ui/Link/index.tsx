@@ -1,10 +1,10 @@
 import { Link } from "react-router";
 
-type Props = {
+interface Props {
   to: string;
   children: React.ReactNode;
   className?: string;
-};
+}
 
 export default function (props: Props) {
   return (

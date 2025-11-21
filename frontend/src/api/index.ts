@@ -41,7 +41,7 @@ export default class Api<B> {
 
   remove(id: string | number) {
     return fetchApi<{ message: string }>(
-      getApiUrl(`${this.#apiUrl.pathname}/${id}`),
+      getApiUrl(`${this.#apiUrl.pathname}/${String(id)}`),
       "DELETE"
     );
   }

@@ -1,9 +1,9 @@
-import { useState } from "react";
 import { Check } from "lucide-react";
+import { useState } from "react";
 
 import Card from "ui/Card";
-import Spinner from "ui/Spinner";
 import Input from "ui/Input";
+import Spinner from "ui/Spinner";
 
 import useSettings from "./useSettings";
 

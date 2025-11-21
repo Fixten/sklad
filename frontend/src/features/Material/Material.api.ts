@@ -1,4 +1,5 @@
 import Api from "../../api";
+
 import type { MaterialDTO, MaterialModel } from "./Material.model";
 
 const path = "/material";

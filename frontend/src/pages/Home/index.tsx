@@ -1,5 +1,6 @@
-import { navItems } from "@/layout/App.layout";
 import { useNavigate } from "react-router";
+
+import { navItems } from "@/layout/App.layout";
 import Command from "ui/Command";
 
 export default function Home() {
@@ -12,7 +13,11 @@ export default function Home() {
         <Command.CommandEmpty>Нету</Command.CommandEmpty>
         <Command.CommandGroup heading="Меню">
           {navItems.map(({ link, name }) => (
-            <Command.CommandItem onSelect={() => nav(link)}>
+            <Command.CommandItem
+              onSelect={() => {
+                void nav(link);
+              }}
+            >
               {name}
             </Command.CommandItem>
           ))}

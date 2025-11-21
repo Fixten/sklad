@@ -27,7 +27,7 @@ export class MaterialService {
         ...material,
         materialType: materialType._id,
       });
-    } else Promise.reject("name is required");
+    } else return Promise.reject(new Error("name is required"));
   }
 
   async deleteMaterial(id: string) {
