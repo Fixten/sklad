@@ -1,21 +1,14 @@
-import { dirname, resolve } from "path";
-import { fileURLToPath } from "url";
-
 import bodyParser from "body-parser";
 import cors from "cors";
-import { config } from "dotenv";
 import express from "express";
 
 import dbConnection from "./db/dbConnection.js";
-import materialRouter from "./features/material/material.router.js";
+import materialRouter from "./features/material/material.router/material.router.js";
 import materialTypeRouter from "./features/materialType/materialType.router.js";
 import settingsRouter from "./features/settings/settings.router.js";
 import supplyRouter from "./features/supply/supply.router.js";
 
 export default async function getServer() {
-  const __dirname = dirname(fileURLToPath(import.meta.url));
-  config({ path: resolve(__dirname, "../../.env") });
-
   const app = express();
   app.use(cors());
   await dbConnection.connect();

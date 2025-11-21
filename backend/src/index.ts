@@ -1,6 +1,10 @@
+import { config } from "dotenv";
+
 import getServer from "./getServer.js";
 
 async function startApp() {
+  config({ path: "../.env" });
+
   const server = await getServer();
   const { BACKEND_PORT } = process.env;
   if (BACKEND_PORT) {
