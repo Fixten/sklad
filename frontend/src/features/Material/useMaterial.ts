@@ -1,14 +1,17 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import MaterialApi from "../../features/Material/Material.api";
-import { ResponseBody } from "@/api";
-import { MaterialDTO } from "@/features/Material/Material.model";
+
 import { ApiModel } from "@/api/api.model";
+import { MaterialDTO } from "@/features/Material/Material.model";
+
+import MaterialApi from "./Material.api";
 
 const api = new MaterialApi();
 
+export const MaterialQueryKey = "material";
+
 export default function useMaterial() {
   const query = useQuery({
-    queryKey: ["material"],
+    queryKey: [MaterialQueryKey],
     queryFn: api.getAll,
   });
   const addMutation = useMutation({

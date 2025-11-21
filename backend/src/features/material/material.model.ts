@@ -2,7 +2,7 @@ import { ObjectId, WithId } from "mongodb";
 
 export interface VariantModel {
   variant: string;
-  photo_url: string;
+  photo_url?: string;
 }
 
 export interface MaterialModelBase {

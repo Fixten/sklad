@@ -1,17 +1,29 @@
-import Card from "ui/Card";
-import { MaterialModel } from "./Material.model";
-import IconButton from "ui/IconButton";
 import { Delete, Pen } from "lucide-react";
-import MaterialTypeLabel from "./MaterialType/MaterialTypeLabel";
+import { useState } from "react";
 
-type Props = {
+import Button from "ui/Button";
+import Card from "ui/Card";
+import IconButton from "ui/IconButton";
+
+import { MaterialModel } from "./Material.model";
+import MaterialTypeLabel from "./MaterialType/MaterialTypeLabel";
+import EditVariant from "./Variant/EditVariant";
+import useVariant from "./Variant/useVariant";
+
+interface Props {
   value: MaterialModel;
   onRemove: () => void;
   onChange: () => void;
-};
+}
 
 export default function MaterialItem(props: Props) {
   const { name, description, materialType } = props.value;
+  const { addMutation } = useVariant();
+  const [variantEdit, setVariantEdit] = useState<string | null>(null);
+  function onCancelVariant() {
+    setVariantEdit(null);
+  }
+
   return (
     <Card.Wrapper>
       <Card.CardHeader>
@@ -31,6 +43,16 @@ export default function MaterialItem(props: Props) {
       <Card.CardContent>
         Тип: <MaterialTypeLabel id={materialType} />
       </Card.CardContent>
+      <Card.CardFooter>
+        {variantEdit === null ? (
+          <Button onClick={() => { setVariantEdit(""); }}>Добавить вариант</Button>
+        ) : (
+          <EditVariant
+            onClose={onCancelVariant}
+            onSubmit={addMutation.mutateAsync}
+          />
+        )}
+      </Card.CardFooter>
     </Card.Wrapper>
   );
 }

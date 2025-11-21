@@ -2,7 +2,7 @@ import { ApiModel } from "../../api/api.model";
 
 export interface VariantModel {
   variant: string;
-  photo_url: string;
+  photo_url?: string;
 }
 
 export interface MaterialModelBase {

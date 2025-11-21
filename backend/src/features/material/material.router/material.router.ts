@@ -3,10 +3,13 @@ import { WithId } from "mongodb";
 
 import { WithDb } from "@/db/WithDb.js";
 
-import { MaterialDTO, MaterialModel } from "./material.model.js";
-import materialService from "./material.service/index.js";
+import { MaterialDTO, MaterialModel } from "../material.model.js";
+import materialService from "../material.service/material.service.js";
+
+import variantRouter from "./variant.router.js";
 
 const materialRouter = Router();
+materialRouter.use("/variants", variantRouter);
 
 materialRouter.get("/", async (req, res) => {
   res.send(await materialService.getAll());
