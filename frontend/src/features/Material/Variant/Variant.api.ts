@@ -1,6 +1,6 @@
 import Api from "@/api";
 
-import { VariantModel } from "../Material.model";
+import { VariantDTO, VariantModel } from "../Material.model";
 
 const path = "/material/variant";
 
@@ -10,7 +10,7 @@ export default class VariantApi {
     this.#api = new Api(path);
   }
 
-  create = (value: VariantModel) => {
+  create = (value: VariantDTO) => {
     return this.#api.post<VariantModel>(value);
   };
 

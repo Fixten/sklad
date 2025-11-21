@@ -29,6 +29,7 @@ export default function MaterialPage() {
           />
         ) : (
           <MaterialItem
+            materialId={current._id}
             onChange={() => {
               setEditItem(current._id);
             }}

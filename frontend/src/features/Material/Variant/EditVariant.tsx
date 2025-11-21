@@ -23,7 +23,6 @@ export default function EditVariant(props: Props) {
     try {
       validator.parse({ name });
       await props.onSubmit({ variant: name });
-      props.onClose();
     } catch (error) {
       console.error(error);
     }

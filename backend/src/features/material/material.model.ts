@@ -5,6 +5,11 @@ export interface VariantModel {
   photo_url?: string;
 }
 
+export interface VariantDTO {
+  materialId: string;
+  variant: VariantModel;
+}
+
 export interface MaterialModelBase {
   name: string;
   description: string;

@@ -5,21 +5,16 @@ import { WithDb } from "@/db/WithDb.js";
 
 import variantService from "../material.service/variant.service.js";
 
-import type { VariantModel } from "../material.model.js";
+import type { VariantDTO, VariantModel } from "../material.model.js";
 
 const variantRouter = Router();
 
 variantRouter.post(
   "/",
-  async (
-    req: Request<
-      void,
-      WithId<WithDb<VariantModel>>,
-      { variant: VariantModel; id: string }
-    >,
-    res
-  ) => {
-    res.send(await variantService.createVariant(req.body.id, req.body.variant));
+  async (req: Request<void, WithId<WithDb<VariantModel>>, VariantDTO>, res) => {
+    res.send(
+      await variantService.createVariant(req.body.materialId, req.body.variant)
+    );
   }
 );
 

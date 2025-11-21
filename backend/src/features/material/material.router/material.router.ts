@@ -9,7 +9,7 @@ import materialService from "../material.service/material.service.js";
 import variantRouter from "./variant.router.js";
 
 const materialRouter = Router();
-materialRouter.use("/variants", variantRouter);
+materialRouter.use("/variant", variantRouter);
 
 materialRouter.get("/", async (req, res) => {
   res.send(await materialService.getAll());
