@@ -5,14 +5,14 @@ services:
       dockerfile: Dockerfile.backend
     restart: always
     env_file:
-      - .env
+      - .env.prod
     ports:
       - "1100:${BACKEND_PORT}"
     networks:
       - main
 
   frontend:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile.frontend
       args:
