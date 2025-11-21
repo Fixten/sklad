@@ -9,7 +9,7 @@ import { MaterialDTO, MaterialModel } from "./Material.model";
 import SelectMaterialType from "./SelectMaterialType";
 
 interface Props {
-  onSubmit: (v: MaterialDTO) => Promise<void>;
+  onSubmit: (v: MaterialDTO) => Promise<unknown>;
   isError: boolean;
   value?: MaterialModel;
 }

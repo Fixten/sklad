@@ -5,7 +5,7 @@ import { MaterialDTO } from "@/features/Material/Material.model";
 import Spinner from "ui/Spinner";
 
 import EditMaterial from "../../features/Material/EditMaterial";
-import MaterialItem from "../../features/Material/MaterialItem";
+import MaterialCard from "../../features/Material/MaterialCard/MaterialCard";
 import useMaterial from "../../features/Material/useMaterial";
 
 export default function MaterialPage() {
@@ -28,7 +28,7 @@ export default function MaterialPage() {
             isError={updateMutation.isError}
           />
         ) : (
-          <MaterialItem
+          <MaterialCard
             materialId={current._id}
             onChange={() => {
               setEditItem(current._id);
@@ -48,7 +48,7 @@ export default function MaterialPage() {
     return (
       <section className="flex flex-col gap-8">
         <AddMaterial
-          onSubmit={addMutation.mutate}
+          onSubmit={addMutation.mutateAsync}
           isError={addMutation.isError}
         />
         {allMaterial}

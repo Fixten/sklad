@@ -38,6 +38,7 @@ export async function update<T extends Document>(
   const actualUpdate: UpdateFilter<WithDb<T>> = Object.assign({}, value, {
     $currentDate: { updatedAt: { $type: "date" } },
   });
+
   return await collection.findOneAndUpdate(filter, actualUpdate, {
     returnDocument: "after",
   });

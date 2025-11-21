@@ -30,7 +30,7 @@ export default function EditVariant(props: Props) {
 
   return (
     <Form onSubmit={onSubmit} className="flex items-end gap-4">
-      <Input label="Название" onBlur={setName} />
+      <Input label="Название" onChange={setName} />
       <Button type="submit">Сохранить</Button>
       <Button onClick={props.onClose}>Отменить</Button>
     </Form>

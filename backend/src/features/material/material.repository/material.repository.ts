@@ -29,7 +29,7 @@ export class VariantRepository {
   deleteVariant(id: string, variantId: string) {
     return this.#baseRepository.updateById(new ObjectId(id), {
       $pull: {
-        variants: { _id: { $eq: variantId } },
+        variants: { _id: { $eq: new ObjectId(variantId) } },
       },
     });
   }

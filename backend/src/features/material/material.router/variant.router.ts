@@ -28,9 +28,15 @@ variantRouter.post(
 //   }
 // );
 
-// variantRouter.delete("/:id", async (req: Request<{ id: string }>, res) => {
-//   await variantService.deletevariant(req.params.id);
-//   res.send({ message: `${req.params.id} deleted` });
-// });
+variantRouter.delete(
+  "/:materialId/:variantId",
+  async (req: Request<{ materialId: string; variantId: string }>, res) => {
+    await variantService.deleteVariant(
+      req.params.materialId,
+      req.params.variantId
+    );
+    res.send({ message: `${req.params.variantId} deleted` });
+  }
+);
 
 export default variantRouter;

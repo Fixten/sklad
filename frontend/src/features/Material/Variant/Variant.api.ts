@@ -18,7 +18,7 @@ export default class VariantApi {
   //     return this.#api.post(value, id);
   //   };
 
-  //   remove = (id: string) => {
-  //     return this.#api.remove(id);
-  //   };
+  remove = (params: { materialId: string; variantId: string }) => {
+    return this.#api.remove(params.materialId, params.variantId);
+  };
 }

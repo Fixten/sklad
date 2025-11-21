@@ -19,11 +19,11 @@ export default function useVariant() {
   //   const updateMutation = useMutation({
   //     mutationFn: (material: MaterialDTO & Pick<ApiModel, "_id">) =>
   //       api.update(material, material._id),
-  //     onSuccess: () => query.refetch(),
+  //     onSuccess: invalidateMaterial,
   //   });
-  //   const removeMutation = useMutation({
-  //     mutationFn: api.remove,
-  //     onSuccess: () => query.refetch(),
-  //   });
-  return { addMutation };
+  const removeMutation = useMutation({
+    mutationFn: api.remove,
+    onSuccess: invalidateMaterial,
+  });
+  return { addMutation, removeMutation };
 }

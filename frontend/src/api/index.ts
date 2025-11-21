@@ -39,9 +39,10 @@ export default class Api<B> {
     );
   }
 
-  remove(id: string | number) {
+  remove(...args: (string | number)[]) {
+    const params = args.map((v) => `/${String(v)}`).join("");
     return fetchApi<{ message: string }>(
-      getApiUrl(`${this.#apiUrl.pathname}/${String(id)}`),
+      getApiUrl(`${this.#apiUrl.pathname}${params}`),
       "DELETE"
     );
   }
