@@ -1,9 +1,10 @@
 import { ApiModel } from "./api.model";
 
 const pickCorrectBase = () =>
-  `${import.meta.env.VITE_BACKEND_URL as string}:${import.meta.env.VITE_BACKEND_PORT as string}`;
+  (import.meta.env.VITE_BACKEND_URL as string) ??
+  `http://localhost:${import.meta.env.VITE_BACKEND_PORT as string}`;
 
-const getApiUrl = (path: string) => new URL(path, pickCorrectBase());
+const getApiUrl = (path: string) => new URL(path, `${pickCorrectBase()}/`);
 
 export type ResponseBody<B> = B & ApiModel;
 

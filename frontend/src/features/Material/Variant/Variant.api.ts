@@ -2,7 +2,7 @@ import Api from "@/api";
 
 import { VariantDTO, VariantModel } from "../Material.model";
 
-const path = "/material/variant";
+const path = "material/variant";
 
 export default class VariantApi {
   #api: Api<VariantModel>;

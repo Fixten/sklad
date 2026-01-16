@@ -12,16 +12,17 @@ export default async function getServer() {
   const app = express();
   app.use(cors());
   await dbConnection.connect();
-
   app.use(bodyParser.json());
-  app.get("/", (req, res) => {
+
+  const apiRouter = express.Router();
+  apiRouter.get("/", (req, res) => {
     res.send("Hello World!");
   });
+  apiRouter.use("/settings", settingsRouter);
+  apiRouter.use("/material-type", materialTypeRouter);
+  apiRouter.use("/material", materialRouter);
+  apiRouter.use("/supply", supplyRouter);
 
-  app.use("/settings", settingsRouter);
-  app.use("/material-type", materialTypeRouter);
-  app.use("/material", materialRouter);
-  app.use("/supply", supplyRouter);
-
+  app.use("/api", apiRouter);
   return app;
 }

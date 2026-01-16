@@ -2,7 +2,7 @@ import Api from "../../api";
 
 import type { SettingsModel } from "./Settings.model";
 
-const path = "/settings";
+const path = "settings";
 
 export default class SettingsApi {
   #api: Api<SettingsModel>;
