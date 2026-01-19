@@ -8,5 +8,9 @@
     "front:dev": "pnpm --filter frontend run dev",
     "front:build": "pnpm --filter frontend run build",
     "front:prod": "pnpm --filter frontend run prod"
+  },
+  "packageManager": "pnpm@10.28.1",
+  "dependencies": {
+    "@tsconfig/recommended": "^1.0.13"
   }
 }

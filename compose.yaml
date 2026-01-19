@@ -7,7 +7,7 @@ services:
     env_file:
       - .env
     ports:
-      - "1100:${BACKEND_PORT}"
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
     networks:
       - main
 
@@ -24,7 +24,7 @@ services:
     restart: always
 
     ports:
-      - "1101:${FRONTEND_PORT}"
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
     networks:
       - main
 

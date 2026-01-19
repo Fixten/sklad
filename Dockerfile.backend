@@ -1,10 +1,26 @@
 FROM node:23-alpine AS builder
 WORKDIR /app
-COPY package.json package-lock.json .
+ENV CI=true
+
+# install pnpm
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+
+# fetch packages
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
+RUN pnpm fetch --prod
+
+# install dependencies
 COPY backend/package.json ./backend/
-RUN npm ci --omit=dev
-COPY backend/tsconfig.json backend/tsconfig.build.json ./backend/
-COPY backend/src ./backend/src
+RUN pnpm -r install --prod --offline --frozen-lockfile 
+
+# move configs
 COPY tsconfig.json ./
-RUN npm run backend:build
-CMD [ "npm", "run",  "backend:prod"]
+COPY backend/tsconfig.json backend/tsconfig.build.json ./backend/
+
+# build
+COPY backend/src ./backend/src
+RUN npm run back:build
+
+CMD [ "pnpm",  "back:prod"]
