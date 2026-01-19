@@ -8,11 +8,5 @@
     "front:dev": "pnpm --filter frontend run dev",
     "front:build": "pnpm --filter frontend run build",
     "front:prod": "pnpm --filter frontend run prod"
-  },
-  "dependencies": {
-    "@tsconfig/recommended": "^1.0.10",
-    "express": "^5.1.0",
-    "pm2": "^6.0.8",
-    "typescript": "^5.8.3"
   }
 }
