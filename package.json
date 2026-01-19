@@ -1,32 +1,13 @@
 {
   "name": "sklad",
-  "workspaces": [
-    "backend/",
-    "frontend/"
-  ],
   "scripts": {
-    "backend:dev": "npm -w=backend exec -- npm start",
-    "backend:build": "npm -w=backend exec -- npm run build",
-    "backend:test": "npm -w=backend exec -- npm test",
-    "backend:prod": "npm -w=backend exec -- npm run prod",
-    "front:dev": "npm -w=frontend exec -- npm run dev",
-    "front:build": "npm -w=frontend exec -- npm run build",
-    "front:prod": "npm -w=frontend exec -- npm run prod"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.26.10",
-    "@babel/preset-env": "^7.26.9",
-    "@babel/preset-typescript": "^7.27.0",
-    "@eslint/js": "^9.24.0",
-    "@types/jest": "^29.5.14",
-    "babel-jest": "^29.7.0",
-    "eslint": "^9.24.0",
-    "eslint-import-resolver-typescript": "^4.3.4",
-    "eslint-plugin-import-x": "^4.10.6",
-    "eslint-plugin-jest": "^28.11.0",
-    "jest": "^29.7.0",
-    "prettier": "^3.5.3",
-    "typescript-eslint": "^8.29.1"
+    "back:dev": "pnpm --filter backend start",
+    "back:build": "pnpm --filter backend run build",
+    "back:test": "pnpm --filter backend test",
+    "back:prod": "pnpm --filter backend run prod",
+    "front:dev": "pnpm --filter frontend run dev",
+    "front:build": "pnpm --filter frontend run build",
+    "front:prod": "pnpm --filter frontend run prod"
   },
   "dependencies": {
     "@tsconfig/recommended": "^1.0.10",
