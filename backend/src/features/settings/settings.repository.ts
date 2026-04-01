@@ -1,20 +1,31 @@
-import Repository from "@/db/repository.js";
-
-import { SettingsModel } from "./settings.model.js";
-
-const collectionName = "settings";
+import db from "@/db/index.js";
+import {
+  settingsId,
+  SettingsModel,
+  settingsSchema,
+} from "./settings.schema.js";
 
 export class SettingsRepository {
-  #baseRepository: Repository<SettingsModel>;
+  private db = db;
+  private table = settingsSchema;
 
-  constructor() {
-    this.#baseRepository = new Repository(collectionName);
-  }
   getConfig() {
-    return this.#baseRepository.getByValue({});
+    return this.db
+      .select()
+      .from(this.table)
+      .limit(1)
+      .execute()
+      .then((rows) => rows[0]);
   }
+
   updateConfig(updateItem: SettingsModel) {
-    return this.#baseRepository.upsert({}, updateItem);
+    return this.db
+      .insert(this.table)
+      .values({ ...updateItem, id: settingsId })
+      .onConflictDoUpdate({ target: this.table.id, set: updateItem })
+      .returning()
+      .execute()
+      .then((rows) => rows[0]);
   }
 }
 
