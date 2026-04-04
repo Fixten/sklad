@@ -1,5 +1,5 @@
 import { SQLiteTable } from "drizzle-orm/sqlite-core";
-import Db from "../index.js";
+import { Db } from "../index.js";
 import { sql, SQL } from "drizzle-orm";
 
 export default async function updateInDb<

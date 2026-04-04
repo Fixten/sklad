@@ -1,6 +1,6 @@
 import { SQLiteTable } from "drizzle-orm/sqlite-core";
-import Db from "../index.js";
-import { sql, SQL } from "drizzle-orm";
+import { Db } from "../index.js";
+import { SQL } from "drizzle-orm";
 import updateInDb from "./updateInDb.js";
 import { insertInDb } from "./insertInDb.js";
 

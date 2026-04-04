@@ -6,10 +6,10 @@ import {
 import { defaultDbFields } from "@/db/schema/defaultFields.js";
 import { int } from "drizzle-orm/sqlite-core";
 
-export const settingsTableName = "settings";
+export const settingsTable = "settings";
 export const settingsId = 1;
 
-export const settingsSchema = getSchema(settingsTableName, {
+export const settingsSchema = getSchema(settingsTable, {
   ...defaultDbFields,
   id: int().primaryKey().default(settingsId),
   work_hour_cost: int().default(500).notNull(),

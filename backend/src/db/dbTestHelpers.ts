@@ -2,7 +2,7 @@ import { text } from "drizzle-orm/sqlite-core";
 
 import { defaultDbFields } from "./schema/defaultFields.js";
 import { getSchema } from "./schema/createSchema.js";
-import Db from "./index.js";
+import { Db } from "./index.js";
 
 const table = "test";
 
@@ -17,9 +17,9 @@ export type TestDb = Db<typeof dbSchema>;
 
 export function getTestDb(): TestDb {
   const db = new Db(true, dbSchema);
-
-  db.client.$client
-    .prepare(
+  db.connect();
+  db.base
+    ?.prepare(
       `
     CREATE TABLE ${table} (
       id INTEGER PRIMARY KEY AUTOINCREMENT,

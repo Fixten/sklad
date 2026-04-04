@@ -6,12 +6,13 @@ import materialRouter from "./features/material/material.router/material.router.
 import materialTypeRouter from "./features/materialType/materialType.router.js";
 import settingsRouter from "./features/settings/settings.router.js";
 import supplyRouter from "./features/supply/supply.router.js";
+import Db from "./db/index.js";
 
 export default async function getServer() {
   const app = express();
   app.use(cors());
   app.use(bodyParser.json());
-
+  Db.connect();
   const apiRouter = express.Router();
   apiRouter.get("/", (_, res) => {
     res.send("Hello World!");
