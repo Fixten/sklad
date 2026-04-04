@@ -1,9 +1,25 @@
 import { drizzle } from "drizzle-orm/better-sqlite3";
 
+import schemas from "./schema/index.js";
 import { createSqlite } from "./createSqlite.js";
 
-const db = drizzle({ client: createSqlite() });
+export class Db<TSchema extends Record<string, unknown>> {
+  private base;
+  client;
+  constructor(isMemory: boolean = false, schema: TSchema) {
+    this.base = createSqlite(isMemory);
+    this.client = drizzle(this.base, {
+      schema,
+    });
+  }
 
-export type Db = typeof db;
+  close() {
+    this.base.close();
+  }
+}
 
-export default db;
+const getDb = () => new Db(false, schemas);
+export type DB = ReturnType<typeof getDb>;
+export type DbClient = DB["client"];
+
+export default Db;

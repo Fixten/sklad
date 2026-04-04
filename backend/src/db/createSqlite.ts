@@ -5,12 +5,14 @@ import Database from "better-sqlite3";
 export function getSqlitePath() {
   const { SQLITE } = process.env;
   if (SQLITE) {
-    return SQLITE === ":memory:" ? SQLITE : resolve(cwd(), SQLITE);
+    return resolve(cwd(), SQLITE);
   } else throw new Error("No sqlite path string in env");
 }
 
-export function createSqlite() {
-  const path = getSqlitePath();
+const memoryPath = ":memory:";
+
+export function createSqlite(isMemory: boolean) {
+  const path = isMemory ? memoryPath : getSqlitePath();
   const db = new Database(path, {
     verbose: process.env.NODE_ENV === "development" ? console.log : undefined,
   });
