@@ -1,10 +1,10 @@
 import { Request, Router } from "express";
-import { WithId } from "mongodb";
 
-import { WithDb } from "@/db/WithDb.js";
-
-import { MaterialTypeModel } from "./materialType.model.js";
 import materialTypeService from "./materialType.service.js";
+import {
+  MaterialTypeModel,
+  MaterialTypeSchema,
+} from "./materialType.schema.js";
 
 const materialTypeRouter = Router();
 
@@ -13,23 +13,20 @@ materialTypeRouter.get("/", async (req, res) => {
   res.send(result);
 });
 
-materialTypeRouter.get("/id", async (req: Request<{ id: string }>, res) => {
+materialTypeRouter.get("/id", async (req: Request<{ id: number }>, res) => {
   const result = await materialTypeService.get(req.params.id);
   res.send(result);
 });
 
 materialTypeRouter.post(
   "/",
-  async (
-    req: Request<void, WithId<WithDb<MaterialTypeModel>>, MaterialTypeModel>,
-    res
-  ) => {
+  async (req: Request<void, MaterialTypeSchema, MaterialTypeModel>, res) => {
     const result = await materialTypeService.addNew(req.body);
     res.send(result);
-  }
+  },
 );
 
-materialTypeRouter.delete("/:id", async (req: Request<{ id: string }>, res) => {
+materialTypeRouter.delete("/:id", async (req: Request<{ id: number }>, res) => {
   await materialTypeService.delete(req.params.id);
   res.send({ message: `${req.params.id} deleted` });
 });

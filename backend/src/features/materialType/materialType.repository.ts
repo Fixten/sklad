@@ -1,30 +1,28 @@
-import { ObjectId } from "mongodb";
-
 import Repository from "@/db/repository.js";
-
-import { MaterialTypeModel } from "./materialType.model.js";
-
-const collectionName = "material-type";
+import {
+  MaterialTypeModel,
+  materialTypeSchema,
+} from "./materialType.schema.js";
 
 class MaterialTypeRepository {
-  #repository: Repository<MaterialTypeModel>;
+  private repository;
   constructor() {
-    this.#repository = new Repository(collectionName);
+    this.repository = new Repository(materialTypeSchema);
   }
   addNew(materialType: MaterialTypeModel) {
-    return this.#repository.addNew(materialType);
+    return this.repository.addNew(materialType);
   }
-  delete(id: string) {
-    return this.#repository.deleteById(new ObjectId(id));
+  delete(id: number) {
+    return this.repository.deleteById(id);
   }
-  update(id: string, newValue: MaterialTypeModel) {
-    return this.#repository.updateById(new ObjectId(id), { $set: newValue });
+  update(id: number, newValue: MaterialTypeModel) {
+    return this.repository.updateById(id, newValue);
   }
   getAll() {
-    return this.#repository.getAll();
+    return this.repository.getAll();
   }
-  get(id: string) {
-    return this.#repository.getById(new ObjectId(id));
+  get(id: number) {
+    return this.repository.getById(id);
   }
 }
 

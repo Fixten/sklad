@@ -1,4 +1,8 @@
 import {
+  materialTypeSchema,
+  materialTypeTable,
+} from "@/features/materialType/materialType.schema.js";
+import {
   settingsSchema,
   settingsTable,
 } from "@/features/settings/settings.schema.js";
@@ -6,6 +10,7 @@ import { SQLiteColumn, SQLiteTable } from "drizzle-orm/sqlite-core";
 
 const shemas = {
   [settingsTable]: settingsSchema,
+  [materialTypeTable]: materialTypeSchema,
 };
 
 export default shemas;
