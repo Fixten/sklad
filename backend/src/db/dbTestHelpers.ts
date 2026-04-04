@@ -7,19 +7,25 @@ import Db from "./index.js";
 const table = "test";
 
 export const testSchema = getSchema(table, {
-  id: defaultDbFields.id,
+  ...defaultDbFields,
   name: text().notNull(),
 });
 
-export function getTestDb() {
-  const db = new Db(true, { test: testSchema });
+const dbSchema = { test: testSchema };
+
+export type TestDb = Db<typeof dbSchema>;
+
+export function getTestDb(): TestDb {
+  const db = new Db(true, dbSchema);
 
   db.client.$client
     .prepare(
       `
     CREATE TABLE ${table} (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL
+      name TEXT NOT NULL,
+      updated_at INTEGER,
+      created_at INTEGER
     );
   `,
     )
