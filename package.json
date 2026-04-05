@@ -12,5 +12,8 @@
   "packageManager": "pnpm@10.33.0",
   "dependencies": {
     "@tsconfig/recommended": "^1.0.13"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
   }
 }
