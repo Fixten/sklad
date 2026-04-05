@@ -1,4 +1,5 @@
 import { getTestDb, testSchema } from "../dbTestHelpers.js";
+
 import { insertInDb } from "./insertInDb.js";
 
 describe("insertInDb", () => {

@@ -1,10 +1,11 @@
+import { int } from "drizzle-orm/sqlite-core";
+
 import {
   getSchema,
   SchemaModel,
   SchemaType,
 } from "@/db/schema/createSchema.js";
 import { defaultDbFields } from "@/db/schema/defaultFields.js";
-import { int } from "drizzle-orm/sqlite-core";
 
 export const settingsTable = "settings";
 export const settingsId = 1;

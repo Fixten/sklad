@@ -1,8 +1,10 @@
-import { SQLiteTable } from "drizzle-orm/sqlite-core";
-import { Db } from "../index.js";
 import { SQL } from "drizzle-orm";
-import updateInDb from "./updateInDb.js";
+import { SQLiteTable } from "drizzle-orm/sqlite-core";
+
+import { Db } from "../index.js";
+
 import { insertInDb } from "./insertInDb.js";
+import updateInDb from "./updateInDb.js";
 
 export default async function upsertInDb<
   TSchema extends Record<string, unknown>,

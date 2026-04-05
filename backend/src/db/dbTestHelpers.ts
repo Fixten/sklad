@@ -1,7 +1,8 @@
 import { text } from "drizzle-orm/sqlite-core";
 
-import { defaultDbFields } from "./schema/defaultFields.js";
 import { getSchema } from "./schema/createSchema.js";
+import { defaultDbFields } from "./schema/defaultFields.js";
+
 import { Db } from "./index.js";
 
 const table = "test";

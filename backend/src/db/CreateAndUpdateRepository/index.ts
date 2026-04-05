@@ -1,9 +1,11 @@
+import { SQL } from "drizzle-orm";
 import { SQLiteTable } from "drizzle-orm/sqlite-core";
-import type { DbClient } from "../index.js";
+
 import { insertInDb } from "./insertInDb.js";
 import updateInDb from "./updateInDb.js";
 import upsertInDb from "./upsertInDb.js";
-import { SQL } from "drizzle-orm";
+
+import type { DbClient } from "../index.js";
 
 const nullError = "Db operation failed";
 

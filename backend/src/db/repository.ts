@@ -1,11 +1,14 @@
-import { throwIfNull } from "./CreateAndUpdateRepository/index.js";
-import CreateAndUpdateRepository from "./CreateAndUpdateRepository/index.js";
-import db from "./index.js";
 import { eq, SQL } from "drizzle-orm";
+
+import CreateAndUpdateRepository, {
+  throwIfNull,
+} from "./CreateAndUpdateRepository/index.js";
 import { BaseSchema } from "./schema/index.js";
 
+import dbSingleton from "./index.js";
+
 export default class Repository<T extends BaseSchema> {
-  private db = db;
+  db = dbSingleton;
   private createAndUpdate;
   constructor(private schema: T) {
     this.createAndUpdate = new CreateAndUpdateRepository(

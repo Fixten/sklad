@@ -1,15 +1,15 @@
+import Sqlite from "better-sqlite3";
 import { BetterSQLite3Database, drizzle } from "drizzle-orm/better-sqlite3";
-import Database from "better-sqlite3";
 
-import schemas from "./schema/index.js";
 import { createSqlite } from "./createSqlite.js";
+import schemas from "./schema/index.js";
 
 export class Db<TSchema extends Record<string, unknown>> {
-  base?: Database.Database;
+  base?: Sqlite.Database;
   private orm?: BetterSQLite3Database<TSchema>;
 
   constructor(
-    public isMemory: boolean = false,
+    public isMemory = false,
     public schema: TSchema,
   ) {}
 

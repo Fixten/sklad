@@ -1,10 +1,12 @@
 import { eq } from "drizzle-orm";
+
+import Repository from "@/db/repository.js";
+
 import {
   settingsId,
   SettingsModel,
   settingsSchema,
 } from "./settings.schema.js";
-import Repository from "@/db/repository.js";
 
 export class SettingsRepository {
   private schema = settingsSchema;
@@ -17,7 +19,7 @@ export class SettingsRepository {
   updateConfig(updateItem: SettingsModel) {
     return this.repository
       .upsert(eq(this.schema.id, settingsId), updateItem)
-      .then((result) => (Array.isArray(result) ? result[0] : result));
+      .then((result) => result[0]);
   }
 }
 

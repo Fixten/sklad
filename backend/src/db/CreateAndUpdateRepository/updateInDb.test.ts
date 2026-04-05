@@ -1,10 +1,11 @@
 import { eq } from "drizzle-orm";
 
 import { getTestDb, testSchema } from "../dbTestHelpers.js";
-import type { TestDb } from "../dbTestHelpers.js";
 
 import { insertInDb } from "./insertInDb.js";
 import updateInDb from "./updateInDb.js";
+
+import type { TestDb } from "../dbTestHelpers.js";
 
 describe("update", () => {
   const original = "test";
@@ -17,7 +18,7 @@ describe("update", () => {
   });
 
   afterEach(() => {
-    db?.close();
+    db.close();
   });
 
   it("updated doc in db", async () => {

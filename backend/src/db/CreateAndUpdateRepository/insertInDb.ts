@@ -1,6 +1,8 @@
 import { SQLiteTable } from "drizzle-orm/sqlite-core";
-import type { Db } from "../index.js";
+
 import { WithDb } from "../WithDb.js";
+
+import type { Db } from "../index.js";
 
 export async function insertInDb<
   TSchema extends Record<string, unknown>,

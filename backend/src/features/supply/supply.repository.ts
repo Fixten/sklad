@@ -1,6 +1,8 @@
-import Repository from "@/db/repository.js";
-import { SupplyModel, supplySchema } from "./supply.schema.js";
 import { eq } from "drizzle-orm";
+
+import Repository from "@/db/repository.js";
+
+import { SupplyModel, supplySchema } from "./supply.schema.js";
 
 export class SupplyRepository {
   private baseRepository;

@@ -1,10 +1,12 @@
+import { integer, text } from "drizzle-orm/sqlite-core";
+
 import {
   getSchema,
   SchemaModel,
   SchemaType,
 } from "@/db/schema/createSchema.js";
 import { defaultDbFields } from "@/db/schema/defaultFields.js";
-import { integer, text } from "drizzle-orm/sqlite-core";
+
 import { materialVariantSchema } from "../materialVariant/materialVariant.schema.js";
 
 export const supplyTable = "supply";

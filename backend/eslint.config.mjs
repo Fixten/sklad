@@ -1,11 +1,11 @@
 import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
+import { defineConfig } from "eslint/config";
 import * as pluginImportX from "eslint-plugin-import-x";
-import tsParser from "@typescript-eslint/parser";
 import jestPlugin from "eslint-plugin-jest";
 import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
 
-export default tseslint.config(
+export default defineConfig(
   eslint.configs.recommended,
   tseslint.configs.strictTypeChecked,
   tseslint.configs.stylisticTypeChecked,
@@ -41,7 +41,6 @@ export default tseslint.config(
     files: ["**/*.{js,ts}"],
     ignores: ["eslint.config.mjs"],
     languageOptions: {
-      parser: tsParser,
       ecmaVersion: "latest",
       sourceType: "module",
     },
@@ -73,5 +72,5 @@ export default tseslint.config(
         createTypeScriptImportResolver({ project: "tsconfig.json" }),
       ],
     },
-  }
+  },
 );
