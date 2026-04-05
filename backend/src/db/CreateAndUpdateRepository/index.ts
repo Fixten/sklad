@@ -30,8 +30,11 @@ export default class CreateAndUpdateRepository<T extends SQLiteTable> {
     return throwIfNull(this.insert(this.dbClient, this.schema, document));
   }
 
-  updateDoc(where: SQL, value: T["$inferInsert"], upsert: boolean = false) {
-    const args = [this.dbClient, this.schema, value, where] as const;
-    return throwIfNull(upsert ? this.upsert(...args) : this.update(...args));
+  updateDoc(where: SQL, value: T["$inferInsert"]) {
+    return throwIfNull(this.update(this.dbClient, this.schema, value, where));
+  }
+
+  upsertDoc(where: SQL, value: T["$inferInsert"]) {
+    return throwIfNull(this.upsert(this.dbClient, this.schema, value, where));
   }
 }

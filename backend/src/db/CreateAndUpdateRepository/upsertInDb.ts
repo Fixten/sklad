@@ -14,5 +14,9 @@ export default async function upsertInDb<
   where: SQL,
 ) {
   const result = await updateInDb(dbClient, schema, value, where);
-  return result ?? insertInDb(dbClient, schema, value);
+  if (result) return result;
+  else {
+    const insertResult = await insertInDb(dbClient, schema, value);
+    return insertResult ? [insertResult] : null;
+  }
 }

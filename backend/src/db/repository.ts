@@ -19,13 +19,15 @@ export default class Repository<T extends BaseSchema> {
   }
 
   updateById(id: number, updateItem: T["$inferInsert"]) {
-    return this.createAndUpdate.updateDoc(eq(this.schema.id, id), updateItem);
+    return this.createAndUpdate
+      .updateDoc(eq(this.schema.id, id), updateItem)
+      .then((rows) => rows[0]);
   }
   updateByValue(where: SQL, updateItem: T["$inferInsert"]) {
     return this.createAndUpdate.updateDoc(where, updateItem);
   }
   upsert(where: SQL, updateItem: T["$inferInsert"]) {
-    return this.createAndUpdate.updateDoc(where, updateItem, true);
+    return this.createAndUpdate.upsertDoc(where, updateItem);
   }
   getAll() {
     return this.db.client.select().from(this.schema);

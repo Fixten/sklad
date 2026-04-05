@@ -19,5 +19,5 @@ export default async function updateInDb<
     .set(actualUpdate)
     .where(where)
     .returning();
-  return result.length > 0 ? result : null;
+  return result.length > 0 ? (result as T["$inferSelect"][]) : null;
 }
