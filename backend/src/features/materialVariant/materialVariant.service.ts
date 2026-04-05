@@ -1,0 +1,39 @@
+import { SupplyRepository } from "@/features/supply/supply.repository.js";
+
+import { MaterialVariantRepository } from "./materialVariant.repository.js";
+import { MaterialVariantModel } from "./materialVariant.schema.js";
+import { createSingleton } from "@/utils/createSingeton.js";
+
+export class MaterialVariantService {
+  static getSingleton = createSingleton(
+    () =>
+      new MaterialVariantService(
+        SupplyRepository.getSingleton(),
+        MaterialVariantRepository.getSingleton(),
+      ),
+  );
+  updateVariant;
+  constructor(
+    private supply: SupplyRepository,
+    private repository: MaterialVariantRepository,
+  ) {
+    this.updateVariant = this.repository.updateVariant;
+  }
+
+  async createVariant(variant: MaterialVariantModel) {
+    return this.repository.createVariant(variant);
+  }
+  async deleteVariant(variantId: number) {
+    const supplies = await this.supply.getForVariant(variantId);
+    if (supplies.length > 0) {
+      this.repository.softDelete(variantId);
+    } else {
+      return this.repository.deleteVariant(variantId);
+    }
+  }
+
+  async deleteVariantForMaterial(materialId: number) {
+    const variants = await this.repository.getByMeterial(materialId);
+    return Promise.all(variants.map((v) => this.deleteVariant(v.id)));
+  }
+}

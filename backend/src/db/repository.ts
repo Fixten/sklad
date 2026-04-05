@@ -21,12 +21,12 @@ export default class Repository<T extends BaseSchema> {
     return this.createAndUpdate.insertDoc(newItem);
   }
 
-  updateById(id: number, updateItem: T["$inferInsert"]) {
+  updateById(id: number, updateItem: Partial<T["$inferInsert"]>) {
     return this.createAndUpdate
       .updateDoc(eq(this.schema.id, id), updateItem)
       .then((rows) => rows[0]);
   }
-  updateByValue(where: SQL, updateItem: T["$inferInsert"]) {
+  updateByValue(where: SQL, updateItem: Partial<T["$inferInsert"]>) {
     return this.createAndUpdate.updateDoc(where, updateItem);
   }
   upsert(where: SQL, updateItem: T["$inferInsert"]) {
@@ -35,22 +35,19 @@ export default class Repository<T extends BaseSchema> {
   getAll() {
     return this.db.client.select().from(this.schema);
   }
-  getByValue(where: SQL, select?: Parameters<typeof this.db.client.select>[0]) {
+  getByValue(where: SQL) {
     const error = "Item was not found";
-    return select
-      ? throwIfNull(
-          this.db.client.select(select).from(this.schema).where(where),
-          error,
-        )
-      : throwIfNull(
-          this.db.client.select().from(this.schema).where(where),
-          error,
-        );
+    return throwIfNull(
+      this.db.client.select().from(this.schema).where(where) as Promise<
+        T["$inferSelect"][]
+      >,
+      error,
+    );
   }
 
-  getById(id: number, select?: Parameters<typeof this.getByValue>[1]) {
+  getById(id: number) {
     const where = eq(this.schema.id, id);
-    return this.getByValue(where, select);
+    return this.getByValue(where);
   }
 
   deleteByValue(where: SQL) {
