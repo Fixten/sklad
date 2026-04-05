@@ -1,48 +1,37 @@
-import { ObjectId } from "mongodb";
-
 import Repository from "@/db/repository.js";
-
-import { SupplyModel, SupplyModelDTO } from "./supply.model.js";
-
-const collectionName = "supply";
+import { SupplyModel, supplySchema } from "./supply.schema.js";
+import { eq } from "drizzle-orm";
 
 export class SupplyRepository {
-  #baseRepository: Repository<SupplyModel>;
+  private baseRepository;
+  schema = supplySchema;
 
   constructor() {
-    this.#baseRepository = new Repository(collectionName);
+    this.baseRepository = new Repository(this.schema);
   }
 
-  getById(id: string) {
-    return this.#baseRepository.getById(new ObjectId(id));
+  getById(id: number) {
+    return this.baseRepository.getById(id);
   }
   getAll() {
-    return this.#baseRepository.getAll();
+    return this.baseRepository.getAll();
   }
 
-  addNew(supply: SupplyModelDTO) {
-    return this.#baseRepository.addNew({
-      ...supply,
-      variantId: new ObjectId(supply.variantId),
-    });
+  addNew(supply: SupplyModel) {
+    return this.baseRepository.addNew(supply);
   }
-  update(id: string, newValue: SupplyModelDTO) {
-    return this.#baseRepository.updateById(new ObjectId(id), {
-      $set: {
-        ...newValue,
-        variantId: new ObjectId(newValue.variantId),
-      },
-    });
+  update(id: number, newValue: SupplyModel) {
+    return this.baseRepository.updateById(id, newValue);
   }
 
-  delete(id: string) {
-    return this.#baseRepository.deleteById(new ObjectId(id));
+  delete(id: number) {
+    return this.baseRepository.deleteById(id);
   }
 
-  deteleAllForVariant(variantId: string) {
-    return this.#baseRepository.deleteMany({
-      variantId: new ObjectId(variantId),
-    });
+  deteleAllForVariant(variantId: number) {
+    return this.baseRepository.deleteByValue(
+      eq(this.schema.variant, variantId),
+    );
   }
 }
 

@@ -1,10 +1,7 @@
 import { Request, Router } from "express";
-import { WithId } from "mongodb";
 
-import { WithDb } from "@/db/WithDb.js";
-
-import { SupplyModel, SupplyModelDTO } from "./supply.model.js";
 import supplyService from "./supply.service.js";
+import { SupplyModel, SupplySchema } from "./supply.schema.js";
 
 const supplyRouter = Router();
 
@@ -14,29 +11,24 @@ supplyRouter.get("/", async (req, res) => {
 
 supplyRouter.post(
   "/",
-  async (
-    req: Request<void, WithId<WithDb<SupplyModel>>, SupplyModelDTO>,
-    res
-  ) => {
+  async (req: Request<void, SupplySchema, SupplyModel>, res) => {
     res.send(await supplyService.addNew(req.body));
-  }
+  },
 );
 
 supplyRouter.post(
   "/:id",
-  async (
-    req: Request<{ id: string }, WithId<WithDb<SupplyModel>>, SupplyModelDTO>,
-    res
-  ) => {
-    res.send(await supplyService.update(req.params.id, req.body));
-  }
+  async (req: Request<{ id: number }, SupplySchema, SupplyModel>, res) => {
+    const result = await supplyService.update(req.params.id, req.body);
+    res.send(result);
+  },
 );
 
 supplyRouter.delete(
   "/:id",
-  async (req: Request<{ id: string }, boolean>, res) => {
+  async (req: Request<{ id: number }, boolean>, res) => {
     res.send(await supplyService.delete(req.params.id));
-  }
+  },
 );
 
 export default supplyRouter;
