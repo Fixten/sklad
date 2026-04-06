@@ -1,10 +1,13 @@
 import Repository from "@/db/repository.js";
+
 import {
   MaterialTypeModel,
   materialTypeSchema,
 } from "./materialType.schema.js";
+import { createSingleton } from "@/utils/createSingeton.js";
 
-class MaterialTypeRepository {
+export default class MaterialTypeRepository {
+  static getSingleton = createSingleton(() => new MaterialTypeRepository());
   private repository;
   constructor() {
     this.repository = new Repository(materialTypeSchema);
@@ -25,5 +28,3 @@ class MaterialTypeRepository {
     return this.repository.getById(id);
   }
 }
-
-export default MaterialTypeRepository;
