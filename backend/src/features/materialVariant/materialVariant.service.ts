@@ -26,9 +26,11 @@ export class MaterialVariantService {
   async deleteVariant(variantId: number) {
     const supplies = await this.supply.getForVariant(variantId);
     if (supplies.length > 0) {
-      this.repository.softDelete(variantId);
+      await this.repository.softDelete(variantId);
+      return "softDelete";
     } else {
-      return this.repository.deleteVariant(variantId);
+      await this.repository.deleteVariant(variantId);
+      return "hardDelete";
     }
   }
 

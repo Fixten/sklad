@@ -13,12 +13,12 @@ export const materialVariantTable = "material_variant";
 
 export const materialVariantSchema = getSchema(materialVariantTable, {
   ...defaultDbFields,
-  variant: text().notNull(),
+  variant: text().notNull().unique(),
   photo_url: text(),
   material: integer("material_id")
     .references(() => materialSchema.id)
     .notNull(),
-  deleted: integer({ mode: "boolean" }),
+  deleted: integer({ mode: "boolean" }).default(false),
 });
 
 export type MaterialVariantSchema = SchemaType<typeof materialVariantSchema>;

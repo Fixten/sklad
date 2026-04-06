@@ -25,14 +25,7 @@ export class MaterialVariantRepository {
   }
 
   createVariant(variant: MaterialVariantModel) {
-    return this.baseRepository.db.client
-      .insert(this.schema)
-      .values(variant)
-      .onConflictDoNothing({ target: this.schema.variant })
-      .returning()
-      .then((rows) =>
-        rows.length ? rows[0] : Promise.reject(new Error("Creation failed")),
-      );
+    return this.baseRepository.addNew(variant);
   }
 
   deleteVariant(id: number) {
