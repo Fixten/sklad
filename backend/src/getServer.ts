@@ -3,7 +3,7 @@ import cors from "cors";
 import express, { Router } from "express";
 
 import DbSingleton from "./db/index.js";
-import materialRouter from "./features/material/material.router/material.router.js";
+import materialRouter from "./features/material/material.router.js";
 import materialTypeRouter from "./features/materialType/materialType.router.js";
 import settingsRouter from "./features/settings/settings.router.js";
 import supplyRouter from "./features/supply/supply.router.js";
