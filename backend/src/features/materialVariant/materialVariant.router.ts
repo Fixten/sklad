@@ -6,11 +6,11 @@ import {
 } from "./materialVariant.schema.js";
 import { MaterialVariantService } from "./materialVariant.service.js";
 
-const variantRouter = Router();
+const materialVariantRouter = Router();
 
 const service = MaterialVariantService.getSingleton();
 
-variantRouter.post(
+materialVariantRouter.post(
   "/",
   async (
     req: Request<void, MaterialVariantSchema, MaterialVariantModel>,
@@ -20,7 +20,7 @@ variantRouter.post(
   },
 );
 
-variantRouter.post(
+materialVariantRouter.post(
   "/:id",
   async (
     req: Request<{ id: number }, MaterialVariantSchema, MaterialVariantModel>,
@@ -30,9 +30,12 @@ variantRouter.post(
   },
 );
 
-variantRouter.delete("/:id", async (req: Request<{ id: number }>, res) => {
-  await service.deleteVariant(req.params.id);
-  res.send({ message: `${req.params.id} deleted` });
-});
+materialVariantRouter.delete(
+  "/:id",
+  async (req: Request<{ id: number }>, res) => {
+    await service.deleteVariant(req.params.id);
+    res.send({ message: `${String(req.params.id)} deleted` });
+  },
+);
 
-export default variantRouter;
+export default materialVariantRouter;

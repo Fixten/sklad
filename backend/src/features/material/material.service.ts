@@ -1,6 +1,7 @@
 import { createSingleton } from "@/utils/createSingeton.js";
 
 import { MaterialVariantService } from "../materialVariant/materialVariant.service.js";
+
 import { MaterialRepository } from "./material.repository.js";
 import { MaterialModel } from "./material.schema.js";
 
@@ -30,7 +31,7 @@ export class MaterialService {
     const deletedVariants =
       await this.variantService.deleteVariantForMaterial(id);
     if (deletedVariants.some((v) => v === "softDelete"))
-      this.repository.softDeleteMaterial(id);
+      return this.repository.softDeleteMaterial(id);
     else {
       return this.repository.deleteMaterial(id);
     }

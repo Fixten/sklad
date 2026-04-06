@@ -1,11 +1,12 @@
+import { eq } from "drizzle-orm";
+
 import Repository from "@/db/repository.js";
+import { createSingleton } from "@/utils/createSingeton.js";
 
 import {
   MaterialVariantModel,
   materialVariantSchema,
 } from "./materialVariant.schema.js";
-import { eq } from "drizzle-orm";
-import { createSingleton } from "@/utils/createSingeton.js";
 
 export class MaterialVariantRepository {
   static getSingleton = createSingleton(() => new MaterialVariantRepository());

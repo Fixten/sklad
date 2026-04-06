@@ -1,6 +1,6 @@
 import Repository from "@/db/repository.js";
-
 import { createSingleton } from "@/utils/createSingeton.js";
+
 import { SupplierModel, supplierSchema } from "./supplier.schema.js";
 
 export default class SupplierRepository {

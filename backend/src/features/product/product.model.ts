@@ -1,5 +1,3 @@
-import { ObjectId } from "mongodb";
-
 export interface ProductModel {
   name: string;
   description: string;
@@ -14,7 +12,7 @@ export interface ProductModel {
   additional_costs: number;
   material: [
     {
-      material_id: ObjectId;
+      material_id: number;
       quantity: number;
     },
   ];

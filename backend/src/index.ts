@@ -1,11 +1,7 @@
-import { config } from "dotenv";
-
 import getServer from "./getServer.js";
 
-async function startApp() {
-  config({ path: "../.env.development" });
-
-  const server = await getServer();
+function startApp() {
+  const server = getServer();
   const { BACKEND_PORT } = process.env;
   if (BACKEND_PORT) {
     server.listen(BACKEND_PORT, () => {
@@ -14,4 +10,4 @@ async function startApp() {
   } else throw new Error("BACKEND_PORT is not set");
 }
 
-await startApp();
+startApp();

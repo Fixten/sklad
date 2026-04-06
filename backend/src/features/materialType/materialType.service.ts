@@ -1,4 +1,5 @@
 import { createSingleton } from "@/utils/createSingeton.js";
+
 import MaterialTypeRepository from "./materialType.repository.js";
 import { MaterialTypeModel } from "./materialType.schema.js";
 

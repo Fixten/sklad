@@ -1,11 +1,12 @@
 import { Request, Router } from "express";
 
-import variantRouter from "../materialVariant/materialVariant.router.js";
-import { MaterialService } from "./material.service.js";
+import materialVariantRouter from "../materialVariant/materialVariant.router.js";
+
 import { MaterialModel, MaterialSchema } from "./material.schema.js";
+import { MaterialService } from "./material.service.js";
 
 const materialRouter = Router();
-materialRouter.use("/variant", variantRouter);
+materialRouter.use("/variant", materialVariantRouter);
 const service = MaterialService.getSingleton();
 
 materialRouter.get("/", async (req, res) => {
@@ -28,7 +29,7 @@ materialRouter.post(
 
 materialRouter.delete("/:id", async (req: Request<{ id: number }>, res) => {
   await service.deleteMaterial(req.params.id);
-  res.send({ message: `${req.params.id} deleted` });
+  res.send({ message: `${String(req.params.id)} deleted` });
 });
 
 export default materialRouter;

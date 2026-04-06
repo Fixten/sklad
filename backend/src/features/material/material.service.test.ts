@@ -1,8 +1,8 @@
 import { MaterialVariantRepository } from "../materialVariant/materialVariant.repository.js";
 import { MaterialVariantService } from "../materialVariant/materialVariant.service.js";
 import { SupplyRepository } from "../supply/supply.repository.js";
-import { MaterialRepository } from "./material.repository.js";
 
+import { MaterialRepository } from "./material.repository.js";
 import { MaterialService } from "./material.service.js";
 
 jest.mock("./material.repository.js");
@@ -48,7 +48,8 @@ describe("material service", () => {
         variantService.deleteVariantForMaterial.mockRejectedValue(new Error());
         try {
           await service.deleteMaterial(0);
-        } catch (_) {
+        } catch (e) {
+          expect(e).toBeTruthy();
           expect(repo.softDeleteMaterial).not.toHaveBeenCalled();
           expect(repo.deleteMaterial).not.toHaveBeenCalled();
         }

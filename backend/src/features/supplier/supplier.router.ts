@@ -1,6 +1,7 @@
 import { Request, Router } from "express";
-import SupplierService from "./supplier.service.js";
+
 import { SupplierModel, SupplierSchema } from "./supplier.schema.js";
+import SupplierService from "./supplier.service.js";
 
 const supplierRouter = Router();
 

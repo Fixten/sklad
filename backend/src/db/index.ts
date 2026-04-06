@@ -13,7 +13,7 @@ export class Db<TSchema extends Record<string, unknown>> {
     public schema: TSchema,
   ) {}
 
-  connect() {
+  private connect() {
     this.base = createSqlite(this.isMemory);
     this.orm = drizzle(this.base, {
       schema: this.schema,

@@ -1,21 +1,21 @@
 import { SQLiteColumn, SQLiteTable } from "drizzle-orm/sqlite-core";
 
 import {
-  materialTypeSchema,
-  materialTypeTable,
-} from "@/features/materialType/materialType.schema.js";
-import {
-  settingsSchema,
-  settingsTable,
-} from "@/features/settings/settings.schema.js";
-import {
   materialSchema,
   materialTable,
 } from "@/features/material/material.schema.js";
 import {
+  materialTypeSchema,
+  materialTypeTable,
+} from "@/features/materialType/materialType.schema.js";
+import {
   materialVariantSchema,
   materialVariantTable,
 } from "@/features/materialVariant/materialVariant.schema.js";
+import {
+  settingsSchema,
+  settingsTable,
+} from "@/features/settings/settings.schema.js";
 import {
   supplierSchema,
   supplierTable,

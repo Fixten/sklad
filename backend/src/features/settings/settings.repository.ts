@@ -7,10 +7,16 @@ import {
   SettingsModel,
   settingsSchema,
 } from "./settings.schema.js";
+import { createSingleton } from "@/utils/createSingeton.js";
 
-export class SettingsRepository {
+export default class SettingsRepository {
   private schema = settingsSchema;
-  private repository = new Repository(this.schema);
+  repository;
+  static getSingleton = createSingleton(() => new SettingsRepository());
+
+  constructor() {
+    this.repository = new Repository(this.schema);
+  }
 
   getConfig() {
     return this.repository.getById(settingsId).then((rows) => rows[0]);
@@ -22,5 +28,3 @@ export class SettingsRepository {
       .then((result) => result[0]);
   }
 }
-
-export default new SettingsRepository();

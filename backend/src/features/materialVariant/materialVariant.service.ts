@@ -1,7 +1,9 @@
+import { createSingleton } from "@/utils/createSingeton.js";
+
+import SupplyService from "../supply/supply.service.js";
+
 import { MaterialVariantRepository } from "./materialVariant.repository.js";
 import { MaterialVariantModel } from "./materialVariant.schema.js";
-import { createSingleton } from "@/utils/createSingeton.js";
-import SupplyService from "../supply/supply.service.js";
 
 export class MaterialVariantService {
   static getSingleton = createSingleton(
@@ -11,12 +13,12 @@ export class MaterialVariantService {
         MaterialVariantRepository.getSingleton(),
       ),
   );
-  updateVariant;
   constructor(
     private supply: SupplyService,
     private repository: MaterialVariantRepository,
-  ) {
-    this.updateVariant = this.repository.updateVariant;
+  ) {}
+  updateVariant(id: number, value: MaterialVariantModel) {
+    return this.repository.updateVariant(id, value);
   }
 
   async createVariant(variant: MaterialVariantModel) {

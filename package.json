@@ -1,7 +1,7 @@
 {
   "name": "sklad",
   "scripts": {
-    "back:dev": "pnpm --filter backend start",
+    "back:dev": "dotenv -e .env.development -- pnpm --filter backend start",
     "back:build": "pnpm --filter backend run build",
     "back:test": "pnpm --filter backend test",
     "back:prod": "pnpm --filter backend run prod",
@@ -14,6 +14,7 @@
     "@tsconfig/recommended": "^1.0.13"
   },
   "devDependencies": {
+    "dotenv-cli": "^11.0.0",
     "typescript": "^5.9.3"
   }
 }

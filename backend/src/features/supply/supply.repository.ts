@@ -1,9 +1,9 @@
 import { eq } from "drizzle-orm";
 
 import Repository from "@/db/repository.js";
+import { createSingleton } from "@/utils/createSingeton.js";
 
 import { SupplyModel, supplySchema } from "./supply.schema.js";
-import { createSingleton } from "@/utils/createSingeton.js";
 
 export class SupplyRepository {
   static getSingleton = createSingleton(() => new SupplyRepository());

@@ -1,10 +1,10 @@
 import Repository from "@/db/repository.js";
+import { createSingleton } from "@/utils/createSingeton.js";
 
 import {
   MaterialTypeModel,
   materialTypeSchema,
 } from "./materialType.schema.js";
-import { createSingleton } from "@/utils/createSingeton.js";
 
 export default class MaterialTypeRepository {
   static getSingleton = createSingleton(() => new MaterialTypeRepository());

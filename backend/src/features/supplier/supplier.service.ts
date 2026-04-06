@@ -1,7 +1,9 @@
 import { createSingleton } from "@/utils/createSingeton.js";
-import { SupplierModel } from "./supplier.schema.js";
-import SupplierRepository from "./supplier.repository.js";
+
 import SupplyService from "../supply/supply.service.js";
+
+import SupplierRepository from "./supplier.repository.js";
+import { SupplierModel } from "./supplier.schema.js";
 
 export default class SupplierService {
   static getSingleton = createSingleton(

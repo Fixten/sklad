@@ -1,6 +1,7 @@
 import Repository from "@/db/repository.js";
-import { MaterialModel, materialSchema } from "./material.schema.js";
 import { createSingleton } from "@/utils/createSingeton.js";
+
+import { MaterialModel, materialSchema } from "./material.schema.js";
 
 export class MaterialRepository {
   static getSingleton = createSingleton(() => new MaterialRepository());
