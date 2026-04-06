@@ -5,21 +5,23 @@ import supplyService from "./supply.service.js";
 
 const supplyRouter = Router();
 
+const service = supplyService.getSingleton();
+
 supplyRouter.get("/", async (req, res) => {
-  res.send(await supplyService.getAll());
+  res.send(await service.getAll());
 });
 
 supplyRouter.post(
   "/",
   async (req: Request<void, SupplySchema, SupplyModel>, res) => {
-    res.send(await supplyService.addNew(req.body));
+    res.send(await service.addNew(req.body));
   },
 );
 
 supplyRouter.post(
   "/:id",
   async (req: Request<{ id: number }, SupplySchema, SupplyModel>, res) => {
-    const result = await supplyService.update(req.params.id, req.body);
+    const result = await service.update(req.params.id, req.body);
     res.send(result);
   },
 );
@@ -27,7 +29,7 @@ supplyRouter.post(
 supplyRouter.delete(
   "/:id",
   async (req: Request<{ id: number }, boolean>, res) => {
-    res.send(await supplyService.delete(req.params.id));
+    res.send(await service.delete(req.params.id));
   },
 );
 

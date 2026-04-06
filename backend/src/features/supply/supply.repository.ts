@@ -3,10 +3,12 @@ import { eq } from "drizzle-orm";
 import Repository from "@/db/repository.js";
 
 import { SupplyModel, supplySchema } from "./supply.schema.js";
+import { createSingleton } from "@/utils/createSingeton.js";
 
 export class SupplyRepository {
+  static getSingleton = createSingleton(() => new SupplyRepository());
   private baseRepository;
-  schema = supplySchema;
+  private schema = supplySchema;
 
   constructor() {
     this.baseRepository = new Repository(this.schema);
@@ -17,6 +19,13 @@ export class SupplyRepository {
   }
   getAll() {
     return this.baseRepository.getAll();
+  }
+  getForVariant(variantId: number) {
+    return this.baseRepository.getByValue(eq(this.schema.variant, variantId));
+  }
+
+  getForSupplier(supplier: number) {
+    return this.baseRepository.getByValue(eq(this.schema.supplier, supplier));
   }
 
   addNew(supply: SupplyModel) {
@@ -29,12 +38,4 @@ export class SupplyRepository {
   delete(id: number) {
     return this.baseRepository.deleteById(id);
   }
-
-  deteleAllForVariant(variantId: number) {
-    return this.baseRepository.deleteByValue(
-      eq(this.schema.variant, variantId),
-    );
-  }
 }
-
-export default new SupplyRepository();

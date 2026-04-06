@@ -1,20 +1,19 @@
-import { SupplyRepository } from "@/features/supply/supply.repository.js";
-
 import { MaterialVariantRepository } from "./materialVariant.repository.js";
 import { MaterialVariantModel } from "./materialVariant.schema.js";
 import { createSingleton } from "@/utils/createSingeton.js";
+import SupplyService from "../supply/supply.service.js";
 
 export class MaterialVariantService {
   static getSingleton = createSingleton(
     () =>
       new MaterialVariantService(
-        SupplyRepository.getSingleton(),
+        SupplyService.getSingleton(),
         MaterialVariantRepository.getSingleton(),
       ),
   );
   updateVariant;
   constructor(
-    private supply: SupplyRepository,
+    private supply: SupplyService,
     private repository: MaterialVariantRepository,
   ) {
     this.updateVariant = this.repository.updateVariant;
