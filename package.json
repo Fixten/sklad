@@ -5,6 +5,8 @@
     "back:build": "pnpm --filter backend run build",
     "back:test": "pnpm --filter backend test",
     "back:prod": "pnpm --filter backend run prod",
+    "migrate": "pnpm --filter backend migration:apply",
+    "migrate:dev": "dotenv -e .env.development -- pnpm migrate",
     "front:dev": "pnpm --filter frontend run dev",
     "front:build": "pnpm --filter frontend run build",
     "front:prod": "pnpm --filter frontend run prod"

@@ -6,7 +6,10 @@
     "start": "NODE_ENV=development tsx watch src/index.ts",
     "build": "rm -rf build/* && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "prod": "pm2-runtime build/index.js",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "migration:generate": "dotenv -e ../.env.development -- drizzle-kit generate",
+    "migration:apply": "drizzle-kit migrate",
+    "studio": "dotenv -e ../.env.development -- drizzle-kit studio"
   },
   "type": "module",
   "dependencies": {
