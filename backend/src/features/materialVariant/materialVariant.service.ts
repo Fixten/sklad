@@ -1,4 +1,4 @@
-import { createSingleton } from "@/utils/createSingeton.js";
+import { createSingleton } from "@/utils/createSingleton.js";
 
 import SupplyService from "../supply/supply.service.js";
 

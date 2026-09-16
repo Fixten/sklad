@@ -7,7 +7,7 @@ import {
   SettingsModel,
   settingsSchema,
 } from "./settings.schema.js";
-import { createSingleton } from "@/utils/createSingeton.js";
+import { createSingleton } from "@/utils/createSingleton.js";
 
 export default class SettingsRepository {
   private schema = settingsSchema;

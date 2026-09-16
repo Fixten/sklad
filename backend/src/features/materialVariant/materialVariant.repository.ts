@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 
 import Repository from "@/db/repository.js";
-import { createSingleton } from "@/utils/createSingeton.js";
+import { createSingleton } from "@/utils/createSingleton.js";
 
 import {
   MaterialVariantModel,

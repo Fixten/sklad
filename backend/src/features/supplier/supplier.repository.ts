@@ -1,5 +1,5 @@
 import Repository from "@/db/repository.js";
-import { createSingleton } from "@/utils/createSingeton.js";
+import { createSingleton } from "@/utils/createSingleton.js";
 
 import { SupplierModel, supplierSchema } from "./supplier.schema.js";
 
