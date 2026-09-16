@@ -19,8 +19,8 @@ export default function useMaterial() {
     onSuccess: () => query.refetch(),
   });
   const updateMutation = useMutation({
-    mutationFn: (material: MaterialDTO & Pick<ApiModel, "_id">) =>
-      api.update(material, material._id),
+    mutationFn: (material: MaterialDTO & Pick<ApiModel, "id">) =>
+      api.update(material, material.id),
     onSuccess: () => query.refetch(),
   });
   const removeMutation = useMutation({

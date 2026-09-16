@@ -1,5 +1,5 @@
 export interface ApiModel {
-  _id: string;
-  createdAt: Date;
-  updatedAt: Date;
+  id: string;
+  created_at: Date;
+  updated_at: Date;
 }

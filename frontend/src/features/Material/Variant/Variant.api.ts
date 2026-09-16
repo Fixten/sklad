@@ -1,24 +1,23 @@
 import Api from "@/api";
-
-import { VariantDTO, VariantModel } from "../Material.model";
+import { Variant } from "./Variant.model";
 
 const path = "material/variant";
 
 export default class VariantApi {
-  #api: Api<VariantModel>;
+  #api: Api<Variant>;
   constructor() {
     this.#api = new Api(path);
   }
 
-  create = (value: VariantDTO) => {
-    return this.#api.post<VariantModel>(value);
+  create = (value: Variant) => {
+    return this.#api.post<Variant>(value);
   };
 
-  //   update = (value: MaterialDTO, id: string) => {
-  //     return this.#api.post(value, id);
-  //   };
+  update = (value: Variant, id: string) => {
+    return this.#api.post(value, id);
+  };
 
-  remove = (params: { materialId: string; variantId: string }) => {
-    return this.#api.remove(params.materialId, params.variantId);
+  remove = (variantId: number) => {
+    return this.#api.remove(variantId);
   };
 }

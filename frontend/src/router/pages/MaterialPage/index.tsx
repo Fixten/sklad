@@ -4,16 +4,16 @@ import AddMaterial from "@/features/Material/AddMaterial";
 import { MaterialDTO } from "@/features/Material/Material.model";
 import Spinner from "ui/Spinner";
 
-import EditMaterial from "../../features/Material/EditMaterial";
-import MaterialCard from "../../features/Material/MaterialCard/MaterialCard";
-import useMaterial from "../../features/Material/useMaterial";
+import EditMaterial from "../../../features/Material/EditMaterial";
+import MaterialCard from "../../../features/Material/MaterialCard/MaterialCard";
+import useMaterial from "../../../features/Material/useMaterial";
 
 export default function MaterialPage() {
   const { query, addMutation, updateMutation, removeMutation } = useMaterial();
   const [editItem, setEditItem] = useState<string>();
 
   async function onEdit(id: string, v: MaterialDTO) {
-    await updateMutation.mutateAsync({ ...v, _id: id });
+    await updateMutation.mutateAsync({ ...v, id: id });
     setEditItem("");
   }
 
@@ -21,22 +21,22 @@ export default function MaterialPage() {
     ? query.data.map((_, i, arr) => {
         const current = arr[arr.length - 1 - i];
 
-        return editItem === current._id ? (
+        return editItem === current.id ? (
           <EditMaterial
             value={current}
-            onSubmit={(newValue) => onEdit(current._id, newValue)}
+            onSubmit={(newValue) => onEdit(current.id, newValue)}
             isError={updateMutation.isError}
           />
         ) : (
           <MaterialCard
-            materialId={current._id}
+            materialId={current.id}
             onChange={() => {
-              setEditItem(current._id);
+              setEditItem(current.id);
             }}
-            key={current._id}
+            key={current.id}
             value={current}
             onRemove={() => {
-              removeMutation.mutate(current._id);
+              removeMutation.mutate(current.id);
             }}
           />
         );

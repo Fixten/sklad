@@ -7,7 +7,7 @@ import Divider from "ui/Divider";
 import Input from "ui/Input";
 import Spinner from "ui/Spinner";
 
-import useMaterialType from "../../features/Material/MaterialType/useMaterialType";
+import useMaterialType from "../../../features/Material/MaterialType/useMaterialType";
 
 export default function MaterialTypePage() {
   const { query, addMutation, removeMutation } = useMaterialType();
@@ -51,12 +51,12 @@ export default function MaterialTypePage() {
             {query.data?.map((v, i, arr) => {
               const current = arr[arr.length - 1 - i];
               return (
-                <Fragment key={current._id}>
+                <Fragment key={current.id}>
                   <li className="p-2 flex items-center justify-between">
                     {current.name}{" "}
                     <Button
                       onClick={() => {
-                        removeMutation.mutate(current._id);
+                        removeMutation.mutate(current.id);
                       }}
                       variant="outline"
                       size="icon"

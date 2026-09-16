@@ -1,11 +1,11 @@
 import { createBrowserRouter } from "react-router";
 
-import Home from "@/pages/Home";
+import Home from "@/router/pages/Home";
 
 import AppLayout from "../layout/App.layout";
-import MaterialPage from "../pages/MaterialPage";
-import MaterialTypePage from "../pages/MaterialTypePage";
-import SettingsPage from "../pages/SettingsPage";
+import MaterialPage from "./pages/MaterialPage";
+import MaterialTypePage from "./pages/MaterialTypePage";
+import SettingsPage from "./pages/SettingsPage";
 
 import pathsRouter from "./paths.router";
 
