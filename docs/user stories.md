@@ -1,0 +1,21 @@
+# Epic 1
+- **Maintain Material Types**
+    - Create Material Type
+    - View Material Types
+    - Edit Material Type
+    - Delete Material Type
+    - Appropriate relationship/deletion constraints
+- **Maintain Materials**
+    - Create Material
+    - View Materials
+    - Edit Material
+    - Delete Material
+    - Material belongs to a Material Type
+    - Appropriate relationship/deletion constraints
+- **Maintain Material Variants**
+    - Create Material Variant
+    - View Material Variants
+    - Edit Material Variant
+    - Delete Material Variant
+    - Variant belongs to a Material
+    - Appropriate relationship/deletion constraints
