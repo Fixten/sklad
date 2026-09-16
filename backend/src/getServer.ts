@@ -9,22 +9,25 @@ import settingsRouter from "./features/settings/settings.router.js";
 import supplyRouter from "./features/supply/supply.router.js";
 import materialVariantRouter from "./features/materialVariant/materialVariant.router.js";
 import supplierRouter from "./features/supplier/supplier.router.js";
+import { Urls } from "./constants/Urls.js";
 
 export default function getServer() {
+  DbSingleton.init();
+
   const app = express();
   app.use(cors());
   app.use(bodyParser.json());
-  DbSingleton.client;
+
   const apiRouter = Router();
   apiRouter.get("/", (_, res) => {
     res.send("Hello World!");
   });
-  apiRouter.use("/settings", settingsRouter);
-  apiRouter.use("/material-type", materialTypeRouter);
-  apiRouter.use("/material-variant", materialVariantRouter);
-  apiRouter.use("/material", materialRouter);
-  apiRouter.use("/supply", supplyRouter);
-  apiRouter.use("/supplier", supplierRouter);
+  apiRouter.use(Urls.settings, settingsRouter);
+  apiRouter.use(Urls.materialType, materialTypeRouter);
+  apiRouter.use(Urls.materialVariant, materialVariantRouter);
+  apiRouter.use(Urls.materialVariant, materialRouter);
+  apiRouter.use(Urls.supply, supplyRouter);
+  apiRouter.use(Urls.supplier, supplierRouter);
 
   app.use("/api", apiRouter);
   return app;

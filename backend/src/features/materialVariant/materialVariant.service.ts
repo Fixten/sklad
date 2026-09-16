@@ -24,6 +24,7 @@ export class MaterialVariantService {
   async createVariant(variant: MaterialVariantModel) {
     return this.repository.createVariant(variant);
   }
+
   async deleteVariant(variantId: number) {
     const supplies = await this.supply.getForVariant(variantId);
     if (supplies.length > 0) {

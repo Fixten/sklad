@@ -25,6 +25,10 @@ export class Db<TSchema extends Record<string, unknown>> {
     return this.base?.open && this.orm ? this.orm : this.connect();
   }
 
+  init() {
+    this.client;
+  }
+
   close() {
     this.base?.close();
   }
