@@ -1,0 +1,5 @@
+- Service uses feature sliced structre, where features have specialized files: schema, repository, service, router.
+- Modules structured mostly as classes.
+- There are helper classes and functions in use, for example repository class that creates base repository with some methods existing. Look at examples of implemented features to understand how to create new ones and which helpers to use.
+- Prefer composition over inheritance.
+- Write unit tests when there is meaningfull logic to test. Functions that just passing data forward or calling another method with same args don't need to be tested.
