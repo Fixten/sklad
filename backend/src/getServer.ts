@@ -25,7 +25,7 @@ export default function getServer() {
   apiRouter.use(Urls.settings, settingsRouter);
   apiRouter.use(Urls.materialType, materialTypeRouter);
   apiRouter.use(Urls.materialVariant, materialVariantRouter);
-  apiRouter.use(Urls.materialVariant, materialRouter);
+  apiRouter.use(Urls.material, materialRouter);
   apiRouter.use(Urls.supply, supplyRouter);
   apiRouter.use(Urls.supplier, supplierRouter);
 
