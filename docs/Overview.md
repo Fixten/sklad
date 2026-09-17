@@ -1,0 +1,2 @@
+- For all product logic and requirements go to product folder.
+- For tech requirements, arcitechture and infra description go to tech folder.
