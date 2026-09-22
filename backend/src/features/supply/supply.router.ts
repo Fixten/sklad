@@ -14,7 +14,7 @@ supplyRouter.get("/", async (req, res) => {
 supplyRouter.post(
   "/",
   async (req: Request<void, SupplySchema, SupplyModel>, res) => {
-    res.send(await service.addNew(req.body));
+    res.send(await service.create(req.body));
   },
 );
 
@@ -29,7 +29,7 @@ supplyRouter.post(
 supplyRouter.delete(
   "/:id",
   async (req: Request<{ id: number }, boolean>, res) => {
-    res.send(await service.delete(req.params.id));
+    res.send(await service.hardDelete(req.params.id));
   },
 );
 

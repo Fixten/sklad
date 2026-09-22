@@ -1,4 +1,4 @@
-import { integer, text } from "drizzle-orm/sqlite-core";
+import { text } from "drizzle-orm/sqlite-core";
 
 import {
   getSchema,
@@ -14,7 +14,6 @@ export const supplierSchema = getSchema(supplierTable, {
   description: text(),
   supplier: text().notNull(),
   supply_url: text(),
-  deleted: integer({ mode: "boolean" }).default(false),
 });
 
 export type SupplierSchema = SchemaType<typeof supplierSchema>;

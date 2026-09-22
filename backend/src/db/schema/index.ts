@@ -30,7 +30,7 @@ export {
   supplierSchema,
   supplySchema,
 };
-const shemas = {
+const schemas = {
   [materialTable]: materialSchema,
   [materialTypeTable]: materialTypeSchema,
   [materialVariantTable]: materialVariantSchema,
@@ -39,10 +39,11 @@ const shemas = {
   [settingsTable]: settingsSchema,
 };
 
-export default shemas;
+export default schemas;
 
 export interface BaseSchema extends SQLiteTable {
   id: SQLiteColumn;
   updated_at: SQLiteColumn;
   created_at: SQLiteColumn;
+  deleted_at: SQLiteColumn;
 }

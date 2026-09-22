@@ -2,4 +2,12 @@
 - Modules structured mostly as classes.
 - There are helper classes and functions in use, for example repository class that creates base repository with some methods existing. Look at examples of implemented features to understand how to create new ones and which helpers to use.
 - Prefer composition over inheritance.
+- When a service needs data or operations from another feature, depend on that feature's **service**, never its repository. Calling a repository from another feature's service bypasses the business logic of the target feature and leads to duplicated, unencapsulated logic. If the needed operation does not exist yet, add it to the target feature's service (delegating to its own repository) instead of calling the repository directly. A service is free to call its own feature's repository.
+- The base repository is an implementation detail reachable only from its own feature's repository file. A feature repository must explicitly implement every data-access method the feature uses (even a pure proxy to the base repository, e.g. `create`, `getById`, `getAllActive`, `update`, `hardDelete`, `softDelete`, `getBy<Relation>`). Services and routers must never use the base repository (or another feature's repository) directly.
+- Services take their dependencies through constructor injection; singletons are wired in a `getSingleton` factory. This is what allows unit tests to pass mocked repositories and services.
+- The docs (product/tech requirement docs) are the source of truth. When they conflict with existing code, update the code to match the docs.
+- Soft-delete model: records carry `deleted_at` (NULL means active). Deleting a record that still has referencing children is a soft delete; with no references it is a hard delete. Business-name uniqueness holds among active rows only - soft-deleted rows may reuse a name.
+- DB conventions: snake_case plural table names, snake_case columns, foreign keys use RESTRICT with FK enforcement on, and there are no cascade deletes.
+- HTTP conventions per resource: `GET /` list, `GET /:id` single, `POST /` create, `PATCH /:id` update, `DELETE /:id` delete.
+- Error messages are centralized in the shared errors enum. Never inline literal messages, and match caught errors against the enum.
 - Write unit tests when there is meaningfull logic to test. Functions that just passing data forward or calling another method with same args don't need to be tested.

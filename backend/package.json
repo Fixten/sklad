@@ -7,12 +7,14 @@
     "build": "rm -rf build/* && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "prod": "pm2-runtime build/index.js",
     "test": "jest --watch",
+    "test:e2e": "jest -c jest.e2e.config.mjs --runInBand",
     "migration:generate": "dotenv -e ../.env.development -- drizzle-kit generate",
     "migration:apply": "drizzle-kit migrate",
     "studio": "dotenv -e ../.env.development -- drizzle-kit studio"
   },
   "type": "module",
   "dependencies": {
+    "@asteasolutions/zod-to-openapi": "^8.5.0",
     "@types/better-sqlite3": "^7.6.13",
     "@types/body-parser": "^1.19.6",
     "@types/cors": "^2.8.19",
@@ -25,9 +27,11 @@
     "drizzle-orm": "^0.45.2",
     "express": "^5.2.1",
     "pm2": "^6.0.14",
+    "swagger-ui-dist": "^5.33.0",
     "tsc-alias": "^1.8.16",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@babel/core": "^7.28.6",
@@ -45,6 +49,7 @@
     "eslint-plugin-jest": "^29.12.1",
     "jest": "^30.2.0",
     "prettier": "^3.8.0",
+    "supertest": "^7.2.2",
     "typescript-eslint": "^8.53.0"
   }
 }

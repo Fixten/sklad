@@ -17,23 +17,26 @@ export class MaterialService {
     private repository: MaterialRepository,
     private variantService: MaterialVariantService,
   ) {}
-  updateMaterial(id: number, updateItem: MaterialModel) {
-    return this.repository.updateById(id, updateItem);
-  }
-  getAll() {
-    return this.repository.getAll();
-  }
-  async create(material: MaterialModel) {
-    return this.repository.createMaterial(material);
+
+  async delete(id: number) {
+    const variants = await this.variantService.getByMaterial(id);
+    if (variants.length > 0) return this.repository.softDelete(id);
+    else return this.repository.hardDelete(id);
   }
 
-  async deleteMaterial(id: number) {
-    const deletedVariants =
-      await this.variantService.deleteVariantForMaterial(id);
-    if (deletedVariants.some((v) => v === "softDelete"))
-      return this.repository.softDeleteMaterial(id);
-    else {
-      return this.repository.deleteMaterial(id);
-    }
+  getAll() {
+    return this.repository.getAllActive();
+  }
+  get(id: number) {
+    return this.repository.getById(id);
+  }
+  getByType(materialTypeId: number) {
+    return this.repository.getByType(materialTypeId);
+  }
+  create(material: MaterialModel) {
+    return this.repository.create(material);
+  }
+  update(id: number, newValue: Partial<MaterialModel>) {
+    return this.repository.update(id, newValue);
   }
 }

@@ -20,22 +20,22 @@ export class SupplyRepository {
   getAll() {
     return this.baseRepository.getAll();
   }
-  getForVariant(variantId: number) {
+  getByVariant(variantId: number) {
     return this.baseRepository.getByValue(eq(this.schema.variant, variantId));
   }
 
-  getForSupplier(supplier: number) {
+  getBySupplier(supplier: number) {
     return this.baseRepository.getByValue(eq(this.schema.supplier, supplier));
   }
 
-  addNew(supply: SupplyModel) {
+  create(supply: SupplyModel) {
     return this.baseRepository.addNew(supply);
   }
   update(id: number, newValue: SupplyModel) {
     return this.baseRepository.updateById(id, newValue);
   }
 
-  delete(id: number) {
+  hardDelete(id: number) {
     return this.baseRepository.deleteById(id);
   }
 }

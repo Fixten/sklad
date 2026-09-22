@@ -1,3 +1,4 @@
+import { ErrorMessages } from "./constants/Errors.js";
 import getServer from "./getServer.js";
 
 const server = getServer();
@@ -6,4 +7,4 @@ if (BACKEND_PORT) {
   server.listen(BACKEND_PORT, () => {
     console.log(`Sklad app listening on port ${BACKEND_PORT}`);
   });
-} else throw new Error("BACKEND_PORT is not set");
+} else throw new Error(ErrorMessages.BACKEND_PORT_NOT_SET);

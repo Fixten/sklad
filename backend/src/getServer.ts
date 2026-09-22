@@ -2,14 +2,15 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import express, { Router } from "express";
 
+import { Urls } from "./constants/Urls.js";
 import DbSingleton from "./db/index.js";
+import { errorHandler } from "./errors.middleware.js";
 import materialRouter from "./features/material/material.router.js";
 import materialTypeRouter from "./features/materialType/materialType.router.js";
-import settingsRouter from "./features/settings/settings.router.js";
-import supplyRouter from "./features/supply/supply.router.js";
 import materialVariantRouter from "./features/materialVariant/materialVariant.router.js";
+import settingsRouter from "./features/settings/settings.router.js";
 import supplierRouter from "./features/supplier/supplier.router.js";
-import { Urls } from "./constants/Urls.js";
+import supplyRouter from "./features/supply/supply.router.js";
 
 export default function getServer() {
   DbSingleton.init();
@@ -30,5 +31,6 @@ export default function getServer() {
   apiRouter.use(Urls.supplier, supplierRouter);
 
   app.use("/api", apiRouter);
+  app.use(errorHandler);
   return app;
 }

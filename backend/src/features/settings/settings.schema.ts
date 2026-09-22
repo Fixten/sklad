@@ -18,3 +18,5 @@ export const settingsSchema = getSchema(settingsTable, {
 
 export type SettingsSchema = SchemaType<typeof settingsSchema>;
 export type SettingsModel = SchemaModel<SettingsSchema>;
+
+export const defaultSettings: SettingsModel = { work_hour_cost: 0 };

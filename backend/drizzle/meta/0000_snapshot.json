@@ -1,11 +1,11 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "88b7f485-4741-4a08-a0f5-ba0d776c7235",
+  "id": "26031875-c819-43e4-a064-b7a2dca44e60",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
-    "material": {
-      "name": "material",
+    "materials": {
+      "name": "materials",
       "columns": {
         "id": {
           "name": "id",
@@ -26,6 +26,13 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         },
         "name": {
@@ -46,39 +53,33 @@
           "name": "material_type_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
-        },
-        "deleted": {
-          "name": "deleted",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": false
         }
       },
       "indexes": {
-        "material_name_unique": {
-          "name": "material_name_unique",
+        "materials_type_name_unique": {
+          "name": "materials_type_name_unique",
           "columns": [
+            "material_type_id",
             "name"
           ],
-          "isUnique": true
+          "isUnique": true,
+          "where": "\"materials\".\"deleted_at\" IS NULL"
         }
       },
       "foreignKeys": {
-        "material_material_type_id_material_type_id_fk": {
-          "name": "material_material_type_id_material_type_id_fk",
-          "tableFrom": "material",
-          "tableTo": "material_type",
+        "materials_material_type_id_material_types_id_fk": {
+          "name": "materials_material_type_id_material_types_id_fk",
+          "tableFrom": "materials",
+          "tableTo": "material_types",
           "columnsFrom": [
             "material_type_id"
           ],
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "restrict",
           "onUpdate": "no action"
         }
       },
@@ -86,8 +87,8 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-    "material_type": {
-      "name": "material_type",
+    "material_types": {
+      "name": "material_types",
       "columns": {
         "id": {
           "name": "id",
@@ -108,6 +109,13 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         },
         "name": {
@@ -116,15 +124,23 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
         }
       },
       "indexes": {
-        "material_type_name_unique": {
-          "name": "material_type_name_unique",
+        "material_types_name_unique": {
+          "name": "material_types_name_unique",
           "columns": [
             "name"
           ],
-          "isUnique": true
+          "isUnique": true,
+          "where": "\"material_types\".\"deleted_at\" IS NULL"
         }
       },
       "foreignKeys": {},
@@ -132,8 +148,8 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-    "material_variant": {
-      "name": "material_variant",
+    "material_variants": {
+      "name": "material_variants",
       "columns": {
         "id": {
           "name": "id",
@@ -156,18 +172,25 @@
           "notNull": true,
           "autoincrement": false
         },
-        "variant": {
-          "name": "variant",
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "photo_url": {
-          "name": "photo_url",
+        "unit": {
+          "name": "unit",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "material_id": {
@@ -176,37 +199,31 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
-        },
-        "deleted": {
-          "name": "deleted",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": false
         }
       },
       "indexes": {
-        "material_variant_variant_unique": {
-          "name": "material_variant_variant_unique",
+        "material_variants_material_name_unique": {
+          "name": "material_variants_material_name_unique",
           "columns": [
-            "variant"
+            "material_id",
+            "name"
           ],
-          "isUnique": true
+          "isUnique": true,
+          "where": "\"material_variants\".\"deleted_at\" IS NULL"
         }
       },
       "foreignKeys": {
-        "material_variant_material_id_material_id_fk": {
-          "name": "material_variant_material_id_material_id_fk",
-          "tableFrom": "material_variant",
-          "tableTo": "material",
+        "material_variants_material_id_materials_id_fk": {
+          "name": "material_variants_material_id_materials_id_fk",
+          "tableFrom": "material_variants",
+          "tableTo": "materials",
           "columnsFrom": [
             "material_id"
           ],
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "restrict",
           "onUpdate": "no action"
         }
       },
@@ -237,6 +254,13 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         },
         "work_hour_cost": {
@@ -278,6 +302,13 @@
           "notNull": true,
           "autoincrement": false
         },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "description": {
           "name": "description",
           "type": "text",
@@ -298,14 +329,6 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
-        },
-        "deleted": {
-          "name": "deleted",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": false
         }
       },
       "indexes": {},
@@ -338,15 +361,15 @@
           "notNull": true,
           "autoincrement": false
         },
-        "description": {
-          "name": "description",
-          "type": "text",
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
-        "unit": {
-          "name": "unit",
+        "description": {
+          "name": "description",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -383,10 +406,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "supply_material_variant_id_material_variant_id_fk": {
-          "name": "supply_material_variant_id_material_variant_id_fk",
+        "supply_material_variant_id_material_variants_id_fk": {
+          "name": "supply_material_variant_id_material_variants_id_fk",
           "tableFrom": "supply",
-          "tableTo": "material_variant",
+          "tableTo": "material_variants",
           "columnsFrom": [
             "material_variant_id"
           ],

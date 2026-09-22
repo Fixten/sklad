@@ -11,7 +11,7 @@ import {
 export class MaterialVariantRepository {
   static getSingleton = createSingleton(() => new MaterialVariantRepository());
   private baseRepository;
-  schema = materialVariantSchema;
+  private schema = materialVariantSchema;
 
   constructor() {
     this.baseRepository = new Repository(this.schema);
@@ -20,31 +20,24 @@ export class MaterialVariantRepository {
   getById(id: number) {
     return this.baseRepository.getById(id);
   }
-
-  getByMeterial(materialId: number) {
-    return this.baseRepository.getByValue(eq(this.schema.material, materialId));
+  getAllActive() {
+    return this.baseRepository.getAllActive();
   }
-
-  createVariant(variant: MaterialVariantModel) {
-    return this.baseRepository.addNew(variant);
-  }
-
-  deleteVariant(id: number) {
-    return this.baseRepository.deleteById(id);
-  }
-
-  softDelete(id: number) {
-    return this.baseRepository.updateById(id, { deleted: true });
-  }
-
-  softDeleteByMaterial(materialId: number) {
-    return this.baseRepository.updateByValue(
-      eq(this.schema.material, materialId),
-      { deleted: true },
+  getByMaterial(materialId: number) {
+    return this.baseRepository.getByValue(
+      eq(this.schema.material_id, materialId),
     );
   }
-
-  updateVariant(id: number, newVariant: MaterialVariantModel) {
-    return this.baseRepository.updateById(id, newVariant);
+  create(variant: MaterialVariantModel) {
+    return this.baseRepository.addNew(variant);
+  }
+  update(id: number, newValue: Partial<MaterialVariantModel>) {
+    return this.baseRepository.updateById(id, newValue);
+  }
+  softDelete(id: number) {
+    return this.baseRepository.softDelete(id);
+  }
+  hardDelete(id: number) {
+    return this.baseRepository.deleteById(id);
   }
 }

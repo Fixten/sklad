@@ -15,22 +15,23 @@ export default class SupplierRepository {
   getById(id: number) {
     return this.baseRepository.getById(id);
   }
-  getAll() {
-    return this.baseRepository.getAll();
-  }
 
-  addNew(supply: SupplierModel) {
-    return this.baseRepository.addNew(supply);
+  create(supplier: SupplierModel) {
+    return this.baseRepository.addNew(supplier);
   }
   update(id: number, newValue: SupplierModel) {
     return this.baseRepository.updateById(id, newValue);
   }
 
-  delete(id: number) {
+  hardDelete(id: number) {
     return this.baseRepository.deleteById(id);
   }
 
+  getAllActive() {
+    return this.baseRepository.getAllActive();
+  }
+
   softDelete(id: number) {
-    return this.baseRepository.updateById(id, { deleted: true });
+    return this.baseRepository.softDelete(id);
   }
 }

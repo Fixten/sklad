@@ -1,25 +1,31 @@
 import { eq } from "drizzle-orm";
 
+import { ErrorMessages } from "@/constants/Errors.js";
 import Repository from "@/db/repository.js";
+import { createSingleton } from "@/utils/createSingleton.js";
 
 import {
+  defaultSettings,
   settingsId,
   SettingsModel,
   settingsSchema,
 } from "./settings.schema.js";
-import { createSingleton } from "@/utils/createSingleton.js";
 
 export default class SettingsRepository {
   private schema = settingsSchema;
-  repository;
   static getSingleton = createSingleton(() => new SettingsRepository());
 
-  constructor() {
-    this.repository = new Repository(this.schema);
-  }
+  constructor(private repository = new Repository(settingsSchema)) {}
 
   getConfig() {
-    return this.repository.getById(settingsId).then((rows) => rows[0]);
+    return this.repository.getById(settingsId).catch((error: unknown) => {
+      if (
+        error instanceof Error &&
+        error.message === (ErrorMessages.ITEM_NOT_FOUND as string)
+      )
+        return defaultSettings;
+      throw error;
+    });
   }
 
   updateConfig(updateItem: SettingsModel) {

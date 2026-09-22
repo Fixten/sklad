@@ -12,19 +12,22 @@ export default class MaterialTypeRepository {
   constructor() {
     this.repository = new Repository(materialTypeSchema);
   }
-  addNew(materialType: MaterialTypeModel) {
+  create(materialType: MaterialTypeModel) {
     return this.repository.addNew(materialType);
   }
-  delete(id: number) {
+  softDelete(id: number) {
+    return this.repository.softDelete(id);
+  }
+  hardDelete(id: number) {
     return this.repository.deleteById(id);
   }
-  update(id: number, newValue: MaterialTypeModel) {
+  update(id: number, newValue: Partial<MaterialTypeModel>) {
     return this.repository.updateById(id, newValue);
   }
-  getAll() {
-    return this.repository.getAll();
+  getAllActive() {
+    return this.repository.getAllActive();
   }
-  get(id: number) {
+  getById(id: number) {
     return this.repository.getById(id);
   }
 }

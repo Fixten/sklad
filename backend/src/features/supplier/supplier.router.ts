@@ -14,7 +14,7 @@ supplierRouter.get("/", async (req, res) => {
 supplierRouter.post(
   "/",
   async (req: Request<void, SupplierSchema, SupplierModel>, res) => {
-    res.send(await service.addNew(req.body));
+    res.send(await service.create(req.body));
   },
 );
 

@@ -22,23 +22,23 @@ export default class SupplierService {
     return this.repository.getById(id);
   }
   getAll() {
-    return this.repository.getAll();
+    return this.repository.getAllActive();
   }
 
-  addNew(supply: SupplierModel) {
-    return this.repository.addNew(supply);
+  create(supplier: SupplierModel) {
+    return this.repository.create(supplier);
   }
   update(id: number, newValue: SupplierModel) {
     return this.repository.update(id, newValue);
   }
 
   async delete(id: number) {
-    const supplies = await this.supply.getForSupplier(id);
+    const supplies = await this.supply.getBySupplier(id);
     if (supplies.length > 0) {
       await this.repository.softDelete(id);
       return "softDelete";
     } else {
-      await this.repository.delete(id);
+      await this.repository.hardDelete(id);
       return "hardDelete";
     }
   }

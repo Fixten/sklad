@@ -6,4 +6,5 @@ export const defaultDbFields = {
   created_at: integer({ mode: "timestamp" })
     .$defaultFn(() => new Date())
     .notNull(),
+  deleted_at: integer({ mode: "timestamp" }),
 };

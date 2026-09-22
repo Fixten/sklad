@@ -15,7 +15,6 @@ export const supplyTable = "supply";
 export const supplySchema = getSchema(supplyTable, {
   ...defaultDbFields,
   description: text(),
-  unit: text(),
   price: integer(),
   count: integer(),
   variant: integer("material_variant_id")

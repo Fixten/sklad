@@ -26,7 +26,7 @@ export class Db<TSchema extends Record<string, unknown>> {
   }
 
   init() {
-    this.client;
+    void this.client;
   }
 
   close() {
@@ -34,7 +34,7 @@ export class Db<TSchema extends Record<string, unknown>> {
   }
 }
 
-const singleton = new Db(false, schemas);
+const singleton = new Db(process.env.NODE_ENV === "test", schemas);
 export type DB = typeof singleton;
 export type DbClient = DB["client"];
 

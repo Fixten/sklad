@@ -18,7 +18,7 @@ export type TestDb = Db<typeof dbSchema>;
 
 export function getTestDb(): TestDb {
   const db = new Db(true, dbSchema);
-  db.connect();
+  db.init();
   db.base
     ?.prepare(
       `
@@ -26,7 +26,8 @@ export function getTestDb(): TestDb {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       updated_at INTEGER,
-      created_at INTEGER
+      created_at INTEGER,
+      deleted_at INTEGER
     );
   `,
     )
