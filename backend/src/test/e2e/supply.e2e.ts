@@ -73,7 +73,7 @@ describe("supplier and supply e2e", () => {
       const unreferenced = await createSupplier(app);
       const hard = await request(app).delete(`/api/supplier/${String(unreferenced.id)}`);
       expect(hard.status).toBe(200);
-      expect(hard.text).toBe("hardDelete");
+      expect(hard.body).toBe("hardDelete");
       expect(listOf(await request(app).get("/api/supplier"))).toHaveLength(0);
 
       const { variant } = await createCatalog(app);
@@ -88,7 +88,7 @@ describe("supplier and supply e2e", () => {
         });
       const soft = await request(app).delete(`/api/supplier/${String(referenced.id)}`);
       expect(soft.status).toBe(200);
-      expect(soft.text).toBe("softDelete");
+      expect(soft.body).toBe("softDelete");
       expect(listOf(await request(app).get("/api/supplier"))).toHaveLength(0);
     });
   });

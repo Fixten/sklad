@@ -9,10 +9,10 @@ export const specJsonUrl = getFullPathname(Urls.docsSpec);
 
 export const swaggerInitializer = `window.onload = function () {
   window.ui = SwaggerUIBundle({
-    url: ${JSON.stringify(specJsonUrl)},
+    url: "${specJsonUrl}",
     dom_id: "#swagger-ui",
     deepLinking: true,
-    presets: [SwaggerUIBundle.presets.apis, SwaggerUIBundle.SwaggerUIStandalonePreset],
+    presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
     layout: "StandaloneLayout",
   });
 };`;
