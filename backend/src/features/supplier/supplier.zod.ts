@@ -24,8 +24,6 @@ export const supplierCreateZ = z
 
 export const supplierUpdateZ = supplierCreateZ.partial();
 
-export const supplierDeleteResultZ = z.enum(["softDelete", "hardDelete"]);
-
 export const supplierRowListZ = z.array(supplierRowZ);
 
 export type SupplierRow = z.infer<typeof supplierRowZ>;

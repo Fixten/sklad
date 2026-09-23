@@ -73,7 +73,7 @@ describe("supplier and supply e2e", () => {
       const unreferenced = await createSupplier(app);
       const hard = await request(app).delete(`/api/supplier/${String(unreferenced.id)}`);
       expect(hard.status).toBe(200);
-      expect(hard.body).toBe("hardDelete");
+      expect(hard.body).toEqual({ message: `${String(unreferenced.id)} deleted` });
       expect(listOf(await request(app).get("/api/supplier"))).toHaveLength(0);
 
       const { variant } = await createCatalog(app);
@@ -88,7 +88,7 @@ describe("supplier and supply e2e", () => {
         });
       const soft = await request(app).delete(`/api/supplier/${String(referenced.id)}`);
       expect(soft.status).toBe(200);
-      expect(soft.body).toBe("softDelete");
+      expect(soft.body).toEqual({ message: `${String(referenced.id)} deleted` });
       expect(listOf(await request(app).get("/api/supplier"))).toHaveLength(0);
     });
   });
@@ -129,7 +129,7 @@ describe("supplier and supply e2e", () => {
 
       const deleted = await request(app).delete(`/api/supply/${String(created.id)}`);
       expect(deleted.status).toBe(200);
-      expect(deleted.body).toBe(true);
+      expect(deleted.body).toEqual({ message: `${String(created.id)} deleted` });
       expect(listOf(await request(app).get("/api/supply"))).toHaveLength(0);
     });
 

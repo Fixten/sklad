@@ -1,4 +1,4 @@
-import { ErrorResponseZ } from "./common.zod.js";
+import { DeletedMessageZ, ErrorResponseZ } from "./common.zod.js";
 
 import type { NextFunction, Request, Response } from "express";
 import type { ZodType } from "zod";
@@ -35,4 +35,8 @@ export function sendSpec(schema: ZodType) {
       data === undefined ? undefined : JSON.parse(JSON.stringify(data));
     res.json(schema.parse(wire));
   };
+}
+
+export function sendDeleted(res: Response, id: string) {
+  res.json(DeletedMessageZ.parse({ message: `${id} deleted` }));
 }

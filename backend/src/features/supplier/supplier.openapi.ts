@@ -5,6 +5,7 @@ import { Urls } from "@/constants/Urls.js";
 import { IdParamsDocZ } from "@/openapi/common.zod.js";
 import {
   bodyOf,
+  deletedContent,
   errors,
   itemPath,
   jsonContent,
@@ -12,7 +13,7 @@ import {
 } from "@/openapi/registry.js";
 import { getFullPathname } from "@/utils/getFullPathname.js";
 
-import { supplierCreateZ, supplierDeleteResultZ, supplierRowZ, supplierUpdateZ } from "./supplier.zod.js";
+import { supplierCreateZ, supplierRowZ, supplierUpdateZ } from "./supplier.zod.js";
 
 export function registerSupplierOpenApi(registry: OpenAPIRegistry) {
   const supplier = registry.register("Supplier", supplierRowZ);
@@ -57,7 +58,7 @@ export function registerSupplierOpenApi(registry: OpenAPIRegistry) {
     summary: "Delete a supplier",
     request: paramsOf(IdParamsDocZ),
     responses: {
-      200: { description: "How the supplier was deleted", content: jsonContent(supplierDeleteResultZ) },
+      200: { description: "Delete confirmation", content: deletedContent },
       ...errors,
     },
   });

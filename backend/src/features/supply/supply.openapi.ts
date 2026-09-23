@@ -5,6 +5,7 @@ import { Urls } from "@/constants/Urls.js";
 import { IdParamsDocZ } from "@/openapi/common.zod.js";
 import {
   bodyOf,
+  deletedContent,
   errors,
   itemPath,
   jsonContent,
@@ -54,10 +55,10 @@ export function registerSupplyOpenApi(registry: OpenAPIRegistry) {
     method: "delete",
     path: itemPath(Urls.supply),
     tags: ["Supply"],
-    summary: "Hard-delete a supply",
+    summary: "Delete a supply",
     request: paramsOf(IdParamsDocZ),
     responses: {
-      200: { description: "Whether the supply was deleted", content: jsonContent(z.boolean()) },
+      200: { description: "Delete confirmation", content: deletedContent },
       ...errors,
     },
   });
