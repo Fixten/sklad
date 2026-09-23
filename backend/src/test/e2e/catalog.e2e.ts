@@ -134,6 +134,13 @@ describe("catalog e2e", () => {
       expect(res.status).toBe(404);
     });
 
+    test("rejects an empty or blank required name with 400", async () => {
+      for (const name of ["", "   "]) {
+        const res = await request(app).post("/api/material-type").send({ name });
+        expect(res.status).toBe(400);
+      }
+    });
+
     test("updates a type via PATCH", async () => {
       const created = await createType(app);
       const updated = await request(app)
@@ -179,6 +186,16 @@ describe("catalog e2e", () => {
       const res = await request(app).get("/api/material/999");
       expect(res.status).toBe(404);
     });
+
+    test("rejects an empty or blank required name with 400", async () => {
+      const type = await createType(app);
+      for (const name of ["", "   "]) {
+        const res = await request(app)
+          .post("/api/material")
+          .send({ name, material_type_id: type.id });
+        expect(res.status).toBe(400);
+      }
+    });
   });
 
   describe("material variants", () => {
@@ -222,6 +239,17 @@ describe("catalog e2e", () => {
         .send({ unit: "meters" });
       expect(updated.status).toBe(200);
       expect(bodyOf(updated).unit).toBe("meters");
+    });
+
+    test("rejects an empty or blank required name with 400", async () => {
+      const type = await createType(app);
+      const material = await createMaterial(app, type.id);
+      for (const name of ["", "   "]) {
+        const res = await request(app)
+          .post("/api/material-variant")
+          .send({ name, unit: "pieces", material_id: material.id });
+        expect(res.status).toBe(400);
+      }
     });
   });
 });

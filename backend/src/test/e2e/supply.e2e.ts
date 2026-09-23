@@ -69,6 +69,13 @@ describe("supplier and supply e2e", () => {
       expect(bodyOf(updated).supply_url).toBe("https://lumber.example");
     });
 
+    test("rejects an empty or blank required supplier name with 400", async () => {
+      for (const supplier of ["", "   "]) {
+        const res = await request(app).post("/api/supplier").send({ supplier });
+        expect(res.status).toBe(400);
+      }
+    });
+
     test("hard-deletes an unreferenced supplier and soft-deletes a referenced one", async () => {
       const unreferenced = await createSupplier(app);
       const hard = await request(app).delete(`/api/supplier/${String(unreferenced.id)}`);
@@ -111,6 +118,13 @@ describe("supplier and supply e2e", () => {
         .post("/api/supply")
         .send({ variant: 999, price: 120, count: 10 });
       expect(res.status).toBe(409);
+    });
+
+    test("rejects an empty required variant with 400", async () => {
+      const res = await request(app)
+        .post("/api/supply")
+        .send({ variant: "", price: 120, count: 10 });
+      expect(res.status).toBe(400);
     });
 
     test("updates and deletes a supply", async () => {

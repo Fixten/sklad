@@ -17,7 +17,7 @@ export const supplierRowZ = z
 export const supplierCreateZ = z
   .object({
     description: z.string().optional(),
-    supplier: z.string(),
+    supplier: z.string().trim().min(1),
     supply_url: z.string().optional(),
   })
   .strict();

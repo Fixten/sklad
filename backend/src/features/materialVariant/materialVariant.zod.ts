@@ -18,7 +18,7 @@ export const materialVariantRowZ = z
 
 export const materialVariantCreateZ = z
   .object({
-    name: z.string(),
+    name: z.string().trim().min(1),
     unit: z.enum(MATERIAL_VARIANT_UNITS),
     material_id: z.int(),
   })
