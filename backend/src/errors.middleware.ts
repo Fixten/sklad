@@ -45,9 +45,11 @@ export const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
   void _next;
   const status = toStatus(error);
   if (status === 500) console.error(error);
+  if (status === 409) console.error(error);
 
   let message: string = ErrorMessages.INTERNAL_SERVER_ERROR;
-  if (status !== 500 && error instanceof Error) message = error.message;
+  if (status === 409) message = ErrorMessages.CONFLICT;
+  else if (status !== 500 && error instanceof Error) message = error.message;
 
   let body: { message: string };
   try {

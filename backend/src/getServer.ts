@@ -1,6 +1,6 @@
 import bodyParser from "body-parser";
 import cors from "cors";
-import express, { Router } from "express";
+import express, { Router, static as expressStatic } from "express";
 
 import { Urls } from "./constants/Urls.js";
 import DbSingleton from "./db/index.js";
@@ -11,6 +11,8 @@ import materialVariantRouter from "./features/materialVariant/materialVariant.ro
 import settingsRouter from "./features/settings/settings.router.js";
 import supplierRouter from "./features/supplier/supplier.router.js";
 import supplyRouter from "./features/supply/supply.router.js";
+import { buildSpec } from "./openapi/document.js";
+import { SWAGGER_UI_ASSETS, swaggerInitializer } from "./openapi/ui.js";
 
 export default function getServer() {
   DbSingleton.init();
@@ -23,6 +25,13 @@ export default function getServer() {
   apiRouter.get("/", (_, res) => {
     res.send("Hello World!");
   });
+  apiRouter.get(Urls.docsSpec, (_req, res) => {
+    res.json(buildSpec());
+  });
+  apiRouter.get(`${Urls.docs}/swagger-initializer.js`, (_req, res) => {
+    res.type("application/javascript").send(swaggerInitializer);
+  });
+  apiRouter.use(Urls.docs, expressStatic(SWAGGER_UI_ASSETS));
   apiRouter.use(Urls.settings, settingsRouter);
   apiRouter.use(Urls.materialType, materialTypeRouter);
   apiRouter.use(Urls.materialVariant, materialVariantRouter);
@@ -30,7 +39,7 @@ export default function getServer() {
   apiRouter.use(Urls.supply, supplyRouter);
   apiRouter.use(Urls.supplier, supplierRouter);
 
-  app.use("/api", apiRouter);
+  app.use(Urls.apiBase, apiRouter);
   app.use(errorHandler);
   return app;
 }

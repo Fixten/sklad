@@ -6,5 +6,8 @@ export enum ErrorMessages {
   DB_OPERATION_FAILED = "Db operation failed",
   UNIT_CHANGE_AFTER_USAGE = "Unit cannot be changed after historical usage",
   WRONG_UNIT = "Wrong unit",
+  INVALID_REQUEST = "Invalid request",
+  RESOURCE_NOT_FOUND = "Resource not found",
+  CONFLICT = "Conflict with existing data",
   INTERNAL_SERVER_ERROR = "Internal server error",
 }
