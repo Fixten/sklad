@@ -1,14 +1,14 @@
 {
   "name": "sklad",
   "scripts": {
-    "back:dev": "dotenv -e .env.development -- pnpm --filter backend start",
-    "back:build": "pnpm --filter backend run build",
-    "back:test": "pnpm --filter backend test",
+    "back:dev": "pnpm --filter backend start:dev",
+    "back:build": "pnpm --filter backend build",
+    "back:test": "pnpm --filter backend test:all",
     "back:prod": "pnpm --filter backend run prod",
     "migrate": "pnpm --filter backend migration:apply",
-    "migrate:dev": "dotenv -e .env.development -- pnpm migrate",
-    "front:dev": "pnpm --filter frontend run dev",
-    "front:build": "pnpm --filter frontend run build",
+    "migrate:dev": "pnpm --filter backend migration:apply:dev",
+    "front:dev": "pnpm --filter frontend dev",
+    "front:build": "pnpm --filter frontend build",
     "front:prod": "pnpm --filter frontend run prod"
   },
   "packageManager": "pnpm@10.33.0",
