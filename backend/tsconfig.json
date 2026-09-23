@@ -3,7 +3,6 @@
   "compilerOptions": {
     "module": "NodeNext",
     "moduleResolution": "nodenext",
-    "rootDir": ".",
     "outDir": "build",
     "target": "ESNext",
     "paths": {

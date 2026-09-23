@@ -18,19 +18,19 @@ The API is organized around the material catalog (Material Types, Materials, Mat
 
 ## Tech stack
 
-| Area | Technology |
-|---|---|
-| Language | TypeScript |
-| Runtime | Node.js |
-| Web framework | Express 5 |
-| Validation / schemas | zod |
-| OpenAPI generation | `@asteasolutions/zod-to-openapi` |
-| Swagger UI assets | `swagger-ui-dist` |
-| Database | SQLite (`better-sqlite3`) |
-| ORM | Drizzle |
-| Process manager | pm2 |
-| Dev runner | tsx |
-| Tests | jest + supertest |
+| Area                 | Technology                       |
+| -------------------- | -------------------------------- |
+| Language             | TypeScript                       |
+| Runtime              | Node.js                          |
+| Web framework        | Express 5                        |
+| Validation / schemas | zod                              |
+| OpenAPI generation   | `@asteasolutions/zod-to-openapi` |
+| Swagger UI assets    | `swagger-ui-dist`                |
+| Database             | SQLite (`better-sqlite3`)        |
+| ORM                  | Drizzle                          |
+| Process manager      | pm2                              |
+| Dev runner           | tsx                              |
+| Tests                | jest + supertest                 |
 
 ## Main entities
 
@@ -72,10 +72,10 @@ src/
 
 The application reads configuration from environment variables:
 
-| Variable | Purpose |
-|---|---|
-| `SQLITE` | Path to the SQLite database file |
-| `BACKEND_PORT` | HTTP port the API listens on |
+| Variable       | Purpose                          |
+| -------------- | -------------------------------- |
+| `SQLITE`       | Path to the SQLite database file |
+| `BACKEND_PORT` | HTTP port the API listens on     |
 
 The app refuses to start when `BACKEND_PORT` is not set. Dev scripts marked `:dev` load a repository-level development env file automatically. In prod the env vars must be provided by the environment.
 
@@ -107,7 +107,7 @@ pnpm build
 pnpm prod
 ```
 
-`build` compiles TypeScript into a build output directory; `prod` runs the compiled app with pm2, expecting that build output to exist.
+`build` compiles TypeScript into a build output directory (and regenerates the OpenAPI spec, copying `public/` into the build output); `prod` runs the compiled app with pm2, expecting that build output to exist.
 
 ## Tests
 
@@ -140,13 +140,22 @@ pnpm studio                # Drizzle Studio for inspecting the database (dev)
 
 ## OpenAPI / Swagger
 
-Start the server, then open the interactive UI in a browser. The app exposes Swagger UI under a single API URL prefix, together with the raw OpenAPI spec JSON referenced by the UI.
+The OpenAPI 3.0 spec is generated from the zod schemas by a standalone script and saved as a static file, then served by the app together with the Swagger UI.
 
-The spec is generated from the zod schemas:
+Generate (or regenerate) the spec:
+
+```bash
+pnpm generate:openapi
+```
+
+Start the server, then open the interactive UI in a browser at `/api/docs`. The raw spec is served at `/api/docs/spec.json`.
+
+How it works:
 
 - Features define strict request/response zod schemas that are reused by the router middleware at runtime, so the documented contract always matches what the API validates.
 - Feature-level OpenAPI modules register paths and reference those schemas.
-- A central document assembler produces the final spec; Swagger UI assets and an initializer that points at the spec JSON are served by the app.
-- Error responses use a shared error-response schema.
+- The app serves `public/spec.json` as a static file. It does **not** regenerate the spec on server start: if the file is missing, `/api/docs/spec.json` returns `404` — run `pnpm generate:openapi` to create it.
+- The `build` script regenerates the spec automatically and copies `public/` into the build output.
+- Swagger UI assets and an initializer that points at the spec JSON are served by the app; error responses use a shared error-response schema.
 
 All API routes are mounted under a single shared prefix, including the docs/UI routes.

@@ -5,6 +5,7 @@
     "back:build": "pnpm --filter backend build",
     "back:test": "pnpm --filter backend test:all",
     "back:prod": "pnpm --filter backend run prod",
+    "openapi:generate": "pnpm --filter backend generate:openapi",
     "migrate": "pnpm --filter backend migration:apply",
     "migrate:dev": "pnpm --filter backend migration:apply:dev",
     "front:dev": "pnpm --filter frontend dev",

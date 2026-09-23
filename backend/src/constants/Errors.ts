@@ -10,4 +10,5 @@ export enum ErrorMessages {
   RESOURCE_NOT_FOUND = "Resource not found",
   CONFLICT = "Conflict with existing data",
   INTERNAL_SERVER_ERROR = "Internal server error",
+  OPENAPI_NOT_FOUND = "OpenAPI spec not found",
 }

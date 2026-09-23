@@ -1,3 +1,6 @@
+import { existsSync } from "node:fs";
+import { join } from "node:path";
+
 import bodyParser from "body-parser";
 import cors from "cors";
 import express, { Router, static as expressStatic } from "express";
@@ -11,8 +14,10 @@ import materialVariantRouter from "./features/materialVariant/materialVariant.ro
 import settingsRouter from "./features/settings/settings.router.js";
 import supplierRouter from "./features/supplier/supplier.router.js";
 import supplyRouter from "./features/supply/supply.router.js";
-import { buildSpec } from "./openapi/document.js";
 import { SWAGGER_UI_ASSETS, swaggerInitializer } from "./openapi/ui.js";
+import { ErrorMessages } from "./constants/Errors.js";
+
+const specJsonPath = join(process.cwd(), "public", "spec.json");
 
 export default function getServer() {
   DbSingleton.init();
@@ -26,7 +31,11 @@ export default function getServer() {
     res.send("Hello World!");
   });
   apiRouter.get(Urls.docsSpec, (_req, res) => {
-    res.json(buildSpec());
+    if (!existsSync(specJsonPath)) {
+      res.status(404).json({ error: ErrorMessages.OPENAPI_NOT_FOUND });
+      return;
+    }
+    res.sendFile(specJsonPath);
   });
   apiRouter.get(`${Urls.docs}/swagger-initializer.js`, (_req, res) => {
     res.type("application/javascript").send(swaggerInitializer);

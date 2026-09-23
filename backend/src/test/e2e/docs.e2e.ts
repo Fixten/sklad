@@ -1,14 +1,22 @@
+import { existsSync } from "node:fs";
+import { join } from "node:path";
+
 import { Express } from "express";
 import request from "supertest";
 
 import DbSingleton from "@/db/index.js";
 
 import { bootstrap, truncate } from "../e2eSetup.js";
+import { ErrorMessages } from "@/constants/Errors.js";
 
 describe("docs e2e", () => {
   let app: Express;
 
   beforeAll(() => {
+    const specJsonPath = join(process.cwd(), "public", "spec.json");
+    if (!existsSync(specJsonPath)) {
+      throw new Error(ErrorMessages.OPENAPI_NOT_FOUND);
+    }
     app = bootstrap();
   });
 

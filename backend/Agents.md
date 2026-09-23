@@ -11,3 +11,4 @@
 - HTTP conventions per resource: `GET /` list, `GET /:id` single, `POST /` create, `PATCH /:id` update, `DELETE /:id` delete.
 - Error messages are centralized in the shared errors enum. Never inline literal messages, and match caught errors against the enum.
 - Write unit tests when there is meaningfull logic to test. Functions that just passing data forward or calling another method with same args don't need to be tested.
+- For linting use pnpm lint:fix
