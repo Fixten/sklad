@@ -5,6 +5,7 @@
     "back:build": "pnpm --filter backend build",
     "back:test": "pnpm --filter backend test:all",
     "back:prod": "pnpm --filter backend run prod",
+    "back:prod:local": "pnpm back:build && pnpm --filter backend run prod:local",
     "openapi:generate": "pnpm --filter backend generate:openapi",
     "migrate": "pnpm --filter backend migration:apply",
     "migrate:dev": "pnpm --filter backend migration:apply:dev",
@@ -12,7 +13,6 @@
     "front:build": "pnpm --filter frontend build",
     "front:prod": "pnpm --filter frontend run prod"
   },
-  "packageManager": "pnpm@10.33.0",
   "dependencies": {
     "@tsconfig/recommended": "^1.0.13"
   },

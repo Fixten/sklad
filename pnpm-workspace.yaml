@@ -1,8 +1,8 @@
 packages:
   - backend
   - frontend
-
-onlyBuiltDependencies:
-  - better-sqlite3
-  - esbuild
-  - unrs-resolver
+allowBuilds:
+  '@scarf/scarf': true
+  better-sqlite3: true
+  esbuild: true
+  unrs-resolver: true
