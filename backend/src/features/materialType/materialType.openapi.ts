@@ -10,6 +10,7 @@ import {
   itemPath,
   jsonContent,
   paramsOf,
+  restorePath,
 } from "@/openapi/registry.js";
 import { getFullPathname } from "@/utils/getFullPathname.js";
 
@@ -70,6 +71,17 @@ export function registerMaterialTypeOpenApi(registry: OpenAPIRegistry) {
     request: paramsOf(IdParamsDocZ),
     responses: {
       200: { description: "Delete confirmation", content: deletedContent },
+      ...errors,
+    },
+  });
+  registry.registerPath({
+    method: "post",
+    path: restorePath(Urls.materialType),
+    tags: ["Material Type"],
+    summary: "Restore a soft-deleted material type",
+    request: paramsOf(IdParamsDocZ),
+    responses: {
+      200: { description: "The restored material type", content: jsonContent(materialType) },
       ...errors,
     },
   });

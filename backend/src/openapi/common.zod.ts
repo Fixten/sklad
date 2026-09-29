@@ -6,11 +6,11 @@ extendZodWithOpenApi(z);
 export const dateZ = z.iso.datetime();
 
 export const IdParamsZ = z.object({
-  id: z.string().regex(/^\d+$/u).transform(Number),
+  id: z.string().regex(/^\d+$/).transform(Number),
 });
 
 export const IdParamsDocZ = z.object({
-  id: z.string().regex(/^\d+$/u),
+  id: z.string().regex(/^\d+$/),
 });
 
 export const ErrorResponseZ = z.object({ message: z.string() }).strict();

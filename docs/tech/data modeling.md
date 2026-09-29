@@ -959,6 +959,10 @@ Soft deletion applies where historical relationships exist to:
 
 Soft-deleted records do not prevent creation of new records with the same business name.
 
+Soft deletion applies to the deleted record only. Related records are not modified,
+so a child of a soft-deleted parent stays active and usable, and may be restored while
+its parent remains deleted. Restoring a child does not restore its parent.
+
 ## 26.2 Hard Delete
 
 Product Items are hard-deleted.
@@ -1143,10 +1147,18 @@ The database should enforce fundamental invariants such as:
 * One status detail per Status History record
 * Valid enum values where practical
 
+Enum-like fields whose value set is defined by the request contract (for example
+Material Variant unit) are validated by the API layer only. A `text` column with an
+enum in the schema is not backed by a `CHECK` constraint, so the request schema is the
+only enforcement point and no `UNIQUE`-style DDL is added for it.
+
 ## Backend Service / Domain Layer
 
 The backend is responsible for business validation including:
 
+* Material Type, Material, and Material Variant names are unique ignoring case among active rows.
+* Soft-deleted rows release their name; a name reused by an active row makes the original unrestorable.
+* Editing a soft-deleted row is rejected; restoring a row is not.
 * Pieces must be whole numbers.
 * Meters support up to three decimal places.
 * Work hours support up to three decimal places.

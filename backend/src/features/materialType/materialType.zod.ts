@@ -16,7 +16,7 @@ export const materialTypeRowZ = z
 export const materialTypeCreateZ = z
   .object({
     name: z.string().trim().min(1),
-    description: z.string().optional(),
+    description: z.string().nullish(),
   })
   .strict();
 

@@ -3,6 +3,8 @@ import { Response } from "supertest";
 export interface Row {
   id: number;
   name?: string;
+  deleted_at?: Date | null;
+  updated_at?: Date | null;
   description?: string | null;
   unit?: string;
   material_id?: number;

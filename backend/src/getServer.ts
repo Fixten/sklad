@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import express, { Router, static as expressStatic } from "express";
 
+import { ErrorMessages } from "./constants/Errors.js";
 import { Urls } from "./constants/Urls.js";
 import DbSingleton from "./db/index.js";
 import { errorHandler } from "./errors.middleware.js";
@@ -15,7 +16,6 @@ import settingsRouter from "./features/settings/settings.router.js";
 import supplierRouter from "./features/supplier/supplier.router.js";
 import supplyRouter from "./features/supply/supply.router.js";
 import { SWAGGER_UI_ASSETS, swaggerInitializer } from "./openapi/ui.js";
-import { ErrorMessages } from "./constants/Errors.js";
 
 const specJsonPath = join(process.cwd(), "public", "spec.json");
 

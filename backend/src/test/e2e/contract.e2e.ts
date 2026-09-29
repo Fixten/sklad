@@ -81,11 +81,36 @@ describe("contract e2e", () => {
     expectError(res, 400);
   });
 
+  test("updating a missing resource answers 404 with a validated error body", async () => {
+    for (const path of [
+      "/api/material-type/999",
+      "/api/material/999",
+      "/api/material-variant/999",
+    ]) {
+      const res = await request(app).patch(path).send({ name: "new" });
+      expectError(res, 404);
+    }
+  });
+
+  test("restoring a missing resource answers 404 with a validated error body", async () => {
+    for (const path of [
+      "/api/material-type/999/restore",
+      "/api/material/999/restore",
+      "/api/material-variant/999/restore",
+    ]) {
+      const res = await request(app).post(path);
+      expectError(res, 404);
+    }
+  });
+
   test("malformed ids answer 400 instead of 404", async () => {
     for (const path of ["/api/material-type/abc", "/api/material/abc"]) {
       const res = await request(app).get(path);
       expectError(res, 400);
     }
+
+    const res = await request(app).post("/api/material-type/abc/restore");
+    expectError(res, 400);
   });
 
   test("success responses match the documented row schema", async () => {

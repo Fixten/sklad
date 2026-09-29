@@ -57,8 +57,16 @@ materialVariantRouter.delete(
   "/:id",
   validateParams(IdParamsZ),
   async (req: Id, res) => {
-    await service.deleteVariant(Number(req.params.id));
+    await service.delete(Number(req.params.id));
     sendDeleted(res, req.params.id);
+  },
+);
+
+materialVariantRouter.post(
+  "/:id/restore",
+  validateParams(IdParamsZ),
+  async (req: Id, res) => {
+    sendRow(res, await service.restore(Number(req.params.id)));
   },
 );
 

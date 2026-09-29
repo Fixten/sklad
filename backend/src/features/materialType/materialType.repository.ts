@@ -21,6 +21,9 @@ export default class MaterialTypeRepository {
   hardDelete(id: number) {
     return this.repository.deleteById(id);
   }
+  restore(id: number) {
+    return this.repository.restore(id);
+  }
   update(id: number, newValue: Partial<MaterialTypeModel>) {
     return this.repository.updateById(id, newValue);
   }

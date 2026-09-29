@@ -35,8 +35,12 @@ describe("SettingsRepository", () => {
   });
 
   test("getConfig propagates unrelated errors", async () => {
-    repo.getById.mockRejectedValue(new Error(ErrorMessages.WRONG_UNIT));
+    repo.getById.mockRejectedValue(
+      new Error(ErrorMessages.DB_OPERATION_FAILED),
+    );
     const service = new SettingsRepository(repo);
-    await expect(service.getConfig()).rejects.toThrow(ErrorMessages.WRONG_UNIT);
+    await expect(service.getConfig()).rejects.toThrow(
+      ErrorMessages.DB_OPERATION_FAILED,
+    );
   });
 });

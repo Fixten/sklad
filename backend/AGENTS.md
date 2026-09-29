@@ -22,9 +22,11 @@ drive both runtime validation and the generated OpenAPI document.
   must explicitly implement every data-access method it uses (even pure proxies:
   `create`, `getById`, `getAllActive`, `update`, `hardDelete`, `softDelete`,
   `getBy<Relation>`). Services and routers never touch a base or foreign repository.
-- Soft-delete: rows carry `deleted_at` (NULL = active). Deletion with referencing children
-  is soft, without is hard. Uniqueness holds among active rows only — soft-deleted rows
-  may reuse a name.
+- Soft-delete: rows carry `deleted_at` (NULL = active). Deletion is soft when children
+  reference the row, hard when none do. Everything beyond that is in
+  `docs/tech/data modeling.md` §26 (deletion strategy) and §34 (validation responsibility).
+- Name uniqueness is enforced in the service by checking active siblings; the index only
+  backstops a concurrent write, as no case-insensitive index exists.
 - DB: snake_case plural tables and columns, FKs `RESTRICT` with enforcement on, no cascades.
 - HTTP per resource: `GET /`, `GET /:id`, `POST /`, `PATCH /:id`, `DELETE /:id`. supplier
   and supply currently deviate (update is `POST /:id`, no `GET /:id`) — follow the
@@ -39,13 +41,26 @@ drive both runtime validation and the generated OpenAPI document.
   at the top of `src/openapi/common.zod.ts`; every other zod file must import it first.
 - `*.openapi.ts` files must import only zod schemas/constants — the spec generator loads them
   standalone at build time; a DB/express import breaks generation outside the server lifecycle.
+  Register nested paths (e.g. `/:id/restore`) through the `openapi/registry.ts` path builders.
+- `localeCompare(..., { sensitivity: "case" })` does NOT fold case in Node's default
+  collation (only `"base"` does, and that also folds accents). `isSameName` uses
+  `toLowerCase()` for the service-level uniqueness check.
+- Unit tests run against a real in-memory database. Real behaviour is lost only where a
+  collaborator is mocked, since a mock returns exactly what the test declares: assert
+  persistence behaviour at the layer that owns the query, and mock only to exercise the
+  calling logic.
 - `sendSpec` re-parses the payload it sends, so runtime output must satisfy the documented
   schema — drift fails at the response, not in a type checker.
 - DELETE responses are uniform `{ message: "<id> deleted" }` via
   `sendDeleted(res, req.params.id)`. Pass the raw **string** id: `restrict-template-expressions`
   rejects numbers in template literals.
 - Error strings come only from the shared errors enum. `errors.middleware.ts` maps
-  `SQLITE_CONSTRAINT*`→409, `entity.parse.failed`→400, `ITEM_*_NOT_FOUND`→404.
+  `SQLITE_CONSTRAINT*`→409, `entity.parse.failed`→400, `ITEM_*_NOT_FOUND`→404. A message
+  listed in one of its three arrays is returned verbatim; any other 409 (a raw uniqueness
+  violation) falls back to generic `CONFLICT` so DB text never leaks. Add a new domain
+  error to the right array — that single list drives both status and body.
+- The id param regex must stay flag-free: `zod-to-openapi` emits `regex.toString()` with
+  only the slashes stripped, so `/^\d+$/u` ships a `^\d+$/u` pattern that matches nothing.
 - Log through `logError` (`src/utils/logger.ts`), never `console.error`. It is silenced
   under `NODE_ENV=test`, which is what keeps deliberately-triggered 409s from spamming e2e output.
 - Swagger UI's initializer must reference the standalone `SwaggerUIStandalonePreset` browser
@@ -70,4 +85,6 @@ drive both runtime validation and the generated OpenAPI document.
 
 - Routers duplicate the same CRUD scaffolding. Unexplored: a `createCrudRouter` factory;
   blockers are the divergent update verbs above and divergent service method names
-  (`get` vs `getById`, `deleteVariant`, `hardDelete`).
+  (`get` vs `getById`, `createVariant`/`create`, `hardDelete`).
+- `assertUnitChangeAllowed` (materialVariant.service) only checks Supply references;
+  Epic 5 Material Usage will have to be consulted there too.

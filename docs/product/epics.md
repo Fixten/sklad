@@ -28,7 +28,7 @@ The material catalog consists of:
 - Materials
 - Material Variants
 
-The user can create, view, edit, and delete these entities when permitted by existing data relationships.
+The user can create, view, edit, and delete these entities when permitted by existing data relationships. Deleting an entity that other records still reference hides it instead of removing it, and the user can restore such a hidden entity later; an entity that was removed for real cannot be restored.
 
 Material Variants are the concrete variants used elsewhere in the application. A Material belongs to a Material Type, and a Material Variant belongs to a Material.
 

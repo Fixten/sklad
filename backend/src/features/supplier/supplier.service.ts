@@ -33,7 +33,7 @@ export default class SupplierService {
   }
 
   async delete(id: number) {
-    const supplies = await this.supply.getBySupplier(id);
+    const supplies = await this.supply.getAllBySupplier(id);
     if (supplies.length > 0) {
       await this.repository.softDelete(id);
       return "softDelete";

@@ -33,7 +33,10 @@ export default class CreateAndUpdateRepository<T extends SQLiteTable> {
   }
 
   updateDoc(where: SQL, value: T["$inferInsert"]) {
-    return throwIfNull(this.update(this.dbClient, this.schema, value, where));
+    return throwIfNull(
+      this.update(this.dbClient, this.schema, value, where),
+      ErrorMessages.ITEM_NOT_FOUND,
+    );
   }
 
   upsertDoc(where: SQL, value: T["$inferInsert"]) {

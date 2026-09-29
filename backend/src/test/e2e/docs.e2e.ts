@@ -4,10 +4,10 @@ import { join } from "node:path";
 import { Express } from "express";
 import request from "supertest";
 
+import { ErrorMessages } from "@/constants/Errors.js";
 import DbSingleton from "@/db/index.js";
 
 import { bootstrap, truncate } from "../e2eSetup.js";
-import { ErrorMessages } from "@/constants/Errors.js";
 
 describe("docs e2e", () => {
   let app: Express;
@@ -59,16 +59,19 @@ describe("docs e2e", () => {
     path("/api/material-type/{id}", "get");
     path("/api/material-type/{id}", "patch");
     path("/api/material-type/{id}", "delete");
+    path("/api/material-type/{id}/restore", "post");
     path("/api/material", "get");
     path("/api/material", "post");
     path("/api/material/{id}", "get");
     path("/api/material/{id}", "patch");
     path("/api/material/{id}", "delete");
+    path("/api/material/{id}/restore", "post");
     path("/api/material-variant", "get");
     path("/api/material-variant", "post");
     path("/api/material-variant/{id}", "get");
     path("/api/material-variant/{id}", "patch");
     path("/api/material-variant/{id}", "delete");
+    path("/api/material-variant/{id}/restore", "post");
     path("/api/supply", "get");
     path("/api/supply", "post");
     path("/api/supply/{id}", "post");
@@ -79,6 +82,26 @@ describe("docs e2e", () => {
     path("/api/supplier/{id}", "delete");
     path("/api/settings", "get");
     path("/api/settings", "post");
+  });
+
+  test("advertises id params with a usable pattern and no regex flags", async () => {
+    const res = await request(app).get("/api/docs/spec.json");
+    expect(res.status).toBe(200);
+
+    const paths =
+      (res.body as { paths?: Record<string, Record<string, unknown>> }).paths ??
+      {};
+    const restore = paths["/api/material-type/{id}/restore"] as
+      | { post?: { parameters?: unknown[] } }
+      | undefined;
+    const parameters = (restore?.post?.parameters ?? []) as {
+      in?: string;
+      schema?: { pattern?: string };
+    }[];
+    const id = parameters.find((param) => param.in === "path");
+
+    expect(id?.schema?.pattern).toBe("^\\d+$");
+    expect(new RegExp(id?.schema?.pattern ?? "").test("42")).toBe(true);
   });
 
   test("serves the swagger-ui assets", async () => {

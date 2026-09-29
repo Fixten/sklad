@@ -20,11 +20,11 @@ export class SupplyRepository {
   getAll() {
     return this.baseRepository.getAll();
   }
-  getByVariant(variantId: number) {
+  getAllByVariant(variantId: number) {
     return this.baseRepository.getByValue(eq(this.schema.variant, variantId));
   }
 
-  getBySupplier(supplier: number) {
+  getAllBySupplier(supplier: number) {
     return this.baseRepository.getByValue(eq(this.schema.supplier, supplier));
   }
 

@@ -177,6 +177,12 @@ Responsible for data validation and/or API input/output schemas as defined by th
 
 The exact responsibility of `schema` should be kept consistent across modules.
 
+### Error handling
+
+The service layer reports a rejected operation by raising a specific error drawn from a shared error list, instead of relying on the default response for its status. The API returns that error's message with the status the error is mapped to, so the caller can tell the reason apart without inspecting generic conflict responses.
+
+A failure that does not come from the shared error list keeps the generic message for its status. This covers raw database errors such as a uniqueness constraint violation: the API answers with a generic conflict and does not expose the underlying database message.
+
 ---
 
 ## 6. Backend Module Boundaries
@@ -606,7 +612,7 @@ Future capabilities such as authentication, additional users, reporting, or inte
 | Configuration | Environment variables |
 | Timezone | Single configured timezone |
 | Currency | RUB |
-| Monetary storage | SQL decimal |
+| Monetary storage | Integer kopecks |
 | Material stock | Derived from Supplies |
 | Product stock | Derived from Product Items |
 | Supply deletion | Soft delete |

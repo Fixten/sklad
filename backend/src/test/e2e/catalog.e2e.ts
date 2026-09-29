@@ -92,6 +92,7 @@ describe("catalog e2e", () => {
       await createType(app);
       const duplicate = await createTypeApp(app);
       expect(duplicate.status).toBe(409);
+      expect(bodyOf(duplicate).message).toBe("Name already exists");
     });
 
     test("allows reusing the name after the type is soft-deleted", async () => {
@@ -149,6 +150,35 @@ describe("catalog e2e", () => {
       expect(updated.status).toBe(200);
       expect(bodyOf(updated).description).toBe("hardwood");
     });
+
+    test("rejects a PATCH with a name already used by another type, ignoring case", async () => {
+      await createType(app, "Wood");
+      await createType(app, "Metal");
+
+      const res = await request(app)
+        .patch("/api/material-type/1")
+        .send({ name: "METAL" });
+      expect(res.status).toBe(409);
+    });
+
+    test("returns 404 when patching a missing type", async () => {
+      const res = await request(app)
+        .patch("/api/material-type/999")
+        .send({ name: "new" });
+      expect(res.status).toBe(404);
+    });
+
+    test("keeps the name unchanged and still bumps updated_at on an empty PATCH", async () => {
+      const created = await createType(app);
+      const res = await request(app)
+        .patch(`/api/material-type/${String(created.id)}`)
+        .send({});
+      expect(res.status).toBe(200);
+
+      const row = bodyOf(res) as MaterialType;
+      expect(row.name).toBe("Wood");
+      expect(row.updated_at).toBeTruthy();
+    });
   });
 
   describe("materials", () => {
@@ -195,6 +225,141 @@ describe("catalog e2e", () => {
           .send({ name, material_type_id: type.id });
         expect(res.status).toBe(400);
       }
+    });
+
+    test("rejects a duplicate name in another case with 409", async () => {
+      const type = await createType(app);
+      await createMaterial(app, type.id, "Oak");
+
+      const res = await request(app)
+        .post("/api/material")
+        .send({ name: "OAK", material_type_id: type.id });
+      expect(res.status).toBe(409);
+    });
+
+    test("rejects a PATCH on a soft-deleted material with 409", async () => {
+      const type = await createType(app);
+      const material = await createMaterial(app, type.id);
+      await createVariant(app, material.id);
+      await request(app).delete(`/api/material/${String(material.id)}`);
+
+      const byId = await request(app).get(`/api/material/${String(material.id)}`);
+      expect(byId.status).toBe(200);
+
+      const res = await request(app)
+        .patch(`/api/material/${String(material.id)}`)
+        .send({ name: "new" });
+      expect(res.status).toBe(409);
+      expect(bodyOf(res).message).toBe("Item is deleted");
+    });
+  });
+
+  describe("restoring", () => {
+    test("restores a soft-deleted type and returns it to the list", async () => {
+      const type = await createType(app);
+      await createMaterial(app, type.id);
+      await request(app).delete(`/api/material-type/${String(type.id)}`);
+
+      const res = await request(app).post(
+        `/api/material-type/${String(type.id)}/restore`,
+      );
+      expect(res.status).toBe(200);
+      expect((bodyOf(res) as MaterialType).deleted_at).toBeNull();
+      expect(listOf(await request(app).get("/api/material-type"))).toHaveLength(1);
+    });
+
+    test("restoring an active row is idempotent", async () => {
+      const type = await createType(app);
+
+      const res = await request(app).post(
+        `/api/material-type/${String(type.id)}/restore`,
+      );
+      expect(res.status).toBe(200);
+      expect((bodyOf(res) as MaterialType).id).toBe(type.id);
+    });
+
+    test("restores a soft-deleted material under a soft-deleted type", async () => {
+      const type = await createType(app);
+      const material = await createMaterial(app, type.id);
+      const variant = await createVariant(app, material.id);
+      await request(app).delete(`/api/material-type/${String(type.id)}`);
+      await request(app).delete(`/api/material/${String(material.id)}`);
+
+      const res = await request(app).post(
+        `/api/material/${String(material.id)}/restore`,
+      );
+      expect(res.status).toBe(200);
+      expect(listOf(await request(app).get("/api/material"))).toHaveLength(1);
+      expect(
+        listOf(await request(app).get("/api/material-variant")),
+      ).toHaveLength(1);
+      expect(variant.id).toBeGreaterThan(0);
+    });
+
+    test("restores a soft-deleted variant and leaves its supplies alone", async () => {
+      const type = await createType(app);
+      const material = await createMaterial(app, type.id);
+      const variant = await createVariant(app, material.id);
+      const supply = bodyOf(
+        await request(app)
+          .post("/api/supply")
+          .send({ count: 5, price: 100, variant: variant.id }),
+      );
+      await request(app).delete(`/api/material-variant/${String(variant.id)}`);
+
+      const res = await request(app).post(
+        `/api/material-variant/${String(variant.id)}/restore`,
+      );
+      expect(res.status).toBe(200);
+      expect(listOf(await request(app).get("/api/material-variant"))).toHaveLength(
+        1,
+      );
+
+      const supplies = listOf(await request(app).get("/api/supply"));
+      expect(supplies).toHaveLength(1);
+      expect(supplies[0].id).toBe(supply.id);
+      expect(supplies[0].count).toBe(5);
+    });
+
+    test("rejects restoring into a name now taken by another active row", async () => {
+      const type = await createType(app, "Wood");
+      const material = await createMaterial(app, type.id, "Oak");
+      const variant = await createVariant(app, material.id, "Oak plank");
+      await request(app)
+        .post("/api/supply")
+        .send({ count: 5, price: 100, variant: variant.id });
+      await request(app).delete(`/api/material-variant/${String(variant.id)}`);
+
+      await createVariant(app, material.id, "oak PLANK");
+
+      const res = await request(app).post(
+        `/api/material-variant/${String(variant.id)}/restore`,
+      );
+      expect(res.status).toBe(409);
+    });
+
+    test("allows a soft-deleted name to be reused until the row is restored", async () => {
+      const type = await createType(app);
+      const material = await createMaterial(app, type.id, "Oak");
+      await createVariant(app, material.id);
+      await request(app).delete(`/api/material/${String(material.id)}`);
+
+      const recreated = await createMaterial(app, type.id, "oak");
+      expect(recreated.id).toBeGreaterThan(material.id);
+      expect(listOf(await request(app).get("/api/material"))).toHaveLength(1);
+    });
+
+    test("returns 404 when restoring a missing or hard-deleted row", async () => {
+      const type = await createType(app, "Plastic");
+      await request(app).delete(`/api/material-type/${String(type.id)}`);
+
+      const hardDeleted = await request(app).post(
+        `/api/material-type/${String(type.id)}/restore`,
+      );
+      expect(hardDeleted.status).toBe(404);
+
+      const missing = await request(app).post("/api/material/999/restore");
+      expect(missing.status).toBe(404);
     });
   });
 

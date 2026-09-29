@@ -7,7 +7,11 @@ import { logError } from "./utils/logger.js";
 const badRequestMessages = [
   ErrorMessages.DB_OPERATION_FAILED,
   ErrorMessages.UNIT_CHANGE_AFTER_USAGE,
-  ErrorMessages.WRONG_UNIT,
+] as string[];
+
+const conflictMessages = [
+  ErrorMessages.ITEM_DELETED,
+  ErrorMessages.NAME_ALREADY_EXISTS,
 ] as string[];
 
 const NOT_FOUND_MESSAGES = [
@@ -15,12 +19,21 @@ const NOT_FOUND_MESSAGES = [
   ErrorMessages.ITEM_TO_DELETE_NOT_FOUND,
 ] as string[];
 
+const isDomainError = (error: unknown) =>
+  error instanceof Error &&
+  (NOT_FOUND_MESSAGES.includes(error.message) ||
+    badRequestMessages.includes(error.message) ||
+    conflictMessages.includes(error.message));
+
 function toStatus(error: unknown): number {
   if (error instanceof Error && NOT_FOUND_MESSAGES.includes(error.message))
     return 404;
 
   if (error instanceof Error && badRequestMessages.includes(error.message))
     return 400;
+
+  if (error instanceof Error && conflictMessages.includes(error.message))
+    return 409;
 
   if (
     typeof error === "object" &&
@@ -43,7 +56,10 @@ export const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
   if (status === 409) logError(error);
 
   let message: string = ErrorMessages.INTERNAL_SERVER_ERROR;
-  if (status === 409) message = ErrorMessages.CONFLICT;
+  if (status === 409)
+    message = isDomainError(error)
+      ? (error as Error).message
+      : ErrorMessages.CONFLICT;
   else if (status !== 500 && error instanceof Error) message = error.message;
 
   let body: { message: string };

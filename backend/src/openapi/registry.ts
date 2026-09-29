@@ -25,3 +25,5 @@ export const bodyOf = (schema: z.ZodType) => ({
 });
 
 export const itemPath = (url: string) => `${getFullPathname(url)}/{id}`;
+
+export const restorePath = (url: string) => `${itemPath(url)}/restore`;

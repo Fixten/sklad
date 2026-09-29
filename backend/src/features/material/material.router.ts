@@ -62,4 +62,12 @@ materialRouter.delete(
   },
 );
 
+materialRouter.post(
+  "/:id/restore",
+  validateParams(IdParamsZ),
+  async (req: Id, res) => {
+    sendRow(res, await service.restore(Number(req.params.id)));
+  },
+);
+
 export default materialRouter;

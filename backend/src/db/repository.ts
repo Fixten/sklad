@@ -1,4 +1,4 @@
-import { eq, isNull, SQL } from "drizzle-orm";
+import { and, eq, isNull, SQL } from "drizzle-orm";
 
 import { ErrorMessages } from "@/constants/Errors.js";
 
@@ -30,9 +30,6 @@ export default class Repository<T extends BaseSchema> {
       .updateDoc(eq(this.schema.id, id), updateItem)
       .then((rows) => rows[0]);
   }
-  updateByValue(where: SQL, updateItem: Partial<T["$inferInsert"]>) {
-    return this.createAndUpdate.updateDoc(where, updateItem);
-  }
   upsert(where: SQL, updateItem: T["$inferInsert"]) {
     return this.createAndUpdate.upsertDoc(where, updateItem);
   }
@@ -47,6 +44,14 @@ export default class Repository<T extends BaseSchema> {
   }
   getByValue(where: SQL) {
     return this.db.client.select().from(this.schema).where(where) as Promise<
+      T["$inferSelect"][]
+    >;
+  }
+  getActiveByValue(where: SQL) {
+    return this.db.client
+      .select()
+      .from(this.schema)
+      .where(and(where, isNull(this.schema.deleted_at))) as Promise<
       T["$inferSelect"][]
     >;
   }
@@ -75,6 +80,12 @@ export default class Repository<T extends BaseSchema> {
   softDelete(id: number) {
     return this.updateById(id, {
       deleted_at: new Date(),
+    } as Partial<T["$inferInsert"]>);
+  }
+
+  restore(id: number) {
+    return this.updateById(id, {
+      deleted_at: null,
     } as Partial<T["$inferInsert"]>);
   }
 }

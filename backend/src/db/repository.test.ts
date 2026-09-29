@@ -53,6 +53,28 @@ describe("Repository", () => {
     );
   });
 
+  test("updateById throws not found when the row does not exist", async () => {
+    await expect(repository.updateById(999, { name: "new" })).rejects.toThrow(
+      ErrorMessages.ITEM_NOT_FOUND,
+    );
+  });
+
+  test("updateById sets updated_at and returns the row", async () => {
+    await repository.softDelete(1);
+    const updated = await repository.updateById(1, { name: "renamed" });
+    expect(updated.name).toBe("renamed");
+    expect(updated.updated_at).toBeTruthy();
+  });
+
+  test("restore clears deleted_at", async () => {
+    const existing = (await repository.getAll())[0];
+    await repository.softDelete(existing.id);
+
+    const restored = await repository.restore(existing.id);
+    expect(restored.deleted_at).toBeNull();
+    expect(await repository.getAllActive()).toHaveLength(1);
+  });
+
   test("deleteById physically removes the row", async () => {
     await repository.deleteById(1);
     const all = await repository.getAll();
@@ -66,5 +88,13 @@ describe("Repository", () => {
     const result = await repository.getByValue(eq(testSchema.name, name));
     expect(result).toHaveLength(1);
     expect(result[0].deleted_at).toBeTruthy();
+  });
+
+  test("getActiveByValue filters soft-deleted rows", async () => {
+    const existing = (await repository.getAll())[0];
+    await repository.softDelete(existing.id);
+
+    const result = await repository.getActiveByValue(eq(testSchema.name, name));
+    expect(result).toHaveLength(0);
   });
 });
