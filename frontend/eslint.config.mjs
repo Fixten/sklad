@@ -1,7 +1,6 @@
 import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 import * as pluginImportX from "eslint-plugin-import-x";
-import tsParser from "@typescript-eslint/parser";
 import jestPlugin from "eslint-plugin-jest";
 import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
 import pluginQuery from "@tanstack/eslint-plugin-query";
@@ -42,9 +41,7 @@ export default [
     },
     {
       files: ["**/*.{js,ts,jsx,tsx}"],
-      ignores: ["eslint.config.mjs"],
       languageOptions: {
-        parser: tsParser,
         ecmaVersion: "latest",
         sourceType: "module",
       },
@@ -76,6 +73,6 @@ export default [
           createTypeScriptImportResolver({ project: "tsconfig.json" }),
         ],
       },
-    }
+    },
   ),
 ];

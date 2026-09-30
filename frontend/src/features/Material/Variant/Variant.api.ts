@@ -1,4 +1,5 @@
 import Api from "@/api";
+
 import { Variant } from "./Variant.model";
 
 const path = "material/variant";

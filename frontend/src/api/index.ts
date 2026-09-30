@@ -1,7 +1,7 @@
 import { ApiModel } from "./api.model";
 
 const pickCorrectBase = () =>
-  (import.meta.env.VITE_BACKEND_URL as string) ??
+  (import.meta.env.VITE_BACKEND_URL as string | undefined) ??
   `http://localhost:${import.meta.env.VITE_BACKEND_PORT as string}`;
 
 const getApiUrl = (path: string) => new URL(path, `${pickCorrectBase()}/`);
@@ -26,7 +26,7 @@ export default class Api<B> {
   get<G = B>(slug?: string) {
     return fetchApi<ResponseBody<G>>(
       slug ? getApiUrl(`${this.#apiUrl.pathname}/${slug}`) : this.#apiUrl,
-      "GET"
+      "GET",
     );
   }
   getAll() {
@@ -36,7 +36,7 @@ export default class Api<B> {
     return fetchApi<ResponseBody<R>>(
       slug ? getApiUrl(`${this.#apiUrl.pathname}/${slug}`) : this.#apiUrl,
       "POST",
-      JSON.stringify(body)
+      JSON.stringify(body),
     );
   }
 
@@ -44,7 +44,7 @@ export default class Api<B> {
     const params = args.map((v) => `/${String(v)}`).join("");
     return fetchApi<{ message: string }>(
       getApiUrl(`${this.#apiUrl.pathname}${params}`),
-      "DELETE"
+      "DELETE",
     );
   }
 }
