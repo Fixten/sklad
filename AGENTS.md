@@ -4,7 +4,7 @@ This is node js pnpm monorepo project written in typescript. It has 2 packages: 
 
 # Docs
 
-Project has docmentation in docs folder. It has product subfolder with business requirements and tech subfolder with tech requirements.
+Project has docmentation in docs folder. It has product subfolder with business requirements and tech subfolder with tech requirements. Start from `docs/INDEX.md`; product requirements are split by concern in `docs/product/prd/` — read its `INDEX.md` to pick the right file.
 
 # Backend
 
