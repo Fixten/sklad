@@ -31,7 +31,6 @@ drive both runtime validation and the generated OpenAPI document.
 - HTTP per resource: `GET /`, `GET /:id`, `POST /`, `PATCH /:id`, `DELETE /:id`. supplier
   and supply currently deviate (update is `POST /:id`, no `GET /:id`) — follow the
   convention for new features.
-- Docs (product/tech) are the source of truth; when they conflict with code, change the code.
 - Write unit tests for meaningful logic only; pure pass-through wrappers don't need them.
 - Lint with `pnpm lint:fix`.
 
