@@ -7,8 +7,7 @@ Documentation for Sklad. Business requirements live in `product/`, technical req
 | File | Covers |
 |---|---|
 | `product/prd/INDEX.md` | Product requirements, split by concern (materials, products, inventory, sales, costing). Read its index first to pick the right file. |
-| `product/epics.md` | Epics and intended development order. |
-| `product/user stories.md` | User stories per epic. |
+| `product/epics/INDEX.md` | Epics, one file per epic, plus purpose, development order, and dependency spine. Each epic file holds its Goal, Scope, Enables, and User Stories. Read its index first to pick the right file. |
 
 ## Tech
 
