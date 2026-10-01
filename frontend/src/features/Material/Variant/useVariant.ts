@@ -5,7 +5,7 @@ import { ResponseBody } from "@/api";
 import { MaterialQueryKey } from "../useMaterial";
 
 import VariantApi from "./Variant.api";
-import { Variant } from "./Variant.model";
+import { VariantModel } from "./Variant.model";
 
 const api = new VariantApi();
 
@@ -20,7 +20,7 @@ export default function useVariant() {
     onSuccess: invalidateMaterial,
   });
   const updateMutation = useMutation({
-    mutationFn: (variant: ResponseBody<Variant>) =>
+    mutationFn: (variant: ResponseBody<VariantModel>) =>
       api.update(variant, variant.id),
     onSuccess: invalidateMaterial,
   });

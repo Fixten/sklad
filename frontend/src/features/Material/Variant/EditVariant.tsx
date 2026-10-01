@@ -4,8 +4,7 @@ import zod from "zod";
 import Button from "ui/Button";
 import Form from "ui/Form";
 import Input from "ui/Input";
-
-import { VariantModel } from "../Material.model";
+import { VariantModel } from "./Variant.model";
 
 interface Props {
   onClose: () => void;
@@ -22,7 +21,7 @@ export default function EditVariant(props: Props) {
   async function onSubmit() {
     try {
       validator.parse({ name });
-      await props.onSubmit({ variant: name });
+      // await props.onSubmit({ variant: name });
     } catch (error) {
       console.error(error);
     }
