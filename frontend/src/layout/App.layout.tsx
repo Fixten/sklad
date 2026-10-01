@@ -25,8 +25,8 @@ export const navItems = [
 export default function AppLayout() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <Header className="max-w-4xl mx-auto" navItems={navItems} />
-      <main className="container pt-16 max-w-4xl mx-auto">
+      <Header className="mx-auto max-w-4xl" navItems={navItems} />
+      <main className="container mx-auto max-w-4xl pt-16">
         <Outlet />
       </main>
     </ThemeProvider>

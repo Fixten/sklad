@@ -31,7 +31,9 @@ describe("errorHandler", () => {
   });
 
   test("returns a duplicate-name conflict's own message", () => {
-    const { status, json } = invoke(new Error(ErrorMessages.NAME_ALREADY_EXISTS));
+    const { status, json } = invoke(
+      new Error(ErrorMessages.NAME_ALREADY_EXISTS),
+    );
     expect(status).toHaveBeenCalledWith(409);
     expect(json).toHaveBeenCalledWith({
       message: ErrorMessages.NAME_ALREADY_EXISTS,

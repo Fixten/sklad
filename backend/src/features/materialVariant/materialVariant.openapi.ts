@@ -14,10 +14,17 @@ import {
 } from "@/openapi/registry.js";
 import { getFullPathname } from "@/utils/getFullPathname.js";
 
-import { materialVariantCreateZ, materialVariantPatchZ, materialVariantRowZ } from "./materialVariant.zod.js";
+import {
+  materialVariantCreateZ,
+  materialVariantPatchZ,
+  materialVariantRowZ,
+} from "./materialVariant.zod.js";
 
 export function registerMaterialVariantOpenApi(registry: OpenAPIRegistry) {
-  const materialVariant = registry.register("MaterialVariant", materialVariantRowZ);
+  const materialVariant = registry.register(
+    "MaterialVariant",
+    materialVariantRowZ,
+  );
   const base = getFullPathname(Urls.materialVariant);
 
   registry.registerPath({
@@ -26,7 +33,10 @@ export function registerMaterialVariantOpenApi(registry: OpenAPIRegistry) {
     tags: ["Material Variant"],
     summary: "List active material variants",
     responses: {
-      200: { description: "Active material variants", content: jsonContent(z.array(materialVariant)) },
+      200: {
+        description: "Active material variants",
+        content: jsonContent(z.array(materialVariant)),
+      },
       ...errors,
     },
   });
@@ -37,7 +47,10 @@ export function registerMaterialVariantOpenApi(registry: OpenAPIRegistry) {
     summary: "Get a material variant by id",
     request: paramsOf(IdParamsDocZ),
     responses: {
-      200: { description: "The material variant", content: jsonContent(materialVariant) },
+      200: {
+        description: "The material variant",
+        content: jsonContent(materialVariant),
+      },
       ...errors,
     },
   });
@@ -48,7 +61,10 @@ export function registerMaterialVariantOpenApi(registry: OpenAPIRegistry) {
     summary: "Create a material variant",
     request: bodyOf(materialVariantCreateZ),
     responses: {
-      200: { description: "The created material variant", content: jsonContent(materialVariant) },
+      200: {
+        description: "The created material variant",
+        content: jsonContent(materialVariant),
+      },
       ...errors,
     },
   });
@@ -59,7 +75,10 @@ export function registerMaterialVariantOpenApi(registry: OpenAPIRegistry) {
     summary: "Update a material variant",
     request: { ...paramsOf(IdParamsDocZ), ...bodyOf(materialVariantPatchZ) },
     responses: {
-      200: { description: "The updated material variant", content: jsonContent(materialVariant) },
+      200: {
+        description: "The updated material variant",
+        content: jsonContent(materialVariant),
+      },
       ...errors,
     },
   });
@@ -81,7 +100,10 @@ export function registerMaterialVariantOpenApi(registry: OpenAPIRegistry) {
     summary: "Restore a soft-deleted material variant",
     request: paramsOf(IdParamsDocZ),
     responses: {
-      200: { description: "The restored material variant", content: jsonContent(materialVariant) },
+      200: {
+        description: "The restored material variant",
+        content: jsonContent(materialVariant),
+      },
       ...errors,
     },
   });

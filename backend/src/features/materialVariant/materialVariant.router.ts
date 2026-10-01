@@ -1,7 +1,12 @@
 import { Request, Router } from "express";
 
 import { IdParamsZ } from "@/openapi/common.zod.js";
-import { sendDeleted, sendSpec, validateBody, validateParams } from "@/openapi/validation.js";
+import {
+  sendDeleted,
+  sendSpec,
+  validateBody,
+  validateParams,
+} from "@/openapi/validation.js";
 
 import { MaterialVariantModel } from "./materialVariant.schema.js";
 import { MaterialVariantService } from "./materialVariant.service.js";
@@ -36,7 +41,10 @@ materialVariantRouter.get(
 materialVariantRouter.post(
   "/",
   validateBody(materialVariantCreateZ),
-  async (req: Request<Record<string, string>, unknown, MaterialVariantModel>, res) => {
+  async (
+    req: Request<Record<string, string>, unknown, MaterialVariantModel>,
+    res,
+  ) => {
     sendRow(res, await service.createVariant(req.body));
   },
 );

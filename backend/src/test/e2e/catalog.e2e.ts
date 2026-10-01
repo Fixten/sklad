@@ -116,13 +116,19 @@ describe("catalog e2e", () => {
 
     test("hard-deletes an unreferenced type and soft-deletes a referenced one", async () => {
       const unreferenced = await createType(app, "Plastic");
-      await request(app).delete(`/api/material-type/${String(unreferenced.id)}`);
-      expect(listOf(await request(app).get("/api/material-type"))).toHaveLength(0);
+      await request(app).delete(
+        `/api/material-type/${String(unreferenced.id)}`,
+      );
+      expect(listOf(await request(app).get("/api/material-type"))).toHaveLength(
+        0,
+      );
 
       const referenced = await createType(app);
       await createMaterial(app, referenced.id);
       await request(app).delete(`/api/material-type/${String(referenced.id)}`);
-      expect(listOf(await request(app).get("/api/material-type"))).toHaveLength(0);
+      expect(listOf(await request(app).get("/api/material-type"))).toHaveLength(
+        0,
+      );
 
       const byId = await request(app).get(
         `/api/material-type/${String(referenced.id)}`,
@@ -137,7 +143,9 @@ describe("catalog e2e", () => {
 
     test("rejects an empty or blank required name with 400", async () => {
       for (const name of ["", "   "]) {
-        const res = await request(app).post("/api/material-type").send({ name });
+        const res = await request(app)
+          .post("/api/material-type")
+          .send({ name });
         expect(res.status).toBe(400);
       }
     });
@@ -243,7 +251,9 @@ describe("catalog e2e", () => {
       await createVariant(app, material.id);
       await request(app).delete(`/api/material/${String(material.id)}`);
 
-      const byId = await request(app).get(`/api/material/${String(material.id)}`);
+      const byId = await request(app).get(
+        `/api/material/${String(material.id)}`,
+      );
       expect(byId.status).toBe(200);
 
       const res = await request(app)
@@ -265,7 +275,9 @@ describe("catalog e2e", () => {
       );
       expect(res.status).toBe(200);
       expect((bodyOf(res) as MaterialType).deleted_at).toBeNull();
-      expect(listOf(await request(app).get("/api/material-type"))).toHaveLength(1);
+      expect(listOf(await request(app).get("/api/material-type"))).toHaveLength(
+        1,
+      );
     });
 
     test("restoring an active row is idempotent", async () => {
@@ -311,9 +323,9 @@ describe("catalog e2e", () => {
         `/api/material-variant/${String(variant.id)}/restore`,
       );
       expect(res.status).toBe(200);
-      expect(listOf(await request(app).get("/api/material-variant"))).toHaveLength(
-        1,
-      );
+      expect(
+        listOf(await request(app).get("/api/material-variant")),
+      ).toHaveLength(1);
 
       const supplies = listOf(await request(app).get("/api/supply"));
       expect(supplies).toHaveLength(1);

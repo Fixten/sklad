@@ -14,7 +14,8 @@ export async function throwIfNull<T>(
   message?: string,
 ): Promise<T> {
   const result = await dbResponse;
-  if (result === null) throw new Error(message ?? ErrorMessages.DB_OPERATION_FAILED);
+  if (result === null)
+    throw new Error(message ?? ErrorMessages.DB_OPERATION_FAILED);
   else return result;
 }
 

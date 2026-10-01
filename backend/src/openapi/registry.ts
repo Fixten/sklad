@@ -10,10 +10,22 @@ export const jsonContent = (schema: z.ZodType) => ({
 });
 
 export const errors = {
-  400: { description: ErrorMessages.INVALID_REQUEST, content: jsonContent(ErrorResponseZ) },
-  404: { description: ErrorMessages.RESOURCE_NOT_FOUND, content: jsonContent(ErrorResponseZ) },
-  409: { description: ErrorMessages.CONFLICT, content: jsonContent(ErrorResponseZ) },
-  500: { description: ErrorMessages.INTERNAL_SERVER_ERROR, content: jsonContent(ErrorResponseZ) },
+  400: {
+    description: ErrorMessages.INVALID_REQUEST,
+    content: jsonContent(ErrorResponseZ),
+  },
+  404: {
+    description: ErrorMessages.RESOURCE_NOT_FOUND,
+    content: jsonContent(ErrorResponseZ),
+  },
+  409: {
+    description: ErrorMessages.CONFLICT,
+    content: jsonContent(ErrorResponseZ),
+  },
+  500: {
+    description: ErrorMessages.INTERNAL_SERVER_ERROR,
+    content: jsonContent(ErrorResponseZ),
+  },
 };
 
 export const deletedContent = jsonContent(DeletedMessageZ);

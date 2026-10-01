@@ -12,10 +12,9 @@ describe("SettingsRepository", () => {
   });
   let repo: jest.Mocked<Repository<typeof settingsSchema>>;
   beforeEach(() => {
-    repo =
-      new Repository(settingsSchema) as jest.Mocked<
-        Repository<typeof settingsSchema>
-      >;
+    repo = new Repository(settingsSchema) as jest.Mocked<
+      Repository<typeof settingsSchema>
+    >;
   });
 
   test("getConfig returns the settings row when it exists", async () => {

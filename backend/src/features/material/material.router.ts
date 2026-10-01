@@ -1,7 +1,12 @@
 import { Request, Router } from "express";
 
 import { IdParamsZ } from "@/openapi/common.zod.js";
-import { sendDeleted, sendSpec, validateBody, validateParams } from "@/openapi/validation.js";
+import {
+  sendDeleted,
+  sendSpec,
+  validateBody,
+  validateParams,
+} from "@/openapi/validation.js";
 
 import { MaterialModel } from "./material.schema.js";
 import { MaterialService } from "./material.service.js";
@@ -25,13 +30,9 @@ materialRouter.get("/", async (req, res) => {
   sendList(res, await service.getAll());
 });
 
-materialRouter.get(
-  "/:id",
-  validateParams(IdParamsZ),
-  async (req: Id, res) => {
-    sendRow(res, await service.get(Number(req.params.id)));
-  },
-);
+materialRouter.get("/:id", validateParams(IdParamsZ), async (req: Id, res) => {
+  sendRow(res, await service.get(Number(req.params.id)));
+});
 
 materialRouter.post(
   "/",

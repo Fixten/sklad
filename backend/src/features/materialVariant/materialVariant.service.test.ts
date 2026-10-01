@@ -36,7 +36,8 @@ describe("VariantService", () => {
     supplyService = new SupplyService(
       {} as never,
     ) as unknown as jest.Mocked<SupplyService>;
-    repo = new MaterialVariantRepository() as jest.Mocked<MaterialVariantRepository>;
+    repo =
+      new MaterialVariantRepository() as jest.Mocked<MaterialVariantRepository>;
     service = new MaterialVariantService(supplyService, repo);
   });
 
@@ -80,9 +81,9 @@ describe("VariantService", () => {
     test("rejects unit change when supplies reference the variant", async () => {
       repo.getById.mockResolvedValue(row({ unit: "meters" }));
       supplyService.getAllByVariant.mockResolvedValue([{} as SupplySchema]);
-      await expect(service.updateVariant(0, { unit: "pieces" })).rejects.toThrow(
-        ErrorMessages.UNIT_CHANGE_AFTER_USAGE,
-      );
+      await expect(
+        service.updateVariant(0, { unit: "pieces" }),
+      ).rejects.toThrow(ErrorMessages.UNIT_CHANGE_AFTER_USAGE);
       expect(repo.update).not.toHaveBeenCalled();
     });
 
@@ -103,10 +104,12 @@ describe("VariantService", () => {
 
     test("rejects a name already used by another variant of the material", async () => {
       repo.getById.mockResolvedValue(row({ name: "Oak plank" }));
-      repo.getActiveByMaterial.mockResolvedValue([row({ id: 2, name: "Board" })]);
-      await expect(
-        service.updateVariant(0, { name: "board" }),
-      ).rejects.toThrow(ErrorMessages.NAME_ALREADY_EXISTS);
+      repo.getActiveByMaterial.mockResolvedValue([
+        row({ id: 2, name: "Board" }),
+      ]);
+      await expect(service.updateVariant(0, { name: "board" })).rejects.toThrow(
+        ErrorMessages.NAME_ALREADY_EXISTS,
+      );
       expect(repo.update).not.toHaveBeenCalled();
     });
 
@@ -127,18 +130,18 @@ describe("VariantService", () => {
 
     test("propagates not found for a missing variant", async () => {
       repo.getById.mockRejectedValue(new Error(ErrorMessages.ITEM_NOT_FOUND));
-      await expect(service.updateVariant(0, { name: "new name" })).rejects.toThrow(
-        ErrorMessages.ITEM_NOT_FOUND,
-      );
+      await expect(
+        service.updateVariant(0, { name: "new name" }),
+      ).rejects.toThrow(ErrorMessages.ITEM_NOT_FOUND);
     });
     test("checks the name when only the material changes", async () => {
       repo.getById.mockResolvedValue(row({ name: "Oak plank" }));
       repo.getActiveByMaterial.mockResolvedValue([
         row({ id: 2, name: "Oak plank" }),
       ]);
-      await expect(service.updateVariant(0, { material_id: 2 })).rejects.toThrow(
-        ErrorMessages.NAME_ALREADY_EXISTS,
-      );
+      await expect(
+        service.updateVariant(0, { material_id: 2 }),
+      ).rejects.toThrow(ErrorMessages.NAME_ALREADY_EXISTS);
       expect(repo.update).not.toHaveBeenCalled();
     });
   });

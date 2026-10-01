@@ -20,7 +20,10 @@ settingsRouter.get("/", async (req, res) => {
 settingsRouter.post(
   "/",
   validateBody(settingsBodyZ),
-  async (req: Request<Record<string, string>, SettingsSchema, SettingsModel>, res) => {
+  async (
+    req: Request<Record<string, string>, SettingsSchema, SettingsModel>,
+    res,
+  ) => {
     sendRow(res, await service.updateConfig(req.body));
   },
 );

@@ -41,7 +41,8 @@ export class MaterialService {
   }
   async update(id: number, newValue: Partial<MaterialModel>) {
     const current = await this.getEditable(id);
-    const materialTypeId = newValue.material_type_id ?? current.material_type_id;
+    const materialTypeId =
+      newValue.material_type_id ?? current.material_type_id;
     if (newValue.name !== undefined || newValue.material_type_id !== undefined)
       await this.assertNameIsFree(
         newValue.name ?? current.name,

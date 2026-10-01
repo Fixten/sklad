@@ -92,8 +92,7 @@ describe("docs e2e", () => {
       (res.body as { paths?: Record<string, Record<string, unknown>> }).paths ??
       {};
     const restore = paths["/api/material-type/{id}/restore"] as
-      | { post?: { parameters?: unknown[] } }
-      | undefined;
+      { post?: { parameters?: unknown[] } } | undefined;
     const parameters = (restore?.post?.parameters ?? []) as {
       in?: string;
       schema?: { pattern?: string };

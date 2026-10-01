@@ -78,24 +78,30 @@ describe("supplier and supply e2e", () => {
 
     test("hard-deletes an unreferenced supplier and soft-deletes a referenced one", async () => {
       const unreferenced = await createSupplier(app);
-      const hard = await request(app).delete(`/api/supplier/${String(unreferenced.id)}`);
+      const hard = await request(app).delete(
+        `/api/supplier/${String(unreferenced.id)}`,
+      );
       expect(hard.status).toBe(200);
-      expect(hard.body).toEqual({ message: `${String(unreferenced.id)} deleted` });
+      expect(hard.body).toEqual({
+        message: `${String(unreferenced.id)} deleted`,
+      });
       expect(listOf(await request(app).get("/api/supplier"))).toHaveLength(0);
 
       const { variant } = await createCatalog(app);
       const referenced = await createSupplier(app, "Timber Co");
-      await request(app)
-        .post("/api/supply")
-        .send({
-          variant: variant.id,
-          supplier: referenced.id,
-          price: 100,
-          count: 5,
-        });
-      const soft = await request(app).delete(`/api/supplier/${String(referenced.id)}`);
+      await request(app).post("/api/supply").send({
+        variant: variant.id,
+        supplier: referenced.id,
+        price: 100,
+        count: 5,
+      });
+      const soft = await request(app).delete(
+        `/api/supplier/${String(referenced.id)}`,
+      );
       expect(soft.status).toBe(200);
-      expect(soft.body).toEqual({ message: `${String(referenced.id)} deleted` });
+      expect(soft.body).toEqual({
+        message: `${String(referenced.id)} deleted`,
+      });
       expect(listOf(await request(app).get("/api/supplier"))).toHaveLength(0);
     });
   });
@@ -141,9 +147,13 @@ describe("supplier and supply e2e", () => {
       expect(updated.status).toBe(200);
       expect(bodyOf(updated).count).toBe(7);
 
-      const deleted = await request(app).delete(`/api/supply/${String(created.id)}`);
+      const deleted = await request(app).delete(
+        `/api/supply/${String(created.id)}`,
+      );
       expect(deleted.status).toBe(200);
-      expect(deleted.body).toEqual({ message: `${String(created.id)} deleted` });
+      expect(deleted.body).toEqual({
+        message: `${String(created.id)} deleted`,
+      });
       expect(listOf(await request(app).get("/api/supply"))).toHaveLength(0);
     });
 
@@ -157,7 +167,9 @@ describe("supplier and supply e2e", () => {
         .patch(`/api/material-variant/${String(variant.id)}`)
         .send({ unit: "meters" });
       expect(res.status).toBe(400);
-      expect(bodyOf(res).message).toBe("Unit cannot be changed after historical usage");
+      expect(bodyOf(res).message).toBe(
+        "Unit cannot be changed after historical usage",
+      );
     });
 
     test("soft-deletes a used variant and hard-deletes an unused one", async () => {
@@ -165,28 +177,40 @@ describe("supplier and supply e2e", () => {
       await request(app)
         .post("/api/supply")
         .send({ variant: used.variant.id, price: 100, count: 5 });
-      await request(app).delete(`/api/material-variant/${String(used.variant.id)}`);
-      expect(listOf(await request(app).get("/api/material-variant"))).toHaveLength(0);
+      await request(app).delete(
+        `/api/material-variant/${String(used.variant.id)}`,
+      );
       expect(
-        (await request(app).get(`/api/material-variant/${String(used.variant.id)}`))
-          .status,
+        listOf(await request(app).get("/api/material-variant")),
+      ).toHaveLength(0);
+      expect(
+        (
+          await request(app).get(
+            `/api/material-variant/${String(used.variant.id)}`,
+          )
+        ).status,
       ).toBe(200);
 
       const unused = await createCatalog(app, "2");
-      await request(app).delete(`/api/material-variant/${String(unused.variant.id)}`);
-      expect(listOf(await request(app).get("/api/material-variant"))).toHaveLength(0);
+      await request(app).delete(
+        `/api/material-variant/${String(unused.variant.id)}`,
+      );
       expect(
-        (await request(app).get(`/api/material-variant/${String(unused.variant.id)}`))
-          .status,
+        listOf(await request(app).get("/api/material-variant")),
+      ).toHaveLength(0);
+      expect(
+        (
+          await request(app).get(
+            `/api/material-variant/${String(unused.variant.id)}`,
+          )
+        ).status,
       ).toBe(404);
 
-      const recreated = await request(app)
-        .post("/api/material-variant")
-        .send({
-          name: "Oak plank",
-          unit: "pieces",
-          material_id: unused.materialId,
-        });
+      const recreated = await request(app).post("/api/material-variant").send({
+        name: "Oak plank",
+        unit: "pieces",
+        material_id: unused.materialId,
+      });
       expect(recreated.status).toBe(200);
     });
   });

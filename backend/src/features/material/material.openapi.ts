@@ -14,7 +14,11 @@ import {
 } from "@/openapi/registry.js";
 import { getFullPathname } from "@/utils/getFullPathname.js";
 
-import { materialCreateZ, materialPatchZ, materialRowZ } from "./material.zod.js";
+import {
+  materialCreateZ,
+  materialPatchZ,
+  materialRowZ,
+} from "./material.zod.js";
 
 export function registerMaterialOpenApi(registry: OpenAPIRegistry) {
   const material = registry.register("Material", materialRowZ);
@@ -26,7 +30,10 @@ export function registerMaterialOpenApi(registry: OpenAPIRegistry) {
     tags: ["Material"],
     summary: "List active materials",
     responses: {
-      200: { description: "Active materials", content: jsonContent(z.array(material)) },
+      200: {
+        description: "Active materials",
+        content: jsonContent(z.array(material)),
+      },
       ...errors,
     },
   });
@@ -48,7 +55,10 @@ export function registerMaterialOpenApi(registry: OpenAPIRegistry) {
     summary: "Create a material",
     request: bodyOf(materialCreateZ),
     responses: {
-      200: { description: "The created material", content: jsonContent(material) },
+      200: {
+        description: "The created material",
+        content: jsonContent(material),
+      },
       ...errors,
     },
   });
@@ -59,7 +69,10 @@ export function registerMaterialOpenApi(registry: OpenAPIRegistry) {
     summary: "Update a material",
     request: { ...paramsOf(IdParamsDocZ), ...bodyOf(materialPatchZ) },
     responses: {
-      200: { description: "The updated material", content: jsonContent(material) },
+      200: {
+        description: "The updated material",
+        content: jsonContent(material),
+      },
       ...errors,
     },
   });
@@ -81,7 +94,10 @@ export function registerMaterialOpenApi(registry: OpenAPIRegistry) {
     summary: "Restore a soft-deleted material",
     request: paramsOf(IdParamsDocZ),
     responses: {
-      200: { description: "The restored material", content: jsonContent(material) },
+      200: {
+        description: "The restored material",
+        content: jsonContent(material),
+      },
       ...errors,
     },
   });

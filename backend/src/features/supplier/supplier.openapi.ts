@@ -13,7 +13,11 @@ import {
 } from "@/openapi/registry.js";
 import { getFullPathname } from "@/utils/getFullPathname.js";
 
-import { supplierCreateZ, supplierRowZ, supplierUpdateZ } from "./supplier.zod.js";
+import {
+  supplierCreateZ,
+  supplierRowZ,
+  supplierUpdateZ,
+} from "./supplier.zod.js";
 
 export function registerSupplierOpenApi(registry: OpenAPIRegistry) {
   const supplier = registry.register("Supplier", supplierRowZ);
@@ -25,7 +29,10 @@ export function registerSupplierOpenApi(registry: OpenAPIRegistry) {
     tags: ["Supplier"],
     summary: "List active suppliers",
     responses: {
-      200: { description: "Active suppliers", content: jsonContent(z.array(supplier)) },
+      200: {
+        description: "Active suppliers",
+        content: jsonContent(z.array(supplier)),
+      },
       ...errors,
     },
   });
@@ -36,7 +43,10 @@ export function registerSupplierOpenApi(registry: OpenAPIRegistry) {
     summary: "Create a supplier",
     request: bodyOf(supplierCreateZ),
     responses: {
-      200: { description: "The created supplier", content: jsonContent(supplier) },
+      200: {
+        description: "The created supplier",
+        content: jsonContent(supplier),
+      },
       ...errors,
     },
   });
@@ -47,7 +57,10 @@ export function registerSupplierOpenApi(registry: OpenAPIRegistry) {
     summary: "Update a supplier",
     request: { ...paramsOf(IdParamsDocZ), ...bodyOf(supplierUpdateZ) },
     responses: {
-      200: { description: "The updated supplier", content: jsonContent(supplier) },
+      200: {
+        description: "The updated supplier",
+        content: jsonContent(supplier),
+      },
       ...errors,
     },
   });

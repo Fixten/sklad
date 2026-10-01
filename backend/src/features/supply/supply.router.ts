@@ -1,11 +1,21 @@
 import { Request, Router } from "express";
 
 import { IdParamsZ } from "@/openapi/common.zod.js";
-import { sendDeleted, sendSpec, validateBody, validateParams } from "@/openapi/validation.js";
+import {
+  sendDeleted,
+  sendSpec,
+  validateBody,
+  validateParams,
+} from "@/openapi/validation.js";
 
 import { SupplyModel, SupplySchema } from "./supply.schema.js";
 import supplyService from "./supply.service.js";
-import { supplyCreateZ, supplyRowListZ, supplyRowZ, supplyUpdateZ } from "./supply.zod.js";
+import {
+  supplyCreateZ,
+  supplyRowListZ,
+  supplyRowZ,
+  supplyUpdateZ,
+} from "./supply.zod.js";
 
 const supplyRouter = Router();
 
@@ -21,7 +31,10 @@ supplyRouter.get("/", async (req, res) => {
 supplyRouter.post(
   "/",
   validateBody(supplyCreateZ),
-  async (req: Request<Record<string, string>, SupplySchema, SupplyModel>, res) => {
+  async (
+    req: Request<Record<string, string>, SupplySchema, SupplyModel>,
+    res,
+  ) => {
     sendRow(res, await service.create(req.body));
   },
 );

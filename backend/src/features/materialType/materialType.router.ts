@@ -1,7 +1,12 @@
 import { Request, Router } from "express";
 
 import { IdParamsZ } from "@/openapi/common.zod.js";
-import { sendDeleted, sendSpec, validateBody, validateParams } from "@/openapi/validation.js";
+import {
+  sendDeleted,
+  sendSpec,
+  validateBody,
+  validateParams,
+} from "@/openapi/validation.js";
 
 import { MaterialTypeModel } from "./materialType.schema.js";
 import MaterialTypeService from "./materialType.service.js";
@@ -36,7 +41,10 @@ materialTypeRouter.get(
 materialTypeRouter.post(
   "/",
   validateBody(materialTypeCreateZ),
-  async (req: Request<Record<string, string>, unknown, MaterialTypeModel>, res) => {
+  async (
+    req: Request<Record<string, string>, unknown, MaterialTypeModel>,
+    res,
+  ) => {
     sendRow(res, await service.create(req.body));
   },
 );
@@ -45,7 +53,10 @@ materialTypeRouter.patch(
   "/:id",
   validateParams(IdParamsZ),
   validateBody(materialTypePatchZ),
-  async (req: Request<{ id: string }, unknown, Partial<MaterialTypeModel>>, res) => {
+  async (
+    req: Request<{ id: string }, unknown, Partial<MaterialTypeModel>>,
+    res,
+  ) => {
     sendRow(res, await service.update(Number(req.params.id), req.body));
   },
 );

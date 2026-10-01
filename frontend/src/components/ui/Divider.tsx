@@ -1,3 +1,3 @@
 export default function Divider() {
-  return <div className="w-full h-1 bg-muted" />;
+  return <div className="bg-muted h-1 w-full" />;
 }

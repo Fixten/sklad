@@ -23,7 +23,7 @@ const Material = z.object({
 export default function EditMaterial(props: Props) {
   const [name, setName] = useState<string>(props.value?.name ?? "");
   const [description, setDescription] = useState<string>(
-    props.value?.description ?? ""
+    props.value?.description ?? "",
   );
   const [type, setType] = useState<string>(props.value?.materialType ?? "");
 

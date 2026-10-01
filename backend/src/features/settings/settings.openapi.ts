@@ -16,7 +16,10 @@ export function registerSettingsOpenApi(registry: OpenAPIRegistry) {
     tags: ["Settings"],
     summary: "Get the settings",
     responses: {
-      200: { description: "The settings row or its default", content: jsonContent(settingsGetZ) },
+      200: {
+        description: "The settings row or its default",
+        content: jsonContent(settingsGetZ),
+      },
       ...errors,
     },
   });
@@ -27,7 +30,10 @@ export function registerSettingsOpenApi(registry: OpenAPIRegistry) {
     summary: "Create or update the settings",
     request: bodyOf(settingsBodyZ),
     responses: {
-      200: { description: "The stored settings row", content: jsonContent(settings) },
+      200: {
+        description: "The stored settings row",
+        content: jsonContent(settings),
+      },
       ...errors,
     },
   });

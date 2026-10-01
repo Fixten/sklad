@@ -1,4 +1,7 @@
-import { OpenApiGeneratorV3, OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
+import {
+  OpenApiGeneratorV3,
+  OpenAPIRegistry,
+} from "@asteasolutions/zod-to-openapi";
 
 import { registerMaterialOpenApi } from "../features/material/material.openapi.js";
 import { registerMaterialTypeOpenApi } from "../features/materialType/materialType.openapi.js";

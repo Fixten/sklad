@@ -12,9 +12,7 @@ import MaterialTypeService from "./materialType.service.js";
 jest.mock("./materialType.repository.js");
 jest.mock("../material/material.service.js");
 
-function row(
-  overrides: Partial<MaterialTypeSchema> = {},
-): MaterialTypeSchema {
+function row(overrides: Partial<MaterialTypeSchema> = {}): MaterialTypeSchema {
   return {
     id: 1,
     created_at: new Date(),

@@ -14,7 +14,11 @@ import {
 } from "@/openapi/registry.js";
 import { getFullPathname } from "@/utils/getFullPathname.js";
 
-import { materialTypeCreateZ, materialTypePatchZ, materialTypeRowZ } from "./materialType.zod.js";
+import {
+  materialTypeCreateZ,
+  materialTypePatchZ,
+  materialTypeRowZ,
+} from "./materialType.zod.js";
 
 export function registerMaterialTypeOpenApi(registry: OpenAPIRegistry) {
   const materialType = registry.register("MaterialType", materialTypeRowZ);
@@ -26,7 +30,10 @@ export function registerMaterialTypeOpenApi(registry: OpenAPIRegistry) {
     tags: ["Material Type"],
     summary: "List active material types",
     responses: {
-      200: { description: "Active material types", content: jsonContent(z.array(materialType)) },
+      200: {
+        description: "Active material types",
+        content: jsonContent(z.array(materialType)),
+      },
       ...errors,
     },
   });
@@ -37,7 +44,10 @@ export function registerMaterialTypeOpenApi(registry: OpenAPIRegistry) {
     summary: "Get a material type by id",
     request: paramsOf(IdParamsDocZ),
     responses: {
-      200: { description: "The material type", content: jsonContent(materialType) },
+      200: {
+        description: "The material type",
+        content: jsonContent(materialType),
+      },
       ...errors,
     },
   });
@@ -48,7 +58,10 @@ export function registerMaterialTypeOpenApi(registry: OpenAPIRegistry) {
     summary: "Create a material type",
     request: bodyOf(materialTypeCreateZ),
     responses: {
-      200: { description: "The created material type", content: jsonContent(materialType) },
+      200: {
+        description: "The created material type",
+        content: jsonContent(materialType),
+      },
       ...errors,
     },
   });
@@ -59,7 +72,10 @@ export function registerMaterialTypeOpenApi(registry: OpenAPIRegistry) {
     summary: "Update a material type",
     request: { ...paramsOf(IdParamsDocZ), ...bodyOf(materialTypePatchZ) },
     responses: {
-      200: { description: "The updated material type", content: jsonContent(materialType) },
+      200: {
+        description: "The updated material type",
+        content: jsonContent(materialType),
+      },
       ...errors,
     },
   });
@@ -81,7 +97,10 @@ export function registerMaterialTypeOpenApi(registry: OpenAPIRegistry) {
     summary: "Restore a soft-deleted material type",
     request: paramsOf(IdParamsDocZ),
     responses: {
-      200: { description: "The restored material type", content: jsonContent(materialType) },
+      200: {
+        description: "The restored material type",
+        content: jsonContent(materialType),
+      },
       ...errors,
     },
   });

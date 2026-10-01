@@ -52,7 +52,7 @@ export default function MaterialTypePage() {
               const current = arr[arr.length - 1 - i];
               return (
                 <Fragment key={current.id}>
-                  <li className="p-2 flex items-center justify-between">
+                  <li className="flex items-center justify-between p-2">
                     {current.name}{" "}
                     <Button
                       onClick={() => {
