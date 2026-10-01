@@ -15,8 +15,8 @@ export default defineConfig(({ mode }) => {
     envDir: envRelativePath,
     resolve: {
       alias: {
-        ui: path.resolve(__dirname, "./src/components/ui"),
-        "@": path.resolve(__dirname, "./src"),
+        ui: path.resolve(import.meta.dirname, "./src/components/ui"),
+        "@": path.resolve(import.meta.dirname, "./src"),
       },
     },
   };

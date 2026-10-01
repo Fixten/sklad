@@ -30,3 +30,19 @@ The main working-day flow is:
 These operations should be accessible without requiring the user to navigate through unrelated configuration or technical functionality.
 
 The application is a web application and should be usable on mobile devices.
+
+---
+
+## Feature Flags
+
+The project provides feature flags that allow any application feature to be enabled or disabled
+through configuration, without changing code.
+
+- A feature is **enabled by default**. Disabling it must be an explicit, deliberate configuration change.
+- Feature flags exist so that not-yet-complete or not-currently-needed functionality can be turned off
+  while the rest of the application keeps working.
+- Disabling a feature removes it from the application's user-facing functionality only.
+- The API documentation always describes the full set of endpoints, including those of disabled features,
+  so the contract stays complete and reviewable.
+
+Configuration and technical behaviour are described in `docs/tech/architecture.md` §16.1.

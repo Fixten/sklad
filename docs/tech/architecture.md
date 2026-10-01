@@ -87,6 +87,8 @@ The architecture should nevertheless avoid decisions that would make these capab
 
 Environment variables are sufficient for application and infrastructure configuration at the current stage.
 
+Feature flags are the only other configuration source, and they cover feature enablement only — see §16.1.
+
 No dedicated configuration service or configuration management system is required.
 
 ---
@@ -508,6 +510,103 @@ The application uses a single configured timezone.
 
 ---
 
+## 16.1. Feature Flags
+
+Feature flags turn application features on or off through configuration, without code changes.
+
+### Purpose
+
+- Disable functionality that is not needed in the current deployment.
+- Disable functionality that is not finished yet, without removing or reverting its code.
+- Change what the application exposes without a code change and redeploy of the source.
+
+Feature flags are **not** a mechanism for gradual rollout, per-user targeting, or runtime toggling.
+Those are not current requirements, and a flag system that does not need them should not model them.
+
+### Configuration file
+
+Flags live in a single committed file at the repository root: `features.config.json`.
+
+```json
+{
+  "features": {
+    "material": true,
+    "supplier": false
+  }
+}
+```
+
+The file is separate from environment variables on purpose:
+
+- Environment variables are **infrastructure and runtime** configuration (database path, ports,
+  backend URL) and differ per environment, so they live in `.env` and are not committed.
+- Feature flags are **application behaviour** configuration. They are part of the source, reviewed
+  and versioned with it, so a build is reproducible from the repository alone.
+
+A flag key is the name of the backend feature it controls.
+
+### Default is enabled
+
+**A feature that is not listed in the configuration is enabled.**
+
+This makes the safe state the default one: adding a feature requires no configuration change, and a
+missing, empty, or partially filled file cannot accidentally hide functionality.
+
+To disable a feature, set its key to `false`:
+
+```json
+{
+  "features": {
+    "supplier": false
+  }
+}
+```
+
+Only a boolean value is honoured. A key with any other value type is ignored, and the feature is
+treated as enabled.
+
+### Behaviour on an unreadable configuration
+
+If the configuration file is missing or cannot be parsed, every feature is treated as enabled.
+
+The flags must never be the reason the application fails to start, and a broken configuration file
+must not take functionality down with it.
+
+### Scope
+
+Flags control **backend route registration only**.
+
+- The backend registers a feature's router only when the feature is enabled. A disabled feature has
+  no routes, so its endpoints answer `404 Not Found`.
+- A disabled feature is not partial: the whole feature's route is either registered or not. Flags are
+  not applied inside a feature, to individual endpoints, or to business logic.
+- Flags are not applied to database schemas, migrations, or services. A disabled feature's data stays
+  in the database and becomes reachable again as soon as the feature is enabled.
+- Infrastructure endpoints (health, root, API specification, documentation UI) are not gated.
+
+### The API specification is never gated
+
+The generated OpenAPI document always describes **all** endpoints, including those of disabled
+features.
+
+The specification is a contract document, not a description of one deployment. Gating it would make
+the contract change depending on a configuration file, and documentation would describe endpoints
+that may or may not exist. A reader of the specification sees the complete intended API surface,
+whether or not a feature is currently enabled.
+
+### Application of flags
+
+Flags are applied when the application builds its route table at startup. They are not re-read per
+request, and changing a flag therefore requires a restart of the built application, which in Docker
+means a rebuild of the backend image.
+
+The configuration file is resolved relative to the backend package directory, so the application must
+be started from that directory, the same requirement that already applies to the generated API
+specification. The container image copies the configuration file next to the package, which is what
+makes the resolution work there.
+
+---
+
 ## 17. Deployment
 
 Production runs on a home server within the local network.
@@ -609,7 +708,7 @@ Future capabilities such as authentication, additional users, reporting, or inte
 | Deployment | Docker Compose |
 | Runtime environment | Private LAN / home server |
 | Authentication | Not currently required |
-| Configuration | Environment variables |
+| Configuration | Environment variables + feature flags |
 | Timezone | Single configured timezone |
 | Currency | RUB |
 | Monetary storage | Integer kopecks |

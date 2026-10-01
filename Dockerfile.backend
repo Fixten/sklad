@@ -17,6 +17,7 @@ RUN pnpm -r install --prod --offline --frozen-lockfile
 
 # move configs
 COPY tsconfig.json ./
+COPY features.config.json ./
 COPY backend/tsconfig.json backend/tsconfig.build.json ./backend/
 
 # build

@@ -18,6 +18,7 @@ Product requirements for Sklad, split by concern. Start with `overview.md`, then
 | Concept | File |
 |---|---|
 | Product scope, non-goals, working-day flow | `overview.md` |
+| Feature flags | `overview.md` |
 | Material Type | `materials.md` |
 | Material | `materials.md` |
 | Material Variant | `materials.md` |

@@ -1,5 +1,7 @@
 <!-- agent-md-sync: max-lines=100 -->
 
+Important. Currently project is in outdated state. This is expected. This is not live right now and expects further development.
+
 # frontend
 
 React 19 + Vite SPA, shadcn/ui on Tailwind v4 (CSS-variable theming). Feature-oriented,

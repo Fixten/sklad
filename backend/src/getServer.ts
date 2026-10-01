@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import express, { Router, static as expressStatic } from "express";
 
+import { isFeatureEnabled } from "./config/featureFlags.js";
 import { ErrorMessages } from "./constants/Errors.js";
 import { Urls } from "./constants/Urls.js";
 import DbSingleton from "./db/index.js";
@@ -41,12 +42,17 @@ export default function getServer() {
     res.type("application/javascript").send(swaggerInitializer);
   });
   apiRouter.use(Urls.docs, expressStatic(SWAGGER_UI_ASSETS));
-  apiRouter.use(Urls.settings, settingsRouter);
-  apiRouter.use(Urls.materialType, materialTypeRouter);
-  apiRouter.use(Urls.materialVariant, materialVariantRouter);
-  apiRouter.use(Urls.material, materialRouter);
-  apiRouter.use(Urls.supply, supplyRouter);
-  apiRouter.use(Urls.supplier, supplierRouter);
+  if (isFeatureEnabled("settings"))
+    apiRouter.use(Urls.settings, settingsRouter);
+  if (isFeatureEnabled("materialType"))
+    apiRouter.use(Urls.materialType, materialTypeRouter);
+  if (isFeatureEnabled("materialVariant"))
+    apiRouter.use(Urls.materialVariant, materialVariantRouter);
+  if (isFeatureEnabled("material"))
+    apiRouter.use(Urls.material, materialRouter);
+  if (isFeatureEnabled("supply")) apiRouter.use(Urls.supply, supplyRouter);
+  if (isFeatureEnabled("supplier"))
+    apiRouter.use(Urls.supplier, supplierRouter);
 
   app.use(Urls.apiBase, apiRouter);
   app.use(errorHandler);

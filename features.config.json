@@ -1,0 +1,10 @@
+{
+  "features": {
+    "materialType": true,
+    "materialVariant": true,
+    "material": true,
+    "supply": false,
+    "supplier": false,
+    "settings": false
+  }
+}
