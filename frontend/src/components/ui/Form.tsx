@@ -1,5 +1,5 @@
 interface Props {
-  onSubmit: () => Promise<unknown>;
+  onSubmit: () => unknown;
   children: React.ReactNode;
   className?: string;
 }
@@ -7,7 +7,11 @@ interface Props {
 export default function Form(props: Props) {
   function onSubmit(e: React.SubmitEvent) {
     e.preventDefault();
-    props.onSubmit().catch(console.error);
+    try {
+      props.onSubmit();
+    } catch (error) {
+      console.error(error);
+    }
   }
   return (
     <form onSubmit={onSubmit} className={props.className}>

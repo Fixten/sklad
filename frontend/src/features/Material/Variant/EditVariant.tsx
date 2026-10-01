@@ -4,6 +4,7 @@ import zod from "zod";
 import Button from "ui/Button";
 import Form from "ui/Form";
 import Input from "ui/Input";
+
 import { VariantModel } from "./Variant.model";
 
 interface Props {
@@ -18,7 +19,7 @@ const validator = zod.object({
 export default function EditVariant(props: Props) {
   const [name, setName] = useState<string>("");
 
-  async function onSubmit() {
+  function onSubmit() {
     try {
       validator.parse({ name });
       // await props.onSubmit({ variant: name });

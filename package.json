@@ -11,13 +11,24 @@
     "migrate:dev": "pnpm --filter backend migration:apply:dev",
     "front:dev": "pnpm --filter frontend dev",
     "front:build": "pnpm --filter frontend build",
-    "front:prod": "pnpm --filter frontend run prod"
+    "front:prod": "pnpm --filter frontend run prod",
+    "prepare": "husky",
+    "lint:staged": "lint-staged"
   },
   "dependencies": {
     "@tsconfig/recommended": "^1.0.13"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "dotenv-cli": "^11.0.0",
-    "typescript": "^6.0.3"
+    "eslint": "^10.11.0",
+    "eslint-import-resolver-typescript": "^4.4.5",
+    "eslint-plugin-import-x": "^4.17.1",
+    "eslint-plugin-jest": "^29.16.6",
+    "husky": "9.1.7",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.9",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.71.0"
   }
 }

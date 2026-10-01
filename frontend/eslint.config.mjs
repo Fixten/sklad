@@ -70,7 +70,9 @@ export default [
     {
       settings: {
         "import-x/resolver-next": [
-          createTypeScriptImportResolver({ project: "tsconfig.json" }),
+          createTypeScriptImportResolver({
+            project: [`${import.meta.dirname}/tsconfig.json`],
+          }),
         ],
       },
     },
