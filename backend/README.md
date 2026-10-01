@@ -124,10 +124,15 @@ pnpm test:e2e      # e2e tests only, one run
 ## Lint and typecheck
 
 ```bash
-pnpm lint
 pnpm lint:fix
 pnpm typecheck
+pnpm format
 ```
+
+`pnpm fullcheck` runs all checks.
+
+A Husky pre-commit hook formats and lint-fixes staged files, then runs the formatting and type
+checks for both packages across the whole repo.
 
 ## Migrations and database tooling
 
