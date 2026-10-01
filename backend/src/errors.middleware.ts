@@ -50,7 +50,6 @@ function toStatus(error: unknown): number {
 }
 
 export const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
-  void _next;
   const status = toStatus(error);
   if (status === 500) logError(error);
   if (status === 409) logError(error);

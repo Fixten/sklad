@@ -9,6 +9,8 @@ import { BaseSchema } from "./schema/index.js";
 
 import singleton, { Db } from "./index.js";
 
+// typescript-eslint sees Partial<T["$inferInsert"]> as {} because of Partial
+/* eslint-disable @typescript-eslint/no-generated-empty-object-type */
 export default class Repository<T extends BaseSchema> {
   private createAndUpdate;
   constructor(

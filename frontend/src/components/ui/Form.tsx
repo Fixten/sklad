@@ -5,7 +5,7 @@ interface Props {
 }
 
 export default function Form(props: Props) {
-  function onSubmit(e: React.FormEvent) {
+  function onSubmit(e: React.SubmitEvent) {
     e.preventDefault();
     props.onSubmit().catch(console.error);
   }

@@ -13,7 +13,7 @@ export default function MaterialTypePage() {
   const { query, addMutation, removeMutation } = useMaterialType();
   const [newItem, setNewItem] = useState<string>("");
 
-  const onCreate = (e: React.FormEvent<HTMLFormElement>) => {
+  const onCreate = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (newItem) {
       addMutation.mutateAsync(newItem).then(() => {

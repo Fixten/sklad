@@ -26,7 +26,7 @@ export class Db<TSchema extends Record<string, unknown>> {
   }
 
   init() {
-    void this.client;
+    return this.client;
   }
 
   close() {
