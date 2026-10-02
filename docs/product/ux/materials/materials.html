@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sklad - Material UX Prototype</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .hidden { display: none; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900 font-sans">
+
+    <!-- Header -->
+    <header class="bg-white border-b px-6 py-4 flex justify-between items-center">
+        <h1 class="text-xl font-bold">Sklad <span class="font-normal text-gray-500">| Materials</span></h1>
+        <button onclick="openModal('addSupplyModal')" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+            + Add Supply
+        </button>
+    </header>
+
+    <!-- Main Inventory View -->
+    <main class="p-6 max-w-6xl mx-auto">
+        <div class="mb-6 flex gap-4">
+            <input type="text" id="inventorySearch" oninput="filterInventory()" placeholder="Search materials (e.g. 'Oak', 'Wood')..." 
+                   class="flex-1 p-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 outline-none">
+        </div>
+
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <table class="w-full text-left border-collapse">
+                <thead class="bg-gray-50 border-b text-sm uppercase text-gray-600">
+                    <tr>
+                        <th class="px-6 py-3 font-semibold">Material Variant</th>
+                        <th class="px-6 py-3 font-semibold text-right">Total Stock</th>
+                        <th class="px-6 py-3 font-semibold text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="inventoryBody">
+                    <!-- Mock Data -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Add Supply Modal -->
+    <div id="addSupplyModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg w-full max-w-md p-6 shadow-xl">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold">Add New Supply</h2>
+                <button onclick="closeModal('addSupplyModal')" class="text-gray-400 hover:text-gray-600">&times;</button>
+            </div>
+
+            <form id="supplyForm" onsubmit="saveSupply(event)" class="space-y-4">
+                <!-- Material Selection -->
+                <div class="relative">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Material Variant</label>
+                    <input type="text" id="variantSearch" oninput="searchVariants()" placeholder="Start typing material..." 
+                           class="w-full p-2 border rounded-md outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <div id="variantDropdown" class="absolute z-10 w-full bg-white border rounded-md shadow-lg mt-1 max-h-48 overflow-y-auto hidden">
+                        <!-- Suggestions -->
+                    </div>
+                </div>
+
+                <!-- Hidden New Material Form (Contextual) -->
+                <div id="newMaterialForm" class="p-3 bg-blue-50 border border-blue-200 rounded-md space-y-3 hidden">
+                    <p class="text-xs font-bold text-blue-600 uppercase">Create New Material</p>
+                    <input type="text" id="newType" placeholder="Material Type (e.g. Wood)" class="w-full p-2 text-sm border rounded-md">
+                    <input type="text" id="newMat" placeholder="Material (e.g. Oak)" class="w-full p-2 text-sm border rounded-md">
+                    <input type="text" id="newVar" placeholder="Variant (e.g. 3mm Plywood)" class="w-full p-2 text-sm border rounded-md">
+                    <button type="button" onclick="confirmNewMaterial()" class="text-xs bg-blue-600 text-white px-2 py-1 rounded">Confirm & Use</button>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Unit</label>
+                        <input type="text" id="supplyUnit" readonly class="w-full p-2 border bg-gray-100 rounded-md text-gray-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
+                        <input type="number" id="supplyQty" step="0.01" oninput="calcUnitCost()" class="w-full p-2 border rounded-md" required>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Purchase Price (Total)</label>
+                    <input type="number" id="supplyPrice" step="0.01" oninput="calcUnitCost()" class="w-full p-2 border rounded-md" required>
+                </div>
+
+                <div class="p-3 bg-gray-50 rounded-md">
+                    <p class="text-xs text-gray-500">Calculated Unit Cost: <span id="unitCostDisplay" class="font-bold text-gray-900">0.00</span></p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Supplier</label>
+                    <input type="text" id="supplySupplier" placeholder="Supplier name..." class="w-full p-2 border rounded-md" required>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Notes/URL (Optional)</label>
+                    <input type="text" id="supplyNotes" class="w-full p-2 border rounded-md">
+                </div>
+
+                <div class="flex justify-end gap-2 pt-4">
+                    <button type="button" onclick="closeModal('addSupplyModal')" class="px-4 py-2 text-gray-600 hover:text-gray-800">Cancel</button>
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Save Supply</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Supply Batch Modal (Drill-down) -->
+    <div id="batchModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg w-full max-w-2xl p-6 shadow-xl">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold">Supply Batches: <span id="batchVariantName" class="font-normal text-gray-600"></span></h2>
+                <button onclick="closeModal('batchModal')" class="text-gray-400 hover:text-gray-600">&times;</button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-gray-50 border-b text-xs uppercase text-gray-600">
+                        <tr>
+                            <th class="px-4 py-2">Supplier</th>
+                            <th class="px-4 py-2 text-right">Qty</th>
+                            <th class="px-4 py-2 text-right">Unit Cost</th>
+                            <th class="px-4 py-2 text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="batchBody" class="text-sm">
+                        <!-- Batches -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock Database
+        const state = {
+            variants: [
+                { id: 1, type: 'Wood', material: 'Oak', variant: '3mm Plywood', unit: 'Meters', stock: 15.5 },
+                { id: 2, type: 'Wood', material: 'Oak', variant: '12mm Board', unit: 'Pieces', stock: 4 },
+                { id: 3, type: 'Metal', material: 'Steel', variant: 'Stainless 2mm', unit: 'Meters', stock: 22.0 },
+                { id: 4, type: 'Fasteners', material: 'Screw', variant: 'M4 x 12mm', unit: 'Pieces', stock: 500 },
+            ],
+            supplies: [
+                { id: 101, variantId: 1, supplier: 'Timber Co', qty: 10.5, price: 105, unit: 'Meters' },
+                { id: 102, variantId: 1, supplier: 'Timber Co', qty: 5, price: 60, unit: 'Meters' },
+                { id: 103, variantId: 2, supplier: 'Wood Works', qty: 4, price: 200, unit: 'Pieces' },
+                { id: 104, variantId: 3, supplier: 'Steel Mill', qty: 22, price: 440, unit: 'Meters' },
+                { id: 105, variantId: 4, supplier: 'Hardware Inc', qty: 500, price: 25, unit: 'Pieces' },
+            ]
+        };
+
+        function renderInventory() {
+            const body = document.getElementById('inventoryBody');
+            const search = document.getElementById('inventorySearch').value.toLowerCase();
+            
+            body.innerHTML = '';
+            state.variants
+                .filter(v => 
+                    v.variant.toLowerCase().includes(search) || 
+                    v.material.toLowerCase().includes(search) || 
+                    v.type.toLowerCase().includes(search)
+                )
+                .forEach(v => {
+                    body.innerHTML += `
+                        <tr class="border-b hover:bg-gray-50 transition cursor-pointer" onclick="openBatchModal(${v.id})">
+                            <td class="px-6 py-4">
+                                <div class="font-medium">${v.variant}</div>
+                                <div class="text-xs text-gray-500">${v.type} > ${v.material}</div>
+                            </td>
+                            <td class="px-6 py-4 text-right font-mono">${v.stock} ${v.unit}</td>
+                            <td class="px-6 py-4 text-center">
+                                <button class="text-blue-600 hover:underline text-sm">View Batches</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+        }
+
+        function filterInventory() {
+            renderInventory();
+        }
+
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+            if(id === 'addSupplyModal') {
+                document.getElementById('supplyForm').reset();
+                document.getElementById('variantDropdown').classList.add('hidden');
+                document.getElementById('newMaterialForm').classList.add('hidden');
+                document.getElementById('unitCostDisplay').innerText = '0.00';
+            }
+        }
+
+        function searchVariants() {
+            const query = document.getElementById('variantSearch').value.toLowerCase();
+            const dropdown = document.getElementById('variantDropdown');
+            const newMatForm = document.getElementById('newMaterialForm');
+            
+            if (!query) {
+                dropdown.classList.add('hidden');
+                return;
+            }
+
+            const matches = state.variants.filter(v => 
+                v.variant.toLowerCase().includes(query) || 
+                v.material.toLowerCase().includes(query)
+            );
+
+            if (matches.length > 0) {
+                dropdown.innerHTML = matches.map(v => `
+                    <div onclick="selectVariant(${v.id})" class="p-2 hover:bg-blue-50 cursor-pointer border-b last:border-0 text-sm">
+                        <span class="font-medium">${v.variant}</span>
+                        <span class="text-xs text-gray-400 ml-2">${v.type} > ${v.material}</span>
+                    </div>
+                `).join('');
+                dropdown.classList.remove('hidden');
+                newMatForm.classList.add('hidden');
+            } else {
+                dropdown.innerHTML = `
+                    <div onclick="showNewMaterialForm()" class="p-2 hover:bg-blue-50 cursor-pointer text-sm text-blue-600 font-medium">
+                        + Add New Material
+                    </div>
+                `;
+                dropdown.classList.remove('hidden');
+                newMatForm.classList.add('hidden');
+            }
+        }
+
+        function selectVariant(id) {
+            const v = state.variants.find(x => x.id === id);
+            document.getElementById('variantSearch').value = v.variant;
+            document.getElementById('supplyUnit').value = v.unit;
+            document.getElementById('variantDropdown').classList.add('hidden');
+            document.getElementById('variantSearch').dataset.variantId = id;
+        }
+
+        function showNewMaterialForm() {
+            document.getElementById('newMaterialForm').classList.remove('hidden');
+            document.getElementById('variantDropdown').classList.add('hidden');
+        }
+
+        function confirmNewMaterial() {
+            const type = document.getElementById('newType').value;
+            const mat = document.getElementById('newMat').value;
+            const varName = document.getElementById('newVar').value;
+
+            if(!type || !mat || !varName) {
+                alert('Please fill in all material details');
+                return;
+            }
+
+            const newId = state.variants.length + 1;
+            const newV = { 
+                id: newId, 
+                type, material: mat, variant: varName, 
+                unit: 'Pieces', // Default for new
+                stock: 0 
+            };
+            state.variants.push(newV);
+            
+            selectVariant(newId);
+            document.getElementById('newMaterialForm').classList.add('hidden');
+            renderInventory();
+        }
+
+        function calcUnitCost() {
+            const qty = parseFloat(document.getElementById('supplyQty').value) || 0;
+            const price = parseFloat(document.getElementById('supplyPrice').value) || 0;
+            const cost = qty > 0 ? (price / qty).toFixed(2) : '0.00';
+            document.getElementById('unitCostDisplay').innerText = cost;
+        }
+
+        function saveSupply(e) {
+            e.preventDefault();
+            const variantId = parseInt(document.getElementById('variantSearch').dataset.variantId);
+            const qty = parseFloat(document.getElementById('supplyQty').value);
+            const price = parseFloat(document.getElementById('supplyPrice').value);
+            const supplier = document.getElementById('supplySupplier').value;
+            const unit = document.getElementById('supplyUnit').value;
+
+            if(!variantId) {
+                alert('Please select a material variant');
+                return;
+            }
+
+            const newSupply = {
+                id: state.supplies.length + 101,
+                variantId, supplier, qty, price, unit
+            };
+            state.supplies.push(newSupply);
+            
+            // Update aggregate stock
+            const v = state.variants.find(x => x.id === variantId);
+            v.stock += qty;
+
+            closeModal('addSupplyModal');
+            renderInventory();
+        }
+
+        function openBatchModal(variantId) {
+            const v = state.variants.find(x => x.id === variantId);
+            document.getElementById('batchVariantName').innerText = v.variant;
+            
+            const body = document.getElementById('batchBody');
+            body.innerHTML = '';
+            
+            state.supplies
+                .filter(s => s.variantId === variantId)
+                .forEach(s => {
+                    const unitCost = (s.price / s.qty).toFixed(2);
+                    body.innerHTML += `
+                        <tr class="border-b">
+                            <td class="px-4 py-3">${s.supplier}</td>
+                            <td class="px-4 py-3 text-right font-mono">${s.qty} ${s.unit}</td>
+                            <td class="px-4 py-3 text-right font-mono">$${unitCost}</td>
+                            <td class="px-4 py-3 text-center">
+                                <button onclick="editSupply(${s.id})" class="text-blue-600 hover:underline">Edit</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            
+            openModal('batchModal');
+        }
+
+        function editSupply(supplyId) {
+            const s = state.supplies.find(x => x.id === supplyId);
+            const newQty = prompt(`Edit quantity for ${s.supplier} (${s.qty}):`, s.qty);
+            if (newQty !== null) {
+                const oldQty = s.qty;
+                const qtyNum = parseFloat(newQty);
+                if (!isNaN(qtyNum)) {
+                    s.qty = qtyNum;
+                    const v = state.variants.find(x => x.id === s.variantId);
+                    v.stock = v.stock - oldQty + qtyNum;
+                    
+                    // Refresh views
+                    document.getElementById('batchVariantName').innerText = v.variant;
+                    openBatchModal(v.id);
+                    renderInventory();
+                }
+            }
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        // Initial render
+        renderInventory();
+    </script>
+</body>
+</html>
