@@ -69,20 +69,20 @@ The architecture should nevertheless avoid decisions that would make these capab
 
 ## 3. Technology Stack
 
-| Area | Technology |
-|---|---|
-| Language | TypeScript |
-| Runtime | Node.js |
-| Package management | pnpm |
-| Repository | pnpm monorepo |
-| Backend | Express |
-| Backend API | REST |
-| Frontend | React |
-| Frontend build | Vite |
-| Frontend UI | shadcn/ui |
-| Database | SQLite |
-| Database access | Drizzle |
-| Production | Docker |
+| Area                  | Technology     |
+| --------------------- | -------------- |
+| Language              | TypeScript     |
+| Runtime               | Node.js        |
+| Package management    | pnpm           |
+| Repository            | pnpm monorepo  |
+| Backend               | Express        |
+| Backend API           | REST           |
+| Frontend              | React          |
+| Frontend build        | Vite           |
+| Frontend UI           | shadcn/ui      |
+| Database              | SQLite         |
+| Database access       | Drizzle        |
+| Production            | Docker         |
 | Service orchestration | Docker Compose |
 
 Environment variables are sufficient for application and infrastructure configuration at the current stage.
@@ -600,11 +600,6 @@ Flags are applied when the application builds its route table at startup. They a
 request, and changing a flag therefore requires a restart of the built application, which in Docker
 means a rebuild of the backend image.
 
-The configuration file is resolved relative to the backend package directory, so the application must
-be started from that directory, the same requirement that already applies to the generated API
-specification. The container image copies the configuration file next to the package, which is what
-makes the resolution work there.
-
 ---
 
 ## 17. Deployment
@@ -691,33 +686,33 @@ Future capabilities such as authentication, additional users, reporting, or inte
 
 ## 20. Architectural Decisions
 
-| Decision | Choice |
-|---|---|
-| Architecture | Modular monolithic web application |
-| Repository | pnpm monorepo |
-| Language | TypeScript |
-| Backend | Node.js + Express |
-| Frontend | React + Vite |
-| API | REST |
-| Database | SQLite |
-| Database access | Drizzle |
-| Backend organization | Feature-based |
+| Decision               | Choice                                 |
+| ---------------------- | -------------------------------------- |
+| Architecture           | Modular monolithic web application     |
+| Repository             | pnpm monorepo                          |
+| Language               | TypeScript                             |
+| Backend                | Node.js + Express                      |
+| Frontend               | React + Vite                           |
+| API                    | REST                                   |
+| Database               | SQLite                                 |
+| Database access        | Drizzle                                |
+| Backend organization   | Feature-based                          |
 | Backend module pattern | Schema / Repository / Service / Router |
-| Frontend organization | Feature-based |
-| UI | shadcn/ui |
-| Deployment | Docker Compose |
-| Runtime environment | Private LAN / home server |
-| Authentication | Not currently required |
-| Configuration | Environment variables + feature flags |
-| Timezone | Single configured timezone |
-| Currency | RUB |
-| Monetary storage | Integer kopecks |
-| Material stock | Derived from Supplies |
-| Product stock | Derived from Product Items |
-| Supply deletion | Soft delete |
-| Material consumption | Explicit historical records |
-| Status history | Explicit historical records |
-| API contracts | Shared package planned |
+| Frontend organization  | Feature-based                          |
+| UI                     | shadcn/ui                              |
+| Deployment             | Docker Compose                         |
+| Runtime environment    | Private LAN / home server              |
+| Authentication         | Not currently required                 |
+| Configuration          | Environment variables + feature flags  |
+| Timezone               | Single configured timezone             |
+| Currency               | RUB                                    |
+| Monetary storage       | Integer kopecks                        |
+| Material stock         | Derived from Supplies                  |
+| Product stock          | Derived from Product Items             |
+| Supply deletion        | Soft delete                            |
+| Material consumption   | Explicit historical records            |
+| Status history         | Explicit historical records            |
+| API contracts          | Shared package planned                 |
 
 ---
 

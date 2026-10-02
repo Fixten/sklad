@@ -1,5 +1,6 @@
 {
   "name": "sklad",
+  "packageManager": "pnpm@12.8.1",
   "scripts": {
     "back:dev": "pnpm --filter backend start:dev",
     "back:build": "pnpm --filter backend build",

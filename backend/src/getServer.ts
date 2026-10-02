@@ -1,11 +1,10 @@
 import { existsSync } from "node:fs";
-import { join } from "node:path";
 
 import bodyParser from "body-parser";
 import cors from "cors";
 import express, { Router, static as expressStatic } from "express";
 
-import { isFeatureEnabled } from "./config/featureFlags.js";
+import { readFeatureFlags } from "./config/featureFlags.js";
 import { ErrorMessages } from "./constants/Errors.js";
 import { Urls } from "./constants/Urls.js";
 import DbSingleton from "./db/index.js";
@@ -16,11 +15,10 @@ import materialVariantRouter from "./features/materialVariant/materialVariant.ro
 import settingsRouter from "./features/settings/settings.router.js";
 import supplierRouter from "./features/supplier/supplier.router.js";
 import supplyRouter from "./features/supply/supply.router.js";
+import { specJsonPath } from "./openapi/specPath.js";
 import { SWAGGER_UI_ASSETS, swaggerInitializer } from "./openapi/ui.js";
 
-const specJsonPath = join(process.cwd(), "public", "spec.json");
-
-export default function getServer() {
+export default function getServer(features = readFeatureFlags()) {
   DbSingleton.init();
 
   const app = express();
@@ -42,17 +40,15 @@ export default function getServer() {
     res.type("application/javascript").send(swaggerInitializer);
   });
   apiRouter.use(Urls.docs, expressStatic(SWAGGER_UI_ASSETS));
-  if (isFeatureEnabled("settings"))
-    apiRouter.use(Urls.settings, settingsRouter);
-  if (isFeatureEnabled("materialType"))
+
+  if (features.settings) apiRouter.use(Urls.settings, settingsRouter);
+  if (features.materialType)
     apiRouter.use(Urls.materialType, materialTypeRouter);
-  if (isFeatureEnabled("materialVariant"))
+  if (features.materialVariant)
     apiRouter.use(Urls.materialVariant, materialVariantRouter);
-  if (isFeatureEnabled("material"))
-    apiRouter.use(Urls.material, materialRouter);
-  if (isFeatureEnabled("supply")) apiRouter.use(Urls.supply, supplyRouter);
-  if (isFeatureEnabled("supplier"))
-    apiRouter.use(Urls.supplier, supplierRouter);
+  if (features.material) apiRouter.use(Urls.material, materialRouter);
+  if (features.supply) apiRouter.use(Urls.supply, supplyRouter);
+  if (features.supplier) apiRouter.use(Urls.supplier, supplierRouter);
 
   app.use(Urls.apiBase, apiRouter);
   app.use(errorHandler);

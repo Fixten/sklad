@@ -1,31 +1,42 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
-export const FEATURES_CONFIG_PATH = join(
-  process.cwd(),
-  "..",
-  "features.config.json",
+import { logError } from "@/utils/logger.js";
+
+const featuresConfigPath = join(
+  import.meta.dirname,
+  "../../../features.config.json",
 );
 
-export function readFeatureFlags(
-  configPath: string = FEATURES_CONFIG_PATH,
-): Record<string, unknown> {
-  try {
-    if (!existsSync(configPath)) return {};
-    const parsed: unknown = JSON.parse(readFileSync(configPath, "utf-8"));
-    if (typeof parsed !== "object" || parsed === null) return {};
-    const features: unknown = (parsed as { features?: unknown }).features;
-    if (typeof features !== "object" || features === null) return {};
-    return features as Record<string, unknown>;
-  } catch {
-    return {};
-  }
-}
+export const FEATURE_NAMES = [
+  "settings",
+  "materialType",
+  "materialVariant",
+  "material",
+  "supply",
+  "supplier",
+] as const;
 
-export function isFeatureEnabled(
-  name: string,
-  features: Record<string, unknown> = readFeatureFlags(),
-): boolean {
-  if (!Object.prototype.hasOwnProperty.call(features, name)) return true;
-  return typeof features[name] === "boolean" ? features[name] : true;
+type FeatureName = (typeof FEATURE_NAMES)[number];
+
+export type FeatureFlags = Partial<Record<FeatureName, unknown>>;
+
+export function readFeatureFlags(
+  configPath: string = featuresConfigPath,
+): FeatureFlags {
+  if (existsSync(configPath)) {
+    try {
+      const parsed = JSON.parse(readFileSync(configPath, "utf-8")) as unknown;
+      if (
+        typeof parsed === "object" &&
+        parsed !== null &&
+        "features" in parsed
+      ) {
+        return parsed.features ?? {};
+      }
+    } catch {
+      logError(`Failed to read feature flags from ${configPath}, ignoring`);
+    }
+  }
+  return {};
 }

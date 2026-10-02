@@ -71,8 +71,9 @@ drive both runtime validation and the generated OpenAPI document.
 - `public/spec.json` is a static, gitignored artifact written by `scripts/generateOpenApi.ts`
   (root script `pnpm openapi:generate`). The server only serves the existing file — no
   regeneration at start; `/api/docs/spec.json` 404s until you run it after schema/path changes.
-  `build` regenerates then `cp -r public build/`. Spec path = `process.cwd()/public/spec.json`,
-  so start the app from the package root (pnpm scripts already do).
+  `build` regenerates then `cp -r public build/`.
+- Resolve runtime file paths from the module that needs them, never `process.cwd()`. Each module
+  declares its own path as a fixed offset from `import.meta.dirname`.
 - Root `package.json` scripts are thin delegates (`pnpm --filter backend <script>`); all
   `.env.development` loading belongs in this package's scripts.
 - `README.md` documents responsibility, not epics or scope, and names no exact files or URLs

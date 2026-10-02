@@ -1,6 +1,6 @@
 import request from "supertest";
 
-import { isFeatureEnabled, readFeatureFlags } from "@/config/featureFlags.js";
+import { readFeatureFlags } from "@/config/featureFlags.js";
 
 import { bootstrap } from "../e2eSetup.js";
 
@@ -13,20 +13,30 @@ const FEATURE_ROUTES = {
   supplier: "/api/supplier",
 } as const;
 
-type FeatureRouteName = keyof typeof FEATURE_ROUTES;
+const FEATURE_NAMES = Object.keys(
+  FEATURE_ROUTES,
+) as (keyof typeof FEATURE_ROUTES)[];
+
+const enabled = (name: (typeof FEATURE_NAMES)[number]) => ({
+  [name]: true,
+});
 
 describe("feature flag routing", () => {
-  it("mounts each feature route if and only if its flag is enabled", async () => {
-    const features = readFeatureFlags();
+  it("mounts every feature route when no flags are given", async () => {
     const app = bootstrap();
 
-    for (const name of Object.keys(FEATURE_ROUTES) as FeatureRouteName[]) {
-      const status = (await request(app).get(FEATURE_ROUTES[name])).status;
-      expect({ name, mounted: status !== 404 }).toEqual({
-        name,
-        mounted: isFeatureEnabled(name, features),
-      });
+    for (const name of FEATURE_NAMES) {
+      const { status } = await request(app).get(FEATURE_ROUTES[name]);
+      expect({ name, status }).toEqual({ name, status: 200 });
     }
+  });
+
+  it.each(FEATURE_NAMES)("mounts %s only when its flag is on", async (name) => {
+    const on = bootstrap(enabled(name));
+    expect((await request(on).get(FEATURE_ROUTES[name])).status).toBe(200);
+
+    const off = bootstrap({ [name]: false });
+    expect((await request(off).get(FEATURE_ROUTES[name])).status).toBe(404);
   });
 
   it("never gates the root route or the docs ui", async () => {
@@ -37,17 +47,20 @@ describe("feature flag routing", () => {
     ).toBe(200);
   });
 
-  it("documents every feature route in the spec even when a flag is off", async () => {
-    const app = bootstrap();
-    const disabled = (Object.keys(FEATURE_ROUTES) as FeatureRouteName[]).find(
-      (name) => !isFeatureEnabled(name),
-    );
-    if (!disabled) return;
+  it("documents every feature route in the spec even when every flag is off", async () => {
+    const off = Object.fromEntries(FEATURE_NAMES.map((name) => [name, false]));
+    const app = bootstrap(off);
 
     const res = await request(app).get("/api/docs/spec.json");
     const paths = (res.body as { paths?: Record<string, unknown> }).paths ?? {};
     for (const route of Object.values(FEATURE_ROUTES)) {
       expect(paths[route]).toBeDefined();
+    }
+  });
+
+  it("ships a config whose keys are all known feature names", () => {
+    for (const key of Object.keys(readFeatureFlags())) {
+      expect(FEATURE_NAMES).toContain(key);
     }
   });
 });
