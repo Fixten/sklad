@@ -3,8 +3,8 @@
     "materialType": true,
     "materialVariant": true,
     "material": true,
-    "supply": false,
-    "supplier": false,
+    "supply": true,
+    "supplier": true,
     "settings": false
   }
 }

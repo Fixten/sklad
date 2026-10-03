@@ -8,6 +8,7 @@ export const supplyRowZ = z
     description: z.string().nullish(),
     price: z.int().nullish(),
     count: z.int().nullish(),
+    supply_url: z.string().nullish(),
     variant: z.int(),
     supplier: z.int().nullish(),
     created_at: dateZ,
@@ -21,6 +22,7 @@ export const supplyCreateZ = z
     description: z.string().optional(),
     price: z.int().optional(),
     count: z.int().optional(),
+    supply_url: z.string().optional(),
     variant: z.int(),
     supplier: z.int().optional(),
   })

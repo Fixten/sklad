@@ -17,6 +17,7 @@ export const supplySchema = getSchema(supplyTable, {
   description: text(),
   price: integer(),
   count: integer(),
+  supply_url: text(),
   variant: integer("material_variant_id")
     .references(() => materialVariantSchema.id)
     .notNull(),

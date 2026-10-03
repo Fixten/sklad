@@ -52,7 +52,7 @@ supplyRouter.delete(
   "/:id",
   validateParams(IdParamsZ),
   async (req: Request<{ id: string }>, res) => {
-    await service.hardDelete(Number(req.params.id));
+    await service.softDelete(Number(req.params.id));
     sendDeleted(res, req.params.id);
   },
 );

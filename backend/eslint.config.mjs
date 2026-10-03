@@ -4,6 +4,7 @@ import { defineConfig } from "eslint/config";
 import * as pluginImportX from "eslint-plugin-import-x";
 import jestPlugin from "eslint-plugin-jest";
 import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
+import drizzle from "eslint-plugin-drizzle";
 
 export default defineConfig(
   eslint.configs.recommended,
@@ -67,6 +68,20 @@ export default defineConfig(
             caseInsensitive: true,
           },
         },
+      ],
+    },
+  },
+  {
+    files: ["src/**/*.ts"],
+    plugins: { drizzle },
+    rules: {
+      "drizzle/enforce-delete-with-where": [
+        "error",
+        { drizzleObjectName: ["client", "dbClient"] },
+      ],
+      "drizzle/enforce-update-with-where": [
+        "error",
+        { drizzleObjectName: ["client", "dbClient"] },
       ],
     },
   },

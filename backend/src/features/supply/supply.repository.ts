@@ -18,7 +18,7 @@ export class SupplyRepository {
     return this.baseRepository.getById(id);
   }
   getAll() {
-    return this.baseRepository.getAll();
+    return this.baseRepository.getAllActive();
   }
   getAllByVariant(variantId: number) {
     return this.baseRepository.getByValue(eq(this.schema.variant, variantId));
@@ -37,5 +37,13 @@ export class SupplyRepository {
 
   hardDelete(id: number) {
     return this.baseRepository.deleteById(id);
+  }
+
+  softDelete(id: number) {
+    return this.baseRepository.softDelete(id);
+  }
+
+  getAllActive() {
+    return this.baseRepository.getAllActive();
   }
 }
