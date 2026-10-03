@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import Sqlite from "better-sqlite3";
 
 import { ErrorMessages } from "@/constants/Errors.js";
+import { Logger } from "@/utils/logger.js";
 
 export function getSqlitePath(
   baseDir: string = resolve(import.meta.dirname, "../.."),
@@ -18,7 +19,7 @@ const memoryPath = ":memory:";
 export function createSqlite(isMemory: boolean) {
   const path = isMemory ? memoryPath : getSqlitePath();
   const db = new Sqlite(path, {
-    verbose: process.env.NODE_ENV === "development" ? console.log : undefined,
+    verbose: process.env.NODE_ENV === "development" ? Logger.log : undefined,
   });
   db.pragma("journal_mode = WAL");
   db.pragma("foreign_keys = ON");

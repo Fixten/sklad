@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { logError } from "@/utils/logger.js";
+import { Logger } from "@/utils/logger.js";
 
 const featuresConfigPath = join(
   import.meta.dirname,
@@ -35,7 +35,7 @@ export function readFeatureFlags(
         return parsed.features ?? {};
       }
     } catch {
-      logError(`Failed to read feature flags from ${configPath}, ignoring`);
+      Logger.error(`Failed to read feature flags from ${configPath}, ignoring`);
     }
   }
   return {};

@@ -2,7 +2,7 @@ import { ErrorRequestHandler } from "express";
 
 import { ErrorMessages } from "./constants/Errors.js";
 import { ErrorResponseZ } from "./openapi/common.zod.js";
-import { logError } from "./utils/logger.js";
+import { Logger } from "./utils/logger.js";
 
 const badRequestMessages = [
   ErrorMessages.DB_OPERATION_FAILED,
@@ -51,8 +51,8 @@ function toStatus(error: unknown): number {
 
 export const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
   const status = toStatus(error);
-  if (status === 500) logError(error);
-  if (status === 409) logError(error);
+  if (status === 500) Logger.error(error);
+  if (status === 409) Logger.error(error);
 
   let message: string = ErrorMessages.INTERNAL_SERVER_ERROR;
   if (status === 409)

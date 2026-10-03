@@ -60,8 +60,9 @@ drive both runtime validation and the generated OpenAPI document.
   error to the right array — that single list drives both status and body.
 - The id param regex must stay flag-free: `zod-to-openapi` emits `regex.toString()` with
   only the slashes stripped, so `/^\d+$/u` ships a `^\d+$/u` pattern that matches nothing.
-- Log through `logError` (`src/utils/logger.ts`), never `console.error`. It is silenced
-  under `NODE_ENV=test`, which is what keeps deliberately-triggered 409s from spamming e2e output.
+- Log through `Logger.error` / `Logger.log` (`src/utils/logger.ts`), never `console.error`.
+  Both are silenced under `NODE_ENV=test`, which is what keeps deliberately-triggered 409s
+  from spamming e2e output.
 - Swagger UI's initializer must reference the standalone `SwaggerUIStandalonePreset` browser
   global (loaded by the package `index.html`). `SwaggerUIBundle.SwaggerUIStandalonePreset` is
   undefined → "No layout defined for StandaloneLayout". swagger-ui-dist Node exports are
