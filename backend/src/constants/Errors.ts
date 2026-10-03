@@ -1,6 +1,7 @@
 export enum ErrorMessages {
   BACKEND_PORT_NOT_SET = "BACKEND_PORT is not set",
   NO_SQLITE_PATH_IN_ENV = "No sqlite path string in env",
+  NO_BACKUPS_PATH_IN_ENV = "No backups path string in env",
   NO_DB_CONNECTION = "Database connection was not established",
   ITEM_NOT_FOUND = "Item was not found",
   ITEM_TO_DELETE_NOT_FOUND = "Item to delete was not found",

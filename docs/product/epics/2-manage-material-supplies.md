@@ -16,7 +16,6 @@ The user can:
 - Correct an incorrectly recorded Supply.
 - Delete a Supply when required.
 - Associate a Supplier with a Supply.
-- See which Product Items used a Supply.
 
 Stock is represented by the remaining quantity of Supplies. The user does not directly edit Material Variant stock.
 

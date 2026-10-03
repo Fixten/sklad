@@ -10,6 +10,7 @@ services:
     restart: "no"
     volumes:
       - data:/prod/data
+      - ./backups:/prod/backups
     networks:
       - main
 

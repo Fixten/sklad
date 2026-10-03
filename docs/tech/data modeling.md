@@ -225,17 +225,7 @@ Sold Product Items retain their historical cost snapshot.
 
 ## 4.5 Supply Deletion
 
-Supplies use soft deletion.
-
-Deleted Supplies:
-
-* are excluded from normal active inventory;
-* cannot be selected for new consumption;
-* remain available to historical relationships;
-* remain available for historical cost calculation;
-* retain their original information.
-
-A Supply with historical consumption cannot be physically removed.
+Per the general deletion strategy (Section 26), Supplies use soft deletion because they may have historical consumption records (and thus historical value/relationships). Deleted Supplies are excluded from normal active inventory, cannot be selected for new consumption, remain available to historical relationships and for historical cost calculation, and retain their original information. Supplies with historical consumption cannot be physically removed.
 
 ---
 

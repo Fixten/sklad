@@ -418,11 +418,12 @@ The database is the source of truth for persisted application state.
 
 ---
 
-## 13. Soft Deletion
+## 13. Deletion Policy
 
-Supplies use soft deletion.
+The system follows a general deletion policy:
 
-This is necessary because historical Product Item consumption can reference a Supply even after the Supply is removed from normal active application data.
+- **Default:** Hard delete. Entities with no historical dependencies are permanently removed.
+- **Soft delete:** Used only when an entity has historical references (records representing something that happened in the past). Soft-deleted entities are marked with `deleted_at`, excluded from normal active selections, cannot be used for new operations that require active data, but remain available to historical records.
 
 Conceptually:
 
@@ -686,33 +687,33 @@ Future capabilities such as authentication, additional users, reporting, or inte
 
 ## 20. Architectural Decisions
 
-| Decision               | Choice                                 |
-| ---------------------- | -------------------------------------- |
-| Architecture           | Modular monolithic web application     |
-| Repository             | pnpm monorepo                          |
-| Language               | TypeScript                             |
-| Backend                | Node.js + Express                      |
-| Frontend               | React + Vite                           |
-| API                    | REST                                   |
-| Database               | SQLite                                 |
-| Database access        | Drizzle                                |
-| Backend organization   | Feature-based                          |
-| Backend module pattern | Schema / Repository / Service / Router |
-| Frontend organization  | Feature-based                          |
-| UI                     | shadcn/ui                              |
-| Deployment             | Docker Compose                         |
-| Runtime environment    | Private LAN / home server              |
-| Authentication         | Not currently required                 |
-| Configuration          | Environment variables + feature flags  |
-| Timezone               | Single configured timezone             |
-| Currency               | RUB                                    |
-| Monetary storage       | Integer kopecks                        |
-| Material stock         | Derived from Supplies                  |
-| Product stock          | Derived from Product Items             |
-| Supply deletion        | Soft delete                            |
-| Material consumption   | Explicit historical records            |
-| Status history         | Explicit historical records            |
-| API contracts          | Shared package planned                 |
+| Decision               | Choice                                                                                      |
+| ---------------------- | ------------------------------------------------------------------------------------------- |
+| Architecture           | Modular monolithic web application                                                          |
+| Repository             | pnpm monorepo                                                                               |
+| Language               | TypeScript                                                                                  |
+| Backend                | Node.js + Express                                                                           |
+| Frontend               | React + Vite                                                                                |
+| API                    | REST                                                                                        |
+| Database               | SQLite                                                                                      |
+| Database access        | Drizzle                                                                                     |
+| Backend organization   | Feature-based                                                                               |
+| Backend module pattern | Schema / Repository / Service / Router                                                      |
+| Frontend organization  | Feature-based                                                                               |
+| UI                     | shadcn/ui                                                                                   |
+| Deployment             | Docker Compose                                                                              |
+| Runtime environment    | Private LAN / home server                                                                   |
+| Authentication         | Not currently required                                                                      |
+| Configuration          | Environment variables + feature flags                                                       |
+| Timezone               | Single configured timezone                                                                  |
+| Currency               | RUB                                                                                         |
+| Monetary storage       | Integer kopecks                                                                             |
+| Material stock         | Derived from Supplies                                                                       |
+| Product stock          | Derived from Product Items                                                                  |
+| Deletion policy        | Default hard delete; soft delete only when entity has historical references (e.g. Supplies) |
+| Material consumption   | Explicit historical records                                                                 |
+| Status history         | Explicit historical records                                                                 |
+| API contracts          | Shared package planned                                                                      |
 
 ---
 
