@@ -51,6 +51,7 @@ COPY --from=build /prod/backend/build ./build
 COPY --from=build /prod/backend/node_modules ./node_modules
 COPY --from=build /prod/backend/package.json ./package.json
 COPY --from=build /usr/src/app/features.config.json /prod/features.config.json
+COPY --from=build /usr/src/app/backend/drizzle ./drizzle
 CMD [ "./node_modules/.bin/pm2-runtime", "build/index.js" ]
 
 # ---------------------------------------------------------------------------

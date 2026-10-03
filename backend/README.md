@@ -92,6 +92,8 @@ The first run applies no migrations automatically — apply them explicitly (dev
 pnpm migration:apply:dev
 ```
 
+In production, migrations run in a dedicated Compose service instead of at server startup. It backs up the database before applying anything, then exits; the backend waits for it to succeed.
+
 ## Run in dev
 
 ```bash

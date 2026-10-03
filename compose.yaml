@@ -1,4 +1,18 @@
 services:
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: backend
+    env_file:
+      - .env
+    command: ["node", "build/db/migrateProd.js"]
+    restart: "no"
+    volumes:
+      - data:/prod/data
+    networks:
+      - main
+
   backend:
     build:
       context: .
@@ -7,8 +21,13 @@ services:
     restart: always
     env_file:
       - .env
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
     ports:
       - "${BACKEND_PORT}:${BACKEND_PORT}"
+    volumes:
+      - data:/prod/data
     networks:
       - main
 
@@ -30,7 +49,10 @@ services:
     networks:
       - main
 
+volumes:
+  data:
+    name: sklad-data
+
 networks:
   main:
-    external: true
-    name: sklad-db_main
+    name: sklad
