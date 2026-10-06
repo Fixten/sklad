@@ -1,14 +1,13 @@
 import { z } from "zod";
 
+import { MATERIAL_UNITS } from "@/features/materialVariant/utils/quantity.js";
 import { dateZ } from "@/openapi/common.zod.js";
-
-import { MATERIAL_VARIANT_UNITS } from "./materialVariant.schema.js";
 
 export const materialVariantRowZ = z
   .object({
     id: z.int(),
     name: z.string(),
-    unit: z.enum(MATERIAL_VARIANT_UNITS),
+    unit: z.enum(MATERIAL_UNITS),
     material_id: z.int(),
     created_at: dateZ,
     updated_at: dateZ.nullish(),
@@ -19,7 +18,7 @@ export const materialVariantRowZ = z
 export const materialVariantCreateZ = z
   .object({
     name: z.string().trim().min(1),
-    unit: z.enum(MATERIAL_VARIANT_UNITS),
+    unit: z.enum(MATERIAL_UNITS),
     material_id: z.int(),
   })
   .strict();

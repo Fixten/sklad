@@ -18,7 +18,7 @@ export const supplyConsumptionSchema = getSchema(supplyConsumptionTable, {
     .references(() => materialUsageSchema.id)
     .notNull(),
   supply_id: integer("supply_id")
-    .references(() => supplySchema.id)
+    .references(() => supplySchema.id, { onDelete: "restrict" })
     .notNull(),
   consumed_quantity: integer().notNull(),
 });

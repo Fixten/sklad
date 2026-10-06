@@ -3,7 +3,7 @@ import { SQLiteTable } from "drizzle-orm/sqlite-core";
 
 import { Db } from "../index.js";
 
-export default async function updateInDb<
+export default function updateInDb<
   TSchema extends Record<string, unknown>,
   T extends SQLiteTable,
 >(
@@ -15,10 +15,11 @@ export default async function updateInDb<
   const actualUpdate = Object.assign({}, value, {
     updated_at: sql`(unixepoch())`,
   });
-  const result = await dbClient
+  const result = dbClient
     .update(schema)
     .set(actualUpdate)
     .where(where)
-    .returning();
-  return result.length > 0 ? (result as T["$inferSelect"][]) : null;
+    .returning()
+    .all() as T["$inferSelect"][];
+  return result.length > 0 ? result : null;
 }

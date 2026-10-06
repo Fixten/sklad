@@ -2,20 +2,26 @@ import { Request, Router } from "express";
 
 import { IdParamsZ } from "@/openapi/common.zod.js";
 import {
+  queryOf,
   sendDeleted,
   sendSpec,
   validateBody,
   validateParams,
+  validateQuery,
 } from "@/openapi/validation.js";
 
-import { SupplyModel, SupplySchema } from "./supply.schema.js";
 import supplyService from "./supply.service.js";
 import {
   supplyCreateZ,
+  supplyListQueryZ,
+  supplyPatchZ,
   supplyRowListZ,
   supplyRowZ,
-  supplyUpdateZ,
+  supplyStockZ,
 } from "./supply.zod.js";
+
+import type { SupplyFilter } from "./supply.repository.js";
+import type { SupplyCreateInput, SupplyUpdateInput } from "./supply.service.js";
 
 const supplyRouter = Router();
 
@@ -23,38 +29,46 @@ const service = supplyService.getSingleton();
 
 const sendRow = sendSpec(supplyRowZ);
 const sendList = sendSpec(supplyRowListZ);
+const sendStock = sendSpec(supplyStockZ);
 
-supplyRouter.get("/", async (req, res) => {
-  sendList(res, await service.getAll());
+type Id = Request<{ id: string }>;
+
+supplyRouter.get("/", validateQuery(supplyListQueryZ), (_req, res) => {
+  sendList(res, service.getAll(queryOf(res) as SupplyFilter));
+});
+
+supplyRouter.get("/stock/:id", validateParams(IdParamsZ), (req: Id, res) => {
+  sendStock(res, service.getStock(Number(req.params.id)));
+});
+
+supplyRouter.get("/:id", validateParams(IdParamsZ), (req: Id, res) => {
+  sendRow(res, service.get(Number(req.params.id)));
 });
 
 supplyRouter.post(
   "/",
   validateBody(supplyCreateZ),
-  async (
-    req: Request<Record<string, string>, SupplySchema, SupplyModel>,
-    res,
-  ) => {
-    sendRow(res, await service.create(req.body));
+  (req: Request<Record<string, string>, unknown, SupplyCreateInput>, res) => {
+    sendRow(res, service.create(req.body));
   },
 );
 
-supplyRouter.post(
+supplyRouter.patch(
   "/:id",
   validateParams(IdParamsZ),
-  validateBody(supplyUpdateZ),
-  async (req: Request<{ id: string }, SupplySchema, SupplyModel>, res) => {
-    sendRow(res, await service.update(Number(req.params.id), req.body));
+  validateBody(supplyPatchZ),
+  (req: Request<{ id: string }, unknown, SupplyUpdateInput>, res) => {
+    sendRow(res, service.update(Number(req.params.id), req.body));
   },
 );
 
-supplyRouter.delete(
-  "/:id",
-  validateParams(IdParamsZ),
-  async (req: Request<{ id: string }>, res) => {
-    await service.softDelete(Number(req.params.id));
-    sendDeleted(res, req.params.id);
-  },
-);
+supplyRouter.delete("/:id", validateParams(IdParamsZ), (req: Id, res) => {
+  service.delete(Number(req.params.id));
+  sendDeleted(res, req.params.id);
+});
+
+supplyRouter.post("/:id/restore", validateParams(IdParamsZ), (req: Id, res) => {
+  sendRow(res, service.restore(Number(req.params.id)));
+});
 
 export default supplyRouter;

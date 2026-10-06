@@ -30,7 +30,7 @@ export function buildSpec() {
     info: {
       title: "Sklad API",
       version: "1.0.0",
-      description: "Epic 1 catalog, supply and settings API.",
+      description: "Epic 1 catalog and Epic 2 material supplies API.",
     },
     tags: [
       { name: "Material Type" },

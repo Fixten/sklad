@@ -1,7 +1,9 @@
 import { text } from "drizzle-orm/sqlite-core";
 
+import { applyMigrations } from "./migrate.js";
 import { getSchema } from "./schema/createSchema.js";
 import { defaultDbFields } from "./schema/defaultFields.js";
+import schemas from "./schema/index.js";
 
 import { Db } from "./index.js";
 
@@ -32,5 +34,14 @@ export function getTestDb(): TestDb {
   `,
     )
     .run();
+  return db;
+}
+
+export type TestDbWithMigrations = Db<typeof schemas>;
+
+export function getTestDbWithMigrations(): TestDbWithMigrations {
+  const db = new Db(true, schemas);
+  db.init();
+  applyMigrations(db.client);
   return db;
 }

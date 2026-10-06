@@ -13,18 +13,18 @@ const service = SettingsRepository.getSingleton();
 const sendGet = sendSpec(settingsGetZ);
 const sendRow = sendSpec(settingsRowZ);
 
-settingsRouter.get("/", async (req, res) => {
-  sendGet(res, await service.getConfig());
+settingsRouter.get("/", (req, res) => {
+  sendGet(res, service.getConfig());
 });
 
 settingsRouter.post(
   "/",
   validateBody(settingsBodyZ),
-  async (
+  (
     req: Request<Record<string, string>, SettingsSchema, SettingsModel>,
     res,
   ) => {
-    sendRow(res, await service.updateConfig(req.body));
+    sendRow(res, service.updateConfig(req.body));
   },
 );
 

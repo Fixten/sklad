@@ -28,49 +28,58 @@ export default class Repository<T extends BaseSchema> {
   }
 
   updateById(id: number, updateItem: Partial<T["$inferInsert"]>) {
-    return this.createAndUpdate
-      .updateDoc(eq(this.schema.id, id), updateItem)
-      .then((rows) => rows[0]);
+    const rows = this.createAndUpdate.updateDoc(
+      eq(this.schema.id, id),
+      updateItem,
+    );
+    return rows[0];
   }
-  upsert(where: SQL, updateItem: T["$inferInsert"]) {
-    return this.createAndUpdate.upsertDoc(where, updateItem);
+  upsert(id: number, updateItem: T["$inferInsert"]) {
+    return this.createAndUpdate.upsertDoc(this.schema.id, {
+      ...updateItem,
+      id,
+    });
   }
+
+  transaction<T>(operation: () => T): T {
+    return this.db.client.transaction(operation, { behavior: "immediate" });
+  }
+
   getAll() {
-    return this.db.client.select().from(this.schema);
+    return this.db.client.select().from(this.schema).all();
   }
   getAllActive() {
     return this.db.client
       .select()
       .from(this.schema)
-      .where(isNull(this.schema.deleted_at));
+      .where(isNull(this.schema.deleted_at))
+      .all();
   }
   getByValue(where: SQL) {
-    return this.db.client.select().from(this.schema).where(where) as Promise<
-      T["$inferSelect"][]
-    >;
+    return this.db.client.select().from(this.schema).where(where).all();
   }
   getActiveByValue(where: SQL) {
     return this.db.client
       .select()
       .from(this.schema)
-      .where(and(where, isNull(this.schema.deleted_at))) as Promise<
-      T["$inferSelect"][]
-    >;
+      .where(and(where, isNull(this.schema.deleted_at)))
+      .all();
   }
 
-  async getById(id: number) {
-    const where = eq(this.schema.id, id);
-    const rows = await this.getByValue(where);
-    if (rows.length === 0) throw new Error(ErrorMessages.ITEM_NOT_FOUND);
-    return rows[0];
+  getById(id: number) {
+    const row = this.db.client
+      .select()
+      .from(this.schema)
+      .where(eq(this.schema.id, id))
+      .get();
+    if (!row) throw new Error(ErrorMessages.ITEM_NOT_FOUND);
+    return row;
   }
 
   deleteByValue(where: SQL) {
+    const { changes } = this.db.client.delete(this.schema).where(where).run();
     return throwIfNull(
-      this.db.client
-        .delete(this.schema)
-        .where(where)
-        .then((v) => (v.changes > 0 ? true : null)),
+      changes > 0 ? true : null,
       ErrorMessages.ITEM_TO_DELETE_NOT_FOUND,
     );
   }

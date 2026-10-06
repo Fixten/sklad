@@ -78,16 +78,18 @@ CREATE TABLE `settings` (
 	`work_hour_cost` integer DEFAULT 500 NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE `supplier` (
+CREATE TABLE `suppliers` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`updated_at` integer,
 	`created_at` integer NOT NULL,
 	`deleted_at` integer,
+	`name` text NOT NULL,
 	`description` text,
-	`supplier` text NOT NULL,
-	`supply_url` text
+	`url` text,
+	`contact` text
 );
 --> statement-breakpoint
+CREATE UNIQUE INDEX `suppliers_name_unique` ON `suppliers` (`name`) WHERE "suppliers"."deleted_at" IS NULL;--> statement-breakpoint
 CREATE TABLE `supply_consumptions` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`updated_at` integer,
@@ -97,20 +99,22 @@ CREATE TABLE `supply_consumptions` (
 	`supply_id` integer NOT NULL,
 	`consumed_quantity` integer NOT NULL,
 	FOREIGN KEY (`material_usage_id`) REFERENCES `material_usages`(`id`) ON UPDATE no action ON DELETE no action,
-	FOREIGN KEY (`supply_id`) REFERENCES `supply`(`id`) ON UPDATE no action ON DELETE no action
+	FOREIGN KEY (`supply_id`) REFERENCES `supplies`(`id`) ON UPDATE no action ON DELETE restrict
 );
 --> statement-breakpoint
-CREATE TABLE `supply` (
+CREATE TABLE `supplies` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`updated_at` integer,
 	`created_at` integer NOT NULL,
 	`deleted_at` integer,
 	`description` text,
-	`price` integer,
-	`count` integer,
-	`supply_url` text,
+	`purchase_price` integer NOT NULL,
+	`quantity` integer NOT NULL,
+	`url` text,
 	`material_variant_id` integer NOT NULL,
 	`supplier_id` integer,
-	FOREIGN KEY (`material_variant_id`) REFERENCES `material_variants`(`id`) ON UPDATE no action ON DELETE no action,
-	FOREIGN KEY (`supplier_id`) REFERENCES `supplier`(`id`) ON UPDATE no action ON DELETE no action
+	FOREIGN KEY (`material_variant_id`) REFERENCES `material_variants`(`id`) ON UPDATE no action ON DELETE restrict,
+	FOREIGN KEY (`supplier_id`) REFERENCES `suppliers`(`id`) ON UPDATE no action ON DELETE restrict,
+	CONSTRAINT "supplies_quantity_positive" CHECK("supplies"."quantity" > 0),
+	CONSTRAINT "supplies_purchase_price_non_negative" CHECK("supplies"."purchase_price" >= 0)
 );

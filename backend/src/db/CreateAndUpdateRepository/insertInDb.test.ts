@@ -3,28 +3,28 @@ import { getTestDb, testSchema } from "../dbTestHelpers.js";
 import { insertInDb } from "./insertInDb.js";
 
 describe("insertInDb", () => {
-  test("should insert value in db", async () => {
+  test("should insert value in db", () => {
     const db = getTestDb();
-    await insertInDb(db.client, testSchema, { name: "test" });
-    const result = await db.client.select().from(testSchema);
+    insertInDb(db.client, testSchema, { name: "test" });
+    const result = db.client.select().from(testSchema).all();
     expect(result.length).toBe(1);
     db.close();
   });
-  test("should return value if success", async () => {
+  test("should return value if success", () => {
     const db = getTestDb();
-    const result = await insertInDb(db.client, testSchema, { name: "test" });
+    const result = insertInDb(db.client, testSchema, { name: "test" });
     expect(result?.name).toBe("test");
     db.close();
   });
-  test("should throw if value is not correct", async () => {
+  test("should throw if value is not correct", () => {
     const db = getTestDb();
-    await expect(
+    expect(() =>
       insertInDb(db.client, testSchema, {
         test: "test",
       } as unknown as {
         name: string;
       }),
-    ).rejects.toBeTruthy();
+    ).toThrow();
     db.close();
   });
 });

@@ -34,7 +34,7 @@ Material Type
     └─< Material
         └─< Material Variant
             └─< Supply ── Supplier
-````
+```
 
 ## 2.1 Material Type
 
@@ -42,11 +42,11 @@ A reusable classification of materials.
 
 Fields:
 
-* Name
-* Description
-* `created_at`
-* `updated_at`
-* `deleted_at`
+- Name
+- Description
+- `created_at`
+- `updated_at`
+- `deleted_at`
 
 Material Types support create, view, edit, and delete operations.
 
@@ -62,12 +62,12 @@ A Material belongs to one Material Type.
 
 Fields:
 
-* Material Type
-* Name
-* Description
-* `created_at`
-* `updated_at`
-* `deleted_at`
+- Material Type
+- Name
+- Description
+- `created_at`
+- `updated_at`
+- `deleted_at`
 
 Active Material names should be unique within their Material Type.
 
@@ -81,17 +81,17 @@ A Material Variant represents one specific version of a Material, such as a colo
 
 Fields:
 
-* Material
-* Name
-* Unit
-* `created_at`
-* `updated_at`
-* `deleted_at`
+- Material
+- Name
+- Unit
+- `created_at`
+- `updated_at`
+- `deleted_at`
 
 Supported units:
 
-* `pieces`
-* `meters`
+- `pieces`
+- `meters`
 
 The Material Variant owns the unit definition.
 
@@ -123,13 +123,13 @@ Supplier is a separate managed entity.
 
 Fields:
 
-* Name
-* Description
-* URL
-* Additional contact information as free text
-* `created_at`
-* `updated_at`
-* `deleted_at`
+- Name
+- Description
+- URL
+- Additional contact information as free text
+- `created_at`
+- `updated_at`
+- `deleted_at`
 
 Supplier information is not an accounting/customer entity.
 
@@ -151,15 +151,15 @@ Material Variant
 
 Fields:
 
-* Material Variant
-* Supplier
-* Description
-* Quantity
-* Purchase price
-* URL
-* `created_at`
-* `updated_at`
-* `deleted_at`
+- Material Variant
+- Supplier
+- Description
+- Quantity
+- Purchase price
+- URL
+- `created_at`
+- `updated_at`
+- `deleted_at`
 
 The Supply does **not** contain a unit field because the unit is defined by its Material Variant.
 
@@ -171,11 +171,11 @@ Quantity precision depends on the Material Variant unit:
 
 ### Pieces
 
-* Whole numbers only.
+- Whole numbers only.
 
 ### Meters
 
-* Up to 3 decimal places.
+- Up to 3 decimal places.
 
 All persisted decimal quantities use scaled integer representation.
 
@@ -247,16 +247,16 @@ A Product Item is one physical product.
 
 Fields:
 
-* Name
-* Description
-* Production instructions
-* Drawing description
-* Expected production work hours
-* Development work hours
-* Template Materials
-* `created_at`
-* `updated_at`
-* `deleted_at`
+- Name
+- Description
+- Production instructions
+- Drawing description
+- Expected production work hours
+- Development work hours
+- Template Materials
+- `created_at`
+- `updated_at`
+- `deleted_at`
 
 Active Product Template names should be unique.
 
@@ -304,18 +304,18 @@ Product Template
 
 Fields:
 
-* Product Template
-* Material Variant
-* Default quantity
-* `created_at`
-* `updated_at`
+- Product Template
+- Material Variant
+- Default quantity
+- `created_at`
+- `updated_at`
 
 Rules:
 
-* A Material Variant can occur at most once in a Product Template.
-* `(product_template_id, material_variant_id)` is unique.
-* Default quantity must be greater than zero.
-* Quantity follows the Material Variant precision.
+- A Material Variant can occur at most once in a Product Template.
+- `(product_template_id, material_variant_id)` is unique.
+- Default quantity must be greater than zero.
+- Quantity follows the Material Variant precision.
 
 A Template Material can be removed or changed without modifying existing Product Items.
 
@@ -327,16 +327,16 @@ A Product Item represents one physical product.
 
 Fields:
 
-* Product Template
-* Notes
-* Modifications
-* Actual production work hours
-* Additional cost
-* Material Usages
-* Status History
-* Historical cost snapshot
-* `created_at`
-* `updated_at`
+- Product Template
+- Notes
+- Modifications
+- Actual production work hours
+- Additional cost
+- Material Usages
+- Status History
+- Historical cost snapshot
+- `created_at`
+- `updated_at`
 
 There is no separate production/physical creation date.
 
@@ -364,10 +364,10 @@ When creating a Product Item:
 
 For an existing physical Product Item:
 
-* the same Product Item data is recorded;
-* Material Usage is recorded;
-* Supply Consumption is not created;
-* existing stock is therefore not consumed.
+- the same Product Item data is recorded;
+- Material Usage is recorded;
+- Supply Consumption is not created;
+- existing stock is therefore not consumed.
 
 ---
 
@@ -383,11 +383,11 @@ Product Item
 
 Fields:
 
-* Product Item
-* Material Variant
-* Actual quantity
-* `created_at`
-* `updated_at`
+- Product Item
+- Material Variant
+- Actual quantity
+- `created_at`
+- `updated_at`
 
 Every Template Material produces one Material Usage when the Product Item is created.
 
@@ -403,8 +403,8 @@ The user can change it for the individual Product Item.
 
 Allowed values:
 
-* `0`
-* positive quantities
+- `0`
+- positive quantities
 
 Negative values are invalid.
 
@@ -425,11 +425,11 @@ Product Item
 
 Fields:
 
-* Material Usage
-* Supply
-* Consumed quantity
-* `created_at`
-* `updated_at`
+- Material Usage
+- Supply
+- Consumed quantity
+- `created_at`
+- `updated_at`
 
 One Material Usage may consume from multiple Supplies.
 
@@ -437,11 +437,11 @@ One Supply may provide material to multiple Product Items.
 
 Supply Consumption is the historical relationship required for:
 
-* stock calculation;
-* material cost calculation;
-* traceability;
-* editing consumption;
-* historical analysis.
+- stock calculation;
+- material cost calculation;
+- traceability;
+- editing consumption;
+- historical analysis.
 
 ---
 
@@ -449,8 +449,8 @@ Supply Consumption is the historical relationship required for:
 
 The user controls:
 
-* which Supplies are selected;
-* the order of selected Supplies.
+- which Supplies are selected;
+- the order of selected Supplies.
 
 The user does **not** manually allocate quantities to individual Supplies.
 
@@ -484,9 +484,9 @@ Existing values are pre-populated.
 
 The user may:
 
-* change the required quantity;
-* change selected Supplies;
-* change Supply order.
+- change the required quantity;
+- change selected Supplies;
+- change Supply order.
 
 Existing Supply Consumption is treated as temporarily released while calculating the new allocation.
 
@@ -552,9 +552,9 @@ Values with more than three decimal places are rejected.
 
 The following use the same three-decimal precision:
 
-* Expected production hours
-* Development hours
-* Actual production hours
+- Expected production hours
+- Development hours
+- Actual production hours
 
 Values with more than three decimal places are rejected.
 
@@ -576,11 +576,11 @@ Example:
 
 Monetary fields include:
 
-* Supply purchase price
-* Product Item additional cost
-* Sale price
-* Labor rate
-* Cost snapshot values
+- Supply purchase price
+- Product Item additional cost
+- Sale price
+- Labor rate
+- Cost snapshot values
 
 The API exposes normal decimal monetary values.
 
@@ -650,10 +650,10 @@ Product Item has one additional monetary cost field.
 
 It is:
 
-* stored in kopecks;
-* initialized to zero;
-* included in Product Item cost;
-* editable while the Product Item is not Sold.
+- stored in kopecks;
+- initialized to zero;
+- included in Product Item cost;
+- editable while the Product Item is not Sold.
 
 No separate additional-cost entity is required at this stage.
 
@@ -665,10 +665,10 @@ Product Item cost is dynamic while the Product Item is not Sold.
 
 Therefore:
 
-* Supply purchase-price changes affect unsold Product Items.
-* Labor-rate changes affect unsold Product Items.
-* Material Consumption changes affect unsold Product Items.
-* Additional cost changes affect unsold Product Items.
+- Supply purchase-price changes affect unsold Product Items.
+- Labor-rate changes affect unsold Product Items.
+- Material Consumption changes affect unsold Product Items.
+- Additional cost changes affect unsold Product Items.
 
 When the Product Item enters `Sold`, its cost becomes historical.
 
@@ -680,11 +680,11 @@ When a Product Item enters `Sold`, the current cost is snapshotted.
 
 The snapshot contains:
 
-* Material Cost
-* Labor Cost
-* Additional Cost
-* Total Cost
-* Labor Rate used
+- Material Cost
+- Labor Cost
+- Additional Cost
+- Total Cost
+- Labor Rate used
 
 The snapshot is stored on the Product Item.
 
@@ -694,10 +694,10 @@ The snapshot is the historical source of truth while the Product Item is Sold.
 
 Later changes to:
 
-* Supplies;
-* Supply purchase prices;
-* Labor rate;
-* other dynamic cost inputs
+- Supplies;
+- Supply purchase prices;
+- Labor rate;
+- other dynamic cost inputs
 
 do not change the Sold Product Item's historical cost.
 
@@ -717,9 +717,9 @@ The Product Item becomes dynamically costed again.
 
 If the Product Item is later Sold again:
 
-* a new Sold period is created;
-* a new cost snapshot is created;
-* the previous sale remains in status history.
+- a new Sold period is created;
+- a new cost snapshot is created;
+- the previous sale remains in status history.
 
 ---
 
@@ -729,10 +729,10 @@ Cost-driving Product Item fields cannot be changed while the Product Item is Sol
 
 This includes relevant:
 
-* Material Usage
-* Supply Consumption
-* Actual production hours
-* Additional cost
+- Material Usage
+- Supply Consumption
+- Actual production hours
+- Additional cost
 
 After returning to `In stock`, these fields become editable again.
 
@@ -742,10 +742,10 @@ After returning to `In stock`, these fields become editable again.
 
 Product Items use these statuses:
 
-* `In stock`
-* `Sold`
-* `Repair`
-* `Reserved`
+- `In stock`
+- `Sold`
+- `Repair`
+- `Reserved`
 
 All transitions are allowed.
 
@@ -774,12 +774,12 @@ Product Item
 
 Each status period contains:
 
-* Product Item
-* Status
-* `started_at`
-* `ended_at`
-* `created_at`
-* `updated_at`
+- Product Item
+- Status
+- `started_at`
+- `ended_at`
+- `created_at`
+- `updated_at`
 
 The current status is represented by the single open period:
 
@@ -819,11 +819,11 @@ Each Status History record has at most one corresponding detail record.
 
 Fields:
 
-* Sale date
-* Sale price
-* Customer
-* Sales channel/place
-* Notes
+- Sale date
+- Sale price
+- Customer
+- Sales channel/place
+- Notes
 
 Customer and Sales Channel remain free-text fields.
 
@@ -839,13 +839,13 @@ Each Sold period retains its own Sale Details.
 
 Fields:
 
-* Notes
+- Notes
 
 ## 23.3 Reserved Details
 
 Fields:
 
-* Notes
+- Notes
 
 ---
 
@@ -879,9 +879,9 @@ In stock
 
 Product Items in:
 
-* Sold
-* Repair
-* Reserved
+- Sold
+- Repair
+- Reserved
 
 are excluded from available product inventory.
 
@@ -901,11 +901,11 @@ Supplies are selected for the batch.
 
 Each resulting Product Item:
 
-* is an independent record;
-* receives its own Material Usage;
-* receives its own production hours;
-* receives its own cost;
-* receives its own status history.
+- is an independent record;
+- receives its own Material Usage;
+- receives its own production hours;
+- receives its own cost;
+- receives its own status history.
 
 There is no persisted Batch entity or Batch ID.
 
@@ -940,12 +940,12 @@ Soft-deleted records may be restored by clearing `deleted_at`.
 
 Soft deletion applies where historical relationships exist to:
 
-* Material Types
-* Materials
-* Material Variants
-* Supplies
-* Suppliers
-* Product Templates
+- Material Types
+- Materials
+- Material Variants
+- Supplies
+- Suppliers
+- Product Templates
 
 Soft-deleted records do not prevent creation of new records with the same business name.
 
@@ -1005,19 +1005,19 @@ The database should use the following behavior:
 
 Persistent entities use:
 
-* `created_at`
-* `updated_at`
+- `created_at`
+- `updated_at`
 
 Technical timestamps are distinct from business dates.
 
 Status history uses:
 
-* `started_at`
-* `ended_at`
+- `started_at`
+- `ended_at`
 
 Sale information uses:
 
-* `sale_date`
+- `sale_date`
 
 There is no separate production date.
 
@@ -1072,13 +1072,13 @@ The model avoids duplicated source-of-truth data wherever possible.
 
 Examples:
 
-* Supply unit is derived from Material Variant.
-* Product Item current status is derived from the open Status History period.
-* Supply remaining quantity is derived from Supply quantity minus Supply Consumption.
-* Supply unit cost is derived from purchase price and quantity.
-* Current Product Item cost is derived from Material Usage, Supply Consumption, Supply cost, labor hours, labor rate, and additional cost while the item is not Sold.
-* Product inventory is derived from Product Items.
-* Material inventory is derived from Supplies.
+- Supply unit is derived from Material Variant.
+- Product Item current status is derived from the open Status History period.
+- Supply remaining quantity is derived from Supply quantity minus Supply Consumption.
+- Supply unit cost is derived from purchase price and quantity.
+- Current Product Item cost is derived from Material Usage, Supply Consumption, Supply cost, labor hours, labor rate, and additional cost while the item is not Sold.
+- Product inventory is derived from Product Items.
+- Material inventory is derived from Supplies.
 
 Read queries may denormalize these values for API responses or UI presentation.
 
@@ -1092,12 +1092,12 @@ The primary example is the Sold Product Item cost snapshot.
 
 The following relationships represent historical facts and therefore must be persisted:
 
-* Product Item → Material Usage
-* Material Usage → Supply Consumption
-* Product Item → Status History
-* Status History → Sold Details
-* Status History → Repair Details
-* Status History → Reserved Details
+- Product Item → Material Usage
+- Material Usage → Supply Consumption
+- Product Item → Status History
+- Status History → Sold Details
+- Status History → Repair Details
+- Status History → Reserved Details
 
 Changes to referenced source entities must not erase these historical relationships.
 
@@ -1107,15 +1107,15 @@ Changes to referenced source entities must not erase these historical relationsh
 
 The following operations must execute within database transactions:
 
-* Product Item creation with material consumption
-* Existing Product Item creation without consumption
-* Batch Product Item creation
-* Material Usage changes
-* Supply Consumption replacement
-* Supply quantity corrections
-* Product Item status changes
-* Sold cost snapshot creation
-* Product Item deletion and dependent record deletion
+- Product Item creation with material consumption
+- Existing Product Item creation without consumption
+- Batch Product Item creation
+- Material Usage changes
+- Supply Consumption replacement
+- Supply quantity corrections
+- Product Item status changes
+- Sold cost snapshot creation
+- Product Item deletion and dependent record deletion
 
 A transaction must contain the complete logical business operation rather than individual database writes.
 
@@ -1127,15 +1127,15 @@ A transaction must contain the complete logical business operation rather than i
 
 The database should enforce fundamental invariants such as:
 
-* Required fields
-* Foreign keys
-* Non-negative quantities
-* Supply quantity greater than zero
-* Template Material quantity greater than zero
-* Uniqueness constraints
-* One Template Material per `(product_template_id, material_variant_id)`
-* One status detail per Status History record
-* Valid enum values where practical
+- Required fields
+- Foreign keys
+- Non-negative quantities
+- Supply quantity greater than zero
+- Template Material quantity greater than zero
+- Uniqueness constraints
+- One Template Material per `(product_template_id, material_variant_id)`
+- One status detail per Status History record
+- Valid enum values where practical
 
 Enum-like fields whose value set is defined by the request contract (for example
 Material Variant unit) are validated by the API layer only. A `text` column with an
@@ -1146,26 +1146,26 @@ only enforcement point and no `UNIQUE`-style DDL is added for it.
 
 The backend is responsible for business validation including:
 
-* Material Type, Material, and Material Variant names are unique ignoring case among active rows.
-* Soft-deleted rows release their name; a name reused by an active row makes the original unrestorable.
-* Editing a soft-deleted row is rejected; restoring a row is not.
-* Pieces must be whole numbers.
-* Meters support up to three decimal places.
-* Work hours support up to three decimal places.
-* Excessive quantity precision is rejected.
-* Supply quantity must be greater than zero.
-* Product Item Material Usage may be zero but not negative.
-* Supply Consumption cannot exceed available Supply quantity.
-* Material Usage must correspond to a Material Variant defined by the Product Template.
-* Material Variant unit cannot change after historical usage exists.
-* Cost-driving Product Item fields cannot be changed while Sold.
-* Status transitions must maintain valid status history.
-* Exactly one status period may be open.
-* Status periods must not overlap.
-* Cost snapshots are created when entering Sold.
-* Decimal conversion uses scaled integer representation.
-* Monetary conversion rounds down to the smaller monetary value.
-* All persistence-specific decimal/money conversion occurs in the backend service/domain layer.
+- Material Type, Material, and Material Variant names are unique ignoring case among active rows.
+- Soft-deleted rows release their name; a name reused by an active row makes the original unrestorable.
+- Editing a soft-deleted row is rejected; restoring a row is not.
+- Pieces must be whole numbers.
+- Meters support up to three decimal places.
+- Work hours support up to three decimal places.
+- Excessive quantity precision is rejected.
+- Supply quantity must be greater than zero.
+- Product Item Material Usage may be zero but not negative.
+- Supply Consumption cannot exceed available Supply quantity.
+- Material Usage must correspond to a Material Variant defined by the Product Template.
+- Material Variant unit cannot change after historical usage exists.
+- Cost-driving Product Item fields cannot be changed while Sold.
+- Status transitions must maintain valid status history.
+- Exactly one status period may be open.
+- Status periods must not overlap.
+- Cost snapshots are created when entering Sold.
+- Decimal conversion uses scaled integer representation.
+- Monetary conversion rounds down to the smaller monetary value.
+- All persistence-specific decimal/money conversion occurs in the backend service/domain layer.
 
 ---
 
@@ -1240,3 +1240,29 @@ labor_cost_setting
 This is the agreed conceptual relational model before implementing the exact Drizzle schema.
 
 The next modeling/implementation step is to define the exact SQLite column types, constraints, indexes, defaults, and Drizzle definitions.
+
+---
+
+# 37. Table Ownership
+
+Every table has exactly one owning feature. Only that feature's repository writes it — inserts, updates, soft deletes, hard deletes, restores, and any transaction that wraps them. A feature never writes a table owned by another feature, even when it already reads it.
+
+| Table                 | Owner              |
+| --------------------- | ------------------ |
+| `material_types`      | Material Type      |
+| `materials`           | Material           |
+| `material_variants`   | Material Variant   |
+| `suppliers`           | Supplier           |
+| `supplies`            | Supply             |
+| `product_templates`   | Product (Template) |
+| `template_materials`  | Product (Template) |
+| `product_items`       | Product (Item)     |
+| `material_usages`     | Material Usage     |
+| `supply_consumptions` | Supply Consumption |
+| `settings`            | Settings           |
+
+Product Item status history (`product_item_status_history` and its `sold_details`, `repair_details`, `reserved_details` rows) belongs to the Product Item status feature.
+
+Tables not yet implemented follow the same rule: the feature named above owns them from the moment its schema exists.
+
+Reading is not restricted the same way. A feature reads another feature's table in two places, and both are read-only:

@@ -7,20 +7,18 @@ import {
   SchemaType,
 } from "@/db/schema/createSchema.js";
 import { defaultDbFields } from "@/db/schema/defaultFields.js";
+import { MaterialUnit } from "@/features/materialVariant/utils/quantity.js";
 
 import { materialSchema } from "../material/material.schema.js";
 
 export const materialVariantTable = "material_variants";
-
-export const MATERIAL_VARIANT_UNITS = ["pieces", "meters"] as const;
-export type MaterialVariantUnit = (typeof MATERIAL_VARIANT_UNITS)[number];
 
 export const materialVariantSchema = getSchema(
   materialVariantTable,
   {
     ...defaultDbFields,
     name: text().notNull(),
-    unit: text().notNull(),
+    unit: text().$type<MaterialUnit>().notNull(),
     material_id: integer("material_id")
       .references(() => materialSchema.id, { onDelete: "restrict" })
       .notNull(),

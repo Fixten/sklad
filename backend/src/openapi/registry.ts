@@ -32,6 +32,8 @@ export const deletedContent = jsonContent(DeletedMessageZ);
 
 export const paramsOf = (schema: z.ZodObject) => ({ params: schema });
 
+export const queryOf = (schema: z.ZodObject) => ({ query: schema });
+
 export const bodyOf = (schema: z.ZodType) => ({
   body: { required: true, content: jsonContent(schema) },
 });

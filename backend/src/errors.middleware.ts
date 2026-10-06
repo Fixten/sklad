@@ -7,11 +7,19 @@ import { Logger } from "./utils/logger.js";
 const badRequestMessages = [
   ErrorMessages.DB_OPERATION_FAILED,
   ErrorMessages.UNIT_CHANGE_AFTER_USAGE,
+  ErrorMessages.INVALID_DECIMAL_VALUE,
+  ErrorMessages.INVALID_DECIMAL_PRECISION,
+  ErrorMessages.QUANTITY_NOT_POSITIVE,
+  ErrorMessages.PRICE_NEGATIVE,
 ] as string[];
 
 const conflictMessages = [
   ErrorMessages.ITEM_DELETED,
   ErrorMessages.NAME_ALREADY_EXISTS,
+  ErrorMessages.QUANTITY_BELOW_CONSUMED,
+  ErrorMessages.QUANTITY_REQUIRED_FOR_UNIT_CHANGE,
+  ErrorMessages.REFERENCED_ITEM_DELETED,
+  ErrorMessages.VARIANT_CHANGE_AFTER_USAGE,
 ] as string[];
 
 const NOT_FOUND_MESSAGES = [

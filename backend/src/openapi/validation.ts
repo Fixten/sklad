@@ -29,6 +29,27 @@ export function validateParams(schema: ZodType) {
   };
 }
 
+/**
+ * Express 5 exposes `req.query` as a getter that re-parses the query string on
+ * every access, so the coerced result cannot be written back onto the request.
+ * It is published on `res.locals`, which is per-request and mutable.
+ */
+export function validateQuery(schema: ZodType) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const result = schema.safeParse(req.query);
+    if (!result.success) {
+      sendError(res, 400, result.error.message);
+      return;
+    }
+    res.locals.query = result.data;
+    next();
+  };
+}
+
+export function queryOf(res: Response): unknown {
+  return res.locals.query;
+}
+
 export function sendSpec(schema: ZodType) {
   return (res: Response, data: unknown) => {
     const wire: unknown =

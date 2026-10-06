@@ -48,6 +48,9 @@ describe("contract e2e", () => {
       "/api/material-type/999",
       "/api/material/999",
       "/api/material-variant/999",
+      "/api/supply/999",
+      "/api/supply/stock/999",
+      "/api/supplier/999",
     ];
     for (const path of paths) {
       const res = await request(app).get(path);
@@ -63,8 +66,11 @@ describe("contract e2e", () => {
         "/api/material-variant",
         { name: "Oak plank", unit: "pieces", material_id: 1, extra: true },
       ],
-      ["/api/supply", { variant: 1, extra: true }],
-      ["/api/supplier", { supplier: "Timber Co", extra: true }],
+      [
+        "/api/supply",
+        { material_variant_id: 1, quantity: 1, purchase_price: 1, extra: true },
+      ],
+      ["/api/supplier", { name: "Timber Co", extra: true }],
       ["/api/settings", { work_hour_cost: 100, extra: true }],
     ] as const;
     for (const [path, body] of posts) {
@@ -82,12 +88,15 @@ describe("contract e2e", () => {
   });
 
   test("updating a missing resource answers 404 with a validated error body", async () => {
-    for (const path of [
-      "/api/material-type/999",
-      "/api/material/999",
-      "/api/material-variant/999",
-    ]) {
-      const res = await request(app).patch(path).send({ name: "new" });
+    const patches = [
+      ["/api/material-type/999", { name: "new" }],
+      ["/api/material/999", { name: "new" }],
+      ["/api/material-variant/999", { name: "new" }],
+      ["/api/supply/999", { quantity: 1 }],
+      ["/api/supplier/999", { name: "new" }],
+    ] as const;
+    for (const [path, body] of patches) {
+      const res = await request(app).patch(path).send(body);
       expectError(res, 404);
     }
   });
@@ -97,6 +106,8 @@ describe("contract e2e", () => {
       "/api/material-type/999/restore",
       "/api/material/999/restore",
       "/api/material-variant/999/restore",
+      "/api/supply/999/restore",
+      "/api/supplier/999/restore",
     ]) {
       const res = await request(app).post(path);
       expectError(res, 404);

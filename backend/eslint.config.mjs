@@ -72,6 +72,28 @@ export default defineConfig(
     },
   },
   {
+    files: ["src/features/**/*.service.ts", "src/features/**/*.router.ts"],
+    rules: {
+      // A transaction is a repository concern. A service that needs one calls a
+      // single repository method and hands it the business decision as a
+      // synchronous callback; opening one here would put a half-finished unit of
+      // work in a layer that cannot see the rest of it. `src/db/schema/*` is
+      // unaffected — that is the table definition, not a connection.
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["@/db/index.js", "@/db/repository.js"],
+              message:
+                "Services and routers must not import the db layer. Add or extend a method on the feature's repository instead; it owns the transaction.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
     files: ["src/**/*.ts"],
     plugins: { drizzle },
     rules: {

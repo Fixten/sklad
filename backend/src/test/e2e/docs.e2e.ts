@@ -42,7 +42,7 @@ describe("docs e2e", () => {
     expect(res.text).toContain("/api/docs/spec.json");
   });
 
-  test("serves a valid OpenAPI 3.0 spec describing every Epic 1 operation", async () => {
+  test("serves a valid OpenAPI 3.0 spec describing every catalog and supply operation", async () => {
     const res = await request(app).get("/api/docs/spec.json");
     expect(res.status).toBe(200);
     expect((res.body as { openapi?: unknown }).openapi).toBe("3.0.3");
@@ -73,12 +73,17 @@ describe("docs e2e", () => {
     path("/api/material-variant/{id}/restore", "post");
     path("/api/supply", "get");
     path("/api/supply", "post");
-    path("/api/supply/{id}", "post");
+    path("/api/supply/{id}", "get");
+    path("/api/supply/{id}", "patch");
     path("/api/supply/{id}", "delete");
+    path("/api/supply/{id}/restore", "post");
+    path("/api/supply/stock/{id}", "get");
     path("/api/supplier", "get");
     path("/api/supplier", "post");
-    path("/api/supplier/{id}", "post");
+    path("/api/supplier/{id}", "get");
+    path("/api/supplier/{id}", "patch");
     path("/api/supplier/{id}", "delete");
+    path("/api/supplier/{id}/restore", "post");
     path("/api/settings", "get");
     path("/api/settings", "post");
   });

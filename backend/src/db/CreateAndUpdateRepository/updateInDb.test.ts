@@ -12,28 +12,28 @@ describe("update", () => {
   const value = "update";
   let db: TestDb;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     db = getTestDb();
-    await insertInDb(db.client, testSchema, { name: original });
+    insertInDb(db.client, testSchema, { name: original });
   });
 
   afterEach(() => {
     db.close();
   });
 
-  it("updated doc in db", async () => {
-    await updateInDb(
+  it("updated doc in db", () => {
+    updateInDb(
       db.client,
       testSchema,
       { name: value },
       eq(testSchema.name, original),
     );
-    const result = await db.client.select().from(testSchema);
+    const result = db.client.select().from(testSchema).all();
     expect(result[0].name).toBe(value);
   });
 
-  it("return updated doc", async () => {
-    const result = await updateInDb(
+  it("return updated doc", () => {
+    const result = updateInDb(
       db.client,
       testSchema,
       { name: value },
@@ -41,8 +41,8 @@ describe("update", () => {
     );
     expect(result?.[0].name).toBe(value);
   });
-  it("return null if no target", async () => {
-    const result = await updateInDb(
+  it("return null if no target", () => {
+    const result = updateInDb(
       db.client,
       testSchema,
       { name: value },
@@ -50,10 +50,10 @@ describe("update", () => {
     );
     expect(result).toEqual(null);
   });
-  it("sets updated_at field", async () => {
-    const base = await db.client.select().from(testSchema);
+  it("sets updated_at field", () => {
+    const base = db.client.select().from(testSchema).all();
     expect(base[0].updated_at).toBe(null);
-    const result = await updateInDb(
+    const result = updateInDb(
       db.client,
       testSchema,
       { name: value },

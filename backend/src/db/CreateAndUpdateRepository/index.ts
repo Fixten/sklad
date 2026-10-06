@@ -8,15 +8,12 @@ import updateInDb from "./updateInDb.js";
 import upsertInDb from "./upsertInDb.js";
 
 import type { Db } from "../index.js";
+import type { IndexColumn } from "drizzle-orm/sqlite-core";
 
-export async function throwIfNull<T>(
-  dbResponse: Promise<T | null>,
-  message?: string,
-): Promise<T> {
-  const result = await dbResponse;
-  if (result === null)
+export function throwIfNull<T>(dbResponse: T | null, message?: string): T {
+  if (dbResponse === null)
     throw new Error(message ?? ErrorMessages.DB_OPERATION_FAILED);
-  else return result;
+  else return dbResponse;
 }
 
 export default class CreateAndUpdateRepository<T extends SQLiteTable> {
@@ -40,7 +37,7 @@ export default class CreateAndUpdateRepository<T extends SQLiteTable> {
     );
   }
 
-  upsertDoc(where: SQL, value: T["$inferInsert"]) {
-    return throwIfNull(this.upsert(this.dbClient, this.schema, value, where));
+  upsertDoc(target: IndexColumn | IndexColumn[], value: T["$inferInsert"]) {
+    return throwIfNull(this.upsert(this.dbClient, this.schema, value, target));
   }
 }

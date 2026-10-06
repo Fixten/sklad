@@ -20,17 +20,17 @@ export class MaterialVariantService {
     private repository: MaterialVariantRepository,
   ) {}
 
-  async createVariant(variant: MaterialVariantModel) {
-    await this.assertNameIsFree(variant.name, variant.material_id);
+  createVariant(variant: MaterialVariantModel) {
+    this.assertNameIsFree(variant.name, variant.material_id);
     return this.repository.create(variant);
   }
 
-  async updateVariant(id: number, value: Partial<MaterialVariantModel>) {
-    const current = await this.getEditable(id);
+  updateVariant(id: number, value: Partial<MaterialVariantModel>) {
+    const current = this.getEditable(id);
     if (value.unit !== undefined)
-      await this.assertUnitChangeAllowed(id, current.unit, value.unit);
+      this.assertUnitChangeAllowed(id, current.unit, value.unit);
     if (value.name !== undefined || value.material_id !== undefined)
-      await this.assertNameIsFree(
+      this.assertNameIsFree(
         value.name ?? current.name,
         value.material_id ?? current.material_id,
         current.id,
@@ -38,15 +38,15 @@ export class MaterialVariantService {
     return this.repository.update(id, value);
   }
 
-  async delete(id: number) {
-    const supplies = await this.supplyService.getAllByVariant(id);
+  delete(id: number) {
+    const supplies = this.supplyService.getAllByVariant(id);
     if (supplies.length > 0) return this.repository.softDelete(id);
     else return this.repository.hardDelete(id);
   }
 
-  async restore(id: number) {
-    const current = await this.repository.getById(id);
-    await this.assertNameIsFree(current.name, current.material_id, current.id);
+  restore(id: number) {
+    const current = this.repository.getById(id);
+    this.assertNameIsFree(current.name, current.material_id, current.id);
     return this.repository.restore(id);
   }
 
@@ -60,29 +60,29 @@ export class MaterialVariantService {
     return this.repository.getByMaterial(materialId);
   }
 
-  private async getEditable(id: number) {
-    const current = await this.repository.getById(id);
+  private getEditable(id: number) {
+    const current = this.repository.getById(id);
     if (current.deleted_at) throw new Error(ErrorMessages.ITEM_DELETED);
     return current;
   }
 
-  private async assertUnitChangeAllowed(
+  private assertUnitChangeAllowed(
     id: number,
     currentUnit: string,
     nextUnit: string,
   ) {
     if (currentUnit === nextUnit) return;
-    const supplies = await this.supplyService.getAllByVariant(id);
+    const supplies = this.supplyService.getAllByVariant(id);
     if (supplies.length > 0)
       throw new Error(ErrorMessages.UNIT_CHANGE_AFTER_USAGE);
   }
 
-  private async assertNameIsFree(
+  private assertNameIsFree(
     name: string,
     materialId: number,
     excludeId?: number,
   ) {
-    const siblings = await this.repository.getActiveByMaterial(materialId);
+    const siblings = this.repository.getActiveByMaterial(materialId);
     const taken = siblings.some(
       (row) => row.id !== excludeId && isSameName(row.name, name),
     );

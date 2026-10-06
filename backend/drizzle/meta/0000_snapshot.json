@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "f8e17d93-4022-403f-ba49-4972a314941f",
+  "id": "99209d05-e9c3-4077-846f-529674464401",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "materials": {
@@ -531,8 +531,8 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-    "supplier": {
-      "name": "supplier",
+    "suppliers": {
+      "name": "suppliers",
       "columns": {
         "id": {
           "name": "id",
@@ -562,6 +562,13 @@
           "notNull": false,
           "autoincrement": false
         },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "description": {
           "name": "description",
           "type": "text",
@@ -569,22 +576,31 @@
           "notNull": false,
           "autoincrement": false
         },
-        "supplier": {
-          "name": "supplier",
+        "url": {
+          "name": "url",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
-        "supply_url": {
-          "name": "supply_url",
+        "contact": {
+          "name": "contact",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "suppliers_name_unique": {
+          "name": "suppliers_name_unique",
+          "columns": [
+            "name"
+          ],
+          "isUnique": true,
+          "where": "\"suppliers\".\"deleted_at\" IS NULL"
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
@@ -658,17 +674,17 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "supply_consumptions_supply_id_supply_id_fk": {
-          "name": "supply_consumptions_supply_id_supply_id_fk",
+        "supply_consumptions_supply_id_supplies_id_fk": {
+          "name": "supply_consumptions_supply_id_supplies_id_fk",
           "tableFrom": "supply_consumptions",
-          "tableTo": "supply",
+          "tableTo": "supplies",
           "columnsFrom": [
             "supply_id"
           ],
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "restrict",
           "onUpdate": "no action"
         }
       },
@@ -676,8 +692,8 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-    "supply": {
-      "name": "supply",
+    "supplies": {
+      "name": "supplies",
       "columns": {
         "id": {
           "name": "id",
@@ -714,22 +730,22 @@
           "notNull": false,
           "autoincrement": false
         },
-        "price": {
-          "name": "price",
+        "purchase_price": {
+          "name": "purchase_price",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
-        "count": {
-          "name": "count",
+        "quantity": {
+          "name": "quantity",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
-        "supply_url": {
-          "name": "supply_url",
+        "url": {
+          "name": "url",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -752,9 +768,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "supply_material_variant_id_material_variants_id_fk": {
-          "name": "supply_material_variant_id_material_variants_id_fk",
-          "tableFrom": "supply",
+        "supplies_material_variant_id_material_variants_id_fk": {
+          "name": "supplies_material_variant_id_material_variants_id_fk",
+          "tableFrom": "supplies",
           "tableTo": "material_variants",
           "columnsFrom": [
             "material_variant_id"
@@ -762,26 +778,35 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "restrict",
           "onUpdate": "no action"
         },
-        "supply_supplier_id_supplier_id_fk": {
-          "name": "supply_supplier_id_supplier_id_fk",
-          "tableFrom": "supply",
-          "tableTo": "supplier",
+        "supplies_supplier_id_suppliers_id_fk": {
+          "name": "supplies_supplier_id_suppliers_id_fk",
+          "tableFrom": "supplies",
+          "tableTo": "suppliers",
           "columnsFrom": [
             "supplier_id"
           ],
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "restrict",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraints": {}
+      "checkConstraints": {
+        "supplies_quantity_positive": {
+          "name": "supplies_quantity_positive",
+          "value": "\"supplies\".\"quantity\" > 0"
+        },
+        "supplies_purchase_price_non_negative": {
+          "name": "supplies_purchase_price_non_negative",
+          "value": "\"supplies\".\"purchase_price\" >= 0"
+        }
+      }
     }
   },
   "views": {},

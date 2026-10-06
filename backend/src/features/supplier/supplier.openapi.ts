@@ -10,13 +10,14 @@ import {
   itemPath,
   jsonContent,
   paramsOf,
+  restorePath,
 } from "@/openapi/registry.js";
 import { getFullPathname } from "@/utils/getFullPathname.js";
 
 import {
   supplierCreateZ,
+  supplierPatchZ,
   supplierRowZ,
-  supplierUpdateZ,
 } from "./supplier.zod.js";
 
 export function registerSupplierOpenApi(registry: OpenAPIRegistry) {
@@ -37,6 +38,17 @@ export function registerSupplierOpenApi(registry: OpenAPIRegistry) {
     },
   });
   registry.registerPath({
+    method: "get",
+    path: itemPath(Urls.supplier),
+    tags: ["Supplier"],
+    summary: "Get a supplier",
+    request: paramsOf(IdParamsDocZ),
+    responses: {
+      200: { description: "The supplier", content: jsonContent(supplier) },
+      ...errors,
+    },
+  });
+  registry.registerPath({
     method: "post",
     path: base,
     tags: ["Supplier"],
@@ -51,11 +63,11 @@ export function registerSupplierOpenApi(registry: OpenAPIRegistry) {
     },
   });
   registry.registerPath({
-    method: "post",
+    method: "patch",
     path: itemPath(Urls.supplier),
     tags: ["Supplier"],
     summary: "Update a supplier",
-    request: { ...paramsOf(IdParamsDocZ), ...bodyOf(supplierUpdateZ) },
+    request: { ...paramsOf(IdParamsDocZ), ...bodyOf(supplierPatchZ) },
     responses: {
       200: {
         description: "The updated supplier",
@@ -72,6 +84,20 @@ export function registerSupplierOpenApi(registry: OpenAPIRegistry) {
     request: paramsOf(IdParamsDocZ),
     responses: {
       200: { description: "Delete confirmation", content: deletedContent },
+      ...errors,
+    },
+  });
+  registry.registerPath({
+    method: "post",
+    path: restorePath(Urls.supplier),
+    tags: ["Supplier"],
+    summary: "Restore a soft-deleted supplier",
+    request: paramsOf(IdParamsDocZ),
+    responses: {
+      200: {
+        description: "The restored supplier",
+        content: jsonContent(supplier),
+      },
       ...errors,
     },
   });

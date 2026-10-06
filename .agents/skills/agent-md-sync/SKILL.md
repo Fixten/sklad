@@ -1,6 +1,6 @@
 ---
 name: agent-md-sync
-description: updates Agents.md
+description: updates Agents.md. Used for any changes to the file.
 ---
 
 # AGENTS.md Sync
@@ -54,7 +54,7 @@ Explicitly discard:
 Write each surviving candidate as **one dense line or short bullet**, not a paragraph.
 If a candidate needs a paragraph to explain, it belongs in `docs/` (see the project's
 docs index) with a one-line pointer from AGENTS.md instead — AGENTS.md holds pointers and
-compressed facts, not explanations.
+compressed facts, not explanations. Never duplicate content from docs/ — if it's already documented, just link to it.
 
 ## Step 3: Merge, don't append
 
@@ -83,12 +83,6 @@ Count lines against the marker's `max-lines`. If over:
 4. If still over budget after real compression (not just trimming words), that's a
    signal the package genuinely needs more space or a docs/ split — tell the user
    rather than force-cutting meaningful content.
-
-## Step 5: Show a diff before writing
-
-Never silently overwrite. Present the proposed new file (or a diff against the old one)
-and a one-line summary of what was added/dropped/compressed, then write it after the
-user confirms.
 
 ## File shape
 

@@ -8,14 +8,18 @@ import {
   validateParams,
 } from "@/openapi/validation.js";
 
-import { SupplierModel, SupplierSchema } from "./supplier.schema.js";
 import SupplierService from "./supplier.service.js";
 import {
   supplierCreateZ,
+  supplierPatchZ,
   supplierRowListZ,
   supplierRowZ,
-  supplierUpdateZ,
 } from "./supplier.zod.js";
+
+import type {
+  SupplierCreateInput,
+  SupplierUpdateInput,
+} from "./supplier.service.js";
 
 const supplierRouter = Router();
 
@@ -24,36 +28,43 @@ const service = SupplierService.getSingleton();
 const sendRow = sendSpec(supplierRowZ);
 const sendList = sendSpec(supplierRowListZ);
 
-supplierRouter.get("/", async (req, res) => {
-  sendList(res, await service.getAll());
+type Id = Request<{ id: string }>;
+
+supplierRouter.get("/", (_req, res) => {
+  sendList(res, service.getAll());
+});
+
+supplierRouter.get("/:id", validateParams(IdParamsZ), (req: Id, res) => {
+  sendRow(res, service.getById(Number(req.params.id)));
 });
 
 supplierRouter.post(
   "/",
   validateBody(supplierCreateZ),
-  async (
-    req: Request<Record<string, string>, SupplierSchema, SupplierModel>,
-    res,
-  ) => {
-    sendRow(res, await service.create(req.body));
+  (req: Request<Record<string, string>, unknown, SupplierCreateInput>, res) => {
+    sendRow(res, service.create(req.body));
   },
 );
+
+supplierRouter.patch(
+  "/:id",
+  validateParams(IdParamsZ),
+  validateBody(supplierPatchZ),
+  (req: Request<{ id: string }, unknown, SupplierUpdateInput>, res) => {
+    sendRow(res, service.update(Number(req.params.id), req.body));
+  },
+);
+
+supplierRouter.delete("/:id", validateParams(IdParamsZ), (req: Id, res) => {
+  service.delete(Number(req.params.id));
+  sendDeleted(res, req.params.id);
+});
 
 supplierRouter.post(
-  "/:id",
+  "/:id/restore",
   validateParams(IdParamsZ),
-  validateBody(supplierUpdateZ),
-  async (req: Request<{ id: string }, SupplierSchema, SupplierModel>, res) => {
-    sendRow(res, await service.update(Number(req.params.id), req.body));
-  },
-);
-
-supplierRouter.delete(
-  "/:id",
-  validateParams(IdParamsZ),
-  async (req: Request<{ id: string }>, res) => {
-    await service.delete(Number(req.params.id));
-    sendDeleted(res, req.params.id);
+  (req: Id, res) => {
+    sendRow(res, service.restore(Number(req.params.id)));
   },
 );
 

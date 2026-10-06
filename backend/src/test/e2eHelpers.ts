@@ -7,14 +7,16 @@ export interface Row {
   updated_at?: Date | null;
   description?: string | null;
   unit?: string;
+  url?: string | null;
+  contact?: string | null;
   material_id?: number;
   material_type_id?: number;
-  supplier?: string;
-  supply_url?: string | null;
-  price?: number | null;
-  count?: number | null;
+  purchase_price?: number;
+  quantity?: number;
+  remaining_quantity?: number;
+  unit_purchase_cost?: number;
   material_variant_id?: number;
-  variant?: number;
+  supplier_id?: number;
   work_hour_cost?: number;
   message?: string;
 }

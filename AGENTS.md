@@ -16,4 +16,6 @@ The API contract is `backend/public/spec.json` (OpenAPI 3.0), generated from the
 
 # Code style
 
-Do not use comments in code unless there is extraordinary behavior that is difficult to understand from the code, such as a side effect caused by another component.
+- Do not use comments in code unless there is extraordinary behavior that is difficult to understand from the code, such as a side effect caused by another component.
+- Preffer immutable structures and vars where possible.
+- Preffer to declare entities before the first consumtion

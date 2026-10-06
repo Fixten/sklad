@@ -21,24 +21,24 @@ export default class MaterialTypeService {
     private materialService: MaterialService,
   ) {}
 
-  async create(materialType: MaterialTypeModel) {
-    await this.assertNameIsFree(materialType.name);
+  create(materialType: MaterialTypeModel) {
+    this.assertNameIsFree(materialType.name);
     return this.repository.create(materialType);
   }
-  async delete(id: number) {
-    const materials = await this.materialService.getByType(id);
+  delete(id: number) {
+    const materials = this.materialService.getByType(id);
     if (materials.length > 0) return this.repository.softDelete(id);
     else return this.repository.hardDelete(id);
   }
-  async update(id: number, newValue: Partial<MaterialTypeModel>) {
-    const current = await this.getEditable(id);
+  update(id: number, newValue: Partial<MaterialTypeModel>) {
+    const current = this.getEditable(id);
     if (newValue.name !== undefined)
-      await this.assertNameIsFree(newValue.name, current.id);
+      this.assertNameIsFree(newValue.name, current.id);
     return this.repository.update(id, newValue);
   }
-  async restore(id: number) {
-    const current = await this.repository.getById(id);
-    await this.assertNameIsFree(current.name, current.id);
+  restore(id: number) {
+    const current = this.repository.getById(id);
+    this.assertNameIsFree(current.name, current.id);
     return this.repository.restore(id);
   }
   getAll() {
@@ -48,13 +48,13 @@ export default class MaterialTypeService {
     return this.repository.getById(id);
   }
 
-  private async getEditable(id: number) {
-    const current = await this.repository.getById(id);
+  private getEditable(id: number) {
+    const current = this.repository.getById(id);
     if (current.deleted_at) throw new Error(ErrorMessages.ITEM_DELETED);
     return current;
   }
-  private async assertNameIsFree(name: string, excludeId?: number) {
-    const existing = await this.repository.getAllActive();
+  private assertNameIsFree(name: string, excludeId?: number) {
+    const existing = this.repository.getAllActive();
     const taken = existing.some(
       (row) => row.id !== excludeId && isSameName(row.name, name),
     );

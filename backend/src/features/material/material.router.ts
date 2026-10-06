@@ -26,19 +26,19 @@ const sendList = sendSpec(materialRowListZ);
 
 type Id = Request<{ id: string }>;
 
-materialRouter.get("/", async (req, res) => {
-  sendList(res, await service.getAll());
+materialRouter.get("/", (req, res) => {
+  sendList(res, service.getAll());
 });
 
-materialRouter.get("/:id", validateParams(IdParamsZ), async (req: Id, res) => {
-  sendRow(res, await service.get(Number(req.params.id)));
+materialRouter.get("/:id", validateParams(IdParamsZ), (req: Id, res) => {
+  sendRow(res, service.get(Number(req.params.id)));
 });
 
 materialRouter.post(
   "/",
   validateBody(materialCreateZ),
-  async (req: Request<Record<string, string>, unknown, MaterialModel>, res) => {
-    sendRow(res, await service.create(req.body));
+  (req: Request<Record<string, string>, unknown, MaterialModel>, res) => {
+    sendRow(res, service.create(req.body));
   },
 );
 
@@ -46,28 +46,21 @@ materialRouter.patch(
   "/:id",
   validateParams(IdParamsZ),
   validateBody(materialPatchZ),
-  async (
-    req: Request<{ id: string }, unknown, Partial<MaterialModel>>,
-    res,
-  ) => {
-    sendRow(res, await service.update(Number(req.params.id), req.body));
+  (req: Request<{ id: string }, unknown, Partial<MaterialModel>>, res) => {
+    sendRow(res, service.update(Number(req.params.id), req.body));
   },
 );
 
-materialRouter.delete(
-  "/:id",
-  validateParams(IdParamsZ),
-  async (req: Id, res) => {
-    await service.delete(Number(req.params.id));
-    sendDeleted(res, req.params.id);
-  },
-);
+materialRouter.delete("/:id", validateParams(IdParamsZ), (req: Id, res) => {
+  service.delete(Number(req.params.id));
+  sendDeleted(res, req.params.id);
+});
 
 materialRouter.post(
   "/:id/restore",
   validateParams(IdParamsZ),
-  async (req: Id, res) => {
-    sendRow(res, await service.restore(Number(req.params.id)));
+  (req: Id, res) => {
+    sendRow(res, service.restore(Number(req.params.id)));
   },
 );
 

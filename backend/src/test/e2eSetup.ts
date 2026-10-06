@@ -14,11 +14,15 @@ export function bootstrap(features: FeatureFlags = allFeaturesEnabled()) {
 
 export function truncate() {
   DbSingleton.base?.exec(`
-    DELETE FROM supply;
+    DELETE FROM supply_consumptions;
+    DELETE FROM material_usages;
+    DELETE FROM product_items;
+    DELETE FROM product_templates;
+    DELETE FROM supplies;
     DELETE FROM material_variants;
     DELETE FROM materials;
     DELETE FROM material_types;
-    DELETE FROM supplier;
+    DELETE FROM suppliers;
     DELETE FROM settings;
     DELETE FROM sqlite_sequence;
   `);

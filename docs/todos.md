@@ -1,5 +1,8 @@
 - [] Feature flags. Add feature flags to control which feature is usable and visible for user. This will allow to hide features that are in development and not ready to use. Configuration should be project wide, build stage, no need to have runtime editing. Backand router should register only routers for enabled features. Frontend should show only enabled features.
 - [] Frontend ui kit update. Shadcn integration is outdated. Need to update libs/components. There is new base lib called Base UI. Should switch to this lib. Take tokens generated on the site and apply it in the project. Add ai skills.
-- [] Add docker volume for sqlite
+- [x] Add docker volume for sqlite
 - [] Move prototype to penpot
-- [] Implement epic 2 backend
+- [x] Implement epic 2 backend
+- [x] add hard delete to supply
+- [x] use native upsert
+- [x] make async functions sync in be

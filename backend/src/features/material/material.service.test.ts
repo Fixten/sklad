@@ -42,80 +42,82 @@ describe("material service", () => {
   });
 
   describe("deleteMaterial", () => {
-    it("soft deletes material when variants reference it", async () => {
-      variantService.getByMaterial.mockResolvedValue([
+    it("soft deletes material when variants reference it", () => {
+      variantService.getByMaterial.mockReturnValue([
         {} as MaterialVariantSchema,
       ]);
-      await service.delete(0);
+      service.delete(0);
       expect(repo.softDelete).toHaveBeenCalled();
       expect(repo.hardDelete).not.toHaveBeenCalled();
     });
 
-    it("hard deletes material when no variants reference it", async () => {
-      variantService.getByMaterial.mockResolvedValue([]);
-      await service.delete(0);
+    it("hard deletes material when no variants reference it", () => {
+      variantService.getByMaterial.mockReturnValue([]);
+      service.delete(0);
       expect(repo.softDelete).not.toHaveBeenCalled();
       expect(repo.hardDelete).toHaveBeenCalled();
     });
 
-    it("propagates error and does not delete when variant lookup fails", async () => {
-      variantService.getByMaterial.mockRejectedValue(new Error());
-      await expect(service.delete(0)).rejects.toBeTruthy();
+    it("propagates error and does not delete when variant lookup fails", () => {
+      variantService.getByMaterial.mockImplementation(() => {
+        throw new Error();
+      });
+      expect(() => service.delete(0)).toThrow();
       expect(repo.softDelete).not.toHaveBeenCalled();
       expect(repo.hardDelete).not.toHaveBeenCalled();
     });
   });
 
   describe("create", () => {
-    it("creates a material with a name free within its type", async () => {
-      repo.getActiveByType.mockResolvedValue([]);
-      await service.create(row());
+    it("creates a material with a name free within its type", () => {
+      repo.getActiveByType.mockReturnValue([]);
+      service.create(row());
       expect(repo.create).toHaveBeenCalled();
     });
 
-    it("rejects a name already used within the same type", async () => {
-      repo.getActiveByType.mockResolvedValue([row({ name: "Oak" })]);
-      await expect(service.create(row({ name: "oak" }))).rejects.toThrow(
+    it("rejects a name already used within the same type", () => {
+      repo.getActiveByType.mockReturnValue([row({ name: "Oak" })]);
+      expect(() => service.create(row({ name: "oak" }))).toThrow(
         ErrorMessages.NAME_ALREADY_EXISTS,
       );
       expect(repo.create).not.toHaveBeenCalled();
     });
 
-    it("allows the same name in another type", async () => {
-      repo.getActiveByType.mockResolvedValue([]);
-      await service.create(row({ name: "oak", material_type_id: 2 }));
+    it("allows the same name in another type", () => {
+      repo.getActiveByType.mockReturnValue([]);
+      service.create(row({ name: "oak", material_type_id: 2 }));
       expect(repo.create).toHaveBeenCalled();
     });
   });
 
   describe("update", () => {
-    it("rejects editing a soft-deleted material", async () => {
-      repo.getById.mockResolvedValue(row({ deleted_at: new Date() }));
-      await expect(service.update(0, { name: "new" })).rejects.toThrow(
+    it("rejects editing a soft-deleted material", () => {
+      repo.getById.mockReturnValue(row({ deleted_at: new Date() }));
+      expect(() => service.update(0, { name: "new" })).toThrow(
         ErrorMessages.ITEM_DELETED,
       );
       expect(repo.update).not.toHaveBeenCalled();
     });
 
-    it("rejects a name already used within the same type", async () => {
-      repo.getById.mockResolvedValue(row({ name: "Oak" }));
-      repo.getActiveByType.mockResolvedValue([row({ id: 2, name: "Ash" })]);
-      await expect(service.update(0, { name: "ASH" })).rejects.toThrow(
+    it("rejects a name already used within the same type", () => {
+      repo.getById.mockReturnValue(row({ name: "Oak" }));
+      repo.getActiveByType.mockReturnValue([row({ id: 2, name: "Ash" })]);
+      expect(() => service.update(0, { name: "ASH" })).toThrow(
         ErrorMessages.NAME_ALREADY_EXISTS,
       );
       expect(repo.update).not.toHaveBeenCalled();
     });
 
-    it("allows a name only the row itself already uses", async () => {
-      repo.getById.mockResolvedValue(row({ name: "Oak" }));
-      repo.getActiveByType.mockResolvedValue([row({ name: "oak" })]);
-      await service.update(0, { name: "oak" });
+    it("allows a name only the row itself already uses", () => {
+      repo.getById.mockReturnValue(row({ name: "Oak" }));
+      repo.getActiveByType.mockReturnValue([row({ name: "oak" })]);
+      service.update(0, { name: "oak" });
       expect(repo.update).toHaveBeenCalledWith(0, { name: "oak" });
     });
-    it("checks the name when only the type changes", async () => {
-      repo.getById.mockResolvedValue(row({ name: "Oak" }));
-      repo.getActiveByType.mockResolvedValue([row({ id: 2, name: "Oak" })]);
-      await expect(service.update(0, { material_type_id: 2 })).rejects.toThrow(
+    it("checks the name when only the type changes", () => {
+      repo.getById.mockReturnValue(row({ name: "Oak" }));
+      repo.getActiveByType.mockReturnValue([row({ id: 2, name: "Oak" })]);
+      expect(() => service.update(0, { material_type_id: 2 })).toThrow(
         ErrorMessages.NAME_ALREADY_EXISTS,
       );
       expect(repo.update).not.toHaveBeenCalled();
@@ -123,27 +125,27 @@ describe("material service", () => {
   });
 
   describe("restore", () => {
-    it("restores the row", async () => {
-      repo.getById.mockResolvedValue(row());
-      repo.getActiveByType.mockResolvedValue([]);
-      await service.restore(1);
+    it("restores the row", () => {
+      repo.getById.mockReturnValue(row());
+      repo.getActiveByType.mockReturnValue([]);
+      service.restore(1);
       expect(repo.restore).toHaveBeenCalledWith(1);
     });
 
-    it("rejects when an active material in the same type already uses the name", async () => {
-      repo.getById.mockResolvedValue(row({ id: 2, name: "Oak" }));
-      repo.getActiveByType.mockResolvedValue([row({ id: 1, name: "oak" })]);
-      await expect(service.restore(2)).rejects.toThrow(
+    it("rejects when an active material in the same type already uses the name", () => {
+      repo.getById.mockReturnValue(row({ id: 2, name: "Oak" }));
+      repo.getActiveByType.mockReturnValue([row({ id: 1, name: "oak" })]);
+      expect(() => service.restore(2)).toThrow(
         ErrorMessages.NAME_ALREADY_EXISTS,
       );
       expect(repo.restore).not.toHaveBeenCalled();
     });
 
-    it("propagates not found for a missing material", async () => {
-      repo.getById.mockRejectedValue(new Error(ErrorMessages.ITEM_NOT_FOUND));
-      await expect(service.restore(999)).rejects.toThrow(
-        ErrorMessages.ITEM_NOT_FOUND,
-      );
+    it("propagates not found for a missing material", () => {
+      repo.getById.mockImplementation(() => {
+        throw new Error(ErrorMessages.ITEM_NOT_FOUND);
+      });
+      expect(() => service.restore(999)).toThrow(ErrorMessages.ITEM_NOT_FOUND);
     });
   });
 });

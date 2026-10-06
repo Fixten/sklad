@@ -167,11 +167,35 @@ Examples:
 
 Services coordinate repositories and other domain/application services when an operation spans multiple entities.
 
+### Cross-feature service dependencies
+
+A service needing another feature's data or operations depends on that feature's **service**, never on its repository or on a direct query of its table. A repository does reach across tables, but only for the projection its own feature's write needs (Supply reading `material_variants.unit` to scale a quantity), never to answer "does anything reference this row?" — that is a business decision and belongs to the feature being referenced.
+
+Cross-feature service imports run in one direction only:
+
+```text
+materialType → material → materialVariant → supply
+supplier                                ↗
+```
+
+Each arrow is importer → imported, and each edge is a parent asking about its children — the opposite direction to the foreign key that points back at the parent:
+
+| Edge                           | Foreign key answered            |
+| ------------------------------ | ------------------------------- |
+| `materialType` → `material`    | `materials.material_type_id`    |
+| `material` → `materialVariant` | `material_variants.material_id` |
+| `materialVariant` → `supply`   | `supplies.material_variant_id`  |
+| `supplier` → `supply`          | `supplies.supplier_id`          |
+
+The reverse edge is the one that would close a cycle, so it is forbidden: `supply` never imports a service from a feature that already imports it. `supply` imports no service at all today; when Supply Consumption gains a service, `supply → supplyConsumption` extends the same chain in the same direction. This is a convention, not a tooling rule — nothing in the linter rejects the reverse edge.
+
 ### Repository
 
 Responsible for persistence operations.
 
 Repositories encapsulate database access through Drizzle and should prevent database queries from spreading throughout services and routers.
+
+Every table has exactly one owning feature, and only that feature's repository writes it. Other features read it through the owner's service (the chain above) or through a projection method on their own repository (see `docs/tech/data modeling.md` §36).
 
 ### Schema
 
@@ -294,6 +318,27 @@ Material Variant stock
 
 There is no independent editable stock quantity for a Material Variant.
 
+#### Material Variant stock projection
+
+The aggregate above is exposed as a dedicated read operation:
+
+```text
+GET /api/supply/stock/{id}
+```
+
+It returns the Material Variant id, its unit, and the sum of the remaining quantities of its active Supplies. The path id is a Material Variant id, not a Supply id; the operation lives under Supply because Supply owns both the rows and the summation.
+
+**Decision:** the derived aggregate is served by its own endpoint instead of being computed by the frontend.
+
+**Motivation:**
+
+- The aggregate is a first-class value the user sees and acts on (product creation must check available material, and correction decisions depend on it), so it belongs to the API contract rather than to every client that needs it.
+- Reconstructing it in the client means fetching every Supply of a variant. Supply listing is paginated in the API contract, so a client-side sum silently becomes wrong as soon as a variant holds more Supplies than one page.
+- Duplicating the summation rule in the frontend would make the unit handling (`docs/tech/data modeling.md`) a second source of truth; the backend already has to apply it to keep `remaining_quantity` and unit cost consistent.
+- The value is derived on read, so the endpoint adds no stored state and no write path.
+
+The projection is served by Supply, which owns the Supplies and the summation rule, so the client asking for stock talks to the feature that holds it. A soft-deleted Material Variant stays readable through this operation: its Supplies still exist, and the figure is derived on read rather than written, so there is nothing to refuse. Only an unknown variant is rejected, with `404 Item was not found`.
+
 ### Product inventory
 
 Available product inventory is derived from Product Items whose current status is `In stock`.
@@ -315,7 +360,7 @@ When consumption changes:
 - canceled consumption returns quantity to the corresponding Supply
 - increased consumption consumes additional quantity
 - insufficient total stock causes the operation to fail
-- all affected changes occur within one database transaction
+- all affected changes occur within one database transaction, opened by the repository that owns the consumption writes
 
 This operation is shared by both initial Product Item creation and later Product Item editing.
 
@@ -412,7 +457,7 @@ Examples include:
 - deleting/soft-deleting Supplies
 - operations that affect historical Product Item cost
 
-A transaction should contain the complete logical operation rather than individual database writes being committed independently.
+A transaction should contain the complete logical operation rather than individual database writes being committed independently. Since only repositories open transactions, "the complete logical operation" has to fit in a single repository method — a service that needs atomicity calls that one method and supplies the business decision to it, rather than sequencing the writes itself across the layer boundary.
 
 The database is the source of truth for persisted application state.
 
@@ -464,6 +509,8 @@ For example, production is conceptually different from simply inserting a Produc
 - creating Product Items
 
 The API should therefore model such operations around their business meaning rather than forcing every operation into generic CRUD.
+
+A derived aggregate that users act on is modelled as an explicit read operation rather than left for clients to reconstruct, because resource listing is paginated and a client-side aggregation over one page is silently wrong (see §8, Material Variant stock projection).
 
 API contracts should eventually be shared between frontend and backend through a dedicated shared package.
 
@@ -675,6 +722,11 @@ Business rules must not depend on frontend behavior.
 
 Multi-record changes should be atomic.
 
+- **A transaction belongs to a repository.**.
+- **A service decides; it does not transact.**
+
+A transaction body must be `sync`.
+
 ### Avoid premature abstraction
 
 Shared infrastructure, generic frameworks, event buses, repositories, and other abstractions should only be introduced when a concrete requirement justifies them.
@@ -709,8 +761,11 @@ Future capabilities such as authentication, additional users, reporting, or inte
 | Currency               | RUB                                                                                         |
 | Monetary storage       | Integer kopecks                                                                             |
 | Material stock         | Derived from Supplies                                                                       |
+| Material Variant stock | Derived on read, served as `GET /api/supply/stock/{id}`                                     |
 | Product stock          | Derived from Product Items                                                                  |
 | Deletion policy        | Default hard delete; soft delete only when entity has historical references (e.g. Supplies) |
+| Table ownership        | Every table written only by its owning feature's repository (§5)                            |
+| Service dependencies   | One direction only: `materialType → material → materialVariant → supply` (§5)               |
 | Material consumption   | Explicit historical records                                                                 |
 | Status history         | Explicit historical records                                                                 |
 | API contracts          | Shared package planned                                                                      |
@@ -727,6 +782,6 @@ This applies clearly to material consumption and status history and should be co
 
 ### Cross-entity business operations
 
-Operations involving multiple entities should be coordinated by a service and executed within a single database transaction where consistency requires it.
+Operations involving multiple entities should be decided by a service and committed by a repository in a single database transaction where consistency requires it. The service supplies the decision, not the transaction: it calls one repository method that owns the whole unit of work.
 
 The architecture should remain pragmatic: the existing feature-based `schema / repository / service / router` pattern is preferred over introducing a more elaborate domain architecture without a concrete need.

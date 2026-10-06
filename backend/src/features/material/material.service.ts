@@ -20,8 +20,8 @@ export class MaterialService {
     private variantService: MaterialVariantService,
   ) {}
 
-  async delete(id: number) {
-    const variants = await this.variantService.getByMaterial(id);
+  delete(id: number) {
+    const variants = this.variantService.getByMaterial(id);
     if (variants.length > 0) return this.repository.softDelete(id);
     else return this.repository.hardDelete(id);
   }
@@ -35,43 +35,39 @@ export class MaterialService {
   getByType(materialTypeId: number) {
     return this.repository.getByType(materialTypeId);
   }
-  async create(material: MaterialModel) {
-    await this.assertNameIsFree(material.name, material.material_type_id);
+  create(material: MaterialModel) {
+    this.assertNameIsFree(material.name, material.material_type_id);
     return this.repository.create(material);
   }
-  async update(id: number, newValue: Partial<MaterialModel>) {
-    const current = await this.getEditable(id);
+  update(id: number, newValue: Partial<MaterialModel>) {
+    const current = this.getEditable(id);
     const materialTypeId =
       newValue.material_type_id ?? current.material_type_id;
     if (newValue.name !== undefined || newValue.material_type_id !== undefined)
-      await this.assertNameIsFree(
+      this.assertNameIsFree(
         newValue.name ?? current.name,
         materialTypeId,
         current.id,
       );
     return this.repository.update(id, newValue);
   }
-  async restore(id: number) {
-    const current = await this.repository.getById(id);
-    await this.assertNameIsFree(
-      current.name,
-      current.material_type_id,
-      current.id,
-    );
+  restore(id: number) {
+    const current = this.repository.getById(id);
+    this.assertNameIsFree(current.name, current.material_type_id, current.id);
     return this.repository.restore(id);
   }
 
-  private async getEditable(id: number) {
-    const current = await this.repository.getById(id);
+  private getEditable(id: number) {
+    const current = this.repository.getById(id);
     if (current.deleted_at) throw new Error(ErrorMessages.ITEM_DELETED);
     return current;
   }
-  private async assertNameIsFree(
+  private assertNameIsFree(
     name: string,
     materialTypeId: number,
     excludeId?: number,
   ) {
-    const siblings = await this.repository.getActiveByType(materialTypeId);
+    const siblings = this.repository.getActiveByType(materialTypeId);
     const taken = siblings.some(
       (row) => row.id !== excludeId && isSameName(row.name, name),
     );

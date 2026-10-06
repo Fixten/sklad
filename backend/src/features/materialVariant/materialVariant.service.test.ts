@@ -42,124 +42,124 @@ describe("VariantService", () => {
   });
 
   describe("delete", () => {
-    test("soft deletes when there are referencing supplies", async () => {
-      supplyService.getAllByVariant.mockResolvedValue([{} as SupplySchema]);
-      await service.delete(0);
+    test("soft deletes when there are referencing supplies", () => {
+      supplyService.getAllByVariant.mockReturnValue([{} as SupplySchema]);
+      service.delete(0);
       expect(repo.softDelete).toHaveBeenCalled();
     });
 
-    test("hard deletes when there are no referencing supplies", async () => {
-      supplyService.getAllByVariant.mockResolvedValue([]);
-      await service.delete(0);
+    test("hard deletes when there are no referencing supplies", () => {
+      supplyService.getAllByVariant.mockReturnValue([]);
+      service.delete(0);
       expect(repo.hardDelete).toHaveBeenCalled();
     });
   });
 
   describe("createVariant", () => {
-    test("creates a variant with a free name", async () => {
-      repo.getActiveByMaterial.mockResolvedValue([]);
-      await service.createVariant(row({ name: "Oak plank" }));
+    test("creates a variant with a free name", () => {
+      repo.getActiveByMaterial.mockReturnValue([]);
+      service.createVariant(row({ name: "Oak plank" }));
       expect(repo.create).toHaveBeenCalled();
     });
 
-    test("rejects a name already used by another variant of the material", async () => {
-      repo.getActiveByMaterial.mockResolvedValue([row({ name: "Oak plank" })]);
-      await expect(
-        service.createVariant(row({ name: "oak plank" })),
-      ).rejects.toThrow(ErrorMessages.NAME_ALREADY_EXISTS);
+    test("rejects a name already used by another variant of the material", () => {
+      repo.getActiveByMaterial.mockReturnValue([row({ name: "Oak plank" })]);
+      expect(() => service.createVariant(row({ name: "oak plank" }))).toThrow(
+        ErrorMessages.NAME_ALREADY_EXISTS,
+      );
       expect(repo.create).not.toHaveBeenCalled();
     });
 
-    test("allows the same name under another material", async () => {
-      repo.getActiveByMaterial.mockResolvedValue([]);
-      await service.createVariant(row({ name: "oak plank", material_id: 2 }));
+    test("allows the same name under another material", () => {
+      repo.getActiveByMaterial.mockReturnValue([]);
+      service.createVariant(row({ name: "oak plank", material_id: 2 }));
       expect(repo.create).toHaveBeenCalled();
     });
   });
 
   describe("updateVariant", () => {
-    test("rejects unit change when supplies reference the variant", async () => {
-      repo.getById.mockResolvedValue(row({ unit: "meters" }));
-      supplyService.getAllByVariant.mockResolvedValue([{} as SupplySchema]);
-      await expect(
-        service.updateVariant(0, { unit: "pieces" }),
-      ).rejects.toThrow(ErrorMessages.UNIT_CHANGE_AFTER_USAGE);
+    test("rejects unit change when supplies reference the variant", () => {
+      repo.getById.mockReturnValue(row({ unit: "meters" }));
+      supplyService.getAllByVariant.mockReturnValue([{} as SupplySchema]);
+      expect(() => service.updateVariant(0, { unit: "pieces" })).toThrow(
+        ErrorMessages.UNIT_CHANGE_AFTER_USAGE,
+      );
       expect(repo.update).not.toHaveBeenCalled();
     });
 
-    test("allows unit change when no supplies reference the variant", async () => {
-      repo.getById.mockResolvedValue(row({ unit: "meters" }));
-      supplyService.getAllByVariant.mockResolvedValue([]);
-      await service.updateVariant(0, { unit: "pieces" });
+    test("allows unit change when no supplies reference the variant", () => {
+      repo.getById.mockReturnValue(row({ unit: "meters" }));
+      supplyService.getAllByVariant.mockReturnValue([]);
+      service.updateVariant(0, { unit: "pieces" });
       expect(repo.update).toHaveBeenCalledWith(0, { unit: "pieces" });
     });
 
-    test("allows unchanged unit while supplies reference the variant", async () => {
-      repo.getById.mockResolvedValue(row({ unit: "meters" }));
-      supplyService.getAllByVariant.mockResolvedValue([{} as SupplySchema]);
-      repo.getActiveByMaterial.mockResolvedValue([]);
-      await service.updateVariant(0, { unit: "meters", name: "new name" });
+    test("allows unchanged unit while supplies reference the variant", () => {
+      repo.getById.mockReturnValue(row({ unit: "meters" }));
+      supplyService.getAllByVariant.mockReturnValue([{} as SupplySchema]);
+      repo.getActiveByMaterial.mockReturnValue([]);
+      service.updateVariant(0, { unit: "meters", name: "new name" });
       expect(repo.update).toHaveBeenCalled();
     });
 
-    test("rejects a name already used by another variant of the material", async () => {
-      repo.getById.mockResolvedValue(row({ name: "Oak plank" }));
-      repo.getActiveByMaterial.mockResolvedValue([
-        row({ id: 2, name: "Board" }),
-      ]);
-      await expect(service.updateVariant(0, { name: "board" })).rejects.toThrow(
+    test("rejects a name already used by another variant of the material", () => {
+      repo.getById.mockReturnValue(row({ name: "Oak plank" }));
+      repo.getActiveByMaterial.mockReturnValue([row({ id: 2, name: "Board" })]);
+      expect(() => service.updateVariant(0, { name: "board" })).toThrow(
         ErrorMessages.NAME_ALREADY_EXISTS,
       );
       expect(repo.update).not.toHaveBeenCalled();
     });
 
-    test("allows a name only the row itself already uses", async () => {
-      repo.getById.mockResolvedValue(row({ name: "Oak plank" }));
-      repo.getActiveByMaterial.mockResolvedValue([row({ name: "oak plank" })]);
-      await service.updateVariant(0, { name: "Oak plank" });
+    test("allows a name only the row itself already uses", () => {
+      repo.getById.mockReturnValue(row({ name: "Oak plank" }));
+      repo.getActiveByMaterial.mockReturnValue([row({ name: "oak plank" })]);
+      service.updateVariant(0, { name: "Oak plank" });
       expect(repo.update).toHaveBeenCalled();
     });
 
-    test("rejects editing a soft-deleted variant", async () => {
-      repo.getById.mockResolvedValue(row({ deleted_at: new Date() }));
-      await expect(
-        service.updateVariant(0, { name: "new name" }),
-      ).rejects.toThrow(ErrorMessages.ITEM_DELETED);
+    test("rejects editing a soft-deleted variant", () => {
+      repo.getById.mockReturnValue(row({ deleted_at: new Date() }));
+      expect(() => service.updateVariant(0, { name: "new name" })).toThrow(
+        ErrorMessages.ITEM_DELETED,
+      );
       expect(repo.update).not.toHaveBeenCalled();
     });
 
-    test("propagates not found for a missing variant", async () => {
-      repo.getById.mockRejectedValue(new Error(ErrorMessages.ITEM_NOT_FOUND));
-      await expect(
-        service.updateVariant(0, { name: "new name" }),
-      ).rejects.toThrow(ErrorMessages.ITEM_NOT_FOUND);
+    test("propagates not found for a missing variant", () => {
+      repo.getById.mockImplementation(() => {
+        throw new Error(ErrorMessages.ITEM_NOT_FOUND);
+      });
+      expect(() => service.updateVariant(0, { name: "new name" })).toThrow(
+        ErrorMessages.ITEM_NOT_FOUND,
+      );
     });
-    test("checks the name when only the material changes", async () => {
-      repo.getById.mockResolvedValue(row({ name: "Oak plank" }));
-      repo.getActiveByMaterial.mockResolvedValue([
+    test("checks the name when only the material changes", () => {
+      repo.getById.mockReturnValue(row({ name: "Oak plank" }));
+      repo.getActiveByMaterial.mockReturnValue([
         row({ id: 2, name: "Oak plank" }),
       ]);
-      await expect(
-        service.updateVariant(0, { material_id: 2 }),
-      ).rejects.toThrow(ErrorMessages.NAME_ALREADY_EXISTS);
+      expect(() => service.updateVariant(0, { material_id: 2 })).toThrow(
+        ErrorMessages.NAME_ALREADY_EXISTS,
+      );
       expect(repo.update).not.toHaveBeenCalled();
     });
   });
 
   describe("restore", () => {
-    test("restores the row", async () => {
-      repo.getById.mockResolvedValue(row());
-      repo.getActiveByMaterial.mockResolvedValue([]);
-      await service.restore(1);
+    test("restores the row", () => {
+      repo.getById.mockReturnValue(row());
+      repo.getActiveByMaterial.mockReturnValue([]);
+      service.restore(1);
       expect(repo.restore).toHaveBeenCalledWith(1);
     });
 
-    test("rejects when an active variant of the same material already uses the name", async () => {
-      repo.getById.mockResolvedValue(row({ id: 2, name: "Oak plank" }));
-      repo.getActiveByMaterial.mockResolvedValue([
+    test("rejects when an active variant of the same material already uses the name", () => {
+      repo.getById.mockReturnValue(row({ id: 2, name: "Oak plank" }));
+      repo.getActiveByMaterial.mockReturnValue([
         row({ id: 1, name: "oak plank" }),
       ]);
-      await expect(service.restore(2)).rejects.toThrow(
+      expect(() => service.restore(2)).toThrow(
         ErrorMessages.NAME_ALREADY_EXISTS,
       );
       expect(repo.restore).not.toHaveBeenCalled();

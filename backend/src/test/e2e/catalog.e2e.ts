@@ -313,9 +313,11 @@ describe("catalog e2e", () => {
       const material = await createMaterial(app, type.id);
       const variant = await createVariant(app, material.id);
       const supply = bodyOf(
-        await request(app)
-          .post("/api/supply")
-          .send({ count: 5, price: 100, variant: variant.id }),
+        await request(app).post("/api/supply").send({
+          quantity: 5,
+          purchase_price: 100,
+          material_variant_id: variant.id,
+        }),
       );
       await request(app).delete(`/api/material-variant/${String(variant.id)}`);
 
@@ -330,16 +332,18 @@ describe("catalog e2e", () => {
       const supplies = listOf(await request(app).get("/api/supply"));
       expect(supplies).toHaveLength(1);
       expect(supplies[0].id).toBe(supply.id);
-      expect(supplies[0].count).toBe(5);
+      expect(supplies[0].quantity).toBe(5);
     });
 
     test("rejects restoring into a name now taken by another active row", async () => {
       const type = await createType(app, "Wood");
       const material = await createMaterial(app, type.id, "Oak");
       const variant = await createVariant(app, material.id, "Oak plank");
-      await request(app)
-        .post("/api/supply")
-        .send({ count: 5, price: 100, variant: variant.id });
+      await request(app).post("/api/supply").send({
+        quantity: 5,
+        purchase_price: 100,
+        material_variant_id: variant.id,
+      });
       await request(app).delete(`/api/material-variant/${String(variant.id)}`);
 
       await createVariant(app, material.id, "oak PLANK");

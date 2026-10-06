@@ -17,28 +17,30 @@ describe("SettingsRepository", () => {
     >;
   });
 
-  test("getConfig returns the settings row when it exists", async () => {
+  test("getConfig returns the settings row when it exists", () => {
     const row = {
       id: 1,
       work_hour_cost: 500,
     } as unknown as (typeof settingsSchema)["$inferSelect"];
-    repo.getById.mockResolvedValue(row);
+    repo.getById.mockReturnValue(row);
     const service = new SettingsRepository(repo);
-    await expect(service.getConfig()).resolves.toEqual(row);
+    expect(service.getConfig()).toEqual(row);
   });
 
-  test("getConfig returns defaultSettings when the row is missing", async () => {
-    repo.getById.mockRejectedValue(new Error(ErrorMessages.ITEM_NOT_FOUND));
+  test("getConfig returns defaultSettings when the row is missing", () => {
+    repo.getById.mockImplementation(() => {
+      throw new Error(ErrorMessages.ITEM_NOT_FOUND);
+    });
     const service = new SettingsRepository(repo);
-    await expect(service.getConfig()).resolves.toEqual(defaultSettings);
+    expect(service.getConfig()).toEqual(defaultSettings);
   });
 
-  test("getConfig propagates unrelated errors", async () => {
-    repo.getById.mockRejectedValue(
-      new Error(ErrorMessages.DB_OPERATION_FAILED),
-    );
+  test("getConfig propagates unrelated errors", () => {
+    repo.getById.mockImplementation(() => {
+      throw new Error(ErrorMessages.DB_OPERATION_FAILED);
+    });
     const service = new SettingsRepository(repo);
-    await expect(service.getConfig()).rejects.toThrow(
+    expect(() => service.getConfig()).toThrow(
       ErrorMessages.DB_OPERATION_FAILED,
     );
   });

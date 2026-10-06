@@ -42,31 +42,31 @@ describe("materialType service", () => {
   });
 
   describe("delete", () => {
-    it("soft deletes type when materials reference it", async () => {
-      materialService.getByType.mockResolvedValue([{} as MaterialSchema]);
-      await service.delete(0);
+    it("soft deletes type when materials reference it", () => {
+      materialService.getByType.mockReturnValue([{} as MaterialSchema]);
+      service.delete(0);
       expect(repo.softDelete).toHaveBeenCalled();
       expect(repo.hardDelete).not.toHaveBeenCalled();
     });
 
-    it("hard deletes type when no materials reference it", async () => {
-      materialService.getByType.mockResolvedValue([]);
-      await service.delete(0);
+    it("hard deletes type when no materials reference it", () => {
+      materialService.getByType.mockReturnValue([]);
+      service.delete(0);
       expect(repo.softDelete).not.toHaveBeenCalled();
       expect(repo.hardDelete).toHaveBeenCalled();
     });
   });
 
   describe("create", () => {
-    it("creates a type with a free name", async () => {
-      repo.getAllActive.mockResolvedValue([]);
-      await service.create(row());
+    it("creates a type with a free name", () => {
+      repo.getAllActive.mockReturnValue([]);
+      service.create(row());
       expect(repo.create).toHaveBeenCalled();
     });
 
-    it("rejects a name already used by another type", async () => {
-      repo.getAllActive.mockResolvedValue([row({ name: "Wood" })]);
-      await expect(service.create(row({ name: "WOOD" }))).rejects.toThrow(
+    it("rejects a name already used by another type", () => {
+      repo.getAllActive.mockReturnValue([row({ name: "Wood" })]);
+      expect(() => service.create(row({ name: "WOOD" }))).toThrow(
         ErrorMessages.NAME_ALREADY_EXISTS,
       );
       expect(repo.create).not.toHaveBeenCalled();
@@ -74,57 +74,57 @@ describe("materialType service", () => {
   });
 
   describe("update", () => {
-    it("rejects editing a soft-deleted type", async () => {
-      repo.getById.mockResolvedValue(row({ deleted_at: new Date() }));
-      await expect(service.update(0, { name: "new" })).rejects.toThrow(
+    it("rejects editing a soft-deleted type", () => {
+      repo.getById.mockReturnValue(row({ deleted_at: new Date() }));
+      expect(() => service.update(0, { name: "new" })).toThrow(
         ErrorMessages.ITEM_DELETED,
       );
       expect(repo.update).not.toHaveBeenCalled();
     });
 
-    it("rejects a name already used by another type", async () => {
-      repo.getById.mockResolvedValue(row({ name: "Wood" }));
-      repo.getAllActive.mockResolvedValue([row({ id: 2, name: "Metal" })]);
-      await expect(service.update(0, { name: "metal" })).rejects.toThrow(
+    it("rejects a name already used by another type", () => {
+      repo.getById.mockReturnValue(row({ name: "Wood" }));
+      repo.getAllActive.mockReturnValue([row({ id: 2, name: "Metal" })]);
+      expect(() => service.update(0, { name: "metal" })).toThrow(
         ErrorMessages.NAME_ALREADY_EXISTS,
       );
       expect(repo.update).not.toHaveBeenCalled();
     });
 
-    it("allows a name only the row itself already uses", async () => {
-      repo.getById.mockResolvedValue(row({ name: "Wood" }));
-      repo.getAllActive.mockResolvedValue([row({ name: "wood" })]);
-      await service.update(0, { name: "wood" });
+    it("allows a name only the row itself already uses", () => {
+      repo.getById.mockReturnValue(row({ name: "Wood" }));
+      repo.getAllActive.mockReturnValue([row({ name: "wood" })]);
+      service.update(0, { name: "wood" });
       expect(repo.update).toHaveBeenCalledWith(0, { name: "wood" });
     });
 
-    it("does not check the name when it is not part of the update", async () => {
-      repo.getById.mockResolvedValue(row());
-      await service.update(0, { description: "hardwood" });
+    it("does not check the name when it is not part of the update", () => {
+      repo.getById.mockReturnValue(row());
+      service.update(0, { description: "hardwood" });
       expect(repo.getAllActive).not.toHaveBeenCalled();
       expect(repo.update).toHaveBeenCalledWith(0, { description: "hardwood" });
     });
   });
 
   describe("restore", () => {
-    it("restores the row", async () => {
-      repo.getById.mockResolvedValue(row());
-      repo.getAllActive.mockResolvedValue([]);
-      await service.restore(1);
+    it("restores the row", () => {
+      repo.getById.mockReturnValue(row());
+      repo.getAllActive.mockReturnValue([]);
+      service.restore(1);
       expect(repo.restore).toHaveBeenCalledWith(1);
     });
 
-    it("is idempotent for an active row", async () => {
-      repo.getById.mockResolvedValue(row());
-      repo.getAllActive.mockResolvedValue([row()]);
-      await service.restore(1);
+    it("is idempotent for an active row", () => {
+      repo.getById.mockReturnValue(row());
+      repo.getAllActive.mockReturnValue([row()]);
+      service.restore(1);
       expect(repo.restore).toHaveBeenCalledWith(1);
     });
 
-    it("rejects when an active row already uses the name", async () => {
-      repo.getById.mockResolvedValue(row({ id: 2, name: "Wood" }));
-      repo.getAllActive.mockResolvedValue([row({ id: 1, name: "wood" })]);
-      await expect(service.restore(2)).rejects.toThrow(
+    it("rejects when an active row already uses the name", () => {
+      repo.getById.mockReturnValue(row({ id: 2, name: "Wood" }));
+      repo.getAllActive.mockReturnValue([row({ id: 1, name: "wood" })]);
+      expect(() => service.restore(2)).toThrow(
         ErrorMessages.NAME_ALREADY_EXISTS,
       );
       expect(repo.restore).not.toHaveBeenCalled();
