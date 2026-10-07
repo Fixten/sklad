@@ -20,14 +20,12 @@ export default defineConfig(
       },
     },
   },
-  // Add Jest configuration for test files
   {
-    files: ["**/*.test.ts"],
+    files: ["**/*.test.ts", "**/test/**/*.ts"],
     plugins: {
       jest: jestPlugin,
     },
     rules: {
-      // Turn off the original rule for test files
       "@typescript-eslint/unbound-method": "off",
       "jest/unbound-method": "error",
       "@typescript-eslint/no-unsafe-assignment": "off",
@@ -36,6 +34,7 @@ export default defineConfig(
       "@typescript-eslint/no-unsafe-return": "off",
       "@typescript-eslint/no-unused-expressions": "off",
       "@typescript-eslint/no-unsafe-argument": "off",
+      "@typescript-eslint/no-non-null-assertion": "off",
     },
   },
   {

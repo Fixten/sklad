@@ -15,6 +15,6 @@ export default class SettingsApi {
   };
 
   updateWorkHours = (hours: number) => {
-    return this.api.post({ work_hour_cost: hours });
+    return this.api.post<SettingsModel>({ work_hour_cost: hours });
   };
 }

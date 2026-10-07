@@ -26,7 +26,7 @@ describe("Repository", () => {
   test("getAllActive excludes soft-deleted rows", () => {
     repository.addNew({ name: "second" });
     const existing = repository.getAll()[0];
-    repository.softDelete(existing.id);
+    repository.softDelete(existing!.id);
 
     const active = repository.getAllActive();
     expect(active.map((row) => row.name)).toEqual(["second"]);
@@ -34,12 +34,12 @@ describe("Repository", () => {
 
   test("softDelete keeps the row and sets deleted_at", () => {
     const existing = repository.getAll()[0];
-    const updated = repository.softDelete(existing.id);
+    const updated = repository.softDelete(existing!.id);
     expect(updated.deleted_at).toBeTruthy();
 
     const all = repository.getAll();
     expect(all).toHaveLength(1);
-    expect(all[0].deleted_at).toBeTruthy();
+    expect(all[0]!.deleted_at).toBeTruthy();
   });
 
   test("getById returns the single row object", () => {
@@ -66,9 +66,9 @@ describe("Repository", () => {
 
   test("restore clears deleted_at", () => {
     const existing = repository.getAll()[0];
-    repository.softDelete(existing.id);
+    repository.softDelete(existing!.id);
 
-    const restored = repository.restore(existing.id);
+    const restored = repository.restore(existing!.id);
     expect(restored.deleted_at).toBeNull();
     expect(repository.getAllActive()).toHaveLength(1);
   });
@@ -80,16 +80,16 @@ describe("Repository", () => {
 
   test("getByValue returns soft-deleted rows too", () => {
     const existing = repository.getAll()[0];
-    repository.softDelete(existing.id);
+    repository.softDelete(existing!.id);
 
     const result = repository.getByValue(eq(testSchema.name, name));
     expect(result).toHaveLength(1);
-    expect(result[0].deleted_at).toBeTruthy();
+    expect(result[0]!.deleted_at).toBeTruthy();
   });
 
   test("getActiveByValue filters soft-deleted rows", () => {
     const existing = repository.getAll()[0];
-    repository.softDelete(existing.id);
+    repository.softDelete(existing!.id);
 
     expect(repository.getActiveByValue(eq(testSchema.name, name))).toHaveLength(
       0,

@@ -6,6 +6,7 @@ import { createTypeScriptImportResolver } from "eslint-import-resolver-typescrip
 import pluginQuery from "@tanstack/eslint-plugin-query";
 
 export default [
+  { ignores: ["src/api/schema.d.ts"] },
   ...pluginQuery.configs["flat/recommended"],
   ...tseslint.config(
     eslint.configs.recommended,

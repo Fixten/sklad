@@ -11,14 +11,14 @@ import MaterialTypeLabel from "../MaterialType/MaterialTypeLabel";
 import type { MaterialModel } from "../Material.model";
 
 interface Props {
-  materialId: string;
+  materialId: number;
   value: MaterialModel;
   onRemove: () => void;
   onChange: () => void;
 }
 
 export default function MaterialCard(props: Props) {
-  const { name, description, materialType } = props.value;
+  const { name, description, material_type_id } = props.value;
 
   return (
     <Card.Wrapper>
@@ -37,7 +37,7 @@ export default function MaterialCard(props: Props) {
         Описание: {description}
       </Card.CardDescription>
       <Card.CardContent>
-        Тип: <MaterialTypeLabel id={materialType} />
+        Тип: <MaterialTypeLabel id={material_type_id} />
       </Card.CardContent>
       <Divider />
       {/* <VariantCard

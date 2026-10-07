@@ -75,18 +75,18 @@ async function consume(
     .returning();
   const item = await DbSingleton.client
     .insert(productItemSchema)
-    .values({ product_template_id: template[0].id })
+    .values({ product_template_id: template[0]!.id })
     .returning();
   const usage = await DbSingleton.client
     .insert(materialUsageSchema)
     .values({
-      product_item_id: item[0].id,
+      product_item_id: item[0]!.id,
       material_variant_id: variantId,
       actual_quantity: consumedQuantity,
     })
     .returning();
   await DbSingleton.client.insert(supplyConsumptionSchema).values({
-    material_usage_id: usage[0].id,
+    material_usage_id: usage[0]!.id,
     supply_id: supplyId,
     consumed_quantity: consumedQuantity,
   });

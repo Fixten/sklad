@@ -1,47 +1,47 @@
-import { useState } from "react";
+// import { useState } from "react";
 
 import AddMaterial from "@/features/Material/AddMaterial";
-import { MaterialDTO } from "@/features/Material/Material.model";
+// import { MaterialDTO } from "@/features/Material/Material.model";
 import Spinner from "ui/Spinner";
 
-import EditMaterial from "../../../features/Material/EditMaterial";
-import MaterialCard from "../../../features/Material/MaterialCard/MaterialCard";
+// import EditMaterial from "../../../features/Material/EditMaterial";
+// import MaterialCard from "../../../features/Material/MaterialCard/MaterialCard";
 import useMaterial from "../../../features/Material/useMaterial";
 
 export default function MaterialPage() {
-  const { query, addMutation, updateMutation, removeMutation } = useMaterial();
-  const [editItem, setEditItem] = useState<string>();
+  const { query, addMutation } = useMaterial();
+  // const [editItem, setEditItem] = useState<string>();
 
-  async function onEdit(id: string, v: MaterialDTO) {
-    await updateMutation.mutateAsync({ ...v, id: id });
-    setEditItem("");
-  }
+  // async function onEdit(id: string, v: MaterialDTO) {
+  //   await updateMutation.mutateAsync({ ...v, id: id });
+  //   setEditItem("");
+  // }
 
-  const allMaterial = query.data?.length
-    ? query.data.map((_, i, arr) => {
-        const current = arr[arr.length - 1 - i];
+  // const allMaterial = query.data?.length
+  //   ? query.data.map((_, i, arr) => {
+  //       const current = arr[arr.length - 1 - i];
 
-        return editItem === current.id ? (
-          <EditMaterial
-            value={current}
-            onSubmit={(newValue) => onEdit(current.id, newValue)}
-            isError={updateMutation.isError}
-          />
-        ) : (
-          <MaterialCard
-            materialId={current.id}
-            onChange={() => {
-              setEditItem(current.id);
-            }}
-            key={current.id}
-            value={current}
-            onRemove={() => {
-              removeMutation.mutate(current.id);
-            }}
-          />
-        );
-      })
-    : "Пусто!";
+  //       return editItem === current?.id ? (
+  //         <EditMaterial
+  //           value={current}
+  //           onSubmit={(newValue) => onEdit(current?.id, newValue)}
+  //           isError={updateMutation.isError}
+  //         />
+  //       ) : (
+  //         <MaterialCard
+  //           materialId={current?.id}
+  //           onChange={() => {
+  //             setEditItem(current?.id);
+  //           }}
+  //           key={current?.id}
+  //           value={current}
+  //           onRemove={() => {
+  //             removeMutation.mutate(current?.id);
+  //           }}
+  //         />
+  //       );
+  //     })
+  //   : "Пусто!";
 
   if (query.isLoading) return <Spinner />;
   else
@@ -51,7 +51,7 @@ export default function MaterialPage() {
           onSubmit={addMutation.mutateAsync}
           isError={addMutation.isError}
         />
-        {allMaterial}
+        {/* {allMaterial} */}
       </section>
     );
 }

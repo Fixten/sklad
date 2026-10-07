@@ -1,16 +1,16 @@
-import { BadgePlus, Check, Delete } from "lucide-react";
-import { Fragment, useState } from "react";
+import { BadgePlus, Check } from "lucide-react";
+import { useState } from "react";
 
 import Button from "ui/Button";
 import Card from "ui/Card";
-import Divider from "ui/Divider";
+// import Divider from "ui/Divider";
 import Input from "ui/Input";
 import Spinner from "ui/Spinner";
 
 import useMaterialType from "../../../features/Material/MaterialType/useMaterialType";
 
 export default function MaterialTypePage() {
-  const { query, addMutation, removeMutation } = useMaterialType();
+  const { query, addMutation } = useMaterialType();
   const [newItem, setNewItem] = useState<string>("");
 
   const onCreate = (e: React.SubmitEvent<HTMLFormElement>) => {
@@ -48,7 +48,7 @@ export default function MaterialTypePage() {
       ) : (
         <Card.Wrapper>
           <ul>
-            {query.data?.map((v, i, arr) => {
+            {/* {query.data?.map((v, i, arr) => {
               const current = arr[arr.length - 1 - i];
               return (
                 <Fragment key={current.id}>
@@ -67,7 +67,7 @@ export default function MaterialTypePage() {
                   {i < arr.length - 1 && <Divider />}
                 </Fragment>
               );
-            })}
+            })} */}
           </ul>
         </Card.Wrapper>
       )}

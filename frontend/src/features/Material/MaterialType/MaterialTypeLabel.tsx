@@ -1,7 +1,7 @@
 import useMaterialType from "./useMaterialType";
 
 interface Props {
-  id: string;
+  id: number;
 }
 
 export default function MaterialTypeLabel(props: Props) {

@@ -1,8 +1,8 @@
 import Api from "@/api";
 
-import { VariantModel } from "./Variant.model";
+import type { VariantDTO, VariantModel } from "./Variant.model";
 
-const path = "material/variant";
+const path = "material-variant";
 
 export default class VariantApi {
   #api: Api<VariantModel>;
@@ -10,11 +10,11 @@ export default class VariantApi {
     this.#api = new Api(path);
   }
 
-  create = (value: VariantModel) => {
+  create = (value: VariantDTO) => {
     return this.#api.post<VariantModel>(value);
   };
 
-  update = (value: VariantModel, id: string) => {
+  update = (value: VariantModel, id: number) => {
     return this.#api.post(value, id);
   };
 

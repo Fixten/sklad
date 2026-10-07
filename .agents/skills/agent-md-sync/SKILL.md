@@ -1,6 +1,6 @@
 ---
 name: agent-md-sync
-description: updates Agents.md. Used for any changes to the file.
+description: AGENTS.md updates. Used for any changes to the file.
 ---
 
 # AGENTS.md Sync

@@ -51,7 +51,7 @@ describe("docs e2e", () => {
       (res.body as { paths?: Record<string, Record<string, unknown>> }).paths ??
       {};
     const path = (p: string, method: string) => {
-      expect(paths[p][method]).toBeDefined();
+      expect(paths[p]![method]!).toBeDefined();
     };
     path("/api/material-type", "get");
     path("/api/material-type", "post");

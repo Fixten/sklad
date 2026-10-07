@@ -20,6 +20,19 @@ mirroring the backend's feature split.
   strings, or conflicting Tailwind utilities survive.
 - Icons come from `lucide-react` (see `components.json` → `iconLibrary`).
 
+## Adding API integration for a feature
+
+1. Contract first: `backend/public/spec.json` (never backend source). `VITE_BACKEND_URL`
+   already ends with `/api`, so feature paths are relative (`"material"`).
+2. `src/features/<F>/`:
+   - `<F>.model.ts` — camelCase types; responses are `T & ApiModel` (`id`, `created_at`,
+     `updated_at` from `src/api/api.model.ts`). DTO = model unless they differ.
+   - `<F>.api.ts` — class holding `new Api(path)`; arrow methods `getAll/create/update/remove`
+     delegating to `get/getAll/post/remove`.
+   - `use<F>.ts` — module-level `const api = new <F>Api()`; `useQuery({queryKey, queryFn: api.getAll})`
+     - one `useMutation` per write op, `onSuccess: () => query.refetch()`. For cross-feature
+       changes use `queryClient.invalidateQueries({queryKey})` and export the query-key const.
+
 ## Gotchas & decisions
 
 - **`server.js` is the production host**: Express 5 serving static `dist` plus an SPA catch-all

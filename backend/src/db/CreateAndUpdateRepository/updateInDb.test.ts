@@ -29,7 +29,7 @@ describe("update", () => {
       eq(testSchema.name, original),
     );
     const result = db.client.select().from(testSchema).all();
-    expect(result[0].name).toBe(value);
+    expect(result[0]!.name).toBe(value);
   });
 
   it("return updated doc", () => {
@@ -39,7 +39,7 @@ describe("update", () => {
       { name: value },
       eq(testSchema.name, original),
     );
-    expect(result?.[0].name).toBe(value);
+    expect(result?.[0]!.name).toBe(value);
   });
   it("return null if no target", () => {
     const result = updateInDb(
@@ -52,7 +52,7 @@ describe("update", () => {
   });
   it("sets updated_at field", () => {
     const base = db.client.select().from(testSchema).all();
-    expect(base[0].updated_at).toBe(null);
+    expect(base[0]!.updated_at).toBe(null);
     const result = updateInDb(
       db.client,
       testSchema,

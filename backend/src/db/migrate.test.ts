@@ -141,7 +141,7 @@ describe("migrate utilities", () => {
       const all = (
         await import("node:fs/promises").then((m) => m.readdir(backupsDir))
       ).sort();
-      const newest = all.filter((f) => f.endsWith(".sql")).reverse()[0];
+      const newest = all.filter((f) => f.endsWith(".sql")).reverse()[0]!;
       expect(files.includes(newest)).toBe(true);
       db.close();
     });

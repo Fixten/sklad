@@ -17,7 +17,7 @@ interface Props {
 const Material = z.object({
   name: z.string().min(3),
   description: z.string().min(5).optional(),
-  materialType: z.string().min(1),
+  material_type_id: z.coerce.number().min(1),
 });
 
 export default function EditMaterial(props: Props) {
@@ -25,13 +25,17 @@ export default function EditMaterial(props: Props) {
   const [description, setDescription] = useState<string>(
     props.value?.description ?? "",
   );
-  const [type, setType] = useState<string>(props.value?.materialType ?? "");
+  const [type, setType] = useState<string>(
+    props.value?.material_type_id !== undefined
+      ? String(props.value.material_type_id)
+      : "",
+  );
 
   async function onSubmit() {
     const item = {
       name,
       description: description || undefined,
-      materialType: type,
+      material_type_id: Number(type),
     };
     try {
       Material.parse(item);

@@ -33,15 +33,15 @@ describe("SupplyRepository", () => {
       .all();
     const [material] = db.client
       .insert(materialSchema)
-      .values({ name: "Birch", material_type_id: materialType.id })
+      .values({ name: "Birch", material_type_id: materialType!.id })
       .returning()
       .all();
     const [variant] = db.client
       .insert(materialVariantSchema)
-      .values({ name: "2 m", material_id: material.id, unit: "meters" })
+      .values({ name: "2 m", material_id: material!.id, unit: "meters" })
       .returning()
       .all();
-    variantId = variant.id;
+    variantId = variant!.id;
   });
 
   afterEach(() => {
@@ -58,7 +58,7 @@ describe("SupplyRepository", () => {
       })
       .returning()
       .all();
-    return supply.id;
+    return supply!.id;
   }
 
   function addConsumption(supplyId: number, consumed: number) {
@@ -69,13 +69,13 @@ describe("SupplyRepository", () => {
       .all();
     const [item] = db.client
       .insert(productItemSchema)
-      .values({ product_template_id: template.id })
+      .values({ product_template_id: template!.id })
       .returning()
       .all();
     const [usage] = db.client
       .insert(materialUsageSchema)
       .values({
-        product_item_id: item.id,
+        product_item_id: item!.id,
         material_variant_id: variantId,
         actual_quantity: 1,
       })
@@ -84,13 +84,13 @@ describe("SupplyRepository", () => {
     const [consumption] = db.client
       .insert(supplyConsumptionSchema)
       .values({
-        material_usage_id: usage.id,
+        material_usage_id: usage!.id,
         supply_id: supplyId,
         consumed_quantity: consumed,
       })
       .returning()
       .all();
-    return consumption.id;
+    return consumption!.id;
   }
 
   test("getAllViews derives the variant unit and the consumed quantity", () => {
@@ -99,9 +99,9 @@ describe("SupplyRepository", () => {
 
     const [view] = repository.getFilteredViews();
 
-    expect(view.unit).toBe("meters");
-    expect(view.consumed_quantity).toBe(250);
-    expect(view.quantity).toBe(1250);
+    expect(view!.unit).toBe("meters");
+    expect(view!.consumed_quantity).toBe(250);
+    expect(view!.quantity).toBe(1250);
   });
 
   test("getAllViews ignores soft-deleted consumptions", () => {
@@ -115,7 +115,7 @@ describe("SupplyRepository", () => {
 
     const [view] = repository.getFilteredViews();
 
-    expect(view.consumed_quantity).toBe(0);
+    expect(view!.consumed_quantity).toBe(0);
   });
 
   test("getAllViews excludes soft-deleted supplies", () => {
@@ -160,13 +160,13 @@ describe("SupplyRepository", () => {
       .returning()
       .all();
 
-    expect(repository.getSupplierReference(active.id)).toEqual({
-      id: active.id,
+    expect(repository.getSupplierReference(active!.id)).toEqual({
+      id: active!.id,
       deleted_at: null,
     });
-    expect(repository.getSupplierReference(deleted.id)).toEqual({
-      id: deleted.id,
-      deleted_at: deleted.deleted_at,
+    expect(repository.getSupplierReference(deleted!.id)).toEqual({
+      id: deleted!.id,
+      deleted_at: deleted!.deleted_at,
     });
   });
 

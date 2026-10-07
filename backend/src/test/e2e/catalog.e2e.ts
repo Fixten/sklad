@@ -72,7 +72,7 @@ describe("catalog e2e", () => {
       expect(res.status).toBe(200);
       const list = listOf(res);
       expect(list).toHaveLength(1);
-      expect(list[0].id).toBe(created.id);
+      expect(list[0]!.id).toBe(created.id);
     });
 
     test("returns the type by id and 404 for a missing one", async () => {
@@ -344,8 +344,8 @@ describe("catalog e2e", () => {
 
       const supplies = listOf(await request(app).get("/api/supply"));
       expect(supplies).toHaveLength(1);
-      expect(supplies[0].id).toBe(supply.id);
-      expect(supplies[0].quantity).toBe(5);
+      expect(supplies[0]!.id).toBe(supply.id);
+      expect(supplies[0]!.quantity).toBe(5);
     });
 
     test("rejects restoring into a name now taken by another active row", async () => {

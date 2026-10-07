@@ -1,7 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { ApiModel } from "@/api/api.model";
-import { MaterialDTO } from "@/features/Material/Material.model";
+import { MaterialDTO, MaterialModel } from "@/features/Material/Material.model";
 
 import MaterialApi from "./Material.api";
 
@@ -19,7 +18,7 @@ export default function useMaterial() {
     onSuccess: () => query.refetch(),
   });
   const updateMutation = useMutation({
-    mutationFn: (material: MaterialDTO & Pick<ApiModel, "id">) =>
+    mutationFn: (material: MaterialDTO & Pick<MaterialModel, "id">) =>
       api.update(material, material.id),
     onSuccess: () => query.refetch(),
   });

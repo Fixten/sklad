@@ -28,11 +28,12 @@ export default class Repository<T extends BaseSchema> {
   }
 
   updateById(id: number, updateItem: Partial<T["$inferInsert"]>) {
-    const rows = this.createAndUpdate.updateDoc(
+    const [row] = this.createAndUpdate.updateDoc(
       eq(this.schema.id, id),
       updateItem,
     );
-    return rows[0];
+    if (!row) throw new Error(ErrorMessages.ITEM_NOT_FOUND);
+    return row;
   }
   upsert(id: number, updateItem: T["$inferInsert"]) {
     return this.createAndUpdate.upsertDoc(this.schema.id, {

@@ -5,6 +5,9 @@
     "removeComments": true,
     "sourceMap": true,
     "alwaysStrict": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "noUncheckedIndexedAccess": true
   }
 }

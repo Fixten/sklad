@@ -26,7 +26,7 @@ describe("upsertInDb", () => {
       testSchema.id,
     );
     expect(result).toHaveLength(1);
-    expect(result?.[0].name).toBe(name);
+    expect(result?.[0]!.name).toBe(name);
     expect(db.client.select().from(testSchema).all()).toHaveLength(1);
   });
 
@@ -40,11 +40,11 @@ describe("upsertInDb", () => {
       testSchema.id,
     );
     expect(result).toHaveLength(1);
-    expect(result?.[0].name).toBe(other);
+    expect(result?.[0]!.name).toBe(other);
 
     const rows = db.client.select().from(testSchema).all();
     expect(rows).toHaveLength(1);
-    expect(rows[0].name).toBe(other);
+    expect(rows[0]!.name).toBe(other);
   });
 
   it("leaves updated_at null on insert and stamps it on update", () => {
@@ -54,7 +54,7 @@ describe("upsertInDb", () => {
       { id: 1, name },
       testSchema.id,
     );
-    expect(inserted?.[0].updated_at).toBeNull();
+    expect(inserted?.[0]!.updated_at).toBeNull();
 
     const updated = upsertInDb(
       db.client,
@@ -62,7 +62,7 @@ describe("upsertInDb", () => {
       { id: 1, name: other },
       testSchema.id,
     );
-    expect(updated?.[0].updated_at).toBeInstanceOf(Date);
+    expect(updated?.[0]!.updated_at).toBeInstanceOf(Date);
   });
 
   it("only writes the passed columns on the conflict branch", () => {
@@ -76,8 +76,8 @@ describe("upsertInDb", () => {
       testSchema.id,
     );
 
-    expect(updated?.[0].name).toBe(other);
-    expect(updated?.[0].created_at).toEqual(created);
-    expect(updated?.[0].deleted_at).toBeNull();
+    expect(updated?.[0]!.name).toBe(other);
+    expect(updated?.[0]!.created_at).toEqual(created);
+    expect(updated?.[0]!.deleted_at).toBeNull();
   });
 });

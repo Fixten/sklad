@@ -1,12 +1,10 @@
-import { ApiModel } from "./api.model";
-
 const pickCorrectBase = () =>
   (import.meta.env.VITE_BACKEND_URL as string | undefined) ??
   `http://localhost:${import.meta.env.VITE_BACKEND_PORT as string}`;
 
 const getApiUrl = (path: string) => new URL(path, `${pickCorrectBase()}/`);
 
-export type ResponseBody<B> = B & ApiModel;
+export type ResponseBody<B> = B;
 
 type Method = "GET" | "POST" | "DELETE";
 
@@ -23,18 +21,22 @@ export default class Api<B> {
   constructor(path: string) {
     this.#apiUrl = getApiUrl(path);
   }
-  get<G = B>(slug?: string) {
+  get<G = B>(slug?: string | number) {
     return fetchApi<ResponseBody<G>>(
-      slug ? getApiUrl(`${this.#apiUrl.pathname}/${slug}`) : this.#apiUrl,
+      slug !== undefined
+        ? getApiUrl(`${this.#apiUrl.pathname}/${String(slug)}`)
+        : this.#apiUrl,
       "GET",
     );
   }
   getAll() {
     return fetchApi<ResponseBody<B>[]>(this.#apiUrl, "GET");
   }
-  post<R>(body: unknown, slug?: string) {
+  post<R>(body: unknown, slug?: string | number) {
     return fetchApi<ResponseBody<R>>(
-      slug ? getApiUrl(`${this.#apiUrl.pathname}/${slug}`) : this.#apiUrl,
+      slug !== undefined
+        ? getApiUrl(`${this.#apiUrl.pathname}/${String(slug)}`)
+        : this.#apiUrl,
       "POST",
       JSON.stringify(body),
     );

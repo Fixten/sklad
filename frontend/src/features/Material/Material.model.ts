@@ -1,10 +1,5 @@
-export interface MaterialModelBase {
-  name: string;
-  description?: string;
-}
+import type { components } from "@/api/schema";
+import type { JsonBody } from "@/api/schema-helpers";
 
-export interface MaterialModel extends MaterialModelBase {
-  materialType: string;
-}
-
-export type MaterialDTO = MaterialModel;
+export type MaterialModel = components["schemas"]["Material"];
+export type MaterialDTO = JsonBody<"/api/material", "post">;

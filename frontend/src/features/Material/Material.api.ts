@@ -18,11 +18,11 @@ export default class MaterialApi {
     return this.api.post<MaterialModel>(value);
   };
 
-  update = (value: MaterialDTO, id: string) => {
+  update = (value: MaterialDTO, id: number) => {
     return this.api.post(value, id);
   };
 
-  remove = (id: string) => {
+  remove = (id: number) => {
     return this.api.remove(id);
   };
 }
