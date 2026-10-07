@@ -36,6 +36,7 @@ export class MaterialService {
     return this.repository.getByType(materialTypeId);
   }
   create(material: MaterialModel) {
+    this.getType(material.material_type_id);
     this.assertNameIsFree(material.name, material.material_type_id);
     return this.repository.create(material);
   }
@@ -43,6 +44,8 @@ export class MaterialService {
     const current = this.getEditable(id);
     const materialTypeId =
       newValue.material_type_id ?? current.material_type_id;
+    if (newValue.material_type_id !== undefined)
+      this.getType(newValue.material_type_id);
     if (newValue.name !== undefined || newValue.material_type_id !== undefined)
       this.assertNameIsFree(
         newValue.name ?? current.name,
@@ -55,6 +58,13 @@ export class MaterialService {
     const current = this.repository.getById(id);
     this.assertNameIsFree(current.name, current.material_type_id, current.id);
     return this.repository.restore(id);
+  }
+
+  private getType(materialTypeId: number) {
+    const type = this.repository.getTypeReference(materialTypeId);
+    if (!type) throw new Error(ErrorMessages.ITEM_NOT_FOUND);
+    if (type.deleted_at) throw new Error(ErrorMessages.REFERENCED_ITEM_DELETED);
+    return type;
   }
 
   private getEditable(id: number) {

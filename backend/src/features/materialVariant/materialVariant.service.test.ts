@@ -38,6 +38,7 @@ describe("VariantService", () => {
     ) as unknown as jest.Mocked<SupplyService>;
     repo =
       new MaterialVariantRepository() as jest.Mocked<MaterialVariantRepository>;
+    repo.getMaterialReference.mockReturnValue({ id: 1, deleted_at: null });
     service = new MaterialVariantService(supplyService, repo);
   });
 
@@ -74,6 +75,25 @@ describe("VariantService", () => {
       repo.getActiveByMaterial.mockReturnValue([]);
       service.createVariant(row({ name: "oak plank", material_id: 2 }));
       expect(repo.create).toHaveBeenCalled();
+    });
+
+    test("rejects a variant whose material does not exist", () => {
+      repo.getMaterialReference.mockReturnValue(undefined);
+      expect(() => service.createVariant(row())).toThrow(
+        ErrorMessages.ITEM_NOT_FOUND,
+      );
+      expect(repo.create).not.toHaveBeenCalled();
+    });
+
+    test("rejects a variant whose material is soft-deleted", () => {
+      repo.getMaterialReference.mockReturnValue({
+        id: 1,
+        deleted_at: new Date(),
+      });
+      expect(() => service.createVariant(row())).toThrow(
+        ErrorMessages.REFERENCED_ITEM_DELETED,
+      );
+      expect(repo.create).not.toHaveBeenCalled();
     });
   });
 
@@ -141,6 +161,27 @@ describe("VariantService", () => {
       ]);
       expect(() => service.updateVariant(0, { material_id: 2 })).toThrow(
         ErrorMessages.NAME_ALREADY_EXISTS,
+      );
+      expect(repo.update).not.toHaveBeenCalled();
+    });
+
+    test("rejects moving a variant under a missing material", () => {
+      repo.getById.mockReturnValue(row());
+      repo.getMaterialReference.mockReturnValue(undefined);
+      expect(() => service.updateVariant(0, { material_id: 999 })).toThrow(
+        ErrorMessages.ITEM_NOT_FOUND,
+      );
+      expect(repo.update).not.toHaveBeenCalled();
+    });
+
+    test("rejects moving a variant under a soft-deleted material", () => {
+      repo.getById.mockReturnValue(row());
+      repo.getMaterialReference.mockReturnValue({
+        id: 2,
+        deleted_at: new Date(),
+      });
+      expect(() => service.updateVariant(0, { material_id: 2 })).toThrow(
+        ErrorMessages.REFERENCED_ITEM_DELETED,
       );
       expect(repo.update).not.toHaveBeenCalled();
     });

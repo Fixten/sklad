@@ -21,6 +21,7 @@ export class MaterialVariantService {
   ) {}
 
   createVariant(variant: MaterialVariantModel) {
+    this.getMaterial(variant.material_id);
     this.assertNameIsFree(variant.name, variant.material_id);
     return this.repository.create(variant);
   }
@@ -29,6 +30,7 @@ export class MaterialVariantService {
     const current = this.getEditable(id);
     if (value.unit !== undefined)
       this.assertUnitChangeAllowed(id, current.unit, value.unit);
+    if (value.material_id !== undefined) this.getMaterial(value.material_id);
     if (value.name !== undefined || value.material_id !== undefined)
       this.assertNameIsFree(
         value.name ?? current.name,
@@ -64,6 +66,14 @@ export class MaterialVariantService {
     const current = this.repository.getById(id);
     if (current.deleted_at) throw new Error(ErrorMessages.ITEM_DELETED);
     return current;
+  }
+
+  private getMaterial(materialId: number) {
+    const material = this.repository.getMaterialReference(materialId);
+    if (!material) throw new Error(ErrorMessages.ITEM_NOT_FOUND);
+    if (material.deleted_at)
+      throw new Error(ErrorMessages.REFERENCED_ITEM_DELETED);
+    return material;
   }
 
   private assertUnitChangeAllowed(

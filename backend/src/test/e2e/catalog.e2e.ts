@@ -199,11 +199,24 @@ describe("catalog e2e", () => {
       expect(listOf(list)).toHaveLength(1);
     });
 
-    test("rejects a material with a missing type with 409", async () => {
+    test("rejects a material with a missing type with 404", async () => {
       const res = await request(app)
         .post("/api/material")
         .send({ name: "Oak", material_type_id: 999 });
+      expect(res.status).toBe(404);
+      expect(bodyOf(res).message).toBe("Item was not found");
+    });
+
+    test("rejects a material under a soft-deleted type with 409", async () => {
+      const type = await createType(app);
+      await createMaterial(app, type.id);
+      await request(app).delete(`/api/material-type/${String(type.id)}`);
+
+      const res = await request(app)
+        .post("/api/material")
+        .send({ name: "Birch", material_type_id: type.id });
       expect(res.status).toBe(409);
+      expect(bodyOf(res).message).toBe("Referenced record is deleted");
     });
 
     test("enforces unique name per type and allows the same name in another type", async () => {
@@ -408,6 +421,29 @@ describe("catalog e2e", () => {
         .post("/api/material-variant")
         .send({ name: "Oak plank", unit: "pieces", material_id: material.id });
       expect(duplicate.status).toBe(409);
+    });
+
+    test("rejects a variant with a missing material with 404", async () => {
+      const res = await request(app)
+        .post("/api/material-variant")
+        .send({ name: "Oak plank", unit: "pieces", material_id: 0 });
+      expect(res.status).toBe(404);
+      expect(bodyOf(res).message).toBe("Item was not found");
+    });
+
+    test("rejects a variant under a soft-deleted material with 409", async () => {
+      const type = await createType(app);
+      const material = await createMaterial(app, type.id);
+      await createVariant(app, material.id);
+      await request(app).delete(`/api/material/${String(material.id)}`);
+
+      const res = await request(app).post("/api/material-variant").send({
+        name: "Birch plank",
+        unit: "pieces",
+        material_id: material.id,
+      });
+      expect(res.status).toBe(409);
+      expect(bodyOf(res).message).toBe("Referenced record is deleted");
     });
 
     test("allows unit change while the variant is unused", async () => {

@@ -1,20 +1,41 @@
 import { eq } from "drizzle-orm";
 
+import singleton from "@/db/index.js";
 import Repository from "@/db/repository.js";
 import { createSingleton } from "@/utils/createSingleton.js";
+
+import { materialSchema } from "../material/material.schema.js";
 
 import {
   MaterialVariantModel,
   materialVariantSchema,
 } from "./materialVariant.schema.js";
 
+import type { Db } from "@/db/index.js";
+
+export interface MaterialReference {
+  id: number;
+  deleted_at: Date | null;
+}
+
 export class MaterialVariantRepository {
   static getSingleton = createSingleton(() => new MaterialVariantRepository());
   private baseRepository;
   private schema = materialVariantSchema;
 
-  constructor() {
-    this.baseRepository = new Repository(this.schema);
+  constructor(private db: Db<Record<string, unknown>> = singleton) {
+    this.baseRepository = new Repository(this.schema, db);
+  }
+
+  getMaterialReference(materialId: number): MaterialReference | undefined {
+    return this.db.client
+      .select({
+        id: materialSchema.id,
+        deleted_at: materialSchema.deleted_at,
+      })
+      .from(materialSchema)
+      .where(eq(materialSchema.id, materialId))
+      .get();
   }
 
   getById(id: number) {
