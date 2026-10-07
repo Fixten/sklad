@@ -1,14 +1,9 @@
 import Api from "../../../api";
 
-import type { MaterialTypeDTO, MaterialTypeModel } from "./MaterialType.model";
-
-const path = "material-type";
+import type { MaterialTypeDTO } from "./MaterialType.model";
 
 export default class MaterialTypeApi {
-  private api: Api<MaterialTypeModel>;
-  constructor() {
-    this.api = new Api(path);
-  }
+  private api = new Api("/api/material-type");
 
   get = (id: number) => {
     return this.api.get(id);
@@ -19,7 +14,7 @@ export default class MaterialTypeApi {
   };
 
   create = (value: MaterialTypeDTO) => {
-    return this.api.post<MaterialTypeModel>(value);
+    return this.api.post(value);
   };
 
   remove = (id: number) => {

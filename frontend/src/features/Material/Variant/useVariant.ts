@@ -1,7 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { ResponseBody } from "@/api";
-
 import { MaterialQueryKey } from "../useMaterial";
 
 import VariantApi from "./Variant.api";
@@ -20,8 +18,7 @@ export default function useVariant() {
     onSuccess: invalidateMaterial,
   });
   const updateMutation = useMutation({
-    mutationFn: (variant: ResponseBody<VariantModel>) =>
-      api.update(variant, variant.id),
+    mutationFn: (variant: VariantModel) => api.update(variant, variant.id),
     onSuccess: invalidateMaterial,
   });
   const removeMutation = useMutation({

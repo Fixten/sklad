@@ -1,20 +1,13 @@
 import Api from "../../../api";
 
-import type { SettingsModel } from "./Settings.model";
-
-const path = "settings";
-
 export default class SettingsApi {
-  private api: Api<SettingsModel>;
-  constructor() {
-    this.api = new Api(path);
-  }
+  private api = new Api("/api/settings");
 
   getAll = () => {
-    return this.api.get();
+    return this.api.getAll();
   };
 
   updateWorkHours = (hours: number) => {
-    return this.api.post<SettingsModel>({ work_hour_cost: hours });
+    return this.api.post({ work_hour_cost: hours });
   };
 }

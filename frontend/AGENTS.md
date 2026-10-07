@@ -10,8 +10,8 @@ mirroring the backend's feature split.
 ## Conventions
 
 - Feature dir: `<f>.api.ts` (thin wrapper over the `Api` class in `src/api`), `<f>.model.ts`
-  (camelCase TS types), `use<F>.ts` (react-query hook), plus the feature's components.
-  Pages live in `src/router/pages/<Page>/`.
+  (types derived from `src/api/schema.d.ts`), `use<F>.ts` (react-query hook), plus the
+  feature's components. Pages live in `src/router/pages/<Page>/`.
 - `src/components/ui` is shadcn-derived, but most primitives export a **default object of
   namespaced subcomponents** (`Card.Wrapper`, `Item.ItemContent`, `Command.Wrapper`) rather
   than shadcn's flat named exports. Import the default, then dot into it.
@@ -22,16 +22,23 @@ mirroring the backend's feature split.
 
 ## Adding API integration for a feature
 
-1. Contract first: `backend/public/spec.json` (never backend source). `VITE_BACKEND_URL`
-   already ends with `/api`, so feature paths are relative (`"material"`).
+1. Contract first: `backend/public/spec.json` (never backend source), generated via
+   `pnpm openapi:generate`. After the spec changes run `pnpm front:api` (root) to
+   regenerate `src/api/schema.d.ts` — committed, eslint/prettier-ignored, never edit by hand.
 2. `src/features/<F>/`:
-   - `<F>.model.ts` — camelCase types; responses are `T & ApiModel` (`id`, `created_at`,
-     `updated_at` from `src/api/api.model.ts`). DTO = model unless they differ.
-   - `<F>.api.ts` — class holding `new Api(path)`; arrow methods `getAll/create/update/remove`
-     delegating to `get/getAll/post/remove`.
-   - `use<F>.ts` — module-level `const api = new <F>Api()`; `useQuery({queryKey, queryFn: api.getAll})`
-     - one `useMutation` per write op, `onSuccess: () => query.refetch()`. For cross-feature
-       changes use `queryClient.invalidateQueries({queryKey})` and export the query-key const.
+   - `<F>.model.ts` — derive from the schema, never hand-write: `components["schemas"]["X"]`
+     for the entity, `JsonBody<"/api/<path>", "post">` for the create DTO
+     (`src/api/schema-helpers.ts`).
+   - `<F>.api.ts` — `private api = new Api("/api/<path>")` (path must be a `paths` key);
+     arrow methods delegate to `getAll/get/post/patch/remove`, all typed from the spec.
+     Updates are `patch(value, id)` — ids are integers.
+   - `use<F>.ts` — module-level api instance; `useQuery({queryKey, queryFn: api.getAll})`
+     plus one `useMutation` per write op, `onSuccess: () => query.refetch()`. For
+     cross-feature changes use `queryClient.invalidateQueries({queryKey: [...]})` and
+     export the query-key const.
+3. Consume in `src/router/pages/<Page>/index.tsx`: `<Spinner/>` on `query.isLoading`,
+   `mutate`/`mutateAsync`, pass `mutation.isError` to inputs; forms validate with a local
+   zod schema (contract fields are snake_case).
 
 ## Gotchas & decisions
 
