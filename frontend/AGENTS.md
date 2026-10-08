@@ -36,9 +36,6 @@ mirroring the backend's feature split.
      plus one `useMutation` per write op, `onSuccess: () => query.refetch()`. For
      cross-feature changes use `queryClient.invalidateQueries({queryKey: [...]})` and
      export the query-key const.
-3. Consume in `src/router/pages/<Page>/index.tsx`: `<Spinner/>` on `query.isLoading`,
-   `mutate`/`mutateAsync`, pass `mutation.isError` to inputs; forms validate with a local
-   zod schema (contract fields are snake_case).
 
 ## Gotchas & decisions
 
