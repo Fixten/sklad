@@ -20,4 +20,8 @@ export default class MaterialApi {
   remove = (id: number) => {
     return this.api.remove(id);
   };
+
+  restore = (id: number) => {
+    return this.api.restore(id);
+  };
 }

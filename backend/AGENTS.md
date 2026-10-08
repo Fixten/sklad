@@ -28,8 +28,8 @@ drive both runtime validation and the generated OpenAPI document.
 - Name uniqueness is enforced in the service by checking active siblings; the index only backs up
   a concurrent write, as no case-insensitive index exists.
 - DB: snake_case plural tables/columns, FKs `RESTRICT` with enforcement on, no cascades.
-- HTTP per resource: `GET /`, `GET /:id`, `POST /`, `PATCH /:id`, `DELETE /:id`, plus
-  `POST /:id/restore` for soft-deletable ones. Follow the convention for new features.
+- HTTP per resource: `GET /`, `GET /:id`, `POST /`, `PATCH /:id`, `DELETE /:id`. Follow the
+  convention for new features.
 - Unit test meaningful logic only; pure pass-through wrappers don't need tests.
 - Lint with `pnpm lint:fix`.
 
@@ -38,8 +38,8 @@ drive both runtime validation and the generated OpenAPI document.
 - `extendZodWithOpenApi(z)` must run before ANY zod schema is constructed (zod v4). It sits at the
   top of `src/openapi/common.zod.ts`; every other zod file must import it first.
 - `*.openapi.ts` files must import only zod schemas/constants — the spec generator loads them
-  standalone, so a DB/express import breaks generation. Register nested paths (e.g.
-  `/:id/restore`) through the `openapi/registry.ts` path builders.
+  standalone, so a DB/express import breaks generation. Register nested paths through the
+  `openapi/registry.ts` path builders.
 - `localeCompare(..., { sensitivity: "case" })` does NOT fold case in Node's default collation
   (only `"base"` does, and it folds accents too). `isSameName` uses `toLowerCase()` instead.
 - Unit tests run against a real in-memory database. Real behaviour is lost only where a collaborator

@@ -2,26 +2,26 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { retryApiError } from "@/api/api-error";
 
-import MaterialTypeApi from "./MaterialType.api";
+import SupplierApi from "./Supplier.api";
 
-import type { MaterialTypePatchDTO } from "./MaterialType.model";
+import type { SupplierPatchDTO } from "./Supplier.model";
 
-const api = new MaterialTypeApi();
+const api = new SupplierApi();
 
-export const MaterialTypeQueryKey = "material-type";
+export const SupplierQueryKey = "supplier";
 
-export default function useMaterialType() {
+export default function useSupplier() {
   const query = useQuery({
-    queryKey: [MaterialTypeQueryKey],
+    queryKey: [SupplierQueryKey],
     queryFn: api.getAll,
     retry: retryApiError,
   });
   const addMutation = useMutation({
-    mutationFn: (name: string) => api.create({ name }),
+    mutationFn: api.create,
     onSuccess: () => query.refetch(),
   });
   const updateMutation = useMutation({
-    mutationFn: (value: MaterialTypePatchDTO & { id: number }) =>
+    mutationFn: (value: SupplierPatchDTO & { id: number }) =>
       api.update(value, value.id),
     onSuccess: () => query.refetch(),
   });

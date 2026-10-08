@@ -2,7 +2,6 @@
 .env.development
 uploads/*
 backend/build/*
-backend/public/
 node_modules
 note.md
 data

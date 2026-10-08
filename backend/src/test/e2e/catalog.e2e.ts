@@ -284,7 +284,7 @@ describe("catalog e2e", () => {
       await request(app).delete(`/api/material-type/${String(type.id)}`);
 
       const res = await request(app).post(
-        `/api/material-type/${String(type.id)}/restore`,
+        `/api/material-type/restore/${String(type.id)}`,
       );
       expect(res.status).toBe(200);
       expect((bodyOf(res) as MaterialType).deleted_at).toBeNull();
@@ -297,7 +297,7 @@ describe("catalog e2e", () => {
       const type = await createType(app);
 
       const res = await request(app).post(
-        `/api/material-type/${String(type.id)}/restore`,
+        `/api/material-type/restore/${String(type.id)}`,
       );
       expect(res.status).toBe(200);
       expect((bodyOf(res) as MaterialType).id).toBe(type.id);
@@ -311,7 +311,7 @@ describe("catalog e2e", () => {
       await request(app).delete(`/api/material/${String(material.id)}`);
 
       const res = await request(app).post(
-        `/api/material/${String(material.id)}/restore`,
+        `/api/material/restore/${String(material.id)}`,
       );
       expect(res.status).toBe(200);
       expect(listOf(await request(app).get("/api/material"))).toHaveLength(1);
@@ -335,7 +335,7 @@ describe("catalog e2e", () => {
       await request(app).delete(`/api/material-variant/${String(variant.id)}`);
 
       const res = await request(app).post(
-        `/api/material-variant/${String(variant.id)}/restore`,
+        `/api/material-variant/restore/${String(variant.id)}`,
       );
       expect(res.status).toBe(200);
       expect(
@@ -362,7 +362,7 @@ describe("catalog e2e", () => {
       await createVariant(app, material.id, "oak PLANK");
 
       const res = await request(app).post(
-        `/api/material-variant/${String(variant.id)}/restore`,
+        `/api/material-variant/restore/${String(variant.id)}`,
       );
       expect(res.status).toBe(409);
     });
@@ -383,11 +383,11 @@ describe("catalog e2e", () => {
       await request(app).delete(`/api/material-type/${String(type.id)}`);
 
       const hardDeleted = await request(app).post(
-        `/api/material-type/${String(type.id)}/restore`,
+        `/api/material-type/restore/${String(type.id)}`,
       );
       expect(hardDeleted.status).toBe(404);
 
-      const missing = await request(app).post("/api/material/999/restore");
+      const missing = await request(app).post("/api/material/restore/999");
       expect(missing.status).toBe(404);
     });
   });

@@ -153,7 +153,7 @@ describe("supplier and supply e2e", () => {
       expect(recreated.id).not.toBe(created.id);
 
       const restored = await request(app).post(
-        `/api/supplier/${String(created.id)}/restore`,
+        `/api/supplier/restore/${String(created.id)}`,
       );
       expect(restored.status).toBe(409);
       expect(bodyOf(restored).message).toBe("Name already exists");
@@ -199,7 +199,7 @@ describe("supplier and supply e2e", () => {
       expect(listOf(await request(app).get("/api/supplier"))).toHaveLength(0);
 
       const restored = await request(app).post(
-        `/api/supplier/${String(referenced.id)}/restore`,
+        `/api/supplier/restore/${String(referenced.id)}`,
       );
       expect(restored.status).toBe(200);
     });
@@ -381,7 +381,7 @@ describe("supplier and supply e2e", () => {
       expect(listOf(await request(app).get("/api/supply"))).toHaveLength(0);
 
       const restored = await request(app).post(
-        `/api/supply/${String(created.id)}/restore`,
+        `/api/supply/restore/${String(created.id)}`,
       );
       expect(restored.status).toBe(200);
       expect(bodyOf(restored).deleted_at).toBeFalsy();
@@ -409,7 +409,7 @@ describe("supplier and supply e2e", () => {
       expect(
         (
           await request(app).post(
-            `/api/supply/${String(unreferenced.id)}/restore`,
+            `/api/supply/restore/${String(unreferenced.id)}`,
           )
         ).status,
       ).toBe(404);
@@ -433,7 +433,7 @@ describe("supplier and supply e2e", () => {
       expect(bodyOf(read).deleted_at).toBeTruthy();
 
       const restored = await request(app).post(
-        `/api/supply/${String(referenced.id)}/restore`,
+        `/api/supply/restore/${String(referenced.id)}`,
       );
       expect(restored.status).toBe(200);
       expect(bodyOf(restored).deleted_at).toBeFalsy();

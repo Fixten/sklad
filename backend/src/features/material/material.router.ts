@@ -57,7 +57,7 @@ materialRouter.delete("/:id", validateParams(IdParamsZ), (req: Id, res) => {
 });
 
 materialRouter.post(
-  "/:id/restore",
+  "/restore/:id",
   validateParams(IdParamsZ),
   (req: Id, res) => {
     sendRow(res, service.restore(Number(req.params.id)));

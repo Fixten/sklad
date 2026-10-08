@@ -1,10 +1,13 @@
 import { ErrorMessages } from "../constants/Errors";
 
+import { ApiError, getServerError } from "./api-error";
+
 import type { paths } from "./schema";
-import type { JsonBody, JsonResponse } from "./schema-helpers";
+import type { JsonBody, JsonQuery, JsonResponse } from "./schema-helpers";
 
 type ApiPath = keyof paths;
 type ItemPath<P extends ApiPath> = `${P}/{id}`;
+type RestorePath<P extends ApiPath> = `${P}/{id}/restore`;
 
 export type Id = string | number;
 
@@ -19,21 +22,53 @@ type Method = "GET" | "POST" | "PATCH" | "DELETE";
 
 const headers: HeadersInit = { "Content-Type": "application/json" };
 
-const fetchApi = <R>(url: URL, method: Method, body?: string) =>
-  fetch(url, { method, body, headers }).then((response) => {
-    if (response.ok) return response.json() as Promise<R>;
-    else throw new Error(ErrorMessages.NETWORK_RESPONSE_NOT_OK);
+const applySearchParams = (
+  url: URL,
+  params: object | null | undefined,
+): void => {
+  if (typeof params === "object" && params !== null) {
+    Object.entries(params).forEach(([key, value]) => {
+      if (value === undefined || value === null) return;
+      else url.searchParams.set(key, String(value));
+    });
+  }
+};
+
+const fetchApi = async <R>(
+  url: URL,
+  method: Method,
+  body?: string,
+): Promise<R> => {
+  const response = await fetch(url, { method, body, headers }).catch(() => {
+    throw new ApiError(ErrorMessages.FAILED_REQUEST, 0);
   });
+
+  const throwInvalidJson = () => {
+    throw new ApiError(ErrorMessages.INVALID_JSON_RESPONSE, response.status);
+  };
+
+  const data: unknown = await response.json().catch(throwInvalidJson);
+  if (data === null) throwInvalidJson();
+  if (!response.ok) throw getServerError(response.status, data);
+
+  return data as R;
+};
 
 export default class Api<P extends ApiPath> {
   private apiUrl: URL;
 
   constructor(path: P) {
-    this.apiUrl = getApiUrl(path);
+    const basePath = path.endsWith("/{id}")
+      ? path.slice(0, -"/{id}".length)
+      : path;
+    this.apiUrl = getApiUrl(basePath);
   }
 
-  private getUrlWithId(id: Id) {
-    return new URL(`${this.apiUrl.pathname}/${String(id)}`, this.apiUrl.origin);
+  private getUrlWithId(id: Id, suffix = "") {
+    return new URL(
+      `${this.apiUrl.pathname}/${String(id)}${suffix}`,
+      this.apiUrl.origin,
+    );
   }
 
   get(id: Id) {
@@ -43,8 +78,10 @@ export default class Api<P extends ApiPath> {
     );
   }
 
-  getAll() {
-    return fetchApi<JsonResponse<P, "get">>(this.apiUrl, "GET");
+  getAll(params?: JsonQuery<P, "get">) {
+    const url = new URL(this.apiUrl);
+    applySearchParams(url, params);
+    return fetchApi<JsonResponse<P, "get">>(url, "GET");
   }
 
   post(body: JsonBody<P, "post">) {
@@ -67,6 +104,13 @@ export default class Api<P extends ApiPath> {
     return fetchApi<JsonResponse<ItemPath<P>, "delete">>(
       this.getUrlWithId(id),
       "DELETE",
+    );
+  }
+
+  restore(id: Id) {
+    return fetchApi<JsonResponse<RestorePath<P>, "post">>(
+      this.getUrlWithId(id, "/restore"),
+      "POST",
     );
   }
 }

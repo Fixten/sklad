@@ -67,7 +67,7 @@ materialVariantRouter.delete(
 );
 
 materialVariantRouter.post(
-  "/:id/restore",
+  "/restore/:id",
   validateParams(IdParamsZ),
   (req: Id, res) => {
     sendRow(res, service.restore(Number(req.params.id)));

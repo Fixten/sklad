@@ -10,6 +10,14 @@ export type JsonBody<P, M extends string> = P extends keyof paths
     : never
   : never;
 
+export type JsonQuery<P, M extends string> = P extends keyof paths
+  ? M extends keyof paths[P]
+    ? paths[P][M] extends { parameters: { query?: infer Q } }
+      ? Q
+      : never
+    : never
+  : never;
+
 export type JsonResponse<P, M extends string> = P extends keyof paths
   ? M extends keyof paths[P]
     ? paths[P][M] extends {

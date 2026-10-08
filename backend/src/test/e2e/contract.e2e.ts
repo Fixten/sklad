@@ -103,11 +103,11 @@ describe("contract e2e", () => {
 
   test("restoring a missing resource answers 404 with a validated error body", async () => {
     for (const path of [
-      "/api/material-type/999/restore",
-      "/api/material/999/restore",
-      "/api/material-variant/999/restore",
-      "/api/supply/999/restore",
-      "/api/supplier/999/restore",
+      "/api/material-type/restore/999",
+      "/api/material/restore/999",
+      "/api/material-variant/restore/999",
+      "/api/supply/restore/999",
+      "/api/supplier/restore/999",
     ]) {
       const res = await request(app).post(path);
       expectError(res, 404);
@@ -120,7 +120,7 @@ describe("contract e2e", () => {
       expectError(res, 400);
     }
 
-    const res = await request(app).post("/api/material-type/abc/restore");
+    const res = await request(app).post("/api/material-type/restore/abc");
     expectError(res, 400);
   });
 

@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
+import { retryApiError } from "@/api/api-error";
 import { MaterialDTO, MaterialModel } from "@/features/Material/Material.model";
 
 import MaterialApi from "./Material.api";
@@ -12,6 +13,7 @@ export default function useMaterial() {
   const query = useQuery({
     queryKey: [MaterialQueryKey],
     queryFn: api.getAll,
+    retry: retryApiError,
   });
   const addMutation = useMutation({
     mutationFn: api.create,
@@ -26,5 +28,15 @@ export default function useMaterial() {
     mutationFn: api.remove,
     onSuccess: () => query.refetch(),
   });
-  return { query, addMutation, updateMutation, removeMutation };
+  const restoreMutation = useMutation({
+    mutationFn: api.restore,
+    onSuccess: () => query.refetch(),
+  });
+  return {
+    query,
+    addMutation,
+    updateMutation,
+    removeMutation,
+    restoreMutation,
+  };
 }

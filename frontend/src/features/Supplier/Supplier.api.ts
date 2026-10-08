@@ -1,12 +1,9 @@
-import Api from "../../../api";
+import Api from "@/api";
 
-import type {
-  MaterialTypeDTO,
-  MaterialTypePatchDTO,
-} from "./MaterialType.model";
+import type { SupplierDTO, SupplierPatchDTO } from "./Supplier.model";
 
-export default class MaterialTypeApi {
-  private api = new Api("/api/material-type");
+export default class SupplierApi {
+  private api = new Api("/api/supplier");
 
   get = (id: number) => {
     return this.api.get(id);
@@ -16,11 +13,11 @@ export default class MaterialTypeApi {
     return this.api.getAll();
   };
 
-  create = (value: MaterialTypeDTO) => {
+  create = (value: SupplierDTO) => {
     return this.api.post(value);
   };
 
-  update = (value: MaterialTypePatchDTO, id: number) => {
+  update = (value: SupplierPatchDTO, id: number) => {
     return this.api.patch(value, id);
   };
 

@@ -67,7 +67,7 @@ supplyRouter.delete("/:id", validateParams(IdParamsZ), (req: Id, res) => {
   sendDeleted(res, req.params.id);
 });
 
-supplyRouter.post("/:id/restore", validateParams(IdParamsZ), (req: Id, res) => {
+supplyRouter.post("/restore/:id", validateParams(IdParamsZ), (req: Id, res) => {
   sendRow(res, service.restore(Number(req.params.id)));
 });
 
