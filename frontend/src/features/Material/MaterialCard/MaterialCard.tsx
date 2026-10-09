@@ -4,7 +4,7 @@ import Card from "ui/Card";
 import Divider from "ui/Divider";
 import IconButton from "ui/IconButton";
 
-import MaterialTypeLabel from "../MaterialType/MaterialTypeLabel";
+import MaterialTypeLabel from "../../MaterialType/MaterialTypeLabel";
 
 // import VariantCard from "./VariantCard";
 

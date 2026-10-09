@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { retryApiError } from "@/api/api-error";
 
-import { MaterialQueryKey } from "../useMaterial";
+import { MaterialQueryKey } from "../Material/useMaterial";
 
 import VariantApi from "./Variant.api";
 import { VariantModel } from "./Variant.model";

@@ -7,7 +7,7 @@ import Card from "ui/Card";
 import Input from "ui/Input";
 import Spinner from "ui/Spinner";
 
-import useMaterialType from "../../../features/Material/MaterialType/useMaterialType";
+import useMaterialType from "../../../features/MaterialType/useMaterialType";
 
 export default function MaterialTypePage() {
   const { query, addMutation } = useMaterialType();
