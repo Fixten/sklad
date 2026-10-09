@@ -7,7 +7,7 @@ import type { JsonBody, JsonQuery, JsonResponse } from "./schema-helpers";
 
 type ApiPath = keyof paths;
 type ItemPath<P extends ApiPath> = `${P}/{id}`;
-type RestorePath<P extends ApiPath> = `${P}/{id}/restore`;
+type RestorePath<P extends ApiPath> = `${P}/restore/{id}`;
 
 export type Id = string | number;
 
@@ -64,11 +64,8 @@ export default class Api<P extends ApiPath> {
     this.apiUrl = getApiUrl(basePath);
   }
 
-  private getUrlWithId(id: Id, suffix = "") {
-    return new URL(
-      `${this.apiUrl.pathname}/${String(id)}${suffix}`,
-      this.apiUrl.origin,
-    );
+  private getUrlWithId(id: Id) {
+    return new URL(`${this.apiUrl.pathname}/${String(id)}`, this.apiUrl.origin);
   }
 
   get(id: Id) {
@@ -109,7 +106,10 @@ export default class Api<P extends ApiPath> {
 
   restore(id: Id) {
     return fetchApi<JsonResponse<RestorePath<P>, "post">>(
-      this.getUrlWithId(id, "/restore"),
+      new URL(
+        `${this.apiUrl.pathname}/restore/${String(id)}`,
+        this.apiUrl.origin,
+      ),
       "POST",
     );
   }

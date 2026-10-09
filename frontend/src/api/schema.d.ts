@@ -328,7 +328,7 @@ export interface paths {
     };
     trace?: never;
   };
-  "/api/material-type/{id}/restore": {
+  "/api/material-type/restore/{id}": {
     parameters: {
       query?: never;
       header?: never;
@@ -726,7 +726,7 @@ export interface paths {
     };
     trace?: never;
   };
-  "/api/material/{id}/restore": {
+  "/api/material/restore/{id}": {
     parameters: {
       query?: never;
       header?: never;
@@ -1126,7 +1126,7 @@ export interface paths {
     };
     trace?: never;
   };
-  "/api/material-variant/{id}/restore": {
+  "/api/material-variant/restore/{id}": {
     parameters: {
       query?: never;
       header?: never;
@@ -1608,7 +1608,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/api/supply/{id}/restore": {
+  "/api/supply/restore/{id}": {
     parameters: {
       query?: never;
       header?: never;
@@ -2008,7 +2008,7 @@ export interface paths {
     };
     trace?: never;
   };
-  "/api/supplier/{id}/restore": {
+  "/api/supplier/restore/{id}": {
     parameters: {
       query?: never;
       header?: never;
