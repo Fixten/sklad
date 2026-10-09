@@ -3,6 +3,7 @@ import tseslint from "typescript-eslint";
 import * as pluginImportX from "eslint-plugin-import-x";
 import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
 import pluginQuery from "@tanstack/eslint-plugin-query";
+import vitest from "@vitest/eslint-plugin";
 import { defineConfig } from "eslint/config";
 import reactHooks from "eslint-plugin-react-hooks";
 
@@ -50,6 +51,11 @@ export default defineConfig(
         },
       ],
     },
+  },
+  {
+    files: ["**/*.{test,spec}.{ts,tsx}"],
+    plugins: { vitest },
+    rules: vitest.configs.recommended.rules,
   },
   {
     settings: {
