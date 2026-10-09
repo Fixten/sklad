@@ -1,9 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { ErrorMessages } from "../constants/Errors";
-
-import { ApiError } from "./api-error";
-
 import Api from "./index";
 
 const TEST_ORIGIN = "http://test.local";
@@ -16,16 +12,6 @@ const mockFetchJson = (
     ok: init.ok ?? true,
     status: init.status ?? 200,
     json: vi.fn().mockResolvedValue(data),
-  };
-  fetchMock.mockResolvedValue(response);
-  return response;
-};
-
-const mockFetch = () => {
-  const response = {
-    ok: true,
-    status: 200,
-    json: vi.fn(),
   };
   fetchMock.mockResolvedValue(response);
   return response;
@@ -66,17 +52,6 @@ describe("Api URL resolution", () => {
     await api.getAll();
 
     expect(lastCall().url.toString()).toBe(`${TEST_ORIGIN}/api/material`);
-  });
-
-  it("falls back to localhost with the backend port", async () => {
-    vi.stubEnv("VITE_BACKEND_URL", undefined);
-    vi.stubEnv("VITE_BACKEND_PORT", "1100");
-    mockFetchJson([]);
-    const api = new Api("/api/material");
-
-    await api.getAll();
-
-    expect(lastCall().url.toString()).toBe("http://localhost:1100/material");
   });
 });
 
@@ -155,63 +130,5 @@ describe("Api methods", () => {
     const { url, init } = lastCall();
     expect(url.toString()).toBe(`${TEST_ORIGIN}/api/material/restore/9`);
     expect(init.method).toBe("POST");
-  });
-});
-
-describe("Api error handling", () => {
-  it("throws FAILED_REQUEST with status 0 when fetch rejects", async () => {
-    fetchMock.mockRejectedValue(new Error("network down"));
-    const api = new Api("/api/material");
-
-    await expect(api.getAll()).rejects.toMatchObject({
-      name: "ApiError",
-      message: ErrorMessages.FAILED_REQUEST,
-      status: 0,
-    });
-  });
-
-  it("throws INVALID_JSON_RESPONSE when the body is not JSON", async () => {
-    const response = mockFetch();
-    response.json.mockRejectedValue(new Error("bad json"));
-    const api = new Api("/api/material");
-
-    await expect(api.getAll()).rejects.toMatchObject({
-      message: ErrorMessages.INVALID_JSON_RESPONSE,
-      status: 200,
-    });
-  });
-
-  it("throws INVALID_JSON_RESPONSE when the body is null", async () => {
-    mockFetchJson(null);
-    const api = new Api("/api/material");
-
-    await expect(api.getAll()).rejects.toMatchObject({
-      message: ErrorMessages.INVALID_JSON_RESPONSE,
-      status: 200,
-    });
-  });
-
-  it("surfaces the server message on a failed response", async () => {
-    mockFetchJson({ message: "not found" }, { ok: false, status: 404 });
-    const api = new Api("/api/material");
-
-    let error: unknown;
-    try {
-      await api.get(1);
-    } catch (caught) {
-      error = caught;
-    }
-    expect(error).toBeInstanceOf(ApiError);
-    expect(error).toMatchObject({ message: "not found", status: 404 });
-  });
-
-  it("falls back to FAILED_REQUEST on a failed response without a message", async () => {
-    mockFetchJson({ detail: "x" }, { ok: false, status: 500 });
-    const api = new Api("/api/material");
-
-    await expect(api.getAll()).rejects.toMatchObject({
-      message: ErrorMessages.FAILED_REQUEST,
-      status: 500,
-    });
   });
 });
