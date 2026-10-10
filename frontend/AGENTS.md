@@ -37,6 +37,24 @@ mirroring the backend's feature split.
      cross-feature changes use `queryClient.invalidateQueries({queryKey: [...]})` and
      export the query-key const.
 
+## Testing
+
+Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
+(`*.browser.test.tsx`), `vrt` (`*.vrt.test.tsx`). Scripts: `pnpm test`,
+`test:browser` (+`:install` for chromium), `test:vrt` / `test:vrt:update`;
+`test:all`/`fullcheck` run all three.
+
+- Explicit imports (`globals: false`) — import `test`/`expect`/`vi` from `vitest`;
+  `render` from `vitest-browser-react` returns a **Promise** (await it).
+- Snapshots: value via `toMatchSnapshot`/`toMatchInlineSnapshot` (`__snapshots__`
+  committed); a11y via `toMatchAriaInlineSnapshot` on `expect.element(locator)`;
+  visual via `toMatchScreenshot` (`__screenshots__` committed, `-chromium-linux`
+  suffixed — regenerate with `test:vrt:update` on the target environment).
+- `vitest.config.mts` duplicates the `tailwindcss()` plugin on purpose: without it
+  the browser/vrt env renders unstyled and screenshots are meaningless. Browser/vrt
+  load `src/test/browser.setup.ts` (imports app CSS, freezes animations).
+- `Error` snapshots drop own props (e.g. `ApiError.status`) — snapshot plain fields.
+
 ## Gotchas & decisions
 
 - **`server.js` is the production host**: Express 5 serving static `dist` plus an SPA catch-all

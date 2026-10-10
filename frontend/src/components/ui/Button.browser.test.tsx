@@ -21,3 +21,11 @@ test("reflects the disabled state", async () => {
     .element(screen.getByRole("button", { name: "Save" }))
     .toBeDisabled();
 });
+
+test("exposes an accessible tree", async () => {
+  const screen = await render(<Button>Save</Button>);
+
+  await expect
+    .element(screen.getByRole("button", { name: "Save" }))
+    .toMatchAriaInlineSnapshot(`- button "Save"`);
+});

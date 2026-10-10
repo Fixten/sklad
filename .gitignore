@@ -8,3 +8,4 @@ data
 backups
 dist
 coverage
+.vitest

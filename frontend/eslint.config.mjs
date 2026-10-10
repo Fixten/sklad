@@ -55,7 +55,14 @@ export default defineConfig(
   {
     files: ["**/*.{test,spec}.{ts,tsx}"],
     plugins: { vitest },
-    rules: vitest.configs.recommended.rules,
+    rules: {
+      ...vitest.configs.recommended.rules,
+      "vitest/no-large-snapshots": [
+        "warn",
+        { maxSize: 100, inlineMaxSize: 50 },
+      ],
+      "vitest/prefer-snapshot-hint": "warn",
+    },
   },
   {
     settings: {

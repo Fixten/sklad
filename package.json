@@ -12,7 +12,6 @@
     "migrate:dev": "pnpm --filter backend migration:apply:dev",
     "front:dev": "pnpm --filter frontend dev",
     "front:test": "pnpm --filter frontend test",
-    "front:test:browser": "pnpm --filter frontend test:browser",
     "front:build": "pnpm --filter frontend build",
     "front:prod": "pnpm --filter frontend run prod",
     "prepare": "husky",

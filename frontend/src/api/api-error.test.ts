@@ -15,6 +15,17 @@ describe("ApiError", () => {
 });
 
 describe("getServerError", () => {
+  it("snapshots the resulting error shape", () => {
+    const { message, name, status } = getServerError(500, { message: "boom" });
+    expect({ message, name, status }).toMatchInlineSnapshot(`
+      {
+        "message": "boom",
+        "name": "ApiError",
+        "status": 500,
+      }
+    `);
+  });
+
   it("uses the server message when present", () => {
     const error = getServerError(409, { message: "already exists" });
     expect(error).toBeInstanceOf(ApiError);
