@@ -2,5 +2,6 @@ src/api/schema.d.ts
 dist
 node_modules
 .vitest
+storybook-static
 **/__snapshots__
 **/__screenshots__
