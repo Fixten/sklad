@@ -6,8 +6,6 @@ import IconButton from "ui/IconButton";
 
 import MaterialTypeLabel from "../../MaterialType/MaterialTypeLabel";
 
-// import VariantCard from "./VariantCard";
-
 import type { MaterialModel } from "../Material.model";
 
 interface Props {
@@ -40,10 +38,6 @@ export default function MaterialCard(props: Props) {
         Тип: <MaterialTypeLabel id={material_type_id} />
       </Card.CardContent>
       <Divider />
-      {/* <VariantCard
-        variants={props.value.variants}
-        materialId={props.materialId}
-      /> */}
     </Card.Wrapper>
   );
 }
