@@ -1,8 +1,6 @@
-import classes from "clsx";
+import { cn } from "@/utils/cn";
 
 import Link from "../Link";
-
-import styles from "./index.module.css";
 
 interface Props {
   className: string;
@@ -14,10 +12,10 @@ interface Props {
 
 export default function Header(props: Props) {
   return (
-    <header className={classes(styles.header, props.className)}>
+    <header className={cn("flex justify-between p-4", props.className)}>
       Sklad
       <nav>
-        <ul className={styles.list}>
+        <ul className="flex gap-8">
           {props.navItems.map(({ link, name }) => (
             <li key={link}>
               <Link to={link}>{name}</Link>
