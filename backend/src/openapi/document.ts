@@ -3,6 +3,7 @@ import {
   OpenAPIRegistry,
 } from "@asteasolutions/zod-to-openapi";
 
+import { registerHealthOpenApi } from "../features/health/health.openapi.js";
 import { registerMaterialOpenApi } from "../features/material/material.openapi.js";
 import { registerMaterialTypeOpenApi } from "../features/materialType/materialType.openapi.js";
 import { registerMaterialVariantOpenApi } from "../features/materialVariant/materialVariant.openapi.js";
@@ -22,6 +23,7 @@ registerMaterialVariantOpenApi(registry);
 registerSupplyOpenApi(registry);
 registerSupplierOpenApi(registry);
 registerSettingsOpenApi(registry);
+registerHealthOpenApi(registry);
 
 export function buildSpec() {
   const generator = new OpenApiGeneratorV3(registry.definitions);
@@ -39,6 +41,7 @@ export function buildSpec() {
       { name: "Supply" },
       { name: "Supplier" },
       { name: "Settings" },
+      { name: "Health" },
     ],
   });
 }

@@ -86,6 +86,7 @@ describe("docs e2e", () => {
     path("/api/supplier/restore/{id}", "post");
     path("/api/settings", "get");
     path("/api/settings", "post");
+    path("/api/health", "get");
   });
 
   test("advertises id params with a usable pattern and no regex flags", async () => {

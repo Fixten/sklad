@@ -9,6 +9,7 @@ import { ErrorMessages } from "./constants/Errors.js";
 import { Urls } from "./constants/Urls.js";
 import DbSingleton from "./db/index.js";
 import { errorHandler } from "./errors.middleware.js";
+import healthRouter from "./features/health/health.router.js";
 import materialRouter from "./features/material/material.router.js";
 import materialTypeRouter from "./features/materialType/materialType.router.js";
 import materialVariantRouter from "./features/materialVariant/materialVariant.router.js";
@@ -29,6 +30,7 @@ export default function getServer(features = readFeatureFlags()) {
   apiRouter.get("/", (_, res) => {
     res.send("Hello World!");
   });
+  apiRouter.use(Urls.health, healthRouter);
   apiRouter.get(Urls.docsSpec, (_req, res) => {
     if (!existsSync(specJsonPath)) {
       res.status(404).json({ error: ErrorMessages.OPENAPI_NOT_FOUND });

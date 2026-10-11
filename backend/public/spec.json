@@ -23,6 +23,9 @@
     },
     {
       "name": "Settings"
+    },
+    {
+      "name": "Health"
     }
   ],
   "components": {
@@ -318,6 +321,36 @@
           "id",
           "work_hour_cost",
           "created_at"
+        ],
+        "additionalProperties": false
+      },
+      "HealthOk": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "HealthError": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "error"
+            ]
+          }
+        },
+        "required": [
+          "status"
         ],
         "additionalProperties": false
       }
@@ -4135,6 +4168,48 @@
                     "message"
                   ],
                   "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Report service health including database reachability",
+        "responses": {
+          "200": {
+            "description": "The service and its database are reachable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ok"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The database is unreachable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthError"
                 }
               }
             }

@@ -6,6 +6,7 @@ export enum Urls {
   material = "/material",
   supply = "/supply",
   supplier = "/supplier",
+  health = "/health",
   docs = "/docs",
   docsSpec = "/docs/spec.json",
 }

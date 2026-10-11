@@ -39,9 +39,10 @@ describe("feature flag routing", () => {
     expect((await request(off).get(FEATURE_ROUTES[name])).status).toBe(404);
   });
 
-  it("never gates the root route or the docs ui", async () => {
+  it("never gates the root route, the health route or the docs ui", async () => {
     const app = bootstrap();
     expect((await request(app).get("/api/")).status).toBe(200);
+    expect((await request(app).get("/api/health")).status).toBe(200);
     expect(
       (await request(app).get("/api/docs/swagger-initializer.js")).status,
     ).toBe(200);
