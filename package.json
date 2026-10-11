@@ -16,7 +16,9 @@
     "front:prod": "pnpm --filter frontend run prod",
     "prepare": "husky",
     "lint:staged": "lint-staged",
-    "front:api": "openapi-typescript ./backend/public/spec.json -o ./frontend/src/api/schema.d.ts"
+    "front:api": "openapi-typescript ./backend/public/spec.json -o ./frontend/src/api/schema.d.ts",
+    "e2e": "pnpm --filter e2e test:e2e",
+    "e2e:ui": "pnpm --filter e2e test:e2e:ui"
   },
   "dependencies": {
     "@tsconfig/recommended": "^1.0.13"

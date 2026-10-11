@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host",
+    "server:e2e": "vite --mode e2e --port 5273 --strictPort",
     "preview": "vite preview",
     "lint": "eslint src/",
     "lint:fix": "eslint --fix src/",

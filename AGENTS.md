@@ -2,7 +2,8 @@
 
 # Project overview
 
-pnpm monorepo in TypeScript, two packages: `frontend` and `backend`.
+pnpm monorepo in TypeScript, three packages: `frontend`, `backend`, and `e2e` (Playwright Test;
+see `e2e/AGENTS.md`). Root scripts are thin `pnpm --filter <pkg>` delegates.
 
 # Docs
 
