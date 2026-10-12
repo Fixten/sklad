@@ -2,7 +2,7 @@
 
 import AddMaterial from "@/features/Material/AddMaterial";
 // import { MaterialDTO } from "@/features/Material/Material.model";
-import { Spinner } from "ui/spinner";
+import { Spinner } from "@base/spinner";
 
 // import EditMaterial from "../../../features/Material/EditMaterial";
 // import MaterialCard from "../../../features/Material/MaterialCard/MaterialCard";

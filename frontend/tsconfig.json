@@ -8,8 +8,10 @@
     "moduleResolution": "bundler",
     "target": "ESNext",
     "paths": {
-      "ui/*": ["./src/components/ui/*"],
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@ui/*": ["./src/components/ui/*"],
+      "@base": ["./src/components/ui/base"],
+      "@base/*": ["./src/components/ui/base/*"]
     }
   },
   "isolatedModules": true,

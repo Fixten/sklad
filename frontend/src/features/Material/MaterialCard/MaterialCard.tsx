@@ -7,9 +7,9 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "ui/card";
-import IconButton from "ui/IconButton";
-import { Separator } from "ui/separator";
+} from "@base/card";
+import { Separator } from "@base/separator";
+import IconButton from "@ui/IconButton";
 
 import MaterialTypeLabel from "../../MaterialType/MaterialTypeLabel";
 

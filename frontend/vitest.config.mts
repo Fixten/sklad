@@ -10,8 +10,9 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
-      ui: path.resolve(import.meta.dirname, "./src/components/ui"),
       "@": path.resolve(import.meta.dirname, "./src"),
+      "@ui": path.resolve(import.meta.dirname, "./src/components/ui"),
+      "@base": path.resolve(import.meta.dirname, "./src/components/ui/base"),
     },
   },
   test: {

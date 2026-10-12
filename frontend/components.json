@@ -13,15 +13,12 @@
   "iconLibrary": "lucide",
   "aliases": {
     "components": "@/components",
-    "utils": "@/utils/cn",
-    "ui": "@/components/ui",
+    "utils": "cn",
+    "ui": "@base",
     "lib": "@/lib",
     "hooks": "@/hooks"
   },
   "rtl": false,
   "menuColor": "default",
-  "menuAccent": "subtle",
-  "registries": {
-    "@aceternity": "https://ui.aceternity.com/registry/{name}.json"
-  }
+  "menuAccent": "subtle"
 }

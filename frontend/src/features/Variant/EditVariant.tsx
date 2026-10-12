@@ -2,10 +2,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import zod from "zod";
 
-import { Button } from "ui/button";
-import { Field, FieldError, FieldLabel } from "ui/field";
-import { Form } from "ui/form";
-import { Input } from "ui/input";
+import { Button } from "@base/button";
+import { Field, FieldError, FieldLabel } from "@base/field";
+import { Input } from "@base/input";
+import { Form } from "@ui/form";
 
 import { VariantModel } from "./Variant.model";
 

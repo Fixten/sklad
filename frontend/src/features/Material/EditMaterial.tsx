@@ -2,10 +2,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
 import * as z from "zod";
 
-import { Button } from "ui/button";
-import { Field, FieldError, FieldLabel } from "ui/field";
-import { Form } from "ui/form";
-import { Input } from "ui/input";
+import { Button } from "@base/button";
+import { Field, FieldError, FieldLabel } from "@base/field";
+import { Input } from "@base/input";
+import { Form } from "@ui/form";
 
 import { MaterialDTO, MaterialModel } from "./Material.model";
 import SelectMaterialType from "./SelectMaterialType";

@@ -209,7 +209,8 @@ Chart ramp (identical in both modes): `--chart-1…5` green
 
 ## Component recipes
 
-Recipes are `cva` variants in `src/components/ui`. Keep variant names stable so
+Recipes are `cva` variants in the shadcn components (`@base/*` → `src/components/ui/base`) and
+project-authored components (`@ui/*` → `src/components/ui`). Keep variant names stable so
 call sites stay standard.
 
 | Recipe               | Component                                        | Notes                                                                            |
@@ -244,15 +245,14 @@ Enforced by the `shadcn` skill rules; treat as review blockers.
 - **`size-*` when width = height** (`size-9`, not `w-9 h-9`).
 - **`truncate`** shorthand over three utilities.
 - **No manual `dark:` overrides.** Semantic tokens switch automatically.
-- **`cn()`** (the `cn` package, re-exported by `src/utils/cn.ts`) for
-  conditional/merged classes.
+- **`cn()`** (the `cn` package) for conditional/merged classes.
 - **No manual `z-index`** on overlays — they manage their own stacking.
 - **Polymorphism:** Base UI base → use `render={<X/>}`; **never `asChild`**
   (that is the Radix API and was removed in this project's Base UI migration).
 - **Icons:** `lucide-react`, passed as components (`icon={Check}`), no ad-hoc
   sizing classes inside components.
-- **Compose, don't reinvent:** use an existing `ui/` component before writing a
-  styled `div`.
+- **Compose, don't reinvent:** use an existing `@base/*` or `@ui/*` component before
+  writing a styled `div`.
 
 ## Do's and Don'ts
 

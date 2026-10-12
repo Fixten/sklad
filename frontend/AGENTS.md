@@ -12,9 +12,11 @@ mirroring the backend's feature split.
 - Feature dir: `<f>.api.ts` (thin wrapper over the `Api` class in `src/api`), `<f>.model.ts`
   (types derived from `src/api/schema.d.ts`), `use<F>.ts` (react-query hook), plus the
   feature's components. Pages live in `src/router/pages/<Page>/`.
-- Aliases declared `tsconfig.json`.
-- `cn()` from the `cn` package (re-exported by `src/utils/cn.ts`) — use it instead of
-  concatenating class strings, or conflicting Tailwind utilities survive.
+- Aliases (`tsconfig.json`): `@/*` → `src`; `@ui/*` → `src/components/ui` (project-authored);
+  `@base/*` → `src/components/ui/base`, shadcn registry files installed verbatim via
+  `shadcn add` (never hand-edit; `components.json` sets `aliases.ui = "@base"`).
+- `cn()` from the `cn` package — use it instead of concatenating class strings, or
+  conflicting Tailwind utilities survive.
 - Icons come from `lucide-react` (see `components.json` → `iconLibrary`).
 
 ## Adding API integration for a feature
@@ -54,5 +56,9 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
 
 ## Gotchas & decisions
 
+- **`@base` needs its exact `tsconfig` path entry.** Without the non-wildcard `"@base"`
+  mapping (after `@ui/*`), `aliases.ui` resolves to `frontend/@base` instead of
+  `src/components/ui/base` — `shadcn add` writes there silently. Confirm with
+  `npx shadcn info`.
 - **`server.js` is the production host**: Express 5 serving static `dist` plus an SPA catch-all
   `app.get('/{*splat}')` (Express 5 renamed `'*'`), run via `pm2-runtime` on `FRONTEND_PORT`.

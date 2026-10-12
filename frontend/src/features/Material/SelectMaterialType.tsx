@@ -1,6 +1,6 @@
 import { useId } from "react";
 
-import { Label } from "ui/label";
+import { Label } from "@base/label";
 
 interface Props {
   value: string;

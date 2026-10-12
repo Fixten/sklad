@@ -2,10 +2,10 @@ import { Check } from "lucide-react";
 import { useState } from "react";
 
 import useSettings from "@/features/Settings/useSettings";
-import { Card, CardContent, CardHeader, CardTitle } from "ui/card";
-import { Field } from "ui/field";
-import { Input } from "ui/input";
-import { Spinner } from "ui/spinner";
+import { Card, CardContent, CardHeader, CardTitle } from "@base/card";
+import { Field } from "@base/field";
+import { Input } from "@base/input";
+import { Spinner } from "@base/spinner";
 
 export default function SettingsPage() {
   const { query, mutation } = useSettings();

@@ -1,6 +1,6 @@
 import { ComponentProps, useState } from "react";
 
-import { Button } from "ui/button";
+import { Button } from "@base/button";
 
 import EditMaterial from "./EditMaterial";
 

@@ -3,12 +3,12 @@ import { BadgePlus, Check } from "lucide-react";
 import { useForm, useWatch } from "react-hook-form";
 import * as z from "zod";
 
-import { Button } from "ui/button";
-import { Card } from "ui/card";
-import { Field, FieldError, FieldLabel } from "ui/field";
-import { Form } from "ui/form";
-import { Input } from "ui/input";
-import { Spinner } from "ui/spinner";
+import { Button } from "@base/button";
+import { Card } from "@base/card";
+import { Field, FieldError, FieldLabel } from "@base/field";
+import { Input } from "@base/input";
+import { Spinner } from "@base/spinner";
+import { Form } from "@ui/form";
 
 import useMaterialType from "../../../features/MaterialType/useMaterialType";
 
