@@ -1,78 +1,84 @@
 ---
-# DESIGN.md — Sklad
-# Generated from the project's live tokens (src/styles/tailwind.css), the shadcn
-# preset (style: sera, base: base-ui, baseColor: olive, theme: yellow,
-# chartColor: green, icons: lucide, menuAccent: subtle) and the shadcn /
-# ux-design skills. Color values are OKLCH, verbatim from tailwind.css.
 name: sklad
 description: >-
-  Inventory management SPA. Editorial, typographic "sera" styling on a
-  Base UI (shadcn) foundation. Calm neutrals, a warm yellow action color, a
-  green chart ramp, and a mono heading face for technical labels.
+  Inventory management SPA with a "Forest & Hide" atelier theme: dark forest
+  surfaces, burnished-brass actions, moss and foliage accents, and an editorial
+  typographic voice.
 
 colors:
   light:
-    background: "oklch(1 0 0)"
-    foreground: "oklch(0.153 0.006 107.1)"
-    card: "oklch(1 0 0)"
-    card-foreground: "oklch(0.153 0.006 107.1)"
+    background: "oklch(0.982 0.006 128.525)"
+    foreground: "oklch(0.325 0.026 132.005)"
+    card: "oklch(0.965 0.01 131.358)"
+    card-foreground: "oklch(0.325 0.026 132.005)"
     popover: "oklch(1 0 0)"
-    popover-foreground: "oklch(0.153 0.006 107.1)"
-    primary: "oklch(0.852 0.199 91.936)"
-    primary-foreground: "oklch(0.421 0.095 57.708)"
-    secondary: "oklch(0.967 0.001 286.375)"
-    secondary-foreground: "oklch(0.21 0.006 285.885)"
-    muted: "oklch(0.966 0.005 106.5)"
-    muted-foreground: "oklch(0.58 0.031 107.3)"
-    accent: "oklch(0.966 0.005 106.5)"
-    accent-foreground: "oklch(0.228 0.013 107.4)"
-    destructive: "oklch(0.577 0.245 27.325)"
-    destructive-foreground: "oklch(0.577 0.245 27.325)"
-    border: "oklch(0.93 0.007 106.5)"
-    input: "oklch(0.93 0.007 106.5)"
-    ring: "oklch(0.737 0.021 106.9)"
-    sidebar: "oklch(0.988 0.003 106.5)"
-    sidebar-foreground: "oklch(0.153 0.006 107.1)"
-    sidebar-primary: "oklch(0.681 0.162 75.834)"
-    sidebar-primary-foreground: "oklch(0.987 0.026 102.212)"
-    sidebar-accent: "oklch(0.966 0.005 106.5)"
-    sidebar-accent-foreground: "oklch(0.228 0.013 107.4)"
-    sidebar-border: "oklch(0.93 0.007 106.5)"
-    sidebar-ring: "oklch(0.737 0.021 106.9)"
+    popover-foreground: "oklch(0.244 0.027 133.765)"
+    primary: "oklch(0.757 0.079 88.436)"
+    primary-foreground: "oklch(0.244 0.027 133.765)"
+    secondary: "oklch(0.931 0.024 119.514)"
+    secondary-foreground: "oklch(0.244 0.027 133.765)"
+    muted: "oklch(0.965 0.01 131.358)"
+    muted-foreground: "oklch(0.495 0.043 129.483)"
+    accent: "oklch(0.931 0.024 119.514)"
+    accent-foreground: "oklch(0.757 0.079 88.436)"
+    destructive: "oklch(0.506 0.193 27.702)"
+    destructive-foreground: "oklch(1 0 0)"
+    border: "oklch(0.904 0.032 122.68)"
+    input: "oklch(0.904 0.032 122.68)"
+    ring: "oklch(0.757 0.079 88.436)"
+    sidebar: "oklch(1 0 0)"
+    sidebar-foreground: "oklch(0.325 0.026 132.005)"
+    sidebar-primary: "oklch(0.757 0.079 88.436)"
+    sidebar-primary-foreground: "oklch(0.244 0.027 133.765)"
+    sidebar-accent: "oklch(0.965 0.01 131.358)"
+    sidebar-accent-foreground: "oklch(0.244 0.027 133.765)"
+    sidebar-border: "oklch(0.904 0.032 122.68)"
+    sidebar-ring: "oklch(0.757 0.079 88.436)"
   dark:
-    background: "oklch(0.153 0.006 107.1)"
-    foreground: "oklch(0.988 0.003 106.5)"
-    card: "oklch(0.228 0.013 107.4)"
-    card-foreground: "oklch(0.988 0.003 106.5)"
-    popover: "oklch(0.228 0.013 107.4)"
-    popover-foreground: "oklch(0.988 0.003 106.5)"
-    primary: "oklch(0.795 0.184 86.047)"
-    primary-foreground: "oklch(0.421 0.095 57.708)"
-    secondary: "oklch(0.274 0.006 286.033)"
-    secondary-foreground: "oklch(0.985 0 0)"
-    muted: "oklch(0.286 0.016 107.4)"
-    muted-foreground: "oklch(0.737 0.021 106.9)"
-    accent: "oklch(0.286 0.016 107.4)"
-    accent-foreground: "oklch(0.988 0.003 106.5)"
-    destructive: "oklch(0.704 0.191 22.216)"
-    destructive-foreground: "oklch(0.637 0.237 25.331)"
-    border: "oklch(1 0 0 / 10%)"
-    input: "oklch(1 0 0 / 15%)"
-    ring: "oklch(0.58 0.031 107.3)"
-    sidebar: "oklch(0.228 0.013 107.4)"
-    sidebar-foreground: "oklch(0.988 0.003 106.5)"
-    sidebar-primary: "oklch(0.795 0.184 86.047)"
-    sidebar-primary-foreground: "oklch(0.987 0.026 102.212)"
-    sidebar-accent: "oklch(0.286 0.016 107.4)"
-    sidebar-accent-foreground: "oklch(0.988 0.003 106.5)"
-    sidebar-border: "oklch(1 0 0 / 10%)"
-    sidebar-ring: "oklch(0.58 0.031 107.3)"
+    background: "oklch(0.204 0.02 135.347)"
+    foreground: "oklch(0.889 0.014 88.691)"
+    card: "oklch(0.296 0.04 132.577)"
+    card-foreground: "oklch(0.889 0.014 88.691)"
+    popover: "oklch(0.336 0.046 132.211)"
+    popover-foreground: "oklch(0.979 0.005 95.099)"
+    primary: "oklch(0.757 0.079 88.436)"
+    primary-foreground: "oklch(0.204 0.02 135.347)"
+    secondary: "oklch(0.336 0.046 132.211)"
+    secondary-foreground: "oklch(0.979 0.005 95.099)"
+    muted: "oklch(0.244 0.027 133.765)"
+    muted-foreground: "oklch(0.71 0.044 127.169)"
+    accent: "oklch(0.296 0.04 132.577)"
+    accent-foreground: "oklch(0.757 0.079 88.436)"
+    destructive: "oklch(0.838 0.089 26.757)"
+    destructive-foreground: "oklch(0.328 0.134 27.32)"
+    border: "oklch(0.382 0.052 133.073)"
+    input: "oklch(0.382 0.052 133.073)"
+    ring: "oklch(0.757 0.079 88.436)"
+    sidebar: "oklch(0.244 0.027 133.765)"
+    sidebar-foreground: "oklch(0.889 0.014 88.691)"
+    sidebar-primary: "oklch(0.757 0.079 88.436)"
+    sidebar-primary-foreground: "oklch(0.204 0.02 135.347)"
+    sidebar-accent: "oklch(0.336 0.046 132.211)"
+    sidebar-accent-foreground: "oklch(0.979 0.005 95.099)"
+    sidebar-border: "oklch(0.382 0.052 133.073)"
+    sidebar-ring: "oklch(0.757 0.079 88.436)"
   chart:
-    - "oklch(0.871 0.15 154.449)"
-    - "oklch(0.723 0.219 149.579)"
-    - "oklch(0.627 0.194 149.214)"
-    - "oklch(0.527 0.154 150.069)"
-    - "oklch(0.448 0.119 151.328)"
+    light:
+      [
+        "oklch(0.477 0.064 128.345)",
+        "oklch(0.41 0.057 131.762)",
+        "oklch(0.34 0.046 132.189)",
+        "oklch(0.58 0.067 127.709)",
+        "oklch(0.494 0.058 127.848)",
+      ]
+    dark:
+      [
+        "oklch(0.823 0.07 126.74)",
+        "oklch(0.677 0.069 128.067)",
+        "oklch(0.58 0.067 127.709)",
+        "oklch(0.494 0.058 127.848)",
+        "oklch(0.41 0.057 131.762)",
+      ]
 
 typography:
   sans: "'Noto Sans Variable', sans-serif"
@@ -125,10 +131,10 @@ components:
 # Sklad — Design System
 
 Sklad is an inventory manager (materials, material types, variants). The UI is a
-Vite + React SPA built on **shadcn/ui with a Base UI base** (`base: base`) and
-Tailwind v4 CSS-variable theming. The look is **sera**: editorial and
-typographic, with a warm yellow action color on a calm olive-tinted neutral
-scale, and a monospace heading face for technical labels.
+Vite + React SPA built on **shadcn/ui with a Base UI base** and Tailwind v4
+CSS-variable theming. The theme is **Forest & Hide**: the disciplined serenity of
+a leather artisan's atelier — dark forest surfaces, burnished brass actions, moss
+and foliage accents — carried on an editorial, typographic "sera" foundation.
 
 This document is the design source of truth. When it disagrees with code, update
 the code (per `AGENTS.md`).
@@ -136,11 +142,20 @@ the code (per `AGENTS.md`).
 ## Overview
 
 - **Voice:** calm, matter-of-fact, utilitarian. Russian UI copy.
-- **Canvas:** near-white (`--background`) in light mode; near-black olive in dark.
-- **Action color:** yellow `--primary` (`oklch(0.852 0.199 91.936)` light) with a
-  dark amber `--primary-foreground` for text/icon on it.
-- **Neutrals:** olive-tinted (hue ≈ 107) greys for muted surfaces and text.
-- **Charts:** a single green ramp (`--chart-1…5`) for data visualization.
+- **Atmosphere:** grounded in forest slate, lichen, vegetable-tanned hide and
+  burnished brass hardware — organic warmth and natural shelter, never cold
+  tech-noir or neon.
+- **Audience:** independent makers, studio managers and atelier teams balancing
+  tactile material craft with inventory counts and batch workflows.
+- **Resonance:** quiet confidence and grounded clarity; the UI recedes so
+  material textures, product photography and ledger data stay prominent.
+- **Canvas:** near-black forest in dark mode (`--background`); near-white
+  atelier in light mode.
+- **Action color:** burnished brass `--primary` (identical in both modes) with a
+  deep forest `--primary-foreground` for text/icon on it.
+- **Foliage:** moss/lichen greens (`--secondary`, `--accent`) for structure and
+  secondary actions.
+- **Charts:** a forest green ramp (`--chart-1…5`) for data visualization.
 - **Type:** `Noto Sans Variable` for everything; `Geist Mono Variable` for
   headings/labels (`--font-heading`).
 
@@ -150,33 +165,54 @@ Semantic roles only — components never reference raw Tailwind palette colors.
 Every role is defined in `:root` and `.dark` in `src/styles/tailwind.css` and
 registered in `@theme inline` as a `--color-*` token.
 
-| Role           | Token                  | Light                 | Dark                  |
-| -------------- | ---------------------- | --------------------- | --------------------- |
-| Page floor     | `--background`         | near-white            | near-black            |
-| Body text      | `--foreground`         | `0.153 0.006 107.1`   | `0.988 0.003 106.5`   |
-| Card surface   | `--card`               | white                 | `0.228 0.013 107.4`   |
-| CTA fill       | `--primary`            | `0.852 0.199 91.936`  | `0.795 0.184 86.047`  |
-| CTA text       | `--primary-foreground` | `0.421 0.095 57.708`  | `0.421 0.095 57.708`  |
-| Secondary fill | `--secondary`          | `0.967 0.001 286.375` | `0.274 0.006 286.033` |
-| Soft band      | `--muted`              | `0.966 0.005 106.5`   | `0.286 0.016 107.4`   |
-| Secondary text | `--muted-foreground`   | `0.58 0.031 107.3`    | `0.737 0.021 106.9`   |
-| Hover wash     | `--accent`             | `0.966 0.005 106.5`   | `0.286 0.016 107.4`   |
-| Error          | `--destructive`        | `0.577 0.245 27.325`  | `0.704 0.191 22.216`  |
-| Hairline       | `--border` / `--input` | `0.93 0.007 106.5`    | `oklch(1 0 0 / 10%)`  |
-| Focus ring     | `--ring`               | `0.737 0.021 106.9`   | `0.58 0.031 107.3`    |
+| Role           | Token                  |
+| -------------- | ---------------------- |
+| Page floor     | `--background`         |
+| Body text      | `--foreground`         |
+| Card surface   | `--card`               |
+| Floating layer | `--popover`            |
+| CTA fill       | `--primary`            |
+| CTA text       | `--primary-foreground` |
+| Secondary fill | `--secondary`          |
+| Soft band      | `--muted`              |
+| Secondary text | `--muted-foreground`   |
+| Hover wash     | `--accent`             |
+| Error          | `--destructive`        |
+| Hairline       | `--border` / `--input` |
+| Focus ring     | `--ring`               |
 
-Chart ramp (identical in both modes): `--chart-1…5` green
-(`154.449 → 151.328`).
+### Surface architecture
+
+Surfaces layer tonally, from the canvas up to floating layers. Prefer the next
+surface level over a shadow to lift content.
+
+| Level     | Role                 | Token          |
+| --------- | -------------------- | -------------- |
+| Canvas    | Root background      | `--background` |
+| Surface 1 | Workspaces, sidebars | `--sidebar`    |
+| Surface 2 | Cards, grids         | `--card`       |
+| Surface 3 | Nested panels, fills | `--secondary`  |
+| Surface 4 | Elevated badges      | `--border`     |
+
+### Linework & accents
+
+- Structural borders are `--border`.
+- Interactive borders (focus, active input, premium tags) use `--ring`.
+- Foliage accents — damp moss and fresh lichen greens — drive toggle states and
+  active tabs (`--accent`) and the secondary action fill (`--secondary`).
+- Titles use the editorial ink `--popover-foreground`; body copy uses
+  `--foreground`; metadata and inactive icons use `--muted-foreground`.
+
+Chart ramp: `--chart-1…5` moss → lichen greens, per mode (see frontmatter).
 
 ### Contrast notes
 
-- `--muted-foreground` on `--background` and on `--muted` is intended as the
-  secondary-text pairing; verify it stays ≥ 4.5:1 whenever the neutral ramp is
-  touched.
-- `--primary` is a light yellow: text placed **on** it must use
-  `--primary-foreground` (dark amber), never `--foreground`.
-- `--destructive-foreground` light equals `--destructive` — do not use it as a
-  text-on-surface color; use `text-destructive` for error text.
+- `--muted-foreground` on `--background` and on `--muted` is the secondary-text
+  pairing; verify it stays ≥ 4.5:1 whenever the neutral ramp is touched.
+- `--primary` is brass: text placed **on** it must use `--primary-foreground`
+  (deep forest), never `--foreground`.
+- `--destructive` is the MD3 error role — use `text-destructive` for error text,
+  not `--destructive-foreground` as a text-on-surface color.
 
 ## Typography
 
@@ -186,8 +222,9 @@ Chart ramp (identical in both modes): `--chart-1…5` green
 | Heading | `Geist Mono Variable` | `--font-heading`; small component titles, technical labels |
 
 - Base body size is `text-sm`; inputs are `text-base` on mobile, `md:text-sm`.
-- Labels are `text-xs font-semibold uppercase tracking-wide` (sera editorial caps).
-- Do **not** introduce serif or additional display faces; sera geometry here is
+- Labels are `text-xs font-semibold uppercase tracking-wide` (editorial caps).
+- Data columns (quantities, counts, prices) use tabular figures so digits align.
+- Do **not** introduce serif or additional display faces; the geometry here is
   expressed through mono headings + editorial spacing, not a serif.
 
 ## Layout & spacing
@@ -201,24 +238,31 @@ Chart ramp (identical in both modes): `--chart-1…5` green
 
 ## Radius & elevation
 
-- Sera is **sharp**: buttons, inputs, cards, dialogs, popovers and separators all set
-  `rounded-none`. The `--radius` ladder (frontmatter) stays in tokens for surfaces that
-  opt in, but component recipes must not restore rounding.
-- Elevation is minimal: `shadow-sm` on cards, `shadow-md` on dialogs. Underlined inputs
-  (`border-b-input`) and card rings (`ring-1 ring-foreground/5`) carry most separation.
+- Sera is **sharp**: buttons, inputs, cards, dialogs, popovers and separators all
+  set `rounded-none`. The `--radius` ladder (frontmatter) stays in tokens for
+  surfaces that opt in, but component recipes must not restore rounding.
+- Depth is **tonal**, built from surface layering and hairline rings rather than
+  heavy drop shadows:
+  - **Tier 0 — Root basin** (`--background`): flat canvas.
+  - **Tier 1 — Surface containers** (`--sidebar`, `--muted`): tonal only, no
+    ring or shadow.
+  - **Tier 2 — Cards & tiles** (`--card`): `ring-1 ring-foreground/5` +
+    `shadow-sm`.
+  - **Tier 3 — Modals & popovers** (`--popover`): `ring-1 ring-foreground/10` +
+    `shadow-md`.
 
 ## Component recipes
 
-Recipes are `cva` variants in the shadcn components (`@base/*` → `src/components/ui/base`) and
-project-authored components (`@ui/*` → `src/components/ui`). Keep variant names stable so
-call sites stay standard.
+Recipes are `cva` variants in the shadcn components (`@base/*` →
+`src/components/ui/base`) and project-authored components (`@ui/*` →
+`src/components/ui`). Keep variant names stable so call sites stay standard.
 
 | Recipe               | Component                                        | Notes                                                                            |
 | -------------------- | ------------------------------------------------ | -------------------------------------------------------------------------------- |
-| Primary action       | `Button` `default`                               | Yellow fill + `primary-foreground`                                               |
+| Primary action       | `Button` `default`                               | Brass fill + `primary-foreground`                                                |
 | Danger               | `Button` `destructive`                           | Soft `bg-destructive/10` + `text-destructive`, not a solid fill                  |
 | Secondary action     | `Button` `outline`                               | Border + transparent; **the app's default**                                      |
-| Subtle fill          | `Button` `secondary`                             | Neutral filled                                                                   |
+| Subtle fill          | `Button` `secondary`                             | Moss/lichen neutral fill                                                         |
 | Nav / icon action    | `Button` `ghost`                                 | Hover wash only                                                                  |
 | Text link            | `Button` `link`                                  | Underlined                                                                       |
 | Circular icon action | `Button` `size="icon"` / `IconButton`            | `IconButton` = outline + `size="icon"`                                           |
@@ -229,30 +273,30 @@ call sites stay standard.
 | Loading              | `Spinner`                                        | `role="status"`, `size-4 animate-spin`                                           |
 | Command palette      | `Command` + `CommandInput/List/Empty/Group/Item` | `cmdk`; parts are flat named exports, not a `Command.*` namespace                |
 
+### Buttons
+
+- **Primary (Brass hardware):** `--primary` background, `--primary-foreground`
+  text, `font-semibold`. Hover drops to `bg-primary/80`; active nudges down 1px
+  (`translate-y-px`).
+- **Secondary (Moss loam):** `--secondary` background, `--secondary-foreground`
+  text; hover blends 5% `--foreground` into the fill.
+- **Ghost / tertiary:** transparent; hover applies `--muted` background with
+  `--foreground` text.
+- **Outline (the app default):** `--border` border, transparent fill; hover
+  applies `--muted` background.
+
+### Form inputs
+
+- Transparent background with a bottom `border-b --input` underline.
+- On focus the underline switches to `--ring`.
+- Placeholder `--muted-foreground`; typed text `--foreground`.
+
+### Cards
+
+- `--card` surface, `ring-1 ring-foreground/5`, `shadow-sm`.
+
 **Control heights move together.** Button default `h-10`, `sm` `h-9`, `xs` `h-7`,
 `lg` `h-11`; input `h-10`. Change them as a set or forms misalign.
-
-## Conventions
-
-Enforced by the `shadcn` skill rules; treat as review blockers.
-
-- **Semantic colors only.** `bg-primary text-primary-foreground`,
-  `text-muted-foreground` — never `bg-blue-500`, `text-emerald-600`.
-- **Variants before custom styles.** `variant="outline"`, `size="sm"` — don't
-  hand-roll the same look with utilities.
-- **`className` is for layout**, not color/typography overrides.
-- **No `space-x-*` / `space-y-*`.** Use `flex` + `gap-*`.
-- **`size-*` when width = height** (`size-9`, not `w-9 h-9`).
-- **`truncate`** shorthand over three utilities.
-- **No manual `dark:` overrides.** Semantic tokens switch automatically.
-- **`cn()`** (the `cn` package) for conditional/merged classes.
-- **No manual `z-index`** on overlays — they manage their own stacking.
-- **Polymorphism:** Base UI base → use `render={<X/>}`; **never `asChild`**
-  (that is the Radix API and was removed in this project's Base UI migration).
-- **Icons:** `lucide-react`, passed as components (`icon={Check}`), no ad-hoc
-  sizing classes inside components.
-- **Compose, don't reinvent:** use an existing `@base/*` or `@ui/*` component before
-  writing a styled `div`.
 
 ## Do's and Don'ts
 
@@ -260,9 +304,10 @@ Enforced by the `shadcn` skill rules; treat as review blockers.
 
 - Reach for `Button variant="outline"` for the app's default secondary action.
 - Keep destructive/confirm actions visually distinct with `variant="destructive"`
-  or `Alert`-style framing.
+  or a Dialog-based confirmation.
 - Use `gap-*` stacks and the `max-w-4xl` shell for new pages.
 - Keep `--muted-foreground` for secondary text and `--foreground` for body.
+- Lift surfaces tonally (next surface level) before reaching for a shadow.
 
 **Don't**
 
@@ -270,11 +315,11 @@ Enforced by the `shadcn` skill rules; treat as review blockers.
 - Don't add radius, colors, or fonts outside the token set above.
 - Don't override a component's colors via `className`.
 - Don't introduce serif/extra display faces.
-- Don't bypass semantic tokens with status colors (`text-green-600` etc.).
+- Don't bypass semantic tokens with raw palette colors (`text-green-600` etc.).
 
 ## UX principles
 
-From the `ux-design` skill — design from user goals, not the data model.
+Design from user goals, not the data model.
 
 ```text
 User goal → user task → workflow → interaction model → UI structure
@@ -293,9 +338,3 @@ User goal → user task → workflow → interaction model → UI structure
 - Single-column, `max-w-4xl` content column; forms collapse to stacked fields on
   narrow viewports (inputs are `text-base` until `md`).
 - No horizontal overflow at 375px or 1280px.
-
-## Known Gaps
-
-- **Some forms can't submit.** `SelectMaterialType` renders only a label (no control yet),
-  so `material_type_id` is never set and `EditMaterial` always fails validation;
-  `EditVariant`'s `onSubmit` is still commented out (nothing is sent).
