@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, useWatch } from "react-hook-form";
 import * as z from "zod";
 
-import Button from "ui/Button";
-import Form from "ui/Form";
-import Input from "ui/Input";
+import { Button } from "ui/button";
+import { Field, FieldError, FieldLabel } from "ui/field";
+import { Form } from "ui/form";
+import { Input } from "ui/input";
 
 import { MaterialDTO, MaterialModel } from "./Material.model";
 import SelectMaterialType from "./SelectMaterialType";
@@ -16,63 +18,75 @@ interface Props {
 
 const Material = z.object({
   name: z.string().min(3),
-  description: z.string().min(5).optional(),
-  material_type_id: z.coerce.number().min(1),
+  description: z.string().min(5).or(z.literal("")),
+  material_type_id: z.number().min(1),
 });
 
-export default function EditMaterial(props: Props) {
-  const [name, setName] = useState<string>(props.value?.name ?? "");
-  const [description, setDescription] = useState<string>(
-    props.value?.description ?? "",
-  );
-  const [type, setType] = useState<string>(
-    props.value?.material_type_id !== undefined
-      ? String(props.value.material_type_id)
-      : "",
-  );
+type MaterialForm = z.infer<typeof Material>;
 
-  async function onSubmit() {
-    const item = {
-      name,
-      description: description || undefined,
-      material_type_id: Number(type),
-    };
+export default function EditMaterial(props: Props) {
+  const form = useForm<MaterialForm>({
+    resolver: zodResolver(Material),
+    defaultValues: {
+      name: props.value?.name ?? "",
+      description: props.value?.description ?? "",
+      material_type_id: props.value?.material_type_id ?? 0,
+    },
+  });
+
+  const { errors } = form.formState;
+  const materialTypeId = useWatch({
+    control: form.control,
+    name: "material_type_id",
+  });
+  const isInvalid = props.isError || Object.keys(errors).length > 0;
+
+  async function onSubmit(values: MaterialForm) {
     try {
-      Material.parse(item);
-      await props.onSubmit(item);
-      setName("");
-      setDescription("");
-      setType("");
+      await props.onSubmit({
+        ...values,
+        description: values.description || undefined,
+      });
+      form.reset();
     } catch (error) {
       console.error(error);
     }
   }
 
   return (
-    <Form onSubmit={onSubmit}>
-      <div className="flex items-end gap-4">
+    <Form form={form} onSubmit={onSubmit} className="flex items-end gap-4">
+      <Field data-invalid={isInvalid || undefined}>
+        <FieldLabel htmlFor="material-name">Название</FieldLabel>
         <Input
-          label="Название"
-          value={name}
-          onChange={setName}
-          error={props.isError}
-          required
+          id="material-name"
+          aria-invalid={isInvalid || undefined}
+          {...form.register("name")}
         />
+        <FieldError errors={errors.name ? [errors.name] : undefined} />
+      </Field>
+      <Field data-invalid={isInvalid || undefined}>
+        <FieldLabel htmlFor="material-description">Описание</FieldLabel>
         <Input
-          label="Описание"
-          value={description}
-          onChange={setDescription}
-          error={props.isError}
+          id="material-description"
+          aria-invalid={isInvalid || undefined}
+          {...form.register("description")}
         />
-        <SelectMaterialType
-          value={type}
-          onChange={setType}
-          error={props.isError}
-          required
-          label="Тип материала"
+        <FieldError
+          errors={errors.description ? [errors.description] : undefined}
         />
-        <Button type="submit">{props.value ? "Изменить" : "Создать"}</Button>
-      </div>
+      </Field>
+      <SelectMaterialType
+        value={String(materialTypeId)}
+        onChange={(value) => {
+          form.setValue("material_type_id", Number(value), {
+            shouldValidate: true,
+          });
+        }}
+        error={props.isError}
+        required
+        label="Тип материала"
+      />
+      <Button type="submit">{props.value ? "Изменить" : "Создать"}</Button>
     </Form>
   );
 }

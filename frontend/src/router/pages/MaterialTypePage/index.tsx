@@ -1,52 +1,75 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { BadgePlus, Check } from "lucide-react";
-import { useState } from "react";
+import { useForm, useWatch } from "react-hook-form";
+import * as z from "zod";
 
-import Button from "ui/Button";
-import Card from "ui/Card";
-// import Divider from "ui/Divider";
-import Input from "ui/Input";
-import Spinner from "ui/Spinner";
+import { Button } from "ui/button";
+import { Card } from "ui/card";
+import { Field, FieldError, FieldLabel } from "ui/field";
+import { Form } from "ui/form";
+import { Input } from "ui/input";
+import { Spinner } from "ui/spinner";
 
 import useMaterialType from "../../../features/MaterialType/useMaterialType";
 
+const NewMaterialType = z.object({
+  name: z.string().min(1),
+});
+
+type NewMaterialTypeForm = z.infer<typeof NewMaterialType>;
+
 export default function MaterialTypePage() {
   const { query, addMutation } = useMaterialType();
-  const [newItem, setNewItem] = useState<string>("");
+  const form = useForm<NewMaterialTypeForm>({
+    resolver: zodResolver(NewMaterialType),
+    defaultValues: { name: "" },
+  });
 
-  const onCreate = (e: React.SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (newItem) {
-      addMutation.mutateAsync(newItem).then(() => {
-        setNewItem("");
-      }, console.error);
+  const { errors } = form.formState;
+  const newName = useWatch({ control: form.control, name: "name" });
+  const isInvalid = addMutation.isError || Boolean(errors.name);
+
+  async function onSubmit(values: NewMaterialTypeForm) {
+    try {
+      await addMutation.mutateAsync(values.name);
+      form.reset();
+    } catch (error) {
+      console.error(error);
     }
-  };
-
-  function onChangeNewItem(val: string) {
-    setNewItem(val);
-    if (addMutation.isError || addMutation.isSuccess) addMutation.reset();
   }
 
   return (
     <section className="flex flex-col gap-8">
-      <form className="flex items-end gap-8" onSubmit={onCreate}>
-        <Input
-          label="Добавить новый"
-          error={addMutation.isError}
-          value={newItem}
-          onChange={onChangeNewItem}
-        />
-        {newItem && (
+      <Form form={form} onSubmit={onSubmit} className="flex items-end gap-8">
+        <Field
+          data-invalid={isInvalid || undefined}
+          className="w-full max-w-sm"
+        >
+          <FieldLabel htmlFor="new-material-type">Добавить новый</FieldLabel>
+          <Input
+            id="new-material-type"
+            aria-invalid={isInvalid || undefined}
+            {...form.register("name", {
+              onChange: () => {
+                if (addMutation.isError || addMutation.isSuccess) {
+                  addMutation.reset();
+                }
+              },
+            })}
+          />
+          <FieldError errors={errors.name ? [errors.name] : undefined} />
+        </Field>
+        {newName && (
           <Button variant="outline" size="icon" type="submit">
             <BadgePlus />
           </Button>
         )}
         {addMutation.isSuccess && <Check />}
-      </form>
+      </Form>
       {query.isLoading ? (
         <Spinner />
       ) : (
-        <Card.Wrapper>
+        <Card>
           <ul>
             {/* {query.data?.map((v, i, arr) => {
               const current = arr[arr.length - 1 - i];
@@ -69,7 +92,7 @@ export default function MaterialTypePage() {
               );
             })} */}
           </ul>
-        </Card.Wrapper>
+        </Card>
       )}
     </section>
   );

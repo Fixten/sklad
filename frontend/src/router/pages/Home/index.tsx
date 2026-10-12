@@ -1,28 +1,36 @@
 import { useNavigate } from "react-router";
 
 import { navItems } from "@/layout/App.layout";
-import Command from "ui/Command";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "ui/command";
 
 export default function Home() {
   const nav = useNavigate();
 
   return (
-    <Command.Wrapper className="rounded-lg border shadow-md md:min-w-[450px]">
-      <Command.CommandInput placeholder="Поиск" autoFocus />
-      <Command.CommandList>
-        <Command.CommandEmpty>Нету</Command.CommandEmpty>
-        <Command.CommandGroup heading="Меню">
+    <Command className="border shadow-md md:min-w-[450px]">
+      <CommandInput placeholder="Поиск" autoFocus />
+      <CommandList>
+        <CommandEmpty>Нету</CommandEmpty>
+        <CommandGroup heading="Меню">
           {navItems.map(({ link, name }) => (
-            <Command.CommandItem
+            <CommandItem
+              key={link}
               onSelect={() => {
                 void nav(link);
               }}
             >
               {name}
-            </Command.CommandItem>
+            </CommandItem>
           ))}
-        </Command.CommandGroup>
-      </Command.CommandList>
-    </Command.Wrapper>
+        </CommandGroup>
+      </CommandList>
+    </Command>
   );
 }

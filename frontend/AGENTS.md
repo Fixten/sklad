@@ -12,12 +12,9 @@ mirroring the backend's feature split.
 - Feature dir: `<f>.api.ts` (thin wrapper over the `Api` class in `src/api`), `<f>.model.ts`
   (types derived from `src/api/schema.d.ts`), `use<F>.ts` (react-query hook), plus the
   feature's components. Pages live in `src/router/pages/<Page>/`.
-- `src/components/ui` is shadcn-derived, but most primitives export a **default object of
-  namespaced subcomponents** (`Card.Wrapper`, `Item.ItemContent`, `Command.Wrapper`) rather
-  than shadcn's flat named exports. Import the default, then dot into it.
 - Aliases declared `tsconfig.json`.
-- `cn()` (`src/utils/cn.ts`) is `twMerge(clsx(...))` — use it instead of concatenating class
-  strings, or conflicting Tailwind utilities survive.
+- `cn()` from the `cn` package (re-exported by `src/utils/cn.ts`) — use it instead of
+  concatenating class strings, or conflicting Tailwind utilities survive.
 - Icons come from `lucide-react` (see `components.json` → `iconLibrary`).
 
 ## Adding API integration for a feature

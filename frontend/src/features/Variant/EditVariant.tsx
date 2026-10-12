@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import zod from "zod";
 
-import Button from "ui/Button";
-import Form from "ui/Form";
-import Input from "ui/Input";
+import { Button } from "ui/button";
+import { Field, FieldError, FieldLabel } from "ui/field";
+import { Form } from "ui/form";
+import { Input } from "ui/input";
 
 import { VariantModel } from "./Variant.model";
 
@@ -16,21 +18,31 @@ const validator = zod.object({
   name: zod.string().min(2),
 });
 
+type VariantForm = zod.infer<typeof validator>;
+
 export default function EditVariant(props: Props) {
-  const [name, setName] = useState<string>("");
+  const form = useForm<VariantForm>({
+    resolver: zodResolver(validator),
+    defaultValues: { name: "" },
+  });
+
+  const { errors } = form.formState;
 
   function onSubmit() {
-    try {
-      validator.parse({ name });
-      // await props.onSubmit({ variant: name });
-    } catch (error) {
-      console.error(error);
-    }
+    // await props.onSubmit({ variant: name });
   }
 
   return (
-    <Form onSubmit={onSubmit} className="flex items-end gap-4">
-      <Input label="Название" onChange={setName} />
+    <Form form={form} onSubmit={onSubmit} className="flex items-end gap-4">
+      <Field data-invalid={errors.name ? true : undefined}>
+        <FieldLabel htmlFor="variant-name">Название</FieldLabel>
+        <Input
+          id="variant-name"
+          aria-invalid={errors.name ? true : undefined}
+          {...form.register("name")}
+        />
+        <FieldError errors={errors.name ? [errors.name] : undefined} />
+      </Field>
       <Button type="submit">Сохранить</Button>
       <Button onClick={props.onClose}>Отменить</Button>
     </Form>

@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { render } from "vitest-browser-react";
 
-import Button from "./Button";
+import { Button } from "./button";
 
 const variants = [
   "default",

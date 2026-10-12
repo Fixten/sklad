@@ -1,8 +1,15 @@
 import { Delete, Pen } from "lucide-react";
 
-import Card from "ui/Card";
-import Divider from "ui/Divider";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "ui/card";
 import IconButton from "ui/IconButton";
+import { Separator } from "ui/separator";
 
 import MaterialTypeLabel from "../../MaterialType/MaterialTypeLabel";
 
@@ -19,25 +26,25 @@ export default function MaterialCard(props: Props) {
   const { name, description, material_type_id } = props.value;
 
   return (
-    <Card.Wrapper>
-      <Card.CardHeader>
-        <Card.CardTitle>{name}</Card.CardTitle>
-        <Card.CardAction className="flex gap-2">
+    <Card>
+      <CardHeader>
+        <CardTitle>{name}</CardTitle>
+        <CardAction className="flex gap-2">
           <IconButton onClick={props.onRemove}>
             <Delete />
           </IconButton>
           <IconButton onClick={props.onChange}>
             <Pen />
           </IconButton>
-        </Card.CardAction>
-      </Card.CardHeader>
-      <Card.CardDescription className="pl-2">
+        </CardAction>
+      </CardHeader>
+      <CardDescription className="px-(--card-spacing)">
         Описание: {description}
-      </Card.CardDescription>
-      <Card.CardContent>
+      </CardDescription>
+      <CardContent>
         Тип: <MaterialTypeLabel id={material_type_id} />
-      </Card.CardContent>
-      <Divider />
-    </Card.Wrapper>
+      </CardContent>
+      <Separator />
+    </Card>
   );
 }

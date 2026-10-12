@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 const backendPort = process.env.BACKEND_PORT ?? "1200";
-const apiBase = `http://localhost:${backendPort}/api`;
+const apiBase = `http://127.0.0.1:${backendPort}/api`;
 
 test("creates a material type through the UI and persists it", async ({
   page,

@@ -14,3 +14,6 @@ Started from root with `pnpm e2e` / `pnpm e2e:ui`; intentionally **not** in `ful
 - Backend `server:e2e` reuses `src/test/e2eSetup.ts#bootstrap` (in-process migrate + all features)
   then listens; `NODE_ENV=test` → in-memory SQLite and silenced logs.
 - Ports isolated from dev: backend `1200`, frontend `5273`. Serial run (`workers: 1`).
+- Use `127.0.0.1`, **not `localhost`**, in the Playwright `request` fixture: under WSL
+  `APIRequestContext` hangs on `localhost` (hits the request timeout) while `127.0.0.1`/`[::1]`
+  answer in ~10ms. Chromium (`page.goto`) is unaffected.
