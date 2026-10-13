@@ -1,3 +1,5 @@
+import { ArrowDownToLineIcon, PlusIcon, SettingsIcon } from "lucide-react";
+
 import { Button } from "./button";
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
@@ -11,7 +13,16 @@ const variants = [
   "link",
 ] as const;
 
-const sizes = ["default", "sm", "lg", "icon"] as const;
+const sizes = [
+  "default",
+  "xs",
+  "sm",
+  "lg",
+  "icon",
+  "icon-xs",
+  "icon-sm",
+  "icon-lg",
+] as const;
 
 const meta = {
   component: Button,
@@ -46,4 +57,29 @@ export const Sizes: Story = {
       ))}
     </div>
   ),
+};
+
+export const Icons: Story = {
+  render: (args) => (
+    <div className="flex flex-wrap items-center gap-3">
+      <Button {...args}>
+        <PlusIcon data-icon="inline-start" />
+        Add
+      </Button>
+      <Button {...args}>
+        Download
+        <ArrowDownToLineIcon data-icon="inline-end" />
+      </Button>
+      <Button {...args} size="icon" aria-label="Settings">
+        <SettingsIcon />
+      </Button>
+      <Button {...args} size="icon-sm" aria-label="Settings">
+        <SettingsIcon />
+      </Button>
+    </div>
+  ),
+};
+
+export const Disabled: Story = {
+  args: { disabled: true },
 };

@@ -35,14 +35,14 @@ colors:
     sidebar-border: "oklch(0.904 0.032 122.68)"
     sidebar-ring: "oklch(0.757 0.079 88.436)"
   dark:
-    background: "oklch(0.204 0.02 135.347)"
+    background: "oklch(0.2024 0.0187 103.09))"
     foreground: "oklch(0.889 0.014 88.691)"
     card: "oklch(0.296 0.04 132.577)"
     card-foreground: "oklch(0.889 0.014 88.691)"
     popover: "oklch(0.336 0.046 132.211)"
     popover-foreground: "oklch(0.979 0.005 95.099)"
     primary: "oklch(0.757 0.079 88.436)"
-    primary-foreground: "oklch(0.204 0.02 135.347)"
+    primary-foreground: "oklch(0.2024 0.0187 103.09))"
     secondary: "oklch(0.336 0.046 132.211)"
     secondary-foreground: "oklch(0.979 0.005 95.099)"
     muted: "oklch(0.244 0.027 133.765)"
@@ -57,10 +57,10 @@ colors:
     sidebar: "oklch(0.244 0.027 133.765)"
     sidebar-foreground: "oklch(0.889 0.014 88.691)"
     sidebar-primary: "oklch(0.757 0.079 88.436)"
-    sidebar-primary-foreground: "oklch(0.204 0.02 135.347)"
+    sidebar-primary-foreground: "oklch(0.2024 0.0187 103.09))"
     sidebar-accent: "oklch(0.336 0.046 132.211)"
     sidebar-accent-foreground: "oklch(0.979 0.005 95.099)"
-    sidebar-border: "oklch(0.382 0.052 133.073)"
+    sidebar-border: "oklch(0.382 s0.052 133.073)"
     sidebar-ring: "oklch(0.757 0.079 88.436)"
   chart:
     light:
@@ -102,8 +102,21 @@ rounded:
 
 spacing:
   base: "0.25rem (4px)"
-  steps: "Tailwind dynamic scale — p-1=2px, p-2=4px, p-3=8px, p-4=16px, p-8=32px"
+  steps: "Tailwind dynamic scale — p-1=4px, p-2=8px, p-3=12px, p-4=16px, p-8=32px"
   used: ["gap-2", "gap-3", "gap-4", "gap-6", "gap-8", "px-3", "px-4", "px-6"]
+
+sizing:
+  control:
+    xs: "28px (h-7) / px-3 (12px)"
+    sm: "36px (h-9) / px-4 (16px)"
+    md: "40px (h-10) / px-6 (24px)"
+    lg: "44px (h-11) / px-8 (32px)"
+    input: "40px (h-10)"
+  icon:
+    xs: "28px (size-7)"
+    sm: "36px (size-9)"
+    md: "40px (size-10)"
+    lg: "44px (size-11)"
 
 components:
   button:

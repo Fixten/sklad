@@ -53,6 +53,7 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
   the browser/vrt env renders unstyled and screenshots are meaningless. Browser/vrt
   load `src/test/browser.setup.ts` (imports app CSS, freezes animations).
 - `Error` snapshots drop own props (e.g. `ApiError.status`) — snapshot plain fields.
+- If vrt testing failes, do not investigate it. Stop to ask user about what you should do with it.
 
 ## Gotchas & decisions
 
