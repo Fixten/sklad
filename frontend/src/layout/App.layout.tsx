@@ -13,10 +13,6 @@ export const navItems = [
     name: "Настройки",
   },
   {
-    link: pathsRouter.materialType,
-    name: "Типы материалов",
-  },
-  {
     link: pathsRouter.material,
     name: "Материалы",
   },

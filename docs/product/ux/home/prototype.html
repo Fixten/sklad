@@ -1,0 +1,897 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Sklad — Главная (прототип)</title>
+<style>
+  :root {
+    --bg: #f6f6f4;
+    --card: #ffffff;
+    --ink: #1a1a1a;
+    --muted: #6b6b6b;
+    --line: #e3e3df;
+    --accent: #2f6f4f;
+    --accent-ink: #ffffff;
+    --danger: #a33;
+    --radius: 14px;
+    --shadow: 0 1px 3px rgba(0,0,0,.08);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font: 16px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+  }
+  .app { max-width: 480px; margin: 0 auto; padding: 0 16px 96px; }
+
+  header.top {
+    position: sticky; top: 0; z-index: 5;
+    background: var(--bg);
+    padding: 16px 0 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  .date { font-size: 13px; color: var(--muted); }
+  .searchbar {
+    margin-top: 8px;
+    display: flex; align-items: center; gap: 8px;
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    color: var(--muted);
+    font-size: 15px;
+    cursor: text;
+  }
+
+  h2.section {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 24px 0 8px;
+  }
+
+  .actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .action {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 14px 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+  }
+  .action .glyph { display: block; font-size: 20px; margin-bottom: 4px; }
+  .action:active { transform: scale(.97); }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .row {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 12px 14px;
+    border-top: 1px solid var(--line);
+    cursor: pointer;
+    background: none;
+    width: 100%;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+  }
+  .row:first-child { border-top: 0; }
+  .row:active { background: #f0f0ec; }
+  .row .primary { font-weight: 600; }
+  .row .secondary { font-size: 13px; color: var(--muted); }
+  .row .count {
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .row .count.zero { color: var(--muted); }
+
+  .summary {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 14px;
+    border-bottom: 1px solid var(--line);
+    background: #fbfbf9;
+  }
+  .summary .big { font-size: 22px; font-weight: 700; }
+
+  .badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #e7f1eb;
+    color: var(--accent);
+  }
+
+  .guided { padding: 4px 0; }
+  .guided .step {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 12px 14px;
+    border-top: 1px solid var(--line);
+  }
+  .guided .step:first-child { border-top: 0; }
+  .guided .n {
+    flex: 0 0 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--accent); color: var(--accent-ink);
+    font-size: 13px; font-weight: 700;
+    display: grid; place-items: center;
+  }
+  .guided .step b { display: block; }
+  .guided .step span { font-size: 13px; color: var(--muted); }
+  .guided .step button {
+    margin-top: 6px;
+    font: inherit; font-size: 13px; font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--accent);
+    background: transparent; color: var(--accent);
+    cursor: pointer;
+  }
+
+  .hint { font-size: 13px; color: var(--muted); margin: 8px 2px 0; }
+  .empty-line { padding: 14px; font-size: 14px; color: var(--muted); }
+
+  .backdrop {
+    position: fixed; inset: 0; z-index: 20;
+    background: rgba(0,0,0,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .15s;
+  }
+  .backdrop.open { opacity: 1; pointer-events: auto; }
+
+  .sheet {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+    max-width: 480px; margin: 0 auto;
+    background: var(--card);
+    border-radius: 18px 18px 0 0;
+    max-height: 88vh;
+    display: flex; flex-direction: column;
+    transform: translateY(100%);
+    transition: transform .18s ease-out;
+  }
+  .sheet.open { transform: translateY(0); }
+  .sheet .grab { width: 40px; height: 4px; border-radius: 2px; background: var(--line); margin: 8px auto 0; }
+  .sheet .sheet-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .sheet .sheet-head b { font-size: 16px; }
+  .sheet .sheet-body { overflow-y: auto; padding: 8px 16px 16px; }
+  .sheet .sheet-foot {
+    display: flex; gap: 8px;
+    padding: 12px 16px calc(16px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line);
+  }
+  .sheet .sheet-foot .btn { flex: 1; }
+
+  .btn {
+    font: inherit; font-weight: 600;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .btn.ghost { background: transparent; }
+  .btn:disabled { opacity: .5; cursor: default; }
+
+  .iconbtn {
+    font: inherit; font-size: 14px;
+    background: none; border: 0; color: var(--muted);
+    cursor: pointer; padding: 6px;
+  }
+
+  label.field { display: block; margin-top: 12px; }
+  label.field > span {
+    display: block; font-size: 13px; font-weight: 600; color: var(--muted);
+    margin-bottom: 4px;
+  }
+  input, select, textarea {
+    font: inherit; width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--card);
+    color: var(--ink);
+  }
+  textarea { min-height: 64px; resize: vertical; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+  .picklist { margin-top: 4px; }
+  .picklist .grouptitle {
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .04em; color: var(--muted);
+    margin: 14px 0 4px;
+  }
+  .pick {
+    display: flex; justify-content: space-between; align-items: center; gap: 10px;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--card);
+    font: inherit; color: inherit; text-align: left;
+    margin-bottom: 8px;
+    cursor: pointer;
+  }
+  .pick:active { background: #f0f0ec; }
+  .pick .meta { font-size: 13px; color: var(--muted); }
+  .pick.selected { border-color: var(--accent); background: #f2f8f5; }
+
+  .supply-line {
+    display: flex; justify-content: space-between;
+    padding: 10px 0;
+    border-top: 1px dashed var(--line);
+    font-size: 14px;
+  }
+
+  .overlay-screen {
+    position: fixed; inset: 0; z-index: 40;
+    background: var(--bg);
+    overflow-y: auto;
+    display: none;
+  }
+  .overlay-screen.open { display: block; }
+  .overlay-inner { max-width: 480px; margin: 0 auto; padding: 0 16px 48px; }
+  .screen-head {
+    position: sticky; top: 0;
+    display: flex; align-items: center; gap: 8px;
+    padding: 14px 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+  .screen-head b { font-size: 16px; }
+
+  .palette {
+    position: fixed; inset: 0; z-index: 50;
+    display: none;
+    background: rgba(0,0,0,.45);
+  }
+  .palette.open { display: block; }
+  .palette-box {
+    max-width: 480px; margin: 10vh auto 0;
+    background: var(--card);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0,0,0,.3);
+  }
+  .palette-box input {
+    border: 0; border-bottom: 1px solid var(--line);
+    border-radius: 0; font-size: 17px; padding: 14px 16px;
+  }
+  .palette-box input:focus { outline: none; }
+  .palette-list { max-height: 50vh; overflow-y: auto; padding: 6px; }
+  .palette-item {
+    display: flex; justify-content: space-between; gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    border: 0; border-radius: 8px;
+    background: none; font: inherit; color: inherit; text-align: left;
+    cursor: pointer;
+  }
+  .palette-item:hover, .palette-item.active { background: #eef2ef; }
+  .palette-item .kind { font-size: 12px; color: var(--muted); }
+  .palette-empty { padding: 16px; color: var(--muted); font-size: 14px; }
+
+  .toast {
+    position: fixed; left: 50%; bottom: 24px; z-index: 60;
+    transform: translate(-50%, 20px);
+    background: #222; color: #fff;
+    font-size: 14px; font-weight: 600;
+    padding: 10px 16px;
+    border-radius: 999px;
+    opacity: 0; pointer-events: none;
+    transition: all .2s;
+    max-width: 90vw;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  .proto-controls {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+    background: #2a2a2a; color: #ddd;
+    font-size: 12px;
+    display: flex; gap: 8px; justify-content: center; align-items: center;
+    padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+    flex-wrap: wrap;
+  }
+  .proto-controls .tag { color: #888; text-transform: uppercase; letter-spacing: .05em; }
+  .proto-controls button {
+    font: inherit;
+    background: #444; color: #eee;
+    border: 1px solid #555; border-radius: 999px;
+    padding: 4px 10px; cursor: pointer;
+  }
+  .proto-controls button.on { background: var(--accent); border-color: var(--accent); }
+
+  .kbd-hint {
+    display: none;
+    margin-left: auto;
+    font-size: 12px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 1px 7px;
+    color: var(--muted);
+  }
+
+  @media (min-width: 900px) {
+    .app {
+      max-width: 1080px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      grid-template-areas:
+        "top  top"
+        "acts sold"
+        "snap sold";
+      column-gap: 28px;
+      align-items: start;
+    }
+    header.top { grid-area: top; }
+    #quickActions { grid-area: acts; }
+    #snapshot { grid-area: snap; }
+    #recentSold { grid-area: sold; }
+
+    .kbd-hint { display: inline-block; }
+
+    .action { padding: 18px 16px; font-size: 15px; text-align: left; display: flex; align-items: center; gap: 10px; }
+    .action .glyph { margin-bottom: 0; }
+    .actions, .card { border-radius: 16px; }
+
+    .row:hover, .pick:hover, .guided .step button:hover { background: #f0f0ec; }
+    .btn:hover { filter: brightness(.97); }
+
+    .sheet {
+      top: 50%; left: 50%; right: auto; bottom: auto;
+      width: 520px; max-width: calc(100vw - 64px);
+      border-radius: 18px;
+      max-height: 82vh;
+      transform: translate(-50%, -46%);
+      opacity: 0;
+      transition: transform .16s ease-out, opacity .16s;
+    }
+    .sheet.open { transform: translate(-50%, -50%); opacity: 1; }
+    .sheet .grab { display: none; }
+    .sheet .sheet-foot { padding-bottom: 16px; }
+
+    .overlay-inner { max-width: 760px; }
+
+    .palette-box { max-width: 560px; margin-top: 14vh; }
+    .palette-box input { font-size: 18px; }
+    .palette-item { padding: 11px 14px; }
+
+    .proto-controls {
+      left: auto; right: 16px; bottom: 16px;
+      border-radius: 999px;
+      box-shadow: 0 6px 24px rgba(0,0,0,.35);
+      padding: 8px 12px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="app" id="app">
+  <header class="top">
+    <div class="date">Понедельник, 13 октября</div>
+    <button class="searchbar" id="openPalette">🔍&nbsp; Поиск: товары, материалы, действия<span class="kbd-hint">/</span></button>
+  </header>
+
+  <div id="quickActions"></div>
+  <div id="snapshot"></div>
+  <div id="recentSold"></div>
+</div>
+
+<div class="backdrop" id="backdrop"></div>
+
+<div class="sheet" id="sheet">
+  <div class="grab"></div>
+  <div class="sheet-head">
+    <b id="sheetTitle"></b>
+    <button class="iconbtn" id="sheetClose">✕</button>
+  </div>
+  <div class="sheet-body" id="sheetBody"></div>
+  <div class="sheet-foot" id="sheetFoot"></div>
+</div>
+
+<div class="overlay-screen" id="screen">
+  <div class="overlay-inner">
+    <div class="screen-head">
+      <button class="iconbtn" id="screenBack">← Назад</button>
+      <b id="screenTitle"></b>
+    </div>
+    <div id="screenBody"></div>
+  </div>
+</div>
+
+<div class="palette" id="palette">
+  <div class="palette-box">
+    <input id="paletteInput" placeholder="Поиск или командa…" autocomplete="off" />
+    <div class="palette-list" id="paletteList"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="proto-controls">
+  <span class="tag">прототип</span>
+  <button id="toggleData">данные: есть</button>
+  <button id="toggleFlag" class="on">флаг «производство»: вкл</button>
+</div>
+
+<script>
+const templates = [
+  { id: 1, name: 'Керамическая кружка «Утро»', hours: 1.5,
+    materials: [ { name: 'Глина шамот, светлая', qty: 0.4, unit: 'кг' }, { name: 'Глазурь, синяя', qty: 0.05, unit: 'кг' } ] },
+  { id: 2, name: 'Доска для сыра «Дуб»', hours: 1,
+    materials: [ { name: 'Дуб, доска 40 мм', qty: 1, unit: 'шт' }, { name: 'Масло дубовое', qty: 0.05, unit: 'шт' } ] },
+  { id: 3, name: 'Свеча лавандовая', hours: 0.5,
+    materials: [ { name: 'Воск соевый', qty: 0.3, unit: 'шт' }, { name: 'Фитиль хлопковый', qty: 1, unit: 'шт' } ] },
+  { id: 4, name: 'Тарелка «Море»', hours: 1.2,
+    materials: [ { name: 'Глина шамот, светлая', qty: 0.5, unit: 'кг' } ] }
+];
+
+const variants = [
+  { id: 11, path: 'Глина › Шамот › Светлая', unit: 'кг', stock: 12.5 },
+  { id: 12, path: 'Глина › Шамот › Тёмная', unit: 'кг', stock: 4 },
+  { id: 13, path: 'Глазурь › Синяя › Матовая', unit: 'кг', stock: 1.2 },
+  { id: 14, path: 'Воск › Соевой › 100%', unit: 'шт', stock: 30 },
+  { id: 15, path: 'Дуб › Доска › 40 мм', unit: 'шт', stock: 6 },
+  { id: 16, path: 'Ткань › Лён › Синий', unit: 'м', stock: 18 }
+];
+
+const initialItems = () => {
+  const rows = [
+    [1, 480], [1, 520], [1, 480], [1, 510], [1, 480],
+    [2, 650], [2, 650], [2, 700],
+    [3, 220], [3, 220], [3, 240], [3, 220], [3, 220], [3, 240],
+    [3, 220], [3, 220], [3, 240], [3, 220], [3, 220], [3, 240]
+  ];
+  return rows.map(([templateId, cost], i) => ({
+    id: i + 1, templateId, cost,
+    created: i < 10 ? '12.10' : '13.10'
+  }));
+};
+
+const initialSold = () => ([
+  { id: 101, templateId: 1, date: '13.10', price: 900, customer: 'Анна, ярмарка' },
+  { id: 102, templateId: 3, date: '13.10', price: 350, customer: 'Заказ инстаграм' },
+  { id: 103, templateId: 2, date: '12.10', price: 1100, customer: 'Кофейня «Кедр»' }
+]);
+
+const state = {
+  items: initialItems(),
+  sold: initialSold(),
+  hasData: true,
+  productionFlag: true,
+  nextItemId: 500
+};
+
+const $ = (id) => document.getElementById(id);
+const templateById = (id) => templates.find((t) => t.id === id);
+const itemLabel = (item) => templateById(item.templateId).name;
+const inStockItems = () => state.hasData ? state.items : [];
+
+function countsByTemplate() {
+  return templates.map((t) => ({
+    template: t,
+    count: inStockItems().filter((i) => i.templateId === t.id).length
+  }));
+}
+
+function render() {
+  renderQuickActions();
+  renderSnapshot();
+  renderRecentSold();
+}
+
+function renderQuickActions() {
+  const total = inStockItems().length;
+  const actions = [
+    { key: 'sale', glyph: '₽', label: 'Продажа', disabled: total === 0,
+      note: total === 0 ? 'нет товаров' : '' },
+    { key: 'supply', glyph: '📦', label: 'Приход', disabled: false },
+    state.productionFlag
+      ? { key: 'produce', glyph: '🛠', label: 'Производство', disabled: !state.hasData }
+      : null
+  ].filter(Boolean);
+
+  $('quickActions').innerHTML = `
+    <h2 class="section">Действия</h2>
+    <div class="actions">
+      ${actions.map((a) => `
+        <button class="action" data-action="${a.key}" ${a.disabled ? 'disabled style="opacity:.5"' : ''}>
+          <span class="glyph">${a.glyph}</span>${a.label}
+        </button>`).join('')}
+    </div>
+    <p class="hint">Открывается на месте — вести учёт можно не уходя со страницы.</p>`;
+}
+
+function renderSnapshot() {
+  if (!state.productionFlag) { $('snapshot').innerHTML = ''; return; }
+
+  const groups = countsByTemplate();
+  const total = inStockItems().length;
+
+  if (!state.hasData) {
+    $('snapshot').innerHTML = `
+      <h2 class="section">Начало работы</h2>
+      <div class="card guided">
+        <div class="step"><span class="n">1</span><div><b>Заведите материал</b><span>Тип → материал → вариант (цвет, размер)</span><br><button data-action="guide-material">Добавить материал</button></div></div>
+        <div class="step"><span class="n">2</span><div><b>Запишите первый приход</b><span>Закупка: количество, цена, поставщик</span><br><button data-action="supply">Записать приход</button></div></div>
+        <div class="step"><span class="n">3</span><div><b>Создайте шаблон изделия</b><span>Состав, материалы, часы работы</span><br><button data-action="guide-template">Создать шаблон</button></div></div>
+        <div class="step"><span class="n">4</span><div><b>Выпустите первое изделие</b><span>Материалы спишутся со склада</span></div></div>
+      </div>`;
+    return;
+  }
+
+  $('snapshot').innerHTML = `
+    <h2 class="section">В наличии</h2>
+    <div class="card">
+      <div class="summary">
+        <span class="big">${total} шт.</span>
+        <span class="secondary">${groups.filter((g) => g.count > 0).length} из ${templates.length} позиций</span>
+      </div>
+      ${groups.map(({ template, count }) => `
+        <button class="row" data-template="${template.id}">
+          <span>
+            <span class="primary">${template.name}</span><br>
+            <span class="secondary">себестоимость от ${Math.min(...state.items.filter((i) => i.templateId === template.id).map((i) => i.cost), Infinity) === Infinity ? '—' : Math.min(...state.items.filter((i) => i.templateId === template.id).map((i) => i.cost)) + ' ₽'}</span>
+          </span>
+          <span class="count ${count === 0 ? 'zero' : ''}">${count} шт.</span>
+        </button>`).join('')}
+    </div>
+    <p class="hint">Полный склад — со статусами и стоимостью — по тапу на позицию.</p>`;
+}
+
+function renderRecentSold() {
+  if (!state.hasData || state.sold.length === 0) {
+    $('recentSold').innerHTML = '';
+    return;
+  }
+  const recent = [...state.sold].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 5);
+  $('recentSold').innerHTML = `
+    <h2 class="section">Недавно продано</h2>
+    <div class="card">
+      ${recent.map((s) => `
+        <div class="row" style="cursor:default">
+          <span>
+            <span class="primary">${templateById(s.templateId).name}</span><br>
+            <span class="secondary">${s.date} · ${s.customer || 'без клиента'}</span>
+          </span>
+          <span class="count">${s.price} ₽</span>
+        </div>`).join('')}
+    </div>
+    <p class="hint">Подтверждение: «я уже записал эту продажу».</p>`;
+}
+
+function openSheet(title, bodyHtml, footHtml) {
+  $('sheetTitle').textContent = title;
+  $('sheetBody').innerHTML = bodyHtml;
+  $('sheetFoot').innerHTML = footHtml || '';
+  $('sheetFoot').style.display = footHtml ? 'flex' : 'none';
+  $('sheet').classList.add('open');
+  $('backdrop').classList.add('open');
+}
+
+function closeSheet() {
+  $('sheet').classList.remove('open');
+  $('backdrop').classList.remove('open');
+}
+
+function toast(msg) {
+  const el = $('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+function saleFlow(itemId) {
+  if (!itemId) {
+    const groups = countsByTemplate().filter((g) => g.count > 0);
+    openSheet('Что продано?', `
+      <input id="saleSearch" placeholder="Поиск по изделию…" autocomplete="off" />
+      <div class="picklist" id="saleList">
+        ${groups.map(({ template }) => `
+          <div class="grouptitle">${template.name}</div>
+          ${state.items.filter((i) => i.templateId === template.id).map((i) => `
+            <button class="pick" data-sale-item="${i.id}" data-search="${template.name.toLowerCase()}">
+              <span><b>${template.name}</b><br><span class="meta">№${i.id} · себестоимость ${i.cost} ₽</span></span>
+              <span class="meta">→</span>
+            </button>`).join('')}`).join('')}
+      </div>`);
+    $('saleSearch').addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase();
+      document.querySelectorAll('#saleList .pick').forEach((el) => {
+        el.style.display = el.dataset.search.includes(q) ? '' : 'none';
+      });
+    });
+    return;
+  }
+
+  const item = state.items.find((i) => i.id === itemId);
+  if (!item) { toast('Издание уже продано'); return; }
+
+  openSheet('Продажа', `
+    <div class="pick selected" style="cursor:default">
+      <span><b>${itemLabel(item)}</b><br><span class="meta">№${item.id} · себестоимость ${item.cost} ₽</span></span>
+      <span class="badge">в наличии</span>
+    </div>
+    <div class="grid2">
+      <label class="field"><span>Дата продажи</span><input type="date" id="saleDate" value="2026-10-13" /></label>
+      <label class="field"><span>Цена, ₽</span><input type="number" id="salePrice" inputmode="numeric" placeholder="900" /></label>
+    </div>
+    <label class="field"><span>Покупатель</span><input id="saleCustomer" placeholder="Анна, ярмарка" /></label>
+    <label class="field"><span>Канал / место</span><input id="saleChannel" placeholder="Ярмарка, инстаграм, магазин…" /></label>
+    <label class="field"><span>Заметка (необязательно)</span><textarea id="saleNotes"></textarea></label>`,
+    `<button class="btn ghost" data-nav="sale-back" data-item="${item.id}">← Назад</button>
+     <button class="btn primary" id="saleSave">Записать продажу</button>`);
+
+  $('saleSave').addEventListener('click', () => {
+    const d = $('saleDate').value;
+    const date = d ? d.slice(8, 10) + '.' + d.slice(5, 7) : '13.10';
+    state.items = state.items.filter((i) => i.id !== item.id);
+    state.sold.unshift({
+      id: item.id, templateId: item.templateId, date,
+      price: Number($('salePrice').value) || 0,
+      customer: $('saleCustomer').value
+    });
+    closeSheet();
+    render();
+    toast('Продажа записана — изделие снято со склада');
+  });
+}
+
+function supplyFlow() {
+  openSheet('Приход материалов', `
+    <input id="supplySearch" placeholder="Найти вариант материала…" autocomplete="off" />
+    <p class="hint">Где нет варианта — «+ Новый материал» создаёт его на месте.</p>
+    <div class="picklist" id="supplyList">
+      ${variants.map((v) => `
+        <button class="pick" data-supply-variant="${v.id}" data-search="${v.path.toLowerCase()}">
+          <span><b>${v.path}</b><br><span class="meta">склад: ${v.stock} ${v.unit}</span></span>
+          <span class="meta">→</span>
+        </button>`).join('')}
+      <button class="pick" data-supply-new><span><b>+ Новый материал</b><br><span class="meta">тип → материал → вариант</span></span></button>
+    </div>`);
+
+  $('supplySearch').addEventListener('input', (e) => {
+    const q = e.target.value.toLowerCase();
+    document.querySelectorAll('#supplyList .pick').forEach((el) => {
+      el.style.display = (el.dataset.search || '+ новый материал').includes(q) ? '' : 'none';
+    });
+  });
+}
+
+function supplyDetails(variantId) {
+  const v = variants.find((x) => x.id === variantId);
+  openSheet('Приход', `
+    <div class="pick selected" style="cursor:default">
+      <span><b>${v.path}</b><br><span class="meta">склад: ${v.stock} ${v.unit}</span></span>
+      <span class="badge">${v.unit}</span>
+    </div>
+    <div class="grid2">
+      <label class="field"><span>Количество</span><input type="number" id="supQty" inputmode="decimal" placeholder="10" /></label>
+      <label class="field"><span>Ед. измерения</span>
+        <select id="supUnit">
+          <option ${v.unit === 'шт' ? 'selected' : ''}>шт</option>
+          <option ${v.unit === 'м' ? 'selected' : ''}>м</option>
+        </select></label>
+    </div>
+    <div class="grid2">
+      <label class="field"><span>Цена закупки, ₽</span><input type="number" id="supPrice" inputmode="decimal" placeholder="1200" /></label>
+      <label class="field"><span>Цена за единицу, ₽</span><input id="supUnitCost" readonly placeholder="—" /></label>
+    </div>
+    <label class="field"><span>Поставщик</span><input id="supSupplier" list="suppliers" placeholder="Керамика-Юг" /></label>
+    <datalist id="suppliers"><option>Керамика-Юг</option><option>Опт-Ткань</option><option>Свеча-Маркет</option></datalist>
+    <label class="field"><span>Описание / ссылка (необязательно)</span><input id="supDesc" placeholder="https://…" /></label>`,
+    `<button class="btn ghost" data-nav="supply-back">← Назад</button>
+     <button class="btn primary" id="supSave">Записать приход</button>`);
+
+  const calc = () => {
+    const q = Number($('supQty').value), p = Number($('supPrice').value);
+    $('supUnitCost').value = q > 0 && p > 0 ? (p / q).toFixed(2) : '';
+  };
+  $('supQty').addEventListener('input', calc);
+  $('supPrice').addEventListener('input', calc);
+  $('supSave').addEventListener('click', () => {
+    const q = Number($('supQty').value);
+    if (q > 0) v.stock = Math.round((v.stock + q) * 10) / 10;
+    closeSheet();
+    toast(`Приход записан: ${v.path} +${q || 0} ${v.unit}`);
+  });
+}
+
+function produceFlow() {
+  openSheet('Что производим?', `
+    <div class="picklist">
+      ${templates.map((t) => `
+        <button class="pick" data-produce-template="${t.id}">
+          <span><b>${t.name}</b><br><span class="meta">${t.hours} ч работы · ${t.materials.length} материала</span></span>
+          <span class="meta">→</span>
+        </button>`).join('')}
+    </div>`);
+}
+
+function produceDetails(templateId) {
+  const t = templateById(templateId);
+  openSheet('Производство', `
+    <div class="pick selected" style="cursor:default">
+      <span><b>${t.name}</b><br><span class="meta">${t.hours} ч на изделие</span></span>
+    </div>
+    <label class="field"><span>Сколько штук (партия)</span><input type="number" id="prodQty" value="1" min="1" inputmode="numeric" /></label>
+    <label class="field"><span>Материалы (спишутся со склада)</span></label>
+    ${t.materials.map((m) => `
+      <div class="supply-line"><span>${m.name}</span><span>${m.qty} ${m.unit}</span></div>`).join('')}
+    <p class="hint">Партия выбирается целиком, при нехватке — производство невозможно.</p>
+    <label class="field"><span>Фактические часы работы</span><input type="number" id="prodHours" value="${t.hours}" step="0.1" inputmode="decimal" /></label>
+    <label class="field"><span>Дополнительные расходы, ₽</span><input type="number" id="prodExtra" placeholder="0" inputmode="numeric" /></label>`,
+    `<button class="btn ghost" data-nav="produce-back">← Назад</button>
+     <button class="btn primary" id="prodSave">Выпустить</button>`);
+
+  $('prodSave').addEventListener('click', () => {
+    const n = Math.max(1, Number($('prodQty').value) || 1);
+    const hours = Number($('prodHours').value) || t.hours;
+    const extra = Number($('prodExtra').value) || 0;
+    const base = Math.round(200 + hours * 300 + extra / Math.max(1, n));
+    for (let k = 0; k < n; k++) {
+      state.items.push({ id: state.nextItemId++, templateId: t.id, cost: base, created: '13.10' });
+    }
+    closeSheet();
+    render();
+    toast(`Выпущено: ${t.name} × ${n}`);
+  });
+}
+
+function openInventory(templateId) {
+  const items = inStockItems().filter((i) => !templateId || i.templateId === templateId);
+  $('screenTitle').textContent = templateId ? templateById(templateId).name : 'В наличии';
+  $('screenBody').innerHTML = items.length ? `
+    <div class="card" style="margin-top:14px">
+      ${items.map((i) => `
+        <button class="row" data-item-detail="${i.id}">
+          <span><span class="primary">${itemLabel(i)} №${i.id}</span><br>
+          <span class="secondary">создано ${i.created} · ${i.cost} ₽</span></span>
+          <span class="badge">в наличии</span>
+        </button>`).join('')}
+    </div>` : `
+    <p class="empty-line">Здесь пусто. Изделия появятся после производства.</p>`;
+  $('screen').classList.add('open');
+}
+
+function openItemDetail(itemId) {
+  const item = state.items.find((i) => i.id === itemId);
+  if (!item) { toast('Изделие недоступно'); return; }
+  $('screenTitle').textContent = `${itemLabel(item)} №${item.id}`;
+  $('screenBody').innerHTML = `
+    <div class="card" style="margin-top:14px">
+      <div class="row" style="cursor:default"><span class="secondary">Статус</span><span class="badge">в наличии</span></div>
+      <div class="row" style="cursor:default"><span class="secondary">Себестоимость</span><b>${item.cost} ₽</b></div>
+      <div class="row" style="cursor:default"><span class="secondary">Создано</span><b>${item.created}</b></div>
+    </div>
+    <div style="display:flex; gap:8px; margin-top:14px">
+      <button class="btn primary" style="flex:1" data-sell-detail="${item.id}">Продать</button>
+      <button class="btn" style="flex:1" data-edit-item="${item.id}">Изменить</button>
+    </div>
+    <p class="hint">Стоимость и состав — здесь; главная страница её не показывает.</p>`;
+  $('screen').classList.add('open');
+}
+
+const paletteEntries = () => [
+  { label: 'Продать изделие', kind: 'действие', run: () => saleFlow(null), show: inStockItems().length > 0 },
+  { label: 'Записать приход', kind: 'действие', run: () => supplyFlow(), show: true },
+  { label: 'Выпустить партию', kind: 'действие', run: () => produceFlow(), show: state.productionFlag && state.hasData },
+  { label: 'Склад: всё наличие', kind: 'страница', run: () => openInventory(null), show: true },
+  ...templates.map((t) => ({ label: t.name, kind: 'изделие', run: () => openInventory(t.id), show: true })),
+  { label: 'Материалы', kind: 'раздел', run: () => toast('Вне прототипа'), show: true },
+  { label: 'Настройки', kind: 'раздел', run: () => toast('Вне прототипа'), show: true }
+].filter((e) => e.show);
+
+let paletteCache = [];
+
+function renderPalette() {
+  const q = $('paletteInput').value.toLowerCase();
+  paletteCache = paletteEntries();
+  const visible = paletteCache
+    .map((e, i) => ({ e, i }))
+    .filter(({ e }) => e.label.toLowerCase().includes(q));
+  $('paletteList').innerHTML = visible.length
+    ? visible.map(({ e, i }) => `<button class="palette-item" data-pi="${i}"><span>${e.label}</span><span class="kind">${e.kind}</span></button>`).join('')
+    : '<div class="palette-empty">Нету</div>';
+}
+
+function openPalette() {
+  $('palette').classList.add('open');
+  $('paletteInput').value = '';
+  renderPalette();
+  $('paletteInput').focus();
+}
+
+function closePalette() { $('palette').classList.remove('open'); }
+
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('[data-action],[data-template],[data-sale-item],[data-supply-variant],[data-supply-new],[data-produce-template],[data-nav],[data-item-detail],[data-sell-detail],[data-edit-item],[data-pi]');
+  if (!t) return;
+
+  if (t.dataset.action === 'sale') saleFlow(null);
+  if (t.dataset.action === 'supply') supplyFlow();
+  if (t.dataset.action === 'produce') produceFlow();
+  if (t.dataset.action === 'guide-material' || t.dataset.action === 'guide-template') toast('Вне прототипа — смотрим поток главной');
+  if (t.dataset.template) openInventory(Number(t.dataset.template));
+  if (t.dataset.saleItem) saleFlow(Number(t.dataset.saleItem));
+  if (t.dataset.supplyVariant) supplyDetails(Number(t.dataset.supplyVariant));
+  if (t.dataset.supplyNew) toast('Создание материала — вне прототипа');
+  if (t.dataset.produceTemplate) produceDetails(Number(t.dataset.produceTemplate));
+  if (t.dataset.nav === 'sale-back') saleFlow(null);
+  if (t.dataset.nav === 'supply-back') supplyFlow();
+  if (t.dataset.nav === 'produce-back') produceFlow();
+  if (t.dataset.itemDetail) openItemDetail(Number(t.dataset.itemDetail));
+  if (t.dataset.sellDetail) { $('screen').classList.remove('open'); saleFlow(Number(t.dataset.sellDetail)); }
+  if (t.dataset.editItem) toast('Редактирование — вне прототипа');
+  if (t.dataset.pi !== undefined) {
+    const e2 = paletteCache[Number(t.dataset.pi)];
+    closePalette();
+    if (e2) e2.run();
+  }
+});
+
+$('openPalette').addEventListener('click', openPalette);
+$('paletteInput').addEventListener('input', renderPalette);
+$('palette').addEventListener('click', (e) => { if (e.target === $('palette')) closePalette(); });
+$('sheetClose').addEventListener('click', closeSheet);
+$('backdrop').addEventListener('click', closeSheet);
+$('screenBack').addEventListener('click', () => $('screen').classList.remove('open'));
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') { closePalette(); closeSheet(); $('screen').classList.remove('open'); }
+  if (e.key === '/' && !/input|textarea|select/i.test(document.activeElement.tagName)) {
+    e.preventDefault();
+    openPalette();
+  }
+});
+
+$('toggleData').addEventListener('click', () => {
+  if (state.hasData) {
+    state.backupItems = state.items;
+    state.backupSold = state.sold;
+    state.items = [];
+    state.sold = [];
+  } else {
+    state.items = state.backupItems || initialItems();
+    state.sold = state.backupSold || initialSold();
+  }
+  state.hasData = !state.hasData;
+  $('toggleData').textContent = `данные: ${state.hasData ? 'есть' : 'пусто'}`;
+  render();
+});
+
+$('toggleFlag').addEventListener('click', () => {
+  state.productionFlag = !state.productionFlag;
+  $('toggleFlag').textContent = `флаг «производство»: ${state.productionFlag ? 'вкл' : 'выкл'}`;
+  $('toggleFlag').classList.toggle('on', state.productionFlag);
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
