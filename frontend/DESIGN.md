@@ -336,6 +336,9 @@ Recipes are `cva` variants in the shadcn components (`@base/*` →
 - Transparent background with a bottom `border-b --input` underline.
 - On focus the underline switches to `--ring`.
 - Placeholder `--muted-foreground`; typed text `--foreground`.
+- On error the underline switches to `--destructive` and the message renders as a brown
+  strip (`bg-destructive` + `--destructive-foreground`) — the underline alone is too subtle
+  to carry the state.
 
 ### Cards
 

@@ -14,8 +14,9 @@ mirroring the backend's feature split.
   feature's components. Pages live in `src/router/pages/<Page>/`.
 - **UI component split**: custom, project-authored components live in `src/components/ui/`
   (alias `@ui/*`); shadcn components live in `src/components/ui/base/` (alias `@base/*`) and
-  are installed verbatim via `shadcn add` — never hand-edit them (`components.json` sets
-  `aliases.ui = "@base"`).
+  are installed via `shadcn add` (`components.json` sets `aliases.ui = "@base"`). Keep
+  upstream code verbatim except for design-driven edits required by `DESIGN.md` (token or
+  recipe changes only — e.g. the destructive variant); re-apply those after any reinstall.
 - Aliases (`tsconfig.json`): `@/*` → `src`; `@ui/*` and `@base/*` as defined above.
 - `cn()` from the `cn` package — use it instead of concatenating class strings, or
   conflicting Tailwind utilities survive.
@@ -62,8 +63,11 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
 - **Dark theme is active — never style from light values.** The app renders dark
   (`.dark` block in `src/styles/tailwind.css`); the `:root` light block is documentation
   only and unused. Style via semantic tokens (`bg-popover`, `text-muted-foreground`, …),
-  never hardcoded or light-derived hex. Watch for `dark:` overrides that change base
-  values (e.g. destructive button is `bg-destructive/10` light but `dark:bg-destructive/20`).
+  never hardcoded or light-derived hex. `dark:` overrides are the effective values here,
+  so drop them when they only weaken a base value (the `base-*` registry ships a soft
+  destructive — `bg-destructive/10 text-destructive` — built for a saturated hue; with the
+  brown `--destructive` it was brown-on-brown, now patched to `bg-destructive` +
+  `text-destructive-foreground`).
   The Penpot `Design System — UI Base (shadcn)` frame mirrors `.dark`.
 - **`@base` needs its exact `tsconfig` path entry.** Without the non-wildcard `"@base"`
   mapping (after `@ui/*`), `aliases.ui` resolves to `frontend/@base` instead of
