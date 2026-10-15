@@ -1,4 +1,4 @@
-<!-- agent-md-sync: max-lines=100 -->
+<!-- agent-md-sync: max-lines=120 -->
 
 Important. Currently project is in outdated state. This is expected. This is not live right now and expects further development.
 
@@ -12,9 +12,11 @@ mirroring the backend's feature split.
 - Feature dir: `<f>.api.ts` (thin wrapper over the `Api` class in `src/api`), `<f>.model.ts`
   (types derived from `src/api/schema.d.ts`), `use<F>.ts` (react-query hook), plus the
   feature's components. Pages live in `src/router/pages/<Page>/`.
-- Aliases (`tsconfig.json`): `@/*` → `src`; `@ui/*` → `src/components/ui` (project-authored);
-  `@base/*` → `src/components/ui/base`, shadcn registry files installed verbatim via
-  `shadcn add` (never hand-edit; `components.json` sets `aliases.ui = "@base"`).
+- **UI component split**: custom, project-authored components live in `src/components/ui/`
+  (alias `@ui/*`); shadcn components live in `src/components/ui/base/` (alias `@base/*`) and
+  are installed verbatim via `shadcn add` — never hand-edit them (`components.json` sets
+  `aliases.ui = "@base"`).
+- Aliases (`tsconfig.json`): `@/*` → `src`; `@ui/*` and `@base/*` as defined above.
 - `cn()` from the `cn` package — use it instead of concatenating class strings, or
   conflicting Tailwind utilities survive.
 - Icons come from `lucide-react` (see `components.json` → `iconLibrary`).
@@ -57,6 +59,12 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
 
 ## Gotchas & decisions
 
+- **Dark theme is active — never style from light values.** The app renders dark
+  (`.dark` block in `src/styles/tailwind.css`); the `:root` light block is documentation
+  only and unused. Style via semantic tokens (`bg-popover`, `text-muted-foreground`, …),
+  never hardcoded or light-derived hex. Watch for `dark:` overrides that change base
+  values (e.g. destructive button is `bg-destructive/10` light but `dark:bg-destructive/20`).
+  The Penpot `Design System — UI Base (shadcn)` frame mirrors `.dark`.
 - **`@base` needs its exact `tsconfig` path entry.** Without the non-wildcard `"@base"`
   mapping (after `@ui/*`), `aliases.ui` resolves to `frontend/@base` instead of
   `src/components/ui/base` — `shadcn add` writes there silently. Confirm with

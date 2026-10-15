@@ -12,13 +12,22 @@ interface Props {
 
 export default function Header(props: Props) {
   return (
-    <header className={cn("flex justify-between p-4", props.className)}>
-      Sklad
+    <header
+      className={cn("flex items-center justify-between p-4", props.className)}
+    >
+      <span className="font-heading text-lg font-semibold tracking-wider uppercase">
+        Sklad
+      </span>
       <nav>
         <ul className="flex gap-8">
           {props.navItems.map(({ link, name }) => (
             <li key={link}>
-              <Link to={link}>{name}</Link>
+              <Link
+                to={link}
+                className="text-muted-foreground hover:text-foreground text-xs font-semibold tracking-wide uppercase transition-colors"
+              >
+                {name}
+              </Link>
             </li>
           ))}
         </ul>

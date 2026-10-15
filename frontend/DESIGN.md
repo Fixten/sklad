@@ -1,83 +1,47 @@
 ---
 name: sklad
 description: >-
-  Inventory management SPA with a "Forest & Hide" atelier theme: dark forest
-  surfaces, burnished-brass actions, moss and foliage accents, and an editorial
-  typographic voice.
+  Inventory management SPA with a "Forest & Hide" atelier theme: deep forest
+  green, warm brown and charcoal neutrals, muted brass actions, olive accents,
+  and an editorial typographic voice.
 
 colors:
-  light:
-    background: "oklch(0.982 0.006 128.525)"
-    foreground: "oklch(0.325 0.026 132.005)"
-    card: "oklch(0.965 0.01 131.358)"
-    card-foreground: "oklch(0.325 0.026 132.005)"
-    popover: "oklch(1 0 0)"
-    popover-foreground: "oklch(0.244 0.027 133.765)"
-    primary: "oklch(0.757 0.079 88.436)"
-    primary-foreground: "oklch(0.244 0.027 133.765)"
-    secondary: "oklch(0.931 0.024 119.514)"
-    secondary-foreground: "oklch(0.244 0.027 133.765)"
-    muted: "oklch(0.965 0.01 131.358)"
-    muted-foreground: "oklch(0.495 0.043 129.483)"
-    accent: "oklch(0.931 0.024 119.514)"
-    accent-foreground: "oklch(0.757 0.079 88.436)"
-    destructive: "oklch(0.506 0.193 27.702)"
-    destructive-foreground: "oklch(1 0 0)"
-    border: "oklch(0.904 0.032 122.68)"
-    input: "oklch(0.904 0.032 122.68)"
-    ring: "oklch(0.757 0.079 88.436)"
-    sidebar: "oklch(1 0 0)"
-    sidebar-foreground: "oklch(0.325 0.026 132.005)"
-    sidebar-primary: "oklch(0.757 0.079 88.436)"
-    sidebar-primary-foreground: "oklch(0.244 0.027 133.765)"
-    sidebar-accent: "oklch(0.965 0.01 131.358)"
-    sidebar-accent-foreground: "oklch(0.244 0.027 133.765)"
-    sidebar-border: "oklch(0.904 0.032 122.68)"
-    sidebar-ring: "oklch(0.757 0.079 88.436)"
   dark:
-    background: "oklch(0.2024 0.0187 103.09))"
-    foreground: "oklch(0.889 0.014 88.691)"
-    card: "oklch(0.296 0.04 132.577)"
-    card-foreground: "oklch(0.889 0.014 88.691)"
-    popover: "oklch(0.336 0.046 132.211)"
+    background: "oklch(0.267 0.033 131)"
+    foreground: "oklch(0.979 0.005 95.099)"
+    card: "oklch(0.452 0.047 53.927)"
+    card-foreground: "oklch(0.979 0.005 95.099)"
+    popover: "oklch(0.452 0.047 53.927)"
     popover-foreground: "oklch(0.979 0.005 95.099)"
     primary: "oklch(0.757 0.079 88.436)"
-    primary-foreground: "oklch(0.2024 0.0187 103.09))"
-    secondary: "oklch(0.336 0.046 132.211)"
+    primary-foreground: "oklch(0.267 0.033 131)"
+    secondary: "oklch(0.494 0.058 127.848)"
     secondary-foreground: "oklch(0.979 0.005 95.099)"
-    muted: "oklch(0.244 0.027 133.765)"
-    muted-foreground: "oklch(0.71 0.044 127.169)"
-    accent: "oklch(0.296 0.04 132.577)"
-    accent-foreground: "oklch(0.757 0.079 88.436)"
-    destructive: "oklch(0.838 0.089 26.757)"
-    destructive-foreground: "oklch(0.328 0.134 27.32)"
-    border: "oklch(0.382 0.052 133.073)"
-    input: "oklch(0.382 0.052 133.073)"
+    muted: "oklch(0.288 0.009 67.447)"
+    muted-foreground: "oklch(0.843 0.028 72.764)"
+    accent: "oklch(0.757 0.079 88.436)"
+    accent-foreground: "oklch(0.267 0.033 131)"
+    destructive: "oklch(0.452 0.047 53.927)"
+    destructive-foreground: "oklch(0.979 0.005 95.099)"
+    border: "oklch(0.494 0.058 127.848)"
+    input: "oklch(0.494 0.058 127.848)"
     ring: "oklch(0.757 0.079 88.436)"
-    sidebar: "oklch(0.244 0.027 133.765)"
-    sidebar-foreground: "oklch(0.889 0.014 88.691)"
+    sidebar: "oklch(0.267 0.033 131)"
+    sidebar-foreground: "oklch(0.979 0.005 95.099)"
     sidebar-primary: "oklch(0.757 0.079 88.436)"
-    sidebar-primary-foreground: "oklch(0.2024 0.0187 103.09))"
-    sidebar-accent: "oklch(0.336 0.046 132.211)"
+    sidebar-primary-foreground: "oklch(0.267 0.033 131)"
+    sidebar-accent: "oklch(0.288 0.009 67.447)"
     sidebar-accent-foreground: "oklch(0.979 0.005 95.099)"
-    sidebar-border: "oklch(0.382 s0.052 133.073)"
+    sidebar-border: "oklch(0.494 0.058 127.848)"
     sidebar-ring: "oklch(0.757 0.079 88.436)"
   chart:
-    light:
-      [
-        "oklch(0.477 0.064 128.345)",
-        "oklch(0.41 0.057 131.762)",
-        "oklch(0.34 0.046 132.189)",
-        "oklch(0.58 0.067 127.709)",
-        "oklch(0.494 0.058 127.848)",
-      ]
     dark:
       [
-        "oklch(0.823 0.07 126.74)",
-        "oklch(0.677 0.069 128.067)",
-        "oklch(0.58 0.067 127.709)",
-        "oklch(0.494 0.058 127.848)",
-        "oklch(0.41 0.057 131.762)",
+        "oklch(0.86 0.106 131)",
+        "oklch(0.745 0.091 131)",
+        "oklch(0.63 0.077 131)",
+        "oklch(0.515 0.063 131)",
+        "oklch(0.4 0.049 131)",
       ]
 
 typography:
@@ -146,8 +110,9 @@ components:
 Sklad is an inventory manager (materials, material types, variants). The UI is a
 Vite + React SPA built on **shadcn/ui with a Base UI base** and Tailwind v4
 CSS-variable theming. The theme is **Forest & Hide**: the disciplined serenity of
-a leather artisan's atelier — dark forest surfaces, burnished brass actions, moss
-and foliage accents — carried on an editorial, typographic "sera" foundation.
+a leather artisan's atelier — deep forest green, warm brown and charcoal
+neutrals, burnished-brass actions and olive accents — carried on an editorial,
+typographic "sera" foundation.
 
 This document is the design source of truth. When it disagrees with code, update
 the code (per `AGENTS.md`).
@@ -155,77 +120,145 @@ the code (per `AGENTS.md`).
 ## Overview
 
 - **Voice:** calm, matter-of-fact, utilitarian. Russian UI copy.
-- **Atmosphere:** grounded in forest slate, lichen, vegetable-tanned hide and
-  burnished brass hardware — organic warmth and natural shelter, never cold
-  tech-noir or neon.
+- **Atmosphere:** grounded in forest, warm hide, natural wood, muted brass and
+  stone — organic warmth and natural shelter, never cold tech-noir or neon.
 - **Audience:** independent makers, studio managers and atelier teams balancing
   tactile material craft with inventory counts and batch workflows.
 - **Resonance:** quiet confidence and grounded clarity; the UI recedes so
   material textures, product photography and ledger data stay prominent.
-- **Canvas:** near-black forest in dark mode (`--background`); near-white
-  atelier in light mode.
-- **Action color:** burnished brass `--primary` (identical in both modes) with a
-  deep forest `--primary-foreground` for text/icon on it.
-- **Foliage:** moss/lichen greens (`--secondary`, `--accent`) for structure and
-  secondary actions.
-- **Charts:** a forest green ramp (`--chart-1…5`) for data visualization.
-- **Type:** `Noto Sans Variable` for everything; `Geist Mono Variable` for
-  headings/labels (`--font-heading`).
+- **Theme:** dark-only. Do not maintain or introduce a light theme unless the
+  product requirements explicitly change.
+- **Type:** `Noto Sans Variable` for body and controls; `Geist Mono Variable` for
+  headings and technical labels (`--font-heading`).
 
-## Colors
+## Semantic colors
 
-Semantic roles only — components never reference raw Tailwind palette colors.
-Every role is defined in `:root` and `.dark` in `src/styles/tailwind.css` and
-registered in `@theme inline` as a `--color-*` token.
+Components use semantic tokens only — never raw palette values in component
+classes. This section is the single home of the raw values: the frontmatter
+repeats them verbatim for tooling, and nothing else in the document restates a
+color's meaning. Every role is assigned to its palette color exactly once, in
+the token mapping below. The theme is dark-only; the values live in the `.dark`
+block of `src/styles/tailwind.css` and are registered in `@theme inline` as a
+`--color-*` token.
 
-| Role           | Token                  |
-| -------------- | ---------------------- |
-| Page floor     | `--background`         |
-| Body text      | `--foreground`         |
-| Card surface   | `--card`               |
-| Floating layer | `--popover`            |
-| CTA fill       | `--primary`            |
-| CTA text       | `--primary-foreground` |
-| Secondary fill | `--secondary`          |
-| Soft band      | `--muted`              |
-| Secondary text | `--muted-foreground`   |
-| Hover wash     | `--accent`             |
-| Error          | `--destructive`        |
-| Hairline       | `--border` / `--input` |
-| Focus ring     | `--ring`               |
+### Main brand color
+
+| Color           | Value                    | Meaning and purpose                                                                                                                                                                                                  |
+| --------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Deep Forest** | `oklch(0.267 0.033 131)` | Sklad's main brand color and identity anchor: the app canvas (`--background`) and brand moments, plus the dark text on gold actions. It is the page floor — it anchors the system rather than filling every surface. |
+
+### Palette
+
+Supporting colors, each assigned only once through the tokens in the mapping
+below.
+
+| Color          | Value                        | Meaning and purpose                                                                                                                                                                             |
+| -------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Warm Off-White | `oklch(0.979 0.005 95.099)`  | Primary readable text and foreground icons on dark, olive and brown surfaces (`--foreground` and every light `-foreground`). Never a large page background.                                     |
+| Muted Brass    | `oklch(0.757 0.079 88.436)`  | The action color, reserved for **the most important things only**: the primary CTA, the focus ring and key accent highlights. Always carries Deep Forest text; never a general hover wash.      |
+| Deep Olive     | `oklch(0.494 0.058 127.848)` | Secondary actions and interactive/active elements: the secondary button fill, selected states, structural borders and input underlines. Carries Warm Off-White text.                            |
+| Warm Brown     | `oklch(0.452 0.047 53.927)`  | **Big surfaces only** — cards, floating layers and the destructive surface; the warm hide that contrasts the brand green. Never an accent, never a small control, never text on a dark surface. |
+| Warm Charcoal  | `oklch(0.288 0.009 67.447)`  | Quiet fills: muted bands and the sidebar nav hover — the subdued counterpart to the brown surfaces.                                                                                             |
+| Warm Beige     | `oklch(0.843 0.028 72.764)`  | Secondary text, metadata, helper text and inactive icons (`--muted-foreground`). Verify contrast on every surface it sits on (4.60:1 on brown).                                                 |
+
+### Main color palette
+
+A five-step ramp derived from the main brand color — same hue family, stepped in
+lightness from dark to light. This is **the main color's own palette**: use it as
+such for chart series (`--chart-1…5`), not as general-purpose brand colors.
+Distinguishability comes from the lightness steps, not from hue.
+
+| Token       | Value                    |
+| ----------- | ------------------------ |
+| `--chart-1` | `oklch(0.86 0.106 131)`  |
+| `--chart-2` | `oklch(0.745 0.091 131)` |
+| `--chart-3` | `oklch(0.63 0.077 131)`  |
+| `--chart-4` | `oklch(0.515 0.063 131)` |
+| `--chart-5` | `oklch(0.4 0.049 131)`   |
+
+### Token mapping
+
+Every role resolves to one palette entry; no token carries its own value.
+
+| Token                          | Palette color                 |
+| ------------------------------ | ----------------------------- |
+| `--background`                 | Deep Forest                   |
+| `--foreground`                 | Warm Off-White                |
+| `--card`                       | Warm Brown                    |
+| `--card-foreground`            | Warm Off-White                |
+| `--popover`                    | Warm Brown                    |
+| `--popover-foreground`         | Warm Off-White                |
+| `--primary`                    | Muted Brass                   |
+| `--primary-foreground`         | Deep Forest                   |
+| `--secondary`                  | Deep Olive                    |
+| `--secondary-foreground`       | Warm Off-White                |
+| `--muted`                      | Warm Charcoal                 |
+| `--muted-foreground`           | Warm Beige                    |
+| `--accent`                     | Muted Brass                   |
+| `--accent-foreground`          | Deep Forest                   |
+| `--destructive`                | Warm Brown                    |
+| `--destructive-foreground`     | Warm Off-White                |
+| `--border`                     | Deep Olive                    |
+| `--input`                      | Deep Olive                    |
+| `--ring`                       | Muted Brass                   |
+| `--sidebar`                    | Deep Forest                   |
+| `--sidebar-foreground`         | Warm Off-White                |
+| `--sidebar-primary`            | Muted Brass                   |
+| `--sidebar-primary-foreground` | Deep Forest                   |
+| `--sidebar-accent`             | Warm Charcoal                 |
+| `--sidebar-accent-foreground`  | Warm Off-White                |
+| `--sidebar-border`             | Deep Olive                    |
+| `--sidebar-ring`               | Muted Brass                   |
+| `--chart-1…5`                  | Main color palette, steps 1–5 |
 
 ### Surface architecture
 
 Surfaces layer tonally, from the canvas up to floating layers. Prefer the next
 surface level over a shadow to lift content.
 
-| Level     | Role                 | Token          |
-| --------- | -------------------- | -------------- |
-| Canvas    | Root background      | `--background` |
-| Surface 1 | Workspaces, sidebars | `--sidebar`    |
-| Surface 2 | Cards, grids         | `--card`       |
-| Surface 3 | Nested panels, fills | `--secondary`  |
-| Surface 4 | Elevated badges      | `--border`     |
+| Level       | Role                             | Token                   |
+| ----------- | -------------------------------- | ----------------------- |
+| Canvas      | Root page background             | `--background`          |
+| Surface 1   | Sidebars, quiet bands            | `--sidebar` / `--muted` |
+| Surface 2   | Cards, grids, callouts           | `--card`                |
+| Surface 3   | Floating layers, nested panels   | `--popover`             |
+| Interactive | Secondary actions, active states | `--secondary`           |
+| Highlight   | Primary CTA, focus               | `--primary` / `--ring`  |
 
 ### Linework & accents
 
-- Structural borders are `--border`.
-- Interactive borders (focus, active input, premium tags) use `--ring`.
-- Foliage accents — damp moss and fresh lichen greens — drive toggle states and
-  active tabs (`--accent`) and the secondary action fill (`--secondary`).
+- Structural borders are `--border`; control boundaries (input underlines) use
+  `--input`.
+- Interactive borders (focus, active input) use `--ring`.
+- Active/interactive fills — toggle states, secondary buttons — use
+  `--secondary` (olive); quiet hover bands use `--muted`.
+- Gold (`--primary`, `--accent`) is reserved for the most important moments and
+  always carries Deep Forest text.
 - Titles use the editorial ink `--popover-foreground`; body copy uses
   `--foreground`; metadata and inactive icons use `--muted-foreground`.
 
-Chart ramp: `--chart-1…5` moss → lichen greens, per mode (see frontmatter).
+### Color & contrast guidance
 
-### Contrast notes
-
-- `--muted-foreground` on `--background` and on `--muted` is the secondary-text
-  pairing; verify it stays ≥ 4.5:1 whenever the neutral ramp is touched.
-- `--primary` is brass: text placed **on** it must use `--primary-foreground`
-  (deep forest), never `--foreground`.
-- `--destructive` is the MD3 error role — use `text-destructive` for error text,
-  not `--destructive-foreground` as a text-on-surface color.
+- Verify WCAG contrast for every text/background pairing, especially muted text
+  and text on gold, olive and brown. `--muted-foreground` on `--background`,
+  `--muted` and `--card` is the secondary-text pairing; it stays ≥ 4.5:1
+  (4.60:1 on brown) — keep it there whenever the neutral ramp is touched.
+- Text on gold always uses `--primary-foreground` / `--accent-foreground` (Deep
+  Forest); Warm Off-White on gold is only 2.04:1 and must never be used.
+- **Errors are surfaces.** `--destructive` is a brown fill: where the component
+  already provides a background (destructive button, alert, badge) use it with
+  `--destructive-foreground`. Brown text is allowed only on a light background —
+  never on the dark canvas — and there is no red in the palette.
+- The invalid input underline (`aria-invalid`) turns brown too; it is subtle on
+  purpose, so always pair it with a message or icon. Never communicate status by
+  color alone.
+- Keep success, warning, destructive and informational states semantically
+  distinct from brand accents; add dedicated tokens if the UI ever needs more
+  than the destructive role.
+- Chart colors come from the main color palette and are told apart by lightness;
+  do not add hues to the ramp.
+- Never bypass semantic tokens with raw Tailwind palette colors
+  (`text-green-600` etc.).
 
 ## Typography
 
@@ -273,9 +306,9 @@ Recipes are `cva` variants in the shadcn components (`@base/*` →
 | Recipe               | Component                                        | Notes                                                                            |
 | -------------------- | ------------------------------------------------ | -------------------------------------------------------------------------------- |
 | Primary action       | `Button` `default`                               | Brass fill + `primary-foreground`                                                |
-| Danger               | `Button` `destructive`                           | Soft `bg-destructive/10` + `text-destructive`, not a solid fill                  |
+| Danger               | `Button` `destructive`                           | Brown fill (`bg-destructive`) + `destructive-foreground` text                    |
 | Secondary action     | `Button` `outline`                               | Border + transparent; **the app's default**                                      |
-| Subtle fill          | `Button` `secondary`                             | Moss/lichen neutral fill                                                         |
+| Subtle fill          | `Button` `secondary`                             | Olive secondary fill                                                             |
 | Nav / icon action    | `Button` `ghost`                                 | Hover wash only                                                                  |
 | Text link            | `Button` `link`                                  | Underlined                                                                       |
 | Circular icon action | `Button` `size="icon"` / `IconButton`            | `IconButton` = outline + `size="icon"`                                           |
@@ -291,7 +324,7 @@ Recipes are `cva` variants in the shadcn components (`@base/*` →
 - **Primary (Brass hardware):** `--primary` background, `--primary-foreground`
   text, `font-semibold`. Hover drops to `bg-primary/80`; active nudges down 1px
   (`translate-y-px`).
-- **Secondary (Moss loam):** `--secondary` background, `--secondary-foreground`
+- **Secondary (Olive):** `--secondary` background, `--secondary-foreground`
   text; hover blends 5% `--foreground` into the fill.
 - **Ghost / tertiary:** transparent; hover applies `--muted` background with
   `--foreground` text.
