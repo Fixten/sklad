@@ -94,7 +94,7 @@ sizing:
 
 components:
   button:
-    base: "inline-flex items-center justify-center gap-1.5 rounded-none text-xs font-semibold uppercase tracking-widest"
+    base: "inline-flex items-center justify-center gap-1.5 rounded-none type-label"
     variants: [default, destructive, outline, secondary, ghost, link]
     sizes:
       {
@@ -414,14 +414,35 @@ and likewise for the other roles.
   `typography.input.md` (14px, `text-sm`). Bind `typography.input.md` on frames
   ≥768px and `typography.input.base` below. The pair exists only because Penpot has
   no media queries — do not invent state pairs for the other six roles.
+- **Component-level type is the role — never a private token.** `Button` labels and the
+  `Command` group heading are caps labels: both take `typography.label` and nothing
+  else, in Penpot and in code. `Button`'s `tracking-widest` and `Command`'s heading
+  `tracking-wider` are drift to delete in favour of `type-label`; a component that wants
+  its own size, weight or tracking is asking for a role in the scale, not a local
+  override.
 - **Roles are composites of primitives.** Family is `font.heading`; size is a `text.*`
   token, so the input sizes own their own `text.input.base` / `text.input.md`
   primitives and never track `text.body`; plus `weight.*`, `tracking.*` and
-  `case.uppercase`. Change a primitive and every role referencing it follows.
-- **Penpot token values drop units where the unit is implicit.** `letterSpacing` takes
-  a bare number (`0.05`, not `0.05em` — the validator rejects the suffix) and leading
-  is a bare multiplier. `dimension`/`spacing`/`sizing` tokens are the exception and
-  may keep `px`.
+  `case.uppercase`. Change a primitive and every role referencing it follows. These
+  tiers (`font.*`, `text.*`, `weight.*`, `tracking.*`, `case.*`) exist only in the
+  Penpot token set — the numbers the scale above already names, written once.
+- **Tracking tokens are absolute px, not em.** A typography token's `letterSpacing`
+  lands on the text as px, so each `tracking.*` primitive holds the px value of the em
+  the scale names, at that role's size: `tracking.label` 0.3 (0.025em @12),
+  `tracking.title` 0.9 (0.05em @18) and `tracking.display` 1.2 (0.05em @24). Leading and
+  other composite numbers stay bare multipliers; only
+  `dimension`/`spacing`/`sizing` tokens keep `px`.
+- **Bind the composite; never set type by hand.** Apply `typography.*` to a text's
+  `typography` property and nothing else — any manual family, size, weight, leading or
+  tracking change on that text destroys the binding and leaves the literal behind.
+  Family arrives with the composite, so a bound text needs no separate `font.heading`
+  binding.
+- **Copy leading is 1.5 everywhere.** Card and Dialog descriptions are `type-body` like
+  any other copy; the `leading-relaxed` (1.625) on them in
+  `src/components/ui/base/{card,dialog}.tsx` is code drift to remove.
+- **The frame's caption markers take `typography.label`.** They annotate the canvas
+  (specimen names, not copy) and are set in the caps label role; `typography.caption`
+  stays what the scale means by it — 12px copy at weight 400.
 - **`type-data`'s tabular figures have no Penpot equivalent.** A typography token has
   no `font-variant-numeric` field, so `typography.data` carries size, leading and
   weight only; the figure setting must be applied by hand in Penpot.

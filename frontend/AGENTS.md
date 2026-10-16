@@ -88,9 +88,14 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
 
 ## Open threads
 
-- `src/components/ui/base/**` still hardcodes type classes; migrate it onto `Typography` /
-  the `type-*` tokens (deferred).
-- The Penpot canvas still shows the old faces (Noto Sans / Geist Mono, ~1.6k text
-  layers), while its token layer is already migrated to Manrope (`typography.*`, no
-  typography assets — bind tokens, never a typography asset); re-fonting and binding
-  frames is deferred to the `penpot` agent.
+- `src/components/ui/base/**` is migrated onto the `type-*` tokens: controls → `type-input`
+  (the old `text-base … md:text-sm` pair now lives inside the token), labels + Command
+  shortcut/group heading → `type-label`, titles → `type-title`, all copy/descriptions →
+  `type-body`. Raw `tracking-normal`/`normal-case` survive only as `Label` peer overrides
+  (`peer-data-[slot=checkbox|radio-group-item|switch]`), which `type-body` does not reset.
+  `type-caption` has no slot in `base/**` — hints/descriptions are `type-body`.
+- The Penpot canvas still shows the old faces on `Page 1` and `Home — Working Day`
+  (~1.2k text layers). The token layer is migrated to Manrope (`typography.*`, no
+  typography assets — bind tokens, never a typography asset) and the
+  `Design System — UI Base (shadcn)` frame is re-fonted and bound role by role;
+  binding the remaining pages is deferred to the `penpot` agent.
