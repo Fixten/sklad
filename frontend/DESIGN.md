@@ -51,16 +51,17 @@ colors:
 
 typography:
   sans: "'Manrope Variable', sans-serif"
-  heading: "'Manrope Variable', sans-serif"
+  heading: "'Manrope Variable', sans-serif — aliases sans, one face"
   mono: "system stack — Tailwind default, shadcn internals only"
+  component: "@ui/Typography — variant maps 1:1 to the scale below"
   scale:
-    display: "type-display — heading / 24px / 600 / 0.05em / uppercase"
-    title: "type-title — heading / 18px / 600 / 0.05em / uppercase"
-    label: "type-label — sans / 12px / 600 / 0.025em / uppercase"
-    body: "type-body — sans / 14px / 400 / normal"
-    caption: "type-caption — sans / 12px / 400 / normal"
-    data: "type-data — sans / 14px / 400 / tabular-nums"
-    input: "type-input — sans / 16px, md:14px / 400 / normal"
+    display: "type-display — Manrope / 24px / 600 / 0.05em / uppercase"
+    title: "type-title — Manrope / 18px / 600 / 0.05em / uppercase"
+    label: "type-label — Manrope / 12px / 600 / 0.025em / uppercase"
+    body: "type-body — Manrope / 14px / 400 / normal"
+    caption: "type-caption — Manrope / 12px / 400 / normal"
+    data: "type-data — Manrope / 14px / 400 / tabular-nums"
+    input: "type-input — Manrope / 16px, md:14px / 400 / normal — form controls only"
 
 rounded:
   sera: "0 — every shipped component is rounded-none"
@@ -325,8 +326,39 @@ surface level over a shadow to lift content.
 ## Typography
 
 Type is set exclusively through the `type-*` utilities defined in
-`src/styles/tailwind.css`. They are the only sanctioned way to set family, size,
-weight, leading or tracking in project components.
+`src/styles/tailwind.css`, reached through the `Typography` component
+(`@ui/Typography`). The component and the tokens are the only sanctioned way to set
+family, size, weight, leading or tracking.
+
+### `Typography`
+
+```tsx
+<Typography variant="title">Материалы</Typography>
+<Typography variant="label" tagName={Link} to="/material">Материал</Typography>
+```
+
+| Prop        | Default     | Notes                                                      |
+| ----------- | ----------- | ---------------------------------------------------------- |
+| `variant`   | `body`      | One of the six variants below; maps 1:1 onto a token       |
+| `tagName`   | per variant | Polymorphic element or component; rest props are forwarded |
+| `className` | —           | Layout and semantic color only — never type overrides      |
+
+| Variant   | Token          | Default tag | Usage                            |
+| --------- | -------------- | ----------- | -------------------------------- |
+| `display` | `type-display` | `h1`        | Page and section headings        |
+| `title`   | `type-title`   | `h2`        | Card, Dialog and header titles   |
+| `label`   | `type-label`   | `span`      | Buttons, field labels, nav links |
+| `body`    | `type-body`    | `p`         | Default copy, card content       |
+| `caption` | `type-caption` | `p`         | Descriptions and hints           |
+| `data`    | `type-data`    | `span`      | Quantities, counts, prices       |
+
+- Features render text through `<Typography variant>` — never write `type-*` or
+  raw type utilities (`text-*`, `font-*`, `leading-*`, `tracking-*`) at the call
+  site.
+- Keep `type-input` for form controls: `Input`/`Textarea` own their size, so it is
+  not a `Typography` variant.
+
+### Scale
 
 | Token          | Family  | Size / leading   | Weight | Tracking | Transform | Usage                                        |
 | -------------- | ------- | ---------------- | ------ | -------- | --------- | -------------------------------------------- |
@@ -339,7 +371,8 @@ weight, leading or tracking in project components.
 | `type-input`   | Manrope | 16px, `md:` 14px | 400    | normal   | —         | Input and Textarea                           |
 
 - Use the token for the role; never set type with raw utilities (`text-xs`,
-  `text-sm`, `font-*`, `leading-*`, `tracking-*`) in project components.
+  `text-sm`, `font-*`, `leading-*`, `tracking-*`) in project components — go
+  through `Typography` instead.
 - Replace, don't layer: Tailwind emits raw size utilities _after_ the `type-*`
   tokens, so a leftover `text-sm`/`text-lg` wins over the token's size in the
   cascade (family, weight and tracking still come from the token). `cn()` does
@@ -368,6 +401,35 @@ weight, leading or tracking in project components.
   long-form surface ever appears, it gets its own `type-prose` token in this scale
   (mostly a vertical-rhythm recipe for p/list/blockquote/table), defined in
   `tailwind.css` and documented like the others — never a third-party style layer.
+
+### Penpot
+
+The Penpot file mirrors this scale; it never defines it. Each role maps onto a token
+of the same name in the `sklad` token set — `type-display` ↔ `typography.display`,
+and likewise for the other roles.
+
+- **The input is the only role with two states.** `type-input` is also the only
+  utility carrying an `md:` override, so it maps to a base/md pair:
+  `typography.input.base` (16px, the mobile-first `text-base`) and
+  `typography.input.md` (14px, `text-sm`). Bind `typography.input.md` on frames
+  ≥768px and `typography.input.base` below. The pair exists only because Penpot has
+  no media queries — do not invent state pairs for the other six roles.
+- **Roles are composites of primitives.** Family is `font.heading`; size is a `text.*`
+  token, so the input sizes own their own `text.input.base` / `text.input.md`
+  primitives and never track `text.body`; plus `weight.*`, `tracking.*` and
+  `case.uppercase`. Change a primitive and every role referencing it follows.
+- **Penpot token values drop units where the unit is implicit.** `letterSpacing` takes
+  a bare number (`0.05`, not `0.05em` — the validator rejects the suffix) and leading
+  is a bare multiplier. `dimension`/`spacing`/`sizing` tokens are the exception and
+  may keep `px`.
+- **`type-data`'s tabular figures have no Penpot equivalent.** A typography token has
+  no `font-variant-numeric` field, so `typography.data` carries size, leading and
+  weight only; the figure setting must be applied by hand in Penpot.
+- **Do not create typography assets.** The Penpot Assets ▸ Typographies list stays
+  empty: a library typography is a frozen preset that references no token, so text
+  styled by one is off-system, un-themeable and invisible to a token audit. Penpot
+  assets are reserved for what tokens cannot express — the `Button` component
+  library — not for styles this scale already names.
 
 ## Layout & spacing
 
@@ -461,6 +523,8 @@ Recipes are `cva` variants in the shadcn components (`@base/*` →
 - Don't override a component's colors via `className`.
 - Don't introduce serif/extra display faces.
 - Don't bypass semantic tokens with raw palette colors (`text-green-600` etc.).
+- Don't style Penpot text with a typography asset or an off-scale face — bind a
+  `typography.*` token (see Penpot above).
 
 ## UX principles
 

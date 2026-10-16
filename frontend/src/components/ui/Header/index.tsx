@@ -1,6 +1,7 @@
 import { cn } from "cn";
 
 import Link from "../Link";
+import Typography from "../Typography";
 
 interface Props {
   className: string;
@@ -15,19 +16,21 @@ export default function Header(props: Props) {
     <header
       className={cn("flex items-center justify-between p-4", props.className)}
     >
-      <span className="font-heading text-lg font-semibold tracking-wider uppercase">
+      <Typography variant="title" tagName="span">
         Sklad
-      </span>
+      </Typography>
       <nav>
         <ul className="flex gap-8">
           {props.navItems.map(({ link, name }) => (
             <li key={link}>
-              <Link
+              <Typography
+                tagName={Link}
                 to={link}
-                className="text-muted-foreground hover:text-foreground text-xs font-semibold tracking-wide uppercase transition-colors"
+                variant="label"
+                className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 {name}
-              </Link>
+              </Typography>
             </li>
           ))}
         </ul>

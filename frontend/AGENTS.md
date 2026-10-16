@@ -20,10 +20,11 @@ mirroring the backend's feature split.
 - Aliases (`tsconfig.json`): `@/*` → `src`; `@ui/*` and `@base/*` as defined above.
 - `cn()` from the `cn` package — use it instead of concatenating class strings, or
   conflicting Tailwind utilities survive.
-- Type comes only from the `type-*` utilities in `src/styles/tailwind.css` (see
-  `DESIGN.md` §Typography); never raw `text-*`/`font-*`/`tracking-*` in project components.
-  One face: Manrope (`--font-heading` == `--font-sans`). `font-mono` is a system stack
-  reserved for shadcn internals (`kbd`, code slots) — never use it in project components.
+- Type comes only from `@ui/Typography` (`variant` → a `type-*` token in
+  `src/styles/tailwind.css`, see `DESIGN.md` §Typography); never raw
+  `text-*`/`font-*`/`tracking-*` at call sites. One face: Manrope (`--font-heading`
+  == `--font-sans`). `font-mono` is a system stack reserved for shadcn internals
+  (`kbd`, code slots) — never use it in project components.
 - Icons come from `lucide-react` (see `components.json` → `iconLibrary`).
 
 ## Adding API integration for a feature
@@ -47,7 +48,7 @@ mirroring the backend's feature split.
 
 Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
 (`*.browser.test.tsx`), `vrt` (`*.vrt.test.tsx`). Scripts: `pnpm test`,
-`test:browser` (+`:install` for chromium), `test:vrt` / `test:vrt:update`;
+`test:browser` (+`:install` for chromium), `vrt` / `vrt:update`;
 `test:all`/`fullcheck` run all three.
 
 - Explicit imports (`globals: false`) — import `test`/`expect`/`vi` from `vitest`;
@@ -55,7 +56,7 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
 - Snapshots: value via `toMatchSnapshot`/`toMatchInlineSnapshot` (`__snapshots__`
   committed); a11y via `toMatchAriaInlineSnapshot` on `expect.element(locator)`;
   visual via `toMatchScreenshot` (`__screenshots__` committed, `-chromium-linux`
-  suffixed — regenerate with `test:vrt:update` on the target environment).
+  suffixed — regenerate with `vrt:update` on the target environment).
 - `vitest.config.mts` duplicates the `tailwindcss()` plugin on purpose: without it
   the browser/vrt env renders unstyled and screenshots are meaningless. Browser/vrt
   load `src/test/browser.setup.ts` (imports app CSS, freezes animations).
@@ -76,7 +77,8 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
   (5% on Card, 10% on Dialog); per `DESIGN.md` structural linework is
   `--border`, so both are patched to that token — Card at 60%, Dialog at full
   strength.
-  The Penpot `Design System — UI Base (shadcn)` frame mirrors `.dark`.
+  The Penpot `Design System — UI Base (shadcn)` frame mirrors `.dark`; its token layer
+  and type-binding rules live in `DESIGN.md` §Typography ▸ Penpot.
 - **`@base` needs its exact `tsconfig` path entry.** Without the non-wildcard `"@base"`
   mapping (after `@ui/*`), `aliases.ui` resolves to `frontend/@base` instead of
   `src/components/ui/base` — `shadcn add` writes there silently. Confirm with
@@ -86,5 +88,9 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
 
 ## Open threads
 
-- `src/components/ui/base/**` still hardcodes type classes; migrate it onto the `type-*`
-  tokens (deferred — no visual change intended, so VRT should stay flat).
+- `src/components/ui/base/**` still hardcodes type classes; migrate it onto `Typography` /
+  the `type-*` tokens (deferred).
+- The Penpot canvas still shows the old faces (Noto Sans / Geist Mono, ~1.6k text
+  layers), while its token layer is already migrated to Manrope (`typography.*`, no
+  typography assets — bind tokens, never a typography asset); re-fonting and binding
+  frames is deferred to the `penpot` agent.

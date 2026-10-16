@@ -20,7 +20,7 @@
     "test:coverage": "vitest run --project unit --coverage",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test:all": "pnpm test && pnpm test:browser && pnpm test:vrt",
+    "test:all": "pnpm test && pnpm test:browser && pnpm vrt",
     "fullcheck": "pnpm lint && pnpm typecheck && pnpm format:check && pnpm test:all",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
