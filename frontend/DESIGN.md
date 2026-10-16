@@ -408,6 +408,11 @@ The Penpot file mirrors this scale; it never defines it. Each role maps onto a t
 of the same name in the `sklad` token set — `type-display` ↔ `typography.display`,
 and likewise for the other roles.
 
+- **`Typography — Type Scale` is the scale's specimen frame** (page `Design system`,
+  right of `Custom components`). One row per role, the specimen text bound to that
+  role's token, annotated with its resolved numbers and the primitives it composes.
+  Read a role's rendering from there — never retype it, and never reach for a
+  typography asset.
 - **The input is the only role with two states.** `type-input` is also the only
   utility carrying an `md:` override, so it maps to a base/md pair:
   `typography.input.base` (16px, the mobile-first `text-base`) and
