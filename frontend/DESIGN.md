@@ -50,13 +50,17 @@ colors:
       ]
 
 typography:
-  sans: "'Noto Sans Variable', sans-serif"
-  heading: "'Geist Mono Variable', monospace"
+  sans: "'Manrope Variable', sans-serif"
+  heading: "'Manrope Variable', sans-serif"
+  mono: "system stack — Tailwind default, shadcn internals only"
   scale:
-    body: "text-sm / leading-normal (14px)"
-    input: "text-base, md:text-sm"
-    label: "text-xs / font-semibold / uppercase / tracking-wide"
-    caption: "text-xs"
+    display: "type-display — heading / 24px / 600 / 0.05em / uppercase"
+    title: "type-title — heading / 18px / 600 / 0.05em / uppercase"
+    label: "type-label — sans / 12px / 600 / 0.025em / uppercase"
+    body: "type-body — sans / 14px / 400 / normal"
+    caption: "type-caption — sans / 12px / 400 / normal"
+    data: "type-data — sans / 14px / 400 / tabular-nums"
+    input: "type-input — sans / 16px, md:14px / 400 / normal"
 
 rounded:
   sera: "0 — every shipped component is rounded-none"
@@ -133,8 +137,8 @@ the code (per `AGENTS.md`).
   material textures, product photography and ledger data stay prominent.
 - **Theme:** dark-only. Do not maintain or introduce a light theme unless the
   product requirements explicitly change.
-- **Type:** `Noto Sans Variable` for body and controls; `Geist Mono Variable` for
-  headings and technical labels (`--font-heading`).
+- **Type:** `Manrope Variable` for everything — body, controls, headings and
+  technical labels (`--font-sans` == `--font-heading`).
 
 ## Semantic colors
 
@@ -320,16 +324,50 @@ surface level over a shadow to lift content.
 
 ## Typography
 
-| Role    | Family                | Usage                                                      |
-| ------- | --------------------- | ---------------------------------------------------------- |
-| Sans    | `Noto Sans Variable`  | All body copy, controls, tables                            |
-| Heading | `Geist Mono Variable` | `--font-heading`; small component titles, technical labels |
+Type is set exclusively through the `type-*` utilities defined in
+`src/styles/tailwind.css`. They are the only sanctioned way to set family, size,
+weight, leading or tracking in project components.
 
-- Base body size is `text-sm`; inputs are `text-base` on mobile, `md:text-sm`.
-- Labels are `text-xs font-semibold uppercase tracking-wide` (editorial caps).
-- Data columns (quantities, counts, prices) use tabular figures so digits align.
-- Do **not** introduce serif or additional display faces; the geometry here is
-  expressed through mono headings + editorial spacing, not a serif.
+| Token          | Family  | Size / leading   | Weight | Tracking | Transform | Usage                                        |
+| -------------- | ------- | ---------------- | ------ | -------- | --------- | -------------------------------------------- |
+| `type-display` | Manrope | 24px / 1.2       | 600    | 0.05em   | uppercase | Page and section headings                    |
+| `type-title`   | Manrope | 18px / 1         | 600    | 0.05em   | uppercase | Card, Dialog and header titles               |
+| `type-label`   | Manrope | 12px / 1         | 600    | 0.025em  | uppercase | Buttons, field labels, nav links             |
+| `type-body`    | Manrope | 14px / 1.5       | 400    | normal   | —         | Default copy, card content                   |
+| `type-caption` | Manrope | 12px / 1.5       | 400    | normal   | —         | Descriptions and hints                       |
+| `type-data`    | Manrope | 14px / 1.25      | 400    | normal   | —         | Quantities, counts, prices (tabular figures) |
+| `type-input`   | Manrope | 16px, `md:` 14px | 400    | normal   | —         | Input and Textarea                           |
+
+- Use the token for the role; never set type with raw utilities (`text-xs`,
+  `text-sm`, `font-*`, `leading-*`, `tracking-*`) in project components.
+- Replace, don't layer: Tailwind emits raw size utilities _after_ the `type-*`
+  tokens, so a leftover `text-sm`/`text-lg` wins over the token's size in the
+  cascade (family, weight and tracking still come from the token). `cn()` does
+  not resolve these collisions — remove the utility you are replacing.
+- `src/components/ui/base/**` is upstream shadcn code and is exempt until it is
+  migrated onto the tokens — never pull it out of style.
+- The scale is exposed as `@utility type-*`, **not** `--text-*` theme keys:
+  `cn()` classifies unknown `text-*` strings as colors, so a size token placed
+  next to `text-muted-foreground` gets dropped.
+- One face only: Manrope, for copy, controls, headings and labels
+  (`--font-heading` aliases `--font-sans`). Do **not** introduce serif, mono or
+  additional display faces; the geometry is expressed through caps headings +
+  editorial spacing.
+- `--font-mono` is a plain system stack (Tailwind default) and exists only for
+  shadcn internals that reach for `font-mono` (`kbd`, code slots). Project
+  components must not use `font-mono` — there is no intentionally designed mono
+  face in this system.
+- Data columns use tabular figures so digits align (`type-data`).
+- New tokens are added to `tailwind.css` and listed here and in the frontmatter
+  `typography.scale` — keep the three in sync.
+- Typography is self-contained to this file, `tailwind.css` and the tokens above.
+  The shadcn [Typography](https://ui.shadcn.com/docs/components/base/typography)
+  demo page and `@tailwindcss/typography` (`prose`) are deliberately **not** used:
+  they ship a competing untokenized scale (negative tracking, `text-3xl`/`4xl`
+  headings, larger body leading) and none of their guidance is borrowed here. If a
+  long-form surface ever appears, it gets its own `type-prose` token in this scale
+  (mostly a vertical-rhythm recipe for p/list/blockquote/table), defined in
+  `tailwind.css` and documented like the others — never a third-party style layer.
 
 ## Layout & spacing
 

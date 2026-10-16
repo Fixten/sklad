@@ -20,6 +20,10 @@ mirroring the backend's feature split.
 - Aliases (`tsconfig.json`): `@/*` → `src`; `@ui/*` and `@base/*` as defined above.
 - `cn()` from the `cn` package — use it instead of concatenating class strings, or
   conflicting Tailwind utilities survive.
+- Type comes only from the `type-*` utilities in `src/styles/tailwind.css` (see
+  `DESIGN.md` §Typography); never raw `text-*`/`font-*`/`tracking-*` in project components.
+  One face: Manrope (`--font-heading` == `--font-sans`). `font-mono` is a system stack
+  reserved for shadcn internals (`kbd`, code slots) — never use it in project components.
 - Icons come from `lucide-react` (see `components.json` → `iconLibrary`).
 
 ## Adding API integration for a feature
@@ -79,3 +83,8 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
   `npx shadcn info`.
 - **`server.js` is the production host**: Express 5 serving static `dist` plus an SPA catch-all
   `app.get('/{*splat}')` (Express 5 renamed `'*'`), run via `pm2-runtime` on `FRONTEND_PORT`.
+
+## Open threads
+
+- `src/components/ui/base/**` still hardcodes type classes; migrate it onto the `type-*`
+  tokens (deferred — no visual change intended, so VRT should stay flat).
