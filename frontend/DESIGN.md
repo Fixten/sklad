@@ -30,6 +30,7 @@ colors:
     border: "oklch(0.494 0.058 127.848)"
     input: "oklch(0.494 0.058 127.848)"
     ring: "oklch(0.757 0.079 88.436)"
+    overlay: "oklch(0% 0 0)"
     sidebar: "oklch(0.267 0.033 131)"
     sidebar-foreground: "oklch(0.979 0.005 95.099)"
     sidebar-primary: "oklch(0.757 0.079 88.436)"
@@ -138,10 +139,9 @@ the code (per `AGENTS.md`).
 ## Semantic colors
 
 Components use semantic tokens only — never raw palette values in component
-classes (the one exception, the dialog scrim, is called out in
-[Foundation](#foundation)). This section is the single home of the raw values:
-the frontmatter repeats them verbatim for tooling, and nothing else in the
-document restates a color's meaning. Every role is assigned to its palette color
+classes. This section is the single home of the raw values: the frontmatter
+repeats them verbatim for tooling, and nothing else in the document restates a
+color's meaning. Every role is assigned to its palette color
 exactly once, in the token mapping below. The theme is dark-only; the values live
 in the `.dark` block of `src/styles/tailwind.css` and are registered in
 `@theme inline` as a `--color-*` token.
@@ -149,15 +149,16 @@ in the `.dark` block of `src/styles/tailwind.css` and are registered in
 ### Foundation
 
 The non-theme primitives the palette sits on: black, white and transparent.
-They carry **no role and no `--color-*` registration**, so they never appear as
-semantic tokens — only as alpha steps (see
-[Opacity steps](#opacity-steps)) or as CSS keywords.
+They are not palette colors, and only black has been given a role — it backs
+`--overlay` (see the token mapping below) so no component ever names it
+directly. White and transparent carry no registration at all and appear only as
+CSS keywords or framework defaults.
 
-| Color       | Value              | Meaning and purpose                                                                                                                                                                                                                                                                 |
-| ----------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Black       | `oklch(0% 0 0)`    | Absolute darkness, deliberately kept out of the palette — Deep Forest and Warm Brown carry every dark surface instead. Its only use is the dialog scrim, at `black.20`, and it is the one raw value still written directly in a component class; it should become an overlay token. |
-| White       | `oklch(100% 0 0)`  | Absolute lightness. Warm Off-White is the light ink for every surface, so pure white is unused by shipped components and is reserved for framework defaults (e.g. the ring offset color).                                                                                           |
-| Transparent | `oklch(0 0 0 / 0)` | The 0 step: fills and borders that must not paint — control backgrounds (`bg-transparent`) and the button's pre-focus boundary (`border-transparent`).                                                                                                                              |
+| Color       | Value              | Meaning and purpose                                                                                                                                                                             |
+| ----------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Black       | `oklch(0% 0 0)`    | Absolute darkness, deliberately kept out of the palette — Deep Forest and Warm Brown carry every dark surface instead. Registered only as `--overlay`, used at `black.20` for the dialog scrim. |
+| White       | `oklch(100% 0 0)`  | Absolute lightness. Warm Off-White is the light ink for every surface, so pure white is unused by shipped components and is reserved for framework defaults (e.g. the ring offset color).       |
+| Transparent | `oklch(0 0 0 / 0)` | The 0 step: fills and borders that must not paint — control backgrounds (`bg-transparent`) and the button's pre-focus boundary (`border-transparent`).                                          |
 
 ### Main brand color
 
@@ -196,7 +197,8 @@ Distinguishability comes from the lightness steps, not from hue.
 
 ### Token mapping
 
-Every role resolves to one palette entry; no token carries its own value.
+Every role resolves to one palette entry — or, for `--overlay`, to the black
+foundation primitive; no token carries its own value.
 
 | Token                          | Palette color                 |
 | ------------------------------ | ----------------------------- |
@@ -219,6 +221,7 @@ Every role resolves to one palette entry; no token carries its own value.
 | `--border`                     | Deep Olive                    |
 | `--input`                      | Deep Olive                    |
 | `--ring`                       | Muted Brass                   |
+| `--overlay`                    | Black                         |
 | `--sidebar`                    | Deep Forest                   |
 | `--sidebar-foreground`         | Warm Off-White                |
 | `--sidebar-primary`            | Muted Brass                   |
@@ -231,32 +234,32 @@ Every role resolves to one palette entry; no token carries its own value.
 
 ### Opacity steps
 
-Transparency is an alpha step on a palette color, named
+Transparency is an alpha step on a palette or foundation color, named
 `<semantic-color>.<percent>` — e.g. `deep-olive.60` is Deep Olive at 60% alpha
-(names are the kebab-case of the palette entry).
+(names are the kebab-case of the palette or foundation entry).
 Percentages are the only axis; there is no separate opacity scale. The complete
 set in use is **5, 10, 20, 30, 50, 60, 80, 90**; any other step is off-system.
 A color can back several roles, so the same alpha can serve more than one token —
 the `Role` column says which. Dark theme is active, so a step marked _(dark)_ is
 the one that renders.
 
-| Opacity value      | Role                  | Where used                                                                     |
-| ------------------ | --------------------- | ------------------------------------------------------------------------------ |
-| `deep-olive.30`    | `--input`             | Outline button hover fill _(dark)_                                             |
-| `deep-olive.50`    | `--border`            | Command palette separator                                                      |
-| `deep-olive.60`    | `--border`            | Card hairline ring (Tier 2)                                                    |
-| `muted-brass.5`    | `--primary`           | Checked field fill _(light)_                                                   |
-| `muted-brass.10`   | `--primary`           | Checked field fill _(dark)_                                                    |
-| `muted-brass.20`   | `--primary`           | Checked field border _(dark)_                                                  |
-| `muted-brass.30`   | `--primary`, `--ring` | Checked field border _(light)_; focus rings                                    |
-| `muted-brass.50`   | `--ring`              | Global `outline` color (`@layer base` in `src/styles/tailwind.css`)            |
-| `muted-brass.80`   | `--primary`           | Primary button hover fill                                                      |
-| `warm-beige.10`    | `--muted-foreground`  | Kbd chip fill inside input groups                                              |
-| `warm-brown.20`    | `--destructive`       | Invalid-state ring on buttons                                                  |
-| `warm-brown.90`    | `--destructive`       | Destructive button hover fill                                                  |
-| `warm-charcoal.50` | `--muted`             | Ghost button hover _(dark)_ and field hover wash                               |
-| `warm-off-white.5` | `--foreground`        | Mixed into Deep Olive for the secondary button hover                           |
-| `black.20`         | —                     | Dialog scrim — pure Black at 20% (see [Foundation](#foundation)); no token yet |
+| Opacity value      | Role                  | Where used                                                          |
+| ------------------ | --------------------- | ------------------------------------------------------------------- |
+| `deep-olive.30`    | `--input`             | Outline button hover fill _(dark)_                                  |
+| `deep-olive.50`    | `--border`            | Command palette separator                                           |
+| `deep-olive.60`    | `--border`            | Card hairline ring (Tier 2)                                         |
+| `muted-brass.5`    | `--primary`           | Checked field fill _(light)_                                        |
+| `muted-brass.10`   | `--primary`           | Checked field fill _(dark)_                                         |
+| `muted-brass.20`   | `--primary`           | Checked field border _(dark)_                                       |
+| `muted-brass.30`   | `--primary`, `--ring` | Checked field border _(light)_; focus rings                         |
+| `muted-brass.50`   | `--ring`              | Global `outline` color (`@layer base` in `src/styles/tailwind.css`) |
+| `muted-brass.80`   | `--primary`           | Primary button hover fill                                           |
+| `warm-beige.10`    | `--muted-foreground`  | Kbd chip fill inside input groups                                   |
+| `warm-brown.20`    | `--destructive`       | Invalid-state ring on buttons                                       |
+| `warm-brown.90`    | `--destructive`       | Destructive button hover fill                                       |
+| `warm-charcoal.50` | `--muted`             | Ghost button hover _(dark)_ and field hover wash                    |
+| `warm-off-white.5` | `--foreground`        | Mixed into Deep Olive for the secondary button hover                |
+| `black.20`         | `--overlay`           | Dialog scrim (see [Foundation](#foundation))                        |
 
 Element opacity is separate from color alpha and is not tokenized: disabled and
 inactive states use `opacity: 50%` (buttons, inputs, labels, command items), and
