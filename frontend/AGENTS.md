@@ -68,6 +68,10 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
   destructive — `bg-destructive/10 text-destructive` — built for a saturated hue; with the
   brown `--destructive` it was brown-on-brown, now patched to `bg-destructive` +
   `text-destructive-foreground`).
+  The `base-*` registry also rings lifted surfaces with a `--foreground` tint
+  (5% on Card, 10% on Dialog); per `DESIGN.md` structural linework is
+  `--border`, so both are patched to that token — Card at 60%, Dialog at full
+  strength.
   The Penpot `Design System — UI Base (shadcn)` frame mirrors `.dark`.
 - **`@base` needs its exact `tsconfig` path entry.** Without the non-wildcard `"@base"`
   mapping (after `@ui/*`), `aliases.ui` resolves to `frontend/@base` instead of

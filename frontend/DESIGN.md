@@ -6,6 +6,10 @@ description: >-
   and an editorial typographic voice.
 
 colors:
+  foundation:
+    black: "oklch(0% 0 0)"
+    white: "oklch(100% 0 0)"
+    transparent: "oklch(0 0 0 / 0)"
   dark:
     background: "oklch(0.267 0.033 131)"
     foreground: "oklch(0.979 0.005 95.099)"
@@ -102,7 +106,7 @@ components:
     base: "h-10 w-full rounded-none border-b border-b-input bg-transparent px-0 py-1 text-base md:text-sm"
     focus: "focus-visible:border-b-ring aria-invalid:border-b-destructive"
   card:
-    base: "rounded-none bg-card text-sm ring-1 ring-foreground/5 py-(--card-spacing) gap-(--card-spacing) shadow-sm"
+    base: "rounded-none bg-card text-sm ring-1 ring-border/60 py-(--card-spacing) gap-(--card-spacing) shadow-sm"
 ---
 
 # Sklad — Design System
@@ -134,12 +138,26 @@ the code (per `AGENTS.md`).
 ## Semantic colors
 
 Components use semantic tokens only — never raw palette values in component
-classes. This section is the single home of the raw values: the frontmatter
-repeats them verbatim for tooling, and nothing else in the document restates a
-color's meaning. Every role is assigned to its palette color exactly once, in
-the token mapping below. The theme is dark-only; the values live in the `.dark`
-block of `src/styles/tailwind.css` and are registered in `@theme inline` as a
-`--color-*` token.
+classes (the one exception, the dialog scrim, is called out in
+[Foundation](#foundation)). This section is the single home of the raw values:
+the frontmatter repeats them verbatim for tooling, and nothing else in the
+document restates a color's meaning. Every role is assigned to its palette color
+exactly once, in the token mapping below. The theme is dark-only; the values live
+in the `.dark` block of `src/styles/tailwind.css` and are registered in
+`@theme inline` as a `--color-*` token.
+
+### Foundation
+
+The non-theme primitives the palette sits on: black, white and transparent.
+They carry **no role and no `--color-*` registration**, so they never appear as
+semantic tokens — only as alpha steps (see
+[Opacity steps](#opacity-steps)) or as CSS keywords.
+
+| Color       | Value              | Meaning and purpose                                                                                                                                                                                                                                                                 |
+| ----------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Black       | `oklch(0% 0 0)`    | Absolute darkness, deliberately kept out of the palette — Deep Forest and Warm Brown carry every dark surface instead. Its only use is the dialog scrim, at `black.20`, and it is the one raw value still written directly in a component class; it should become an overlay token. |
+| White       | `oklch(100% 0 0)`  | Absolute lightness. Warm Off-White is the light ink for every surface, so pure white is unused by shipped components and is reserved for framework defaults (e.g. the ring offset color).                                                                                           |
+| Transparent | `oklch(0 0 0 / 0)` | The 0 step: fills and borders that must not paint — control backgrounds (`bg-transparent`) and the button's pre-focus boundary (`border-transparent`).                                                                                                                              |
 
 ### Main brand color
 
@@ -211,6 +229,41 @@ Every role resolves to one palette entry; no token carries its own value.
 | `--sidebar-ring`               | Muted Brass                   |
 | `--chart-1…5`                  | Main color palette, steps 1–5 |
 
+### Opacity steps
+
+Transparency is an alpha step on a palette color, named
+`<semantic-color>.<percent>` — e.g. `deep-olive.60` is Deep Olive at 60% alpha
+(names are the kebab-case of the palette entry).
+Percentages are the only axis; there is no separate opacity scale. The complete
+set in use is **5, 10, 20, 30, 50, 60, 80, 90**; any other step is off-system.
+A color can back several roles, so the same alpha can serve more than one token —
+the `Role` column says which. Dark theme is active, so a step marked _(dark)_ is
+the one that renders.
+
+| Opacity value      | Role                  | Where used                                                                     |
+| ------------------ | --------------------- | ------------------------------------------------------------------------------ |
+| `deep-olive.30`    | `--input`             | Outline button hover fill _(dark)_                                             |
+| `deep-olive.50`    | `--border`            | Command palette separator                                                      |
+| `deep-olive.60`    | `--border`            | Card hairline ring (Tier 2)                                                    |
+| `muted-brass.5`    | `--primary`           | Checked field fill _(light)_                                                   |
+| `muted-brass.10`   | `--primary`           | Checked field fill _(dark)_                                                    |
+| `muted-brass.20`   | `--primary`           | Checked field border _(dark)_                                                  |
+| `muted-brass.30`   | `--primary`, `--ring` | Checked field border _(light)_; focus rings                                    |
+| `muted-brass.50`   | `--ring`              | Global `outline` color (`@layer base` in `src/styles/tailwind.css`)            |
+| `muted-brass.80`   | `--primary`           | Primary button hover fill                                                      |
+| `warm-beige.10`    | `--muted-foreground`  | Kbd chip fill inside input groups                                              |
+| `warm-brown.20`    | `--destructive`       | Invalid-state ring on buttons                                                  |
+| `warm-brown.90`    | `--destructive`       | Destructive button hover fill                                                  |
+| `warm-charcoal.50` | `--muted`             | Ghost button hover _(dark)_ and field hover wash                               |
+| `warm-off-white.5` | `--foreground`        | Mixed into Deep Olive for the secondary button hover                           |
+| `black.20`         | —                     | Dialog scrim — pure Black at 20% (see [Foundation](#foundation)); no token yet |
+
+Element opacity is separate from color alpha and is not tokenized: disabled and
+inactive states use `opacity: 50%` (buttons, inputs, labels, command items), and
+the command item check indicator toggles `opacity: 0%` → `100%`. Fully
+transparent fills and borders are the 0 step (see [Foundation](#foundation)) and
+are not listed per color.
+
 ### Surface architecture
 
 Surfaces layer tonally, from the canvas up to floating layers. Prefer the next
@@ -228,7 +281,9 @@ surface level over a shadow to lift content.
 ### Linework & accents
 
 - Structural borders are `--border`; control boundaries (input underlines) use
-  `--input`.
+  `--input`. Surface hairline rings on lifted layers are the same token — cards
+  at `ring-border/60`, modals and popovers at full `ring-border` — never a
+  `--foreground` tint.
 - Interactive borders (focus, active input) use `--ring`.
 - Active/interactive fills — toggle states, secondary buttons — use
   `--secondary` (olive); quiet hover bands use `--muted`.
@@ -292,9 +347,9 @@ surface level over a shadow to lift content.
   - **Tier 0 — Root basin** (`--background`): flat canvas.
   - **Tier 1 — Surface containers** (`--sidebar`, `--muted`): tonal only, no
     ring or shadow.
-  - **Tier 2 — Cards & tiles** (`--card`): `ring-1 ring-foreground/5` +
+  - **Tier 2 — Cards & tiles** (`--card`): `ring-1 ring-border/60` +
     `shadow-sm`.
-  - **Tier 3 — Modals & popovers** (`--popover`): `ring-1 ring-foreground/10` +
+  - **Tier 3 — Modals & popovers** (`--popover`): `ring-1 ring-border` +
     `shadow-md`.
 
 ## Component recipes
@@ -342,7 +397,7 @@ Recipes are `cva` variants in the shadcn components (`@base/*` →
 
 ### Cards
 
-- `--card` surface, `ring-1 ring-foreground/5`, `shadow-sm`.
+- `--card` surface, `ring-1 ring-border/60`, `shadow-sm`.
 
 **Control heights move together.** Button default `h-10`, `sm` `h-9`, `xs` `h-7`,
 `lg` `h-11`; input `h-10`. Change them as a set or forms misalign.
