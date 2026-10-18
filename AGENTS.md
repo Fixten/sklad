@@ -19,3 +19,7 @@ the source of truth — when they conflict with code, change the code.
 # Rules
 
 - User may make changes between your edits, do not revert them.
+
+# Skills
+
+- When running impeccable always work in frontend package.
