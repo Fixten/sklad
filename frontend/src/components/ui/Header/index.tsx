@@ -20,7 +20,7 @@ export default function Header(props: Props) {
         Sklad
       </Typography>
       <nav>
-        <ul className="flex gap-8">
+        <ul className="flex gap-4 sm:gap-8">
           {props.navItems.map(({ link, name }) => (
             <li key={link}>
               <Typography

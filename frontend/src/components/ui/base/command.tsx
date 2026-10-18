@@ -106,7 +106,10 @@ function CommandEmpty({
   return (
     <CommandPrimitive.Empty
       data-slot="command-empty"
-      className={cn("type-body py-6 text-center", className)}
+      className={cn(
+        "type-body mx-auto max-w-(--measure-prose) py-6 text-center",
+        className,
+      )}
       {...props}
     />
   );

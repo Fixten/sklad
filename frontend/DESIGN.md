@@ -31,42 +31,42 @@ colors:
 typography:
   display:
     fontFamily: "Manrope Variable, -apple-system, system-ui, sans-serif"
-    fontSize: "1.5rem"
+    fontSize: "1.75rem"
     fontWeight: 600
-    lineHeight: 1.2
+    lineHeight: 1.1
     letterSpacing: "0.05em"
   title:
     fontFamily: "Manrope Variable, -apple-system, system-ui, sans-serif"
-    fontSize: "1.125rem"
+    fontSize: "1.25rem"
     fontWeight: 600
-    lineHeight: 1
+    lineHeight: 1.15
     letterSpacing: "0.05em"
   label:
     fontFamily: "Manrope Variable, -apple-system, system-ui, sans-serif"
     fontSize: "0.75rem"
     fontWeight: 600
     lineHeight: 1
-    letterSpacing: "0.025em"
+    letterSpacing: "0.08em"
   body:
     fontFamily: "Manrope Variable, -apple-system, system-ui, sans-serif"
-    fontSize: "0.875rem"
-    fontWeight: 400
+    fontSize: "1rem"
+    fontWeight: 450
     lineHeight: 1.5
   caption:
     fontFamily: "Manrope Variable, -apple-system, system-ui, sans-serif"
-    fontSize: "0.75rem"
+    fontSize: "0.875rem"
     fontWeight: 400
     lineHeight: 1.5
   data:
     fontFamily: "Manrope Variable, -apple-system, system-ui, sans-serif"
-    fontSize: "0.875rem"
+    fontSize: "1rem"
     fontWeight: 400
-    lineHeight: 1.25
+    lineHeight: 1.3
     fontFeature: "tnum"
   input:
     fontFamily: "Manrope Variable, -apple-system, system-ui, sans-serif"
     fontSize: "1rem"
-    fontWeight: 400
+    fontWeight: 450
     lineHeight: 1.5
 rounded:
   none: "0"
@@ -244,7 +244,7 @@ for an ordinary one. Every rule below exists to keep that reading honest.
 **Key Characteristics:**
 
 - Dark-only presentation; the light block in `tailwind.css` is documentation, not a shipped mode.
-- One typeface (Manrope) in an uppercase-caps editorial hierarchy.
+- One typeface (Manrope) in an uppercase-caps editorial hierarchy, at a 1rem reading floor with a 65ch prose measure.
 - Brass is rare and always carries Deep Forest text; brown is a surface, never an accent.
 - `rounded-none` on every shipped component — sharp sera geometry.
 - Depth by tonal layering plus hairline `--border` rings; shadows only as a whisper (`shadow-sm`, `shadow-md`).
@@ -426,21 +426,31 @@ the neutral ramp is touched. Never communicate status by color alone.
 data). The caps track wide and lead tight, which gives the interface an engraved,
 ledger-like calm without a second typeface.
 
+The scale is tuned for the phone on the bench, not for a desktop admin panel: the
+reading floor is 1rem, and caps tracking is deliberately absolute-flat — 0.08em at
+label size is 0.96px, the same optical weight as 0.05em at heading size (1.0px at
+title, 1.4px at display). Tracking must never shrink with the caps.
+
 ### Hierarchy
 
-- **Display** (600, 1.5rem, line-height 1.2, tracking 0.05em, uppercase): page and
-  section headings.
-- **Title** (600, 1.125rem, line-height 1, tracking 0.05em, uppercase): card,
-  dialog and header titles.
-- **Label** (600, 0.75rem, line-height 1, tracking 0.025em, uppercase): buttons,
-  field labels, nav links, command group headings and shortcuts.
-- **Body** (400, 0.875rem, line-height 1.5): default copy and card content.
-- **Caption** (400, 0.75rem, line-height 1.5): descriptions and hints.
-- **Data** (400, 0.875rem, line-height 1.25, tabular figures): quantities, counts,
+- **Display** (600, 1.75rem, line-height 1.1, tracking 0.05em, uppercase, balanced):
+  page and section headings.
+- **Title** (600, 1.25rem, line-height 1.15, tracking 0.05em, uppercase, balanced):
+  card, dialog and header titles.
+- **Label** (600, 0.75rem, line-height 1, tracking 0.08em, uppercase): buttons,
+  field labels, nav links, command group headings and shortcuts. Line-height 1 is
+  safe only because label text never wraps — buttons carry `whitespace-nowrap`.
+- **Body** (450, 1rem, line-height 1.5, `text-wrap: pretty`): default copy and card
+  content. Weight 450 is the light-on-dark compensation: Manrope 400 at 1rem on the
+  deep forest canvas and the hide-brown cards reads thinner than it does on paper,
+  and the variable axis absorbs the step without a second face.
+- **Caption** (400, 0.875rem, line-height 1.5, `text-wrap: pretty`): descriptions
+  and hints.
+- **Data** (400, 1rem, line-height 1.3, tabular figures): quantities, counts,
   prices. The only role with a numeric variant, so columns align.
-- **Input** (400, 1rem, line-height 1.5; 0.875rem from `md` up): form controls only,
-  owned by `Input` and `Textarea` — never a `Typography` variant. The 16px mobile
-  size prevents iOS zoom on focus.
+- **Input** (450, 1rem, line-height 1.5): form controls only, owned by `Input` and
+  `Textarea` — never a `Typography` variant. One size at every breakpoint: 1rem is
+  both the reading floor and the iOS no-zoom floor, so there is no `md` step.
 
 ### The `Typography` component
 
@@ -470,6 +480,22 @@ designed mono. Geometry is expressed through caps headings and editorial spacing
 resolve the collision. The scale is exposed as `@utility type-*`, not as `--text-*`
 theme keys, because `cn()` classifies unknown `text-*` strings as colors.
 
+**The Measure Rule.** Prose never spans the shell. Copy caps at
+`--measure-prose` (65ch) and is applied in the prose slots — `CardDescription`,
+`DialogDescription`, `FieldDescription`, `CommandEmpty` — never on `type-body`
+itself: the role also covers full-width controls (`InputGroupText`, the command
+search field), which must keep their box. At the 1rem floor the `max-w-4xl` shell
+would otherwise run copy to ~109 characters per line; 65ch resolves to ~650px
+(Manrope's zero advance at 16px is 10px), which lands Cyrillic copy at ~75–79
+characters per line.
+
+**The Wrapping Rule.** Caps headings (`type-display`, `type-title`) carry
+`text-wrap: balance` so a two- or three-line title breaks evenly instead of
+orphaning a word; reading copy (`type-body`, `type-caption`) carries
+`text-wrap: pretty`, which stops Russian's short prepositions and conjunctions from
+stranding at a line end. Where the property is unsupported the declaration is
+simply dropped — no fallback is needed.
+
 ### Penpot
 
 The Penpot file mirrors this scale; it never defines it. Each role maps onto a
@@ -481,12 +507,10 @@ token of the same name in the `sklad` token set — `type-display` ↔
   role's token, annotated with its resolved numbers and the primitives it composes.
   Read a role's rendering from there — never retype it, and never reach for a
   typography asset.
-- **The input is the only role with two states.** `type-input` is also the only
-  utility carrying an `md:` override, so it maps to a base/md pair:
-  `typography.input.base` (16px) and `typography.input.md` (14px). Bind
-  `typography.input.md` on frames ≥768px and `typography.input.base` below. The pair
-  exists only because Penpot has no media queries — do not invent state pairs for
-  the other six roles.
+- **The input role has one state.** `type-input` holds 1rem at every breakpoint, so
+  it maps to the single `typography.input` token. Do not split it into a base/md
+  pair — the old `md:0.875rem` step is gone, and only roles with genuinely
+  different responsive values earn a pair.
 - **Component-level type is the role — never a private token.** `Button` labels and
   the `Command` group heading are caps labels: both take `typography.label` and
   nothing else, in Penpot and in code. `Button`'s `tracking-widest` and `Command`'s
@@ -494,16 +518,16 @@ token of the same name in the `sklad` token set — `type-display` ↔
   component that wants its own size, weight or tracking is asking for a role in the
   scale, not a local override.
 - **Roles are composites of primitives.** Family is `font.heading`; size is a
-  `text.*` token, so the input sizes own their own `text.input.base` /
-  `text.input.md` primitives and never track `text.body`; plus `weight.*`,
-  `tracking.*` and `case.uppercase`. Change a primitive and every role referencing
-  it follows. These tiers (`font.*`, `text.*`, `weight.*`, `tracking.*`, `case.*`)
-  exist only in the Penpot token set — the numbers the scale above already names,
-  written once.
+  `text.*` token, so the input size owns its own `text.input` primitive and never
+  tracks `text.body`; plus `weight.*` (400 for caption and data, 450 for body and
+  input, 600 for label, title and display), `tracking.*` and `case.uppercase`. Change
+  a primitive and every role referencing it follows. These tiers (`font.*`,
+  `text.*`, `weight.*`, `tracking.*`, `case.*`) exist only in the Penpot token set —
+  the numbers the scale above already names, written once.
 - **Tracking tokens are absolute px, not em.** A typography token's `letterSpacing`
   lands on the text as px, so each `tracking.*` primitive holds the px value of the
-  em the scale names, at that role's size: `tracking.label` 0.3 (0.025em @12),
-  `tracking.title` 0.9 (0.05em @18) and `tracking.display` 1.2 (0.05em @24). Leading
+  em the scale names, at that role's size: `tracking.label` 0.96 (0.08em @12),
+  `tracking.title` 1.0 (0.05em @20) and `tracking.display` 1.4 (0.05em @28). Leading
   and other composite numbers stay bare multipliers; only
   `dimension`/`spacing`/`sizing` tokens keep `px`.
 - **Bind the composite; never set type by hand.** Apply `typography.*` to a text's
@@ -511,11 +535,11 @@ token of the same name in the `sklad` token set — `type-display` ↔
   or tracking change destroys the binding. Family arrives with the composite, so a
   bound text needs no separate `font.heading` binding.
 - **Copy leading is 1.5 everywhere.** Card and Dialog descriptions are `type-body`
-  like any other copy; the `leading-relaxed` (1.625) on them in
-  `src/components/ui/base/{card,dialog}.tsx` is code drift to remove.
+  like any other copy, at the role's own 1.5 — never a local `leading-*` override.
+  Only `type-data` (1.3, tuned to a row of figures) and the caps roles lead tighter.
 - **Frame caption markers take `typography.label`.** They annotate the canvas
   (specimen names, not copy); `typography.caption` stays what the scale means by it
-  — 12px copy at weight 400.
+  — 14px copy at weight 400.
 - **`type-data`'s tabular figures have no Penpot equivalent.** A typography token
   has no `font-variant-numeric` field, so `typography.data` carries size, leading and
   weight only; the figure setting must be applied by hand in Penpot.
@@ -536,12 +560,15 @@ header. Density is comfortable and rhythmic — 4px base unit, everything on
   A surface is added by widening this shell, not by re-inventing the container.
 - **Rhythm:** 4px base spacing unit (Tailwind dynamic scale). Stacks use `gap-*`:
   `gap-2` inside controls, `gap-4` / `gap-6` / `gap-8` between blocks.
-- **Header:** `flex items-center justify-between p-4`; the nav is a `flex gap-8`
-  list.
+- **Header:** `flex items-center justify-between p-4`; the nav is a `gap-4 sm:gap-8`
+  flex list — the tracked caps fit a 375px viewport at `gap-4`, the narrowest width
+  the shell promises.
 - **Filter and form rows:** `flex items-end gap-4` (rows of fields + submit), `gap-8`
   between larger groups.
 - **Field groups:** `Field` is `flex w-full flex-col gap-3` with the `FieldLabel`
   above the control; `FieldGroup` stacks fields at `gap-10`.
+- **Prose:** long copy never runs the width of the column — the prose slots cap at
+  `--measure-prose` (see §Typography ▸ The Measure Rule).
 - **Responsive:** one column at every width; forms collapse to stacked fields on
   narrow viewports. No horizontal overflow at 375px or 1280px.
 
