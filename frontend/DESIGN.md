@@ -50,7 +50,7 @@ typography:
   body:
     fontFamily: "Manrope Variable, -apple-system, system-ui, sans-serif"
     fontSize: "1rem"
-    fontWeight: 450
+    fontWeight: 500
     lineHeight: 1.5
   caption:
     fontFamily: "Manrope Variable, -apple-system, system-ui, sans-serif"
@@ -66,7 +66,7 @@ typography:
   input:
     fontFamily: "Manrope Variable, -apple-system, system-ui, sans-serif"
     fontSize: "1rem"
-    fontWeight: 450
+    fontWeight: 500
     lineHeight: 1.5
 rounded:
   none: "0"
@@ -440,15 +440,16 @@ title, 1.4px at display). Tracking must never shrink with the caps.
 - **Label** (600, 0.75rem, line-height 1, tracking 0.08em, uppercase): buttons,
   field labels, nav links, command group headings and shortcuts. Line-height 1 is
   safe only because label text never wraps — buttons carry `whitespace-nowrap`.
-- **Body** (450, 1rem, line-height 1.5, `text-wrap: pretty`): default copy and card
-  content. Weight 450 is the light-on-dark compensation: Manrope 400 at 1rem on the
-  deep forest canvas and the hide-brown cards reads thinner than it does on paper,
-  and the variable axis absorbs the step without a second face.
+- **Body** (500, 1rem, line-height 1.5, `text-wrap: pretty`): default copy and card
+  content. Weight 500 is the light-on-dark compensation: Manrope 400 at 1rem on the
+  deep forest canvas and the hide-brown cards reads thinner than it does on paper.
+  One whole step above caption rather than an axis value between the two, so the
+  role renders the same in code and in the Penpot file.
 - **Caption** (400, 0.875rem, line-height 1.5, `text-wrap: pretty`): descriptions
   and hints.
 - **Data** (400, 1rem, line-height 1.3, tabular figures): quantities, counts,
   prices. The only role with a numeric variant, so columns align.
-- **Input** (450, 1rem, line-height 1.5): form controls only, owned by `Input` and
+- **Input** (500, 1rem, line-height 1.5): form controls only, owned by `Input` and
   `Textarea` — never a `Typography` variant. One size at every breakpoint: 1rem is
   both the reading floor and the iOS no-zoom floor, so there is no `md` step.
 
@@ -519,7 +520,7 @@ token of the same name in the `sklad` token set — `type-display` ↔
   scale, not a local override.
 - **Roles are composites of primitives.** Family is `font.heading`; size is a
   `text.*` token, so the input size owns its own `text.input` primitive and never
-  tracks `text.body`; plus `weight.*` (400 for caption and data, 450 for body and
+  tracks `text.body`; plus `weight.*` (400 for caption and data, 500 for body and
   input, 600 for label, title and display), `tracking.*` and `case.uppercase`. Change
   a primitive and every role referencing it follows. These tiers (`font.*`,
   `text.*`, `weight.*`, `tracking.*`, `case.*`) exist only in the Penpot token set —
@@ -534,6 +535,13 @@ token of the same name in the `sklad` token set — `type-display` ↔
   `typography` property and nothing else — any manual family, size, weight, leading
   or tracking change destroys the binding. Family arrives with the composite, so a
   bound text needs no separate `font.heading` binding.
+- **Weights are the hundred steps, never axis values between them.** Penpot's weight
+  picker takes 400, 500 or 600, while the browser renders any value on Manrope's
+  200–800 axis. A body weight of 450 was therefore renderable in the app but not in
+  the Penpot file — the composite silently refused to apply, leaving every bound text
+  at its previous size and weight. A role's weight must be a step both surfaces can
+  render; body's light-on-dark compensation is therefore 500, one whole step above
+  caption.
 - **Copy leading is 1.5 everywhere.** Card and Dialog descriptions are `type-body`
   like any other copy, at the role's own 1.5 — never a local `leading-*` override.
   Only `type-data` (1.3, tuned to a row of figures) and the caps roles lead tighter.
