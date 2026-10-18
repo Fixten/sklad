@@ -70,14 +70,17 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
   only and unused. Style via semantic tokens (`bg-popover`, `text-muted-foreground`, …),
   never hardcoded or light-derived hex. `dark:` overrides are the effective values here,
   so drop them when they only weaken a base value (the `base-*` registry ships a soft
-  destructive — `bg-destructive/10 text-destructive` — built for a saturated hue; with the
-  brown `--destructive` it was brown-on-brown, now patched to `bg-destructive` +
+  destructive — `bg-destructive/10 text-destructive` — built for a saturated hue; with a
+  brown `--destructive` it was brown-on-brown, which is why `DESIGN.md` makes the
+  role an Ember fill with a Deep Forest label, patched to `bg-destructive` +
   `text-destructive-foreground`).
   The `base-*` registry also rings lifted surfaces with a `--foreground` tint
   (5% on Card, 10% on Dialog); per `DESIGN.md` structural linework is
   `--border`, so both are patched to that token — Card at 60%, Dialog at full
-  strength.
-  The Penpot `Design System — UI Base (shadcn)` frame mirrors `.dark`; its token layer
+  strength. `--border` is a floor-only tone (3.03:1 on the canvas, 1.50:1 on
+  `--card`), so a ring on an already-brown surface stays a whisper — open thread,
+  not a settled recipe.
+  The Penpot `Components` frame (page `Design system`) mirrors `.dark`; its token layer
   and type-binding rules live in `DESIGN.md` §Typography ▸ Penpot.
 - **`@base` needs its exact `tsconfig` path entry.** Without the non-wildcard `"@base"`
   mapping (after `@ui/*`), `aliases.ui` resolves to `frontend/@base` instead of
@@ -101,5 +104,15 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
 - The Penpot canvas still shows the old faces on `Page 1` and `Home — Working Day`
   (~1.2k text layers). The token layer is migrated to Manrope (`typography.*`, no
   typography assets — bind tokens, never a typography asset) and the
-  `Design System — UI Base (shadcn)` frame is re-fonted and bound role by role;
+  `Components` frame is re-fonted and bound role by role;
   binding the remaining pages is deferred to the `penpot` agent.
+- Colour roles moved in Penpot ahead of the CSS: `--destructive` becomes Ember
+  (`oklch(0.661 0.08 45.402)`) with `--destructive-foreground` = Deep Forest, a new
+  `--invalid` role (Ember) takes error text and underline, and
+  `--border`/`--input`/`--secondary` take the lifted olive
+  (`oklch(0.539 0.057 127.665)`) so a control boundary clears 3:1 on the canvas.
+  `--overlay` carries `black.20`; `warm-brown-20/90` retire in favour of
+  `ember-10/90`. See `DESIGN.md` §Colors.
+- The Penpot `Components` frame is colour-complete — no raw fills or strokes left —
+  but 82 of its texts bind the `fontSize`/`fontWeight` primitives instead of the
+  `typography.*` composite the rule asks for; queued behind the colour work.

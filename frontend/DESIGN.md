@@ -10,15 +10,18 @@ colors:
   deep-forest: "oklch(0.267 0.033 131)"
   warm-off-white: "oklch(0.979 0.005 95.099)"
   muted-brass: "oklch(0.757 0.079 88.436)"
-  deep-olive: "oklch(0.494 0.058 127.848)"
+  deep-olive: "oklch(0.539 0.057 127.665)"
+  ember: "oklch(0.661 0.08 45.402)"
   warm-brown: "oklch(0.452 0.047 53.927)"
   warm-charcoal: "oklch(0.288 0.009 67.447)"
   warm-beige: "oklch(0.843 0.028 72.764)"
   muted-brass-30: "oklch(0.757 0.079 88.436 / 30%)"
   muted-brass-80: "oklch(0.757 0.079 88.436 / 80%)"
-  deep-olive-30: "oklch(0.494 0.058 127.848 / 30%)"
-  deep-olive-50: "oklch(0.494 0.058 127.848 / 50%)"
-  deep-olive-60: "oklch(0.494 0.058 127.848 / 60%)"
+  deep-olive-30: "oklch(0.539 0.057 127.665 / 30%)"
+  deep-olive-50: "oklch(0.539 0.057 127.665 / 50%)"
+  deep-olive-60: "oklch(0.539 0.057 127.665 / 60%)"
+  ember-10: "oklch(0.661 0.08 45.402 / 10%)"
+  ember-90: "oklch(0.661 0.08 45.402 / 90%)"
   warm-charcoal-50: "oklch(0.288 0.009 67.447 / 50%)"
   warm-brown-20: "oklch(0.452 0.047 53.927 / 20%)"
   warm-brown-90: "oklch(0.452 0.047 53.927 / 90%)"
@@ -269,13 +272,27 @@ Exact values live in the frontmatter — this section carries meaning and role.
 
 - **Deep Olive** — secondary actions and interactive/active elements: the secondary
   button fill, selected states, structural borders and input underlines. Carries
-  Warm Off-White text.
+  Warm Off-White text. Its lightness is set so a control boundary clears the floor
+  against Deep Forest (3.03:1) — do not darken it back toward the brand green. It
+  is a _floor-only_ material: on brown surfaces linework and olive controls lose
+  their boundary (see §Linework & accents).
 
 ### Tertiary
 
-- **Warm Brown** — big surfaces only: cards, floating layers and the destructive
-  fill. The warm hide that contrasts the brand green. Never an accent, never a
-  small control, never text on a dark surface.
+- **Warm Brown** — big surfaces only: cards and floating layers. The warm hide that
+  contrasts the brand green. Never an accent, never a small control, never text on
+  a dark surface — and never an action fill: a brown control on a brown surface has
+  no boundary at all (1.00:1).
+
+### Error
+
+- **Ember** — the one signal in the system that is neither green nor brass. It is
+  both the destructive action fill and the error ink, because brown could not do
+  that job: as surface _and_ destructive fill it made the action invisible on cards
+  and dialogs (1.00:1) and weak on the floor (2.02:1). Ember is 4.73:1 on Deep
+  Forest and takes Deep Forest text (4.73:1); Warm Off-White on Ember is 3.00:1 and
+  is forbidden. Ember is never a surface, never decorative, and never spent twice
+  in one view.
 
 ### Neutral
 
@@ -287,7 +304,8 @@ Exact values live in the frontmatter — this section carries meaning and role.
 - **Warm Beige** — secondary text, metadata, helper text, inactive icons
   (`--muted-foreground`).
 - **Black** — absolute darkness, deliberately kept out of the palette; registered
-  only as `--overlay`, used at 20% for the dialog scrim.
+  only as `--overlay`, and the dialog scrim is the alpha step `black.20` (20%) —
+  the token carries the alpha, not the solid black.
 - **White** — absolute lightness; unused by shipped components (framework defaults
   such as the ring offset color only).
 - **Transparent** — the 0 step: control backgrounds (`bg-transparent`) and the
@@ -303,9 +321,12 @@ Series are told apart by lightness, never by adding hues.
 ### Token mapping
 
 Components use semantic tokens only — never a raw palette value in a component
-class. Every role resolves to one palette entry (or, for `--overlay`, to the black
-foundation), so no token carries a value of its own. Values are in the frontmatter
-and in the `.dark` block of `src/styles/tailwind.css`; this table is the mapping.
+class. Every role resolves to one palette entry, so no token carries a value of its
+own. Values are in the frontmatter and in the `.dark` block of
+`src/styles/tailwind.css`; this table is the mapping. Three layers, the same three
+everywhere: **palette values** (frontmatter `colors`, Penpot `palette.*`), **alpha
+steps** (frontmatter `-<percent>` entries, Penpot `opacity.*`) and **roles** (the
+CSS variables below, Penpot `color.*`). Roles bind; palette values never do.
 
 | Token                          | Palette color                 |
 | ------------------------------ | ----------------------------- |
@@ -323,12 +344,13 @@ and in the `.dark` block of `src/styles/tailwind.css`; this table is the mapping
 | `--muted-foreground`           | Warm Beige                    |
 | `--accent`                     | Muted Brass                   |
 | `--accent-foreground`          | Deep Forest                   |
-| `--destructive`                | Warm Brown                    |
-| `--destructive-foreground`     | Warm Off-White                |
+| `--destructive`                | Ember                         |
+| `--destructive-foreground`     | Deep Forest                   |
+| `--invalid`                    | Ember                         |
 | `--border`                     | Deep Olive                    |
 | `--input`                      | Deep Olive                    |
 | `--ring`                       | Muted Brass                   |
-| `--overlay`                    | Black                         |
+| `--overlay`                    | Black, step `black.20`        |
 | `--sidebar`                    | Deep Forest                   |
 | `--sidebar-foreground`         | Warm Off-White                |
 | `--sidebar-primary`            | Muted Brass                   |
@@ -341,9 +363,9 @@ and in the `.dark` block of `src/styles/tailwind.css`; this table is the mapping
 
 ### Opacity steps
 
-Transparency is an alpha step on a palette or foundation color, named
-`<semantic-color>.<percent>` — `deep-olive.60` is Deep Olive at 60% alpha (names
-are the kebab-case of the palette or foundation entry). Percentages are the only
+Transparency is an alpha step on a palette color, named
+`<palette-color>.<percent>` — `deep-olive.60` is Deep Olive at 60% alpha (names
+are the kebab-case of the palette entry). Percentages are the only
 axis; there is no separate opacity scale. The complete set in use is **5, 10, 20,
 30, 50, 60, 80, 90**; any other step is off-system. A color can back several
 roles, so the same alpha can serve more than one token.
@@ -360,8 +382,10 @@ roles, so the same alpha can serve more than one token.
 | `muted-brass.50`   | `--ring`              | Global `outline` color (`@layer base` in `src/styles/tailwind.css`) |
 | `muted-brass.80`   | `--primary`           | Primary button hover fill                                           |
 | `warm-beige.10`    | `--muted-foreground`  | Kbd chip fill inside input groups                                   |
-| `warm-brown.20`    | `--destructive`       | Invalid-state ring on buttons                                       |
-| `warm-brown.90`    | `--destructive`       | Destructive button hover fill                                       |
+| `ember.10`         | `--invalid`           | Error tint behind a message or field on a brown surface             |
+| `ember.90`         | `--destructive`       | Destructive button hover fill                                       |
+| `warm-brown.20`    | —                     | retired: invalid ring is `--invalid` at full strength               |
+| `warm-brown.90`    | —                     | retired: destructive hover is `ember.90`                            |
 | `warm-charcoal.50` | `--muted`             | Ghost/outline button hover and field hover wash                     |
 | `warm-off-white.5` | `--foreground`        | Mixed into Deep Olive for the secondary button hover                |
 | `black.20`         | `--overlay`           | Dialog scrim                                                        |
@@ -393,6 +417,16 @@ surface level over a shadow to lift content.
 - Interactive borders (focus, active input) use `--ring`.
 - Active/interactive fills — toggle states, secondary buttons — use `--secondary`
   (olive); quiet hover bands use `--muted`.
+- **Olive is floor-only.** `--border`, `--input` and `--secondary` are tuned against
+  Deep Forest (3.03:1). On brown they collapse — `--border` on `--card` is 1.50:1
+  and an olive control stroke on a dialog is 1.24:1 — so olive linework and olive
+  controls never sit on a brown surface. Raised surfaces separate tonally, and a
+  control that must appear there changes pattern (ghost action, filled brass)
+  instead of leaning on a line.
+- **Error on brown is never a coloured ink.** Only the light neutrals clear 4.5:1
+  there, so on a raised surface error is carried by an `ember.10` tint plus light
+  text and an icon — the ink stays `--foreground`. On the floor error uses
+  `--invalid` (Ember) as both ink and underline (4.73:1).
 - Titles use the editorial ink `--popover-foreground`; body copy uses
   `--foreground`; metadata and inactive icons use `--muted-foreground`.
 
@@ -403,15 +437,47 @@ view. It always carries Deep Forest text; Warm Off-White on brass is 2.04:1 and
 must never be used.
 
 **The Brown Is A Surface Rule.** Warm Brown fills big surfaces only. It is never an
-accent, never a small control, and never text on the dark canvas.
+accent, never a small control, never text on the dark canvas, and never an action
+fill — brown on brown is 1.00:1, which is exactly how the destructive button used to
+disappear on cards and dialogs.
 
 **The No Raw Palette Rule.** Components reach for semantic tokens. Raw Tailwind
 palette colors (`text-green-600`, `bg-amber-500`) are off-system, in components and
 in Penpot alike.
 
+**The Error Is Ember Rule.** Destruction and error are Ember: `--invalid` for the
+message, underline and icon; `--destructive` (Ember fill, Deep Forest label) on the
+button that acts. Never Warm Off-White on Ember (3.00:1), never Ember as a surface,
+and never two Ember moments in one view.
+
+**The Floor-Only Olive Rule.** Deep Olive is tuned against Deep Forest and stays
+there. On a brown surface olive linework is a whisper and an olive control is
+invisible — lift the surface or change the pattern, never darken the token.
+
 **The Contrast Floor Rule.** `--muted-foreground` on `--background`, `--muted` and
 `--card` is the secondary-text pairing and stays ≥ 4.5:1 (4.60:1 on brown) whenever
-the neutral ramp is touched. Never communicate status by color alone.
+the neutral ramp is touched. A control boundary clears 3:1 against the surface it
+actually sits on (`--input`/`--border`/`--secondary` on the floor: 3.03:1) and error
+ink clears 4.5:1 (`--invalid`: 4.73:1). Never communicate status by color alone.
+
+### Penpot
+
+The Penpot file carries the palette as tokens, never as swatches; the `Colors` frame
+(page `Design system`, right of `Components`) is a read-out of that token set and
+holds no value of its own. Four blocks: **Palette values** (the eight non-chart
+values, one swatch per `palette.*` token), **Chart ramp** (`palette.chart.1`…`5`),
+**Alpha steps over a card** (each `opacity.*` step composited over `color.card`, so a
+translucent step is read at the strength it really lands with) and **Roles** (every
+`color.*` role with its resolved hex and its contrast against `color.background`).
+
+- **The frame binds what it displays.** Each swatch carries the token it names —
+  including the palette swatches, which is the one place a value token is allowed to
+  bind: a specimen of a value is that value. Everywhere else roles bind (§Token
+  mapping).
+- **Swatches carry a `color.border-hairline` keyline.** Deep Forest, Warm Charcoal and
+  the dark chart steps are otherwise invisible on the frame's `color.background`.
+- **The numbers are written at build time, not by hand.** Change a token and re-read
+  the frame; never trust a contrast figure that has outlived the value it describes.
 
 ## Typography
 
@@ -563,14 +629,18 @@ The shell is a single content column, centred, with a fixed top offset for the
 header. Density is comfortable and rhythmic — 4px base unit, everything on
 `gap-*` stacks rather than margins.
 
-- **App shell** (`src/layout/App.layout.tsx`): header and main both
-  `container mx-auto max-w-4xl`; main carries `pt-16` so content clears the header.
+- **App shell** (`src/layout/App.layout.tsx`): the shell owns the gutters — header and
+  main share `px-4 sm:px-6`, so the wordmark and the content column line up at every
+  width. `main` is `mx-auto flex max-w-4xl flex-col gap-8 px-4 pt-6 pb-16 sm:px-6`;
+  the header is static, so there is no clearance offset and no `container` utility.
+  The column _and_ the standard vertical stack live here; pages do not wrap themselves.
   A surface is added by widening this shell, not by re-inventing the container.
 - **Rhythm:** 4px base spacing unit (Tailwind dynamic scale). Stacks use `gap-*`:
   `gap-2` inside controls, `gap-4` / `gap-6` / `gap-8` between blocks.
-- **Header:** `flex items-center justify-between p-4`; the nav is a `gap-4 sm:gap-8`
-  flex list — the tracked caps fit a 375px viewport at `gap-4`, the narrowest width
-  the shell promises.
+- **Header:** `flex items-center justify-between px-4 py-4 sm:px-6`; the nav is a
+  `gap-4 sm:gap-8` flex list — the tracked caps fit a 375px viewport at `gap-4`, the
+  narrowest width the shell promises. Nav links are `--muted-foreground`, shift to
+  `--foreground` on hover, and stay `--foreground` for the current route (`aria-current`).
 - **Filter and form rows:** `flex items-end gap-4` (rows of fields + submit), `gap-8`
   between larger groups.
 - **Field groups:** `Field` is `flex w-full flex-col gap-3` with the `FieldLabel`
@@ -726,7 +796,8 @@ hand-rolled div. `Spinner` is `Loader2Icon` at `size-4` with `animate-spin`,
 - **Do** reach for `Button variant="outline"` for the app's default secondary
   action, and `variant="default"` (brass) for the one primary CTA on a view.
 - **Do** keep destructive/confirm actions visually distinct with
-  `variant="destructive"`, and pair destructive intent with a Dialog confirmation.
+  `variant="destructive"` (Ember fill, Deep Forest label), and pair destructive
+  intent with a Dialog confirmation.
 - **Do** put Deep Forest text on brass — `--primary-foreground` every time.
 - **Do** use `gap-*` stacks and the `max-w-4xl` shell for new surfaces.
 - **Do** keep `--muted-foreground` for secondary text and `--foreground` for body.
@@ -740,8 +811,10 @@ hand-rolled div. `Spinner` is `Loader2Icon` at `size-4` with `animate-spin`,
 ### Don't:
 
 - **Don't** put `--foreground` (Warm Off-White) text on `--primary`; it is 2.04:1.
-- **Don't** use Warm Brown as an accent, a small control, or as text on the dark
-  canvas.
+- **Don't** use Warm Brown as an accent, a small control, as text on the dark
+  canvas, or as the destructive fill.
+- **Don't** put olive linework or an olive control on a brown surface, and don't
+  render error there as a coloured ink — tint plus light text instead.
 - **Don't** add radius, colors, fonts or shadow values outside the token set above.
 - **Don't** override a component's colors via `className`.
 - **Don't** introduce serif, mono or additional display faces, and don't use
