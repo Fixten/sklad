@@ -1,209 +1,311 @@
 ---
-name: sklad
+name: Sklad
 description: >-
-  Inventory management SPA with a "Forest & Hide" atelier theme: deep forest
-  green, warm brown and charcoal neutrals, muted brass actions, olive accents,
-  and an editorial typographic voice.
-
+  Inventory manager for a small atelier. Forest & Hide: deep forest green, warm
+  brown and charcoal neutrals, brass actions, olive accents, sharp sera geometry.
 colors:
-  foundation:
-    black: "oklch(0% 0 0)"
-    white: "oklch(100% 0 0)"
-    transparent: "oklch(0 0 0 / 0)"
-  dark:
-    background: "oklch(0.267 0.033 131)"
-    foreground: "oklch(0.979 0.005 95.099)"
-    card: "oklch(0.452 0.047 53.927)"
-    card-foreground: "oklch(0.979 0.005 95.099)"
-    popover: "oklch(0.452 0.047 53.927)"
-    popover-foreground: "oklch(0.979 0.005 95.099)"
-    primary: "oklch(0.757 0.079 88.436)"
-    primary-foreground: "oklch(0.267 0.033 131)"
-    secondary: "oklch(0.494 0.058 127.848)"
-    secondary-foreground: "oklch(0.979 0.005 95.099)"
-    muted: "oklch(0.288 0.009 67.447)"
-    muted-foreground: "oklch(0.843 0.028 72.764)"
-    accent: "oklch(0.757 0.079 88.436)"
-    accent-foreground: "oklch(0.267 0.033 131)"
-    destructive: "oklch(0.452 0.047 53.927)"
-    destructive-foreground: "oklch(0.979 0.005 95.099)"
-    border: "oklch(0.494 0.058 127.848)"
-    input: "oklch(0.494 0.058 127.848)"
-    ring: "oklch(0.757 0.079 88.436)"
-    overlay: "oklch(0% 0 0)"
-    sidebar: "oklch(0.267 0.033 131)"
-    sidebar-foreground: "oklch(0.979 0.005 95.099)"
-    sidebar-primary: "oklch(0.757 0.079 88.436)"
-    sidebar-primary-foreground: "oklch(0.267 0.033 131)"
-    sidebar-accent: "oklch(0.288 0.009 67.447)"
-    sidebar-accent-foreground: "oklch(0.979 0.005 95.099)"
-    sidebar-border: "oklch(0.494 0.058 127.848)"
-    sidebar-ring: "oklch(0.757 0.079 88.436)"
-  chart:
-    dark:
-      [
-        "oklch(0.86 0.106 131)",
-        "oklch(0.745 0.091 131)",
-        "oklch(0.63 0.077 131)",
-        "oklch(0.515 0.063 131)",
-        "oklch(0.4 0.049 131)",
-      ]
-
+  black: "oklch(0% 0 0)"
+  white: "oklch(100% 0 0)"
+  transparent: "oklch(0 0 0 / 0)"
+  deep-forest: "oklch(0.267 0.033 131)"
+  warm-off-white: "oklch(0.979 0.005 95.099)"
+  muted-brass: "oklch(0.757 0.079 88.436)"
+  deep-olive: "oklch(0.494 0.058 127.848)"
+  warm-brown: "oklch(0.452 0.047 53.927)"
+  warm-charcoal: "oklch(0.288 0.009 67.447)"
+  warm-beige: "oklch(0.843 0.028 72.764)"
+  muted-brass-30: "oklch(0.757 0.079 88.436 / 30%)"
+  muted-brass-80: "oklch(0.757 0.079 88.436 / 80%)"
+  deep-olive-30: "oklch(0.494 0.058 127.848 / 30%)"
+  deep-olive-50: "oklch(0.494 0.058 127.848 / 50%)"
+  deep-olive-60: "oklch(0.494 0.058 127.848 / 60%)"
+  warm-charcoal-50: "oklch(0.288 0.009 67.447 / 50%)"
+  warm-brown-20: "oklch(0.452 0.047 53.927 / 20%)"
+  warm-brown-90: "oklch(0.452 0.047 53.927 / 90%)"
+  black-20: "oklch(0% 0 0 / 20%)"
+  chart-1: "oklch(0.86 0.106 131)"
+  chart-2: "oklch(0.745 0.091 131)"
+  chart-3: "oklch(0.63 0.077 131)"
+  chart-4: "oklch(0.515 0.063 131)"
+  chart-5: "oklch(0.4 0.049 131)"
 typography:
-  sans: "'Manrope Variable', sans-serif"
-  heading: "'Manrope Variable', sans-serif — aliases sans, one face"
-  mono: "system stack — Tailwind default, shadcn internals only"
-  component: "@ui/Typography — variant maps 1:1 to the scale below"
-  scale:
-    display: "type-display — Manrope / 24px / 600 / 0.05em / uppercase"
-    title: "type-title — Manrope / 18px / 600 / 0.05em / uppercase"
-    label: "type-label — Manrope / 12px / 600 / 0.025em / uppercase"
-    body: "type-body — Manrope / 14px / 400 / normal"
-    caption: "type-caption — Manrope / 12px / 400 / normal"
-    data: "type-data — Manrope / 14px / 400 / tabular-nums"
-    input: "type-input — Manrope / 16px, md:14px / 400 / normal — form controls only"
-
-rounded:
-  sera: "0 — every shipped component is rounded-none"
-  base: "0.625rem"
-  sm: "calc(var(--radius) - 4px)  /* 6px  — small accents */"
-  md: "calc(var(--radius) - 2px)  /* 8px  — buttons, inputs, menu items */"
-  lg: "var(--radius)              /* 10px — cards, dialogs */"
-  xl: "calc(var(--radius) + 4px)  /* 14px */"
-  2xl: "calc(var(--radius) * 1.8)  /* 18px */"
-  3xl: "calc(var(--radius) * 2.2)  /* 22px */"
-  4xl: "calc(var(--radius) * 2.6)  /* 26px */"
-
-spacing:
-  base: "0.25rem (4px)"
-  steps: "Tailwind dynamic scale — p-1=4px, p-2=8px, p-3=12px, p-4=16px, p-8=32px"
-  used: ["gap-2", "gap-3", "gap-4", "gap-6", "gap-8", "px-3", "px-4", "px-6"]
-
-sizing:
-  control:
-    xs: "28px (h-7) / px-3 (12px)"
-    sm: "36px (h-9) / px-4 (16px)"
-    md: "40px (h-10) / px-6 (24px)"
-    lg: "44px (h-11) / px-8 (32px)"
-    input: "40px (h-10)"
-  icon:
-    xs: "28px (size-7)"
-    sm: "36px (size-9)"
-    md: "40px (size-10)"
-    lg: "44px (size-11)"
-
-components:
-  button:
-    base: "inline-flex items-center justify-center gap-1.5 rounded-none type-label"
-    variants: [default, destructive, outline, secondary, ghost, link]
-    sizes:
-      {
-        xs: "h-7 px-3",
-        sm: "h-9 px-4",
-        default: "h-10 px-6",
-        lg: "h-11 px-8",
-        icon: "size-10",
-        icon-xs: "size-7",
-        icon-sm: "size-9",
-        icon-lg: "size-11",
-      }
-    default-variant: outline
+  display:
+    fontFamily: "Manrope Variable, -apple-system, system-ui, sans-serif"
+    fontSize: "1.5rem"
+    fontWeight: 600
+    lineHeight: 1.2
+    letterSpacing: "0.05em"
+  title:
+    fontFamily: "Manrope Variable, -apple-system, system-ui, sans-serif"
+    fontSize: "1.125rem"
+    fontWeight: 600
+    lineHeight: 1
+    letterSpacing: "0.05em"
+  label:
+    fontFamily: "Manrope Variable, -apple-system, system-ui, sans-serif"
+    fontSize: "0.75rem"
+    fontWeight: 600
+    lineHeight: 1
+    letterSpacing: "0.025em"
+  body:
+    fontFamily: "Manrope Variable, -apple-system, system-ui, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 400
+    lineHeight: 1.5
+  caption:
+    fontFamily: "Manrope Variable, -apple-system, system-ui, sans-serif"
+    fontSize: "0.75rem"
+    fontWeight: 400
+    lineHeight: 1.5
+  data:
+    fontFamily: "Manrope Variable, -apple-system, system-ui, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 400
+    lineHeight: 1.25
+    fontFeature: "tnum"
   input:
-    base: "h-10 w-full rounded-none border-b border-b-input bg-transparent px-0 py-1 text-base md:text-sm"
-    focus: "focus-visible:border-b-ring aria-invalid:border-b-destructive"
+    fontFamily: "Manrope Variable, -apple-system, system-ui, sans-serif"
+    fontSize: "1rem"
+    fontWeight: 400
+    lineHeight: 1.5
+rounded:
+  none: "0"
+  sm: "calc(var(--radius) - 4px)"
+  md: "calc(var(--radius) - 2px)"
+  lg: "var(--radius)"
+  xl: "calc(var(--radius) + 4px)"
+  2xl: "calc(var(--radius) * 1.8)"
+  3xl: "calc(var(--radius) * 2.2)"
+  4xl: "calc(var(--radius) * 2.6)"
+spacing:
+  base: "4px"
+  1: "4px"
+  2: "8px"
+  3: "12px"
+  4: "16px"
+  5: "20px"
+  6: "24px"
+  8: "32px"
+  10: "40px"
+components:
+  button-primary:
+    backgroundColor: "{colors.muted-brass}"
+    textColor: "{colors.deep-forest}"
+    typography: "{typography.label}"
+    rounded: "{rounded.none}"
+    padding: "0 24px"
+    height: "40px"
+  button-primary-hover:
+    backgroundColor: "{colors.muted-brass-80}"
+    textColor: "{colors.deep-forest}"
+    typography: "{typography.label}"
+    rounded: "{rounded.none}"
+    padding: "0 24px"
+    height: "40px"
+  button-outline:
+    backgroundColor: "{colors.transparent}"
+    textColor: "{colors.foreground}"
+    typography: "{typography.label}"
+    rounded: "{rounded.none}"
+    padding: "0 24px"
+    height: "40px"
+  button-outline-hover:
+    backgroundColor: "{colors.deep-olive-30}"
+    textColor: "{colors.warm-off-white}"
+    typography: "{typography.label}"
+    rounded: "{rounded.none}"
+    padding: "0 24px"
+    height: "40px"
+  button-secondary:
+    backgroundColor: "{colors.deep-olive}"
+    textColor: "{colors.warm-off-white}"
+    typography: "{typography.label}"
+    rounded: "{rounded.none}"
+    padding: "0 24px"
+    height: "40px"
+  button-ghost-hover:
+    backgroundColor: "{colors.warm-charcoal-50}"
+    textColor: "{colors.warm-off-white}"
+    typography: "{typography.label}"
+    rounded: "{rounded.none}"
+    padding: "0 24px"
+    height: "40px"
+  button-destructive:
+    backgroundColor: "{colors.warm-brown}"
+    textColor: "{colors.warm-off-white}"
+    typography: "{typography.label}"
+    rounded: "{rounded.none}"
+    padding: "0 24px"
+    height: "40px"
+  button-destructive-hover:
+    backgroundColor: "{colors.warm-brown-90}"
+    textColor: "{colors.warm-off-white}"
+    typography: "{typography.label}"
+    rounded: "{rounded.none}"
+    padding: "0 24px"
+    height: "40px"
+  button-link:
+    backgroundColor: "{colors.transparent}"
+    textColor: "{colors.muted-brass}"
+    typography: "{typography.label}"
+    rounded: "{rounded.none}"
+    padding: "0"
+  button-icon:
+    backgroundColor: "{colors.transparent}"
+    textColor: "{colors.foreground}"
+    typography: "{typography.label}"
+    rounded: "{rounded.none}"
+    size: "40px"
+  input:
+    backgroundColor: "{colors.transparent}"
+    textColor: "{colors.warm-off-white}"
+    typography: "{typography.input}"
+    rounded: "{rounded.none}"
+    padding: "4px 0"
+    width: "100%"
+    height: "40px"
+  textarea:
+    backgroundColor: "{colors.transparent}"
+    textColor: "{colors.warm-off-white}"
+    typography: "{typography.input}"
+    rounded: "{rounded.none}"
+    padding: "12px 0"
+    width: "100%"
   card:
-    base: "rounded-none bg-card text-sm ring-1 ring-border/60 py-(--card-spacing) gap-(--card-spacing) shadow-sm"
+    backgroundColor: "{colors.warm-brown}"
+    textColor: "{colors.warm-off-white}"
+    typography: "{typography.body}"
+    rounded: "{rounded.none}"
+    padding: "32px 32px"
+  dialog:
+    backgroundColor: "{colors.warm-brown}"
+    textColor: "{colors.warm-off-white}"
+    typography: "{typography.body}"
+    rounded: "{rounded.none}"
+    padding: "24px"
+    width: "100%"
+  command-item:
+    backgroundColor: "{colors.transparent}"
+    textColor: "{colors.warm-off-white}"
+    typography: "{typography.body}"
+    rounded: "{rounded.none}"
+    padding: "8px 12px"
+    width: "100%"
+  command-item-selected:
+    backgroundColor: "{colors.warm-charcoal}"
+    textColor: "{colors.warm-off-white}"
+    typography: "{typography.body}"
+    rounded: "{rounded.none}"
+    padding: "8px 12px"
+    width: "100%"
+  nav-link:
+    backgroundColor: "{colors.transparent}"
+    textColor: "{colors.warm-beige}"
+    typography: "{typography.label}"
+    padding: "0"
+  nav-link-hover:
+    backgroundColor: "{colors.transparent}"
+    textColor: "{colors.warm-off-white}"
+    typography: "{typography.label}"
+    padding: "0"
+  field-error:
+    backgroundColor: "{colors.warm-brown}"
+    textColor: "{colors.warm-off-white}"
+    typography: "{typography.body}"
+    padding: "4px 8px"
 ---
 
-# Sklad — Design System
-
-Sklad is an inventory manager (materials, material types, variants). The UI is a
-Vite + React SPA built on **shadcn/ui with a Base UI base** and Tailwind v4
-CSS-variable theming. The theme is **Forest & Hide**: the disciplined serenity of
-a leather artisan's atelier — deep forest green, warm brown and charcoal
-neutrals, burnished-brass actions and olive accents — carried on an editorial,
-typographic "sera" foundation.
-
-This document is the design source of truth. When it disagrees with code, update
-the code (per `AGENTS.md`).
+# Design System: Sklad
 
 ## Overview
 
-- **Voice:** calm, matter-of-fact, utilitarian. Russian UI copy.
-- **Atmosphere:** grounded in forest, warm hide, natural wood, muted brass and
-  stone — organic warmth and natural shelter, never cold tech-noir or neon.
-- **Audience:** independent makers, studio managers and atelier teams balancing
-  tactile material craft with inventory counts and batch workflows.
-- **Resonance:** quiet confidence and grounded clarity; the UI recedes so
-  material textures, product photography and ledger data stay prominent.
-- **Theme:** dark-only. Do not maintain or introduce a light theme unless the
-  product requirements explicitly change.
-- **Type:** `Manrope Variable` for everything — body, controls, headings and
-  technical labels (`--font-sans` == `--font-heading`).
+**Creative North Star: "The Forest & Hide Atelier"**
 
-## Semantic colors
+Sklad is the working tool of a small atelier that builds physical goods by hand
+and runs the whole business itself. The visual world answers to that room: deep
+forest green as the page floor, warm hide and charcoal as the surfaces, muted
+brass as the only thing that shines. It is the disciplined serenity of a leather
+artisan's workshop translated into an interface — organic warmth and natural
+shelter, never cold tech-noir, never neon, never a glowing dashboard.
 
-Components use semantic tokens only — never raw palette values in component
-classes. This section is the single home of the raw values: the frontmatter
-repeats them verbatim for tooling, and nothing else in the document restates a
-color's meaning. Every role is assigned to its palette color
-exactly once, in the token mapping below. The theme is dark-only; the values live
-in the `.dark` block of `src/styles/tailwind.css` and are registered in
-`@theme inline` as a `--color-*` token.
+The system is quiet by construction. Because recording a material receipt or a
+batch is a break in the work rather than a sitting-down task, the UI recedes:
+one content column, no ornament, no color competing with the data. What carries
+the identity is not decoration but geometry and material — a single sans face
+set in uppercase editorial caps, sharp unrounded corners on every shipped
+element, and depth built from tonal surface steps rather than floating cards.
+Hierarchy comes from type weight and from how light a surface is, not from
+borders drawn in a second color.
 
-### Foundation
+Reliability here is visual: numbers, counts and costs must be readable at a
+glance on a phone at the bench, and a destructive action must never be mistaken
+for an ordinary one. Every rule below exists to keep that reading honest.
 
-The non-theme primitives the palette sits on: black, white and transparent.
-They are not palette colors, and only black has been given a role — it backs
-`--overlay` (see the token mapping below) so no component ever names it
-directly. White and transparent carry no registration at all and appear only as
-CSS keywords or framework defaults.
+**Key Characteristics:**
 
-| Color       | Value              | Meaning and purpose                                                                                                                                                                             |
-| ----------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Black       | `oklch(0% 0 0)`    | Absolute darkness, deliberately kept out of the palette — Deep Forest and Warm Brown carry every dark surface instead. Registered only as `--overlay`, used at `black.20` for the dialog scrim. |
-| White       | `oklch(100% 0 0)`  | Absolute lightness. Warm Off-White is the light ink for every surface, so pure white is unused by shipped components and is reserved for framework defaults (e.g. the ring offset color).       |
-| Transparent | `oklch(0 0 0 / 0)` | The 0 step: fills and borders that must not paint — control backgrounds (`bg-transparent`) and the button's pre-focus boundary (`border-transparent`).                                          |
+- Dark-only presentation; the light block in `tailwind.css` is documentation, not a shipped mode.
+- One typeface (Manrope) in an uppercase-caps editorial hierarchy.
+- Brass is rare and always carries Deep Forest text; brown is a surface, never an accent.
+- `rounded-none` on every shipped component — sharp sera geometry.
+- Depth by tonal layering plus hairline `--border` rings; shadows only as a whisper (`shadow-sm`, `shadow-md`).
+- Single-column `max-w-4xl` shell with a 4px spacing rhythm.
 
-### Main brand color
+## Colors
 
-| Color           | Value                    | Meaning and purpose                                                                                                                                                                                                  |
-| --------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Deep Forest** | `oklch(0.267 0.033 131)` | Sklad's main brand color and identity anchor: the app canvas (`--background`) and brand moments, plus the dark text on gold actions. It is the page floor — it anchors the system rather than filling every surface. |
+The palette is material, not chromatic: two greens, a hide brown, a stone
+neutral and one brass accent, all sharing low chroma so nothing ever shouts.
+Exact values live in the frontmatter — this section carries meaning and role.
 
-### Palette
+### Primary
 
-Supporting colors, each assigned only once through the tokens in the mapping
-below.
+- **Deep Forest** — the main brand color and identity anchor. It is the app canvas
+  (`--background`) and every brand moment, and it is the text color on brass. It is
+  the page floor: the system is anchored by it, not filled with it.
+- **Muted Brass** — the action color, reserved for the most important things only:
+  the primary CTA, the focus ring and key highlights. Always carries Deep Forest
+  text. It is never a general hover wash.
 
-| Color          | Value                        | Meaning and purpose                                                                                                                                                                             |
-| -------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Warm Off-White | `oklch(0.979 0.005 95.099)`  | Primary readable text and foreground icons on dark, olive and brown surfaces (`--foreground` and every light `-foreground`). Never a large page background.                                     |
-| Muted Brass    | `oklch(0.757 0.079 88.436)`  | The action color, reserved for **the most important things only**: the primary CTA, the focus ring and key accent highlights. Always carries Deep Forest text; never a general hover wash.      |
-| Deep Olive     | `oklch(0.494 0.058 127.848)` | Secondary actions and interactive/active elements: the secondary button fill, selected states, structural borders and input underlines. Carries Warm Off-White text.                            |
-| Warm Brown     | `oklch(0.452 0.047 53.927)`  | **Big surfaces only** — cards, floating layers and the destructive surface; the warm hide that contrasts the brand green. Never an accent, never a small control, never text on a dark surface. |
-| Warm Charcoal  | `oklch(0.288 0.009 67.447)`  | Quiet fills: muted bands and the sidebar nav hover — the subdued counterpart to the brown surfaces.                                                                                             |
-| Warm Beige     | `oklch(0.843 0.028 72.764)`  | Secondary text, metadata, helper text and inactive icons (`--muted-foreground`). Verify contrast on every surface it sits on (4.60:1 on brown).                                                 |
+### Secondary
+
+- **Deep Olive** — secondary actions and interactive/active elements: the secondary
+  button fill, selected states, structural borders and input underlines. Carries
+  Warm Off-White text.
+
+### Tertiary
+
+- **Warm Brown** — big surfaces only: cards, floating layers and the destructive
+  fill. The warm hide that contrasts the brand green. Never an accent, never a
+  small control, never text on a dark surface.
+
+### Neutral
+
+- **Warm Off-White** — primary readable text and foreground icons on dark, olive
+  and brown surfaces (`--foreground` and every light `-foreground`). Never a large
+  page background.
+- **Warm Charcoal** — quiet fills: muted bands, ghost and hover washes, the sidebar
+  nav hover. The subdued counterpart to the brown surfaces.
+- **Warm Beige** — secondary text, metadata, helper text, inactive icons
+  (`--muted-foreground`).
+- **Black** — absolute darkness, deliberately kept out of the palette; registered
+  only as `--overlay`, used at 20% for the dialog scrim.
+- **White** — absolute lightness; unused by shipped components (framework defaults
+  such as the ring offset color only).
+- **Transparent** — the 0 step: control backgrounds (`bg-transparent`) and the
+  button's pre-focus boundary (`border-transparent`).
 
 ### Main color palette
 
 A five-step ramp derived from the main brand color — same hue family, stepped in
-lightness from dark to light. This is **the main color's own palette**: use it as
-such for chart series (`--chart-1…5`), not as general-purpose brand colors.
-Distinguishability comes from the lightness steps, not from hue.
-
-| Token       | Value                    |
-| ----------- | ------------------------ |
-| `--chart-1` | `oklch(0.86 0.106 131)`  |
-| `--chart-2` | `oklch(0.745 0.091 131)` |
-| `--chart-3` | `oklch(0.63 0.077 131)`  |
-| `--chart-4` | `oklch(0.515 0.063 131)` |
-| `--chart-5` | `oklch(0.4 0.049 131)`   |
+lightness from dark to light (`chart-1`…`chart-5`). This is **the main color's own
+palette**, meant for chart series, not a set of general-purpose brand colors.
+Series are told apart by lightness, never by adding hues.
 
 ### Token mapping
 
-Every role resolves to one palette entry — or, for `--overlay`, to the black
-foundation primitive; no token carries its own value.
+Components use semantic tokens only — never a raw palette value in a component
+class. Every role resolves to one palette entry (or, for `--overlay`, to the black
+foundation), so no token carries a value of its own. Values are in the frontmatter
+and in the `.dark` block of `src/styles/tailwind.css`; this table is the mapping.
 
 | Token                          | Palette color                 |
 | ------------------------------ | ----------------------------- |
@@ -240,37 +342,33 @@ foundation primitive; no token carries its own value.
 ### Opacity steps
 
 Transparency is an alpha step on a palette or foundation color, named
-`<semantic-color>.<percent>` — e.g. `deep-olive.60` is Deep Olive at 60% alpha
-(names are the kebab-case of the palette or foundation entry).
-Percentages are the only axis; there is no separate opacity scale. The complete
-set in use is **5, 10, 20, 30, 50, 60, 80, 90**; any other step is off-system.
-A color can back several roles, so the same alpha can serve more than one token —
-the `Role` column says which. Dark theme is active, so a step marked _(dark)_ is
-the one that renders.
+`<semantic-color>.<percent>` — `deep-olive.60` is Deep Olive at 60% alpha (names
+are the kebab-case of the palette or foundation entry). Percentages are the only
+axis; there is no separate opacity scale. The complete set in use is **5, 10, 20,
+30, 50, 60, 80, 90**; any other step is off-system. A color can back several
+roles, so the same alpha can serve more than one token.
 
 | Opacity value      | Role                  | Where used                                                          |
 | ------------------ | --------------------- | ------------------------------------------------------------------- |
-| `deep-olive.30`    | `--input`             | Outline button hover fill _(dark)_                                  |
+| `deep-olive.30`    | `--input`             | Outline button hover fill                                           |
 | `deep-olive.50`    | `--border`            | Command palette separator                                           |
 | `deep-olive.60`    | `--border`            | Card hairline ring (Tier 2)                                         |
-| `muted-brass.5`    | `--primary`           | Checked field fill _(light)_                                        |
-| `muted-brass.10`   | `--primary`           | Checked field fill _(dark)_                                         |
-| `muted-brass.20`   | `--primary`           | Checked field border _(dark)_                                       |
-| `muted-brass.30`   | `--primary`, `--ring` | Checked field border _(light)_; focus rings                         |
+| `muted-brass.5`    | `--primary`           | Checked field fill _(light block only)_                             |
+| `muted-brass.10`   | `--primary`           | Checked field fill                                                  |
+| `muted-brass.20`   | `--primary`           | Checked field border                                                |
+| `muted-brass.30`   | `--primary`, `--ring` | Checked field border _(light block only)_; focus rings              |
 | `muted-brass.50`   | `--ring`              | Global `outline` color (`@layer base` in `src/styles/tailwind.css`) |
 | `muted-brass.80`   | `--primary`           | Primary button hover fill                                           |
 | `warm-beige.10`    | `--muted-foreground`  | Kbd chip fill inside input groups                                   |
 | `warm-brown.20`    | `--destructive`       | Invalid-state ring on buttons                                       |
 | `warm-brown.90`    | `--destructive`       | Destructive button hover fill                                       |
-| `warm-charcoal.50` | `--muted`             | Ghost button hover _(dark)_ and field hover wash                    |
+| `warm-charcoal.50` | `--muted`             | Ghost/outline button hover and field hover wash                     |
 | `warm-off-white.5` | `--foreground`        | Mixed into Deep Olive for the secondary button hover                |
-| `black.20`         | `--overlay`           | Dialog scrim (see [Foundation](#foundation))                        |
+| `black.20`         | `--overlay`           | Dialog scrim                                                        |
 
 Element opacity is separate from color alpha and is not tokenized: disabled and
 inactive states use `opacity: 50%` (buttons, inputs, labels, command items), and
-the command item check indicator toggles `opacity: 0%` → `100%`. Fully
-transparent fills and borders are the 0 step (see [Foundation](#foundation)) and
-are not listed per color.
+the command item check indicator toggles `opacity: 0%` → `100%`.
 
 ### Surface architecture
 
@@ -289,59 +387,66 @@ surface level over a shadow to lift content.
 ### Linework & accents
 
 - Structural borders are `--border`; control boundaries (input underlines) use
-  `--input`. Surface hairline rings on lifted layers are the same token — cards
-  at `ring-border/60`, modals and popovers at full `ring-border` — never a
+  `--input`. Surface hairline rings on lifted layers are the same token — cards at
+  `border/60`, modals and popovers at full `border` strength — never a
   `--foreground` tint.
 - Interactive borders (focus, active input) use `--ring`.
-- Active/interactive fills — toggle states, secondary buttons — use
-  `--secondary` (olive); quiet hover bands use `--muted`.
-- Gold (`--primary`, `--accent`) is reserved for the most important moments and
-  always carries Deep Forest text.
+- Active/interactive fills — toggle states, secondary buttons — use `--secondary`
+  (olive); quiet hover bands use `--muted`.
 - Titles use the editorial ink `--popover-foreground`; body copy uses
   `--foreground`; metadata and inactive icons use `--muted-foreground`.
 
-### Color & contrast guidance
+### Named Rules
 
-- Verify WCAG contrast for every text/background pairing, especially muted text
-  and text on gold, olive and brown. `--muted-foreground` on `--background`,
-  `--muted` and `--card` is the secondary-text pairing; it stays ≥ 4.5:1
-  (4.60:1 on brown) — keep it there whenever the neutral ramp is touched.
-- Text on gold always uses `--primary-foreground` / `--accent-foreground` (Deep
-  Forest); Warm Off-White on gold is only 2.04:1 and must never be used.
-- **Errors are surfaces.** `--destructive` is a brown fill: where the component
-  already provides a background (destructive button, alert, badge) use it with
-  `--destructive-foreground`. Brown text is allowed only on a light background —
-  never on the dark canvas — and there is no red in the palette.
-- The invalid input underline (`aria-invalid`) turns brown too; it is subtle on
-  purpose, so always pair it with a message or icon. Never communicate status by
-  color alone.
-- Keep success, warning, destructive and informational states semantically
-  distinct from brand accents; add dedicated tokens if the UI ever needs more
-  than the destructive role.
-- Chart colors come from the main color palette and are told apart by lightness;
-  do not add hues to the ramp.
-- Never bypass semantic tokens with raw Tailwind palette colors
-  (`text-green-600` etc.).
+**The One Voice Rule.** Muted Brass is spent on at most one important thing per
+view. It always carries Deep Forest text; Warm Off-White on brass is 2.04:1 and
+must never be used.
+
+**The Brown Is A Surface Rule.** Warm Brown fills big surfaces only. It is never an
+accent, never a small control, and never text on the dark canvas.
+
+**The No Raw Palette Rule.** Components reach for semantic tokens. Raw Tailwind
+palette colors (`text-green-600`, `bg-amber-500`) are off-system, in components and
+in Penpot alike.
+
+**The Contrast Floor Rule.** `--muted-foreground` on `--background`, `--muted` and
+`--card` is the secondary-text pairing and stays ≥ 4.5:1 (4.60:1 on brown) whenever
+the neutral ramp is touched. Never communicate status by color alone.
 
 ## Typography
 
-Type is set exclusively through the `type-*` utilities defined in
-`src/styles/tailwind.css`, reached through the `Typography` component
-(`@ui/Typography`). The component and the tokens are the only sanctioned way to set
-family, size, weight, leading or tracking.
+**Display Font:** Manrope Variable (fallback: -apple-system, system-ui, sans-serif)
+**Body Font:** Manrope Variable (same family)
+**Label Font:** Manrope Variable — the caps label role of the same face
+**Mono Font:** system stack — Tailwind default, reserved for shadcn internals
+(`kbd`, code slots); there is no designed mono face in this system.
 
-### `Typography`
+**Character:** One face, two voices: an uppercase caps hierarchy for structure
+(display, title, label) and plain sentence-case copy for reading (body, caption,
+data). The caps track wide and lead tight, which gives the interface an engraved,
+ledger-like calm without a second typeface.
 
-```tsx
-<Typography variant="title">Материалы</Typography>
-<Typography variant="label" tagName={Link} to="/material">Материал</Typography>
-```
+### Hierarchy
 
-| Prop        | Default     | Notes                                                      |
-| ----------- | ----------- | ---------------------------------------------------------- |
-| `variant`   | `body`      | One of the six variants below; maps 1:1 onto a token       |
-| `tagName`   | per variant | Polymorphic element or component; rest props are forwarded |
-| `className` | —           | Layout and semantic color only — never type overrides      |
+- **Display** (600, 1.5rem, line-height 1.2, tracking 0.05em, uppercase): page and
+  section headings.
+- **Title** (600, 1.125rem, line-height 1, tracking 0.05em, uppercase): card,
+  dialog and header titles.
+- **Label** (600, 0.75rem, line-height 1, tracking 0.025em, uppercase): buttons,
+  field labels, nav links, command group headings and shortcuts.
+- **Body** (400, 0.875rem, line-height 1.5): default copy and card content.
+- **Caption** (400, 0.75rem, line-height 1.5): descriptions and hints.
+- **Data** (400, 0.875rem, line-height 1.25, tabular figures): quantities, counts,
+  prices. The only role with a numeric variant, so columns align.
+- **Input** (400, 1rem, line-height 1.5; 0.875rem from `md` up): form controls only,
+  owned by `Input` and `Textarea` — never a `Typography` variant. The 16px mobile
+  size prevents iOS zoom on focus.
+
+### The `Typography` component
+
+Type is set exclusively through the `type-*` utilities, reached in features through
+`@ui/Typography`. `variant` maps 1:1 onto a token; `tagName` picks the element or
+component; `className` carries layout and semantic color only.
 
 | Variant   | Token          | Default tag | Usage                            |
 | --------- | -------------- | ----------- | -------------------------------- |
@@ -352,61 +457,24 @@ family, size, weight, leading or tracking.
 | `caption` | `type-caption` | `p`         | Descriptions and hints           |
 | `data`    | `type-data`    | `span`      | Quantities, counts, prices       |
 
-- Features render text through `<Typography variant>` — never write `type-*` or
-  raw type utilities (`text-*`, `font-*`, `leading-*`, `tracking-*`) at the call
-  site.
-- Keep `type-input` for form controls: `Input`/`Textarea` own their size, so it is
-  not a `Typography` variant.
+### Named Rules
 
-### Scale
+**The One Face Rule.** Manrope everywhere — copy, controls, headings and labels
+(`--font-heading` aliases `--font-sans`). No serif, no second display face, no
+designed mono. Geometry is expressed through caps headings and editorial spacing.
 
-| Token          | Family  | Size / leading   | Weight | Tracking | Transform | Usage                                        |
-| -------------- | ------- | ---------------- | ------ | -------- | --------- | -------------------------------------------- |
-| `type-display` | Manrope | 24px / 1.2       | 600    | 0.05em   | uppercase | Page and section headings                    |
-| `type-title`   | Manrope | 18px / 1         | 600    | 0.05em   | uppercase | Card, Dialog and header titles               |
-| `type-label`   | Manrope | 12px / 1         | 600    | 0.025em  | uppercase | Buttons, field labels, nav links             |
-| `type-body`    | Manrope | 14px / 1.5       | 400    | normal   | —         | Default copy, card content                   |
-| `type-caption` | Manrope | 12px / 1.5       | 400    | normal   | —         | Descriptions and hints                       |
-| `type-data`    | Manrope | 14px / 1.25      | 400    | normal   | —         | Quantities, counts, prices (tabular figures) |
-| `type-input`   | Manrope | 16px, `md:` 14px | 400    | normal   | —         | Input and Textarea                           |
-
-- Use the token for the role; never set type with raw utilities (`text-xs`,
-  `text-sm`, `font-*`, `leading-*`, `tracking-*`) in project components — go
-  through `Typography` instead.
-- Replace, don't layer: Tailwind emits raw size utilities _after_ the `type-*`
-  tokens, so a leftover `text-sm`/`text-lg` wins over the token's size in the
-  cascade (family, weight and tracking still come from the token). `cn()` does
-  not resolve these collisions — remove the utility you are replacing.
-- `src/components/ui/base/**` is upstream shadcn code and is exempt until it is
-  migrated onto the tokens — never pull it out of style.
-- The scale is exposed as `@utility type-*`, **not** `--text-*` theme keys:
-  `cn()` classifies unknown `text-*` strings as colors, so a size token placed
-  next to `text-muted-foreground` gets dropped.
-- One face only: Manrope, for copy, controls, headings and labels
-  (`--font-heading` aliases `--font-sans`). Do **not** introduce serif, mono or
-  additional display faces; the geometry is expressed through caps headings +
-  editorial spacing.
-- `--font-mono` is a plain system stack (Tailwind default) and exists only for
-  shadcn internals that reach for `font-mono` (`kbd`, code slots). Project
-  components must not use `font-mono` — there is no intentionally designed mono
-  face in this system.
-- Data columns use tabular figures so digits align (`type-data`).
-- New tokens are added to `tailwind.css` and listed here and in the frontmatter
-  `typography.scale` — keep the three in sync.
-- Typography is self-contained to this file, `tailwind.css` and the tokens above.
-  The shadcn [Typography](https://ui.shadcn.com/docs/components/base/typography)
-  demo page and `@tailwindcss/typography` (`prose`) are deliberately **not** used:
-  they ship a competing untokenized scale (negative tracking, `text-3xl`/`4xl`
-  headings, larger body leading) and none of their guidance is borrowed here. If a
-  long-form surface ever appears, it gets its own `type-prose` token in this scale
-  (mostly a vertical-rhythm recipe for p/list/blockquote/table), defined in
-  `tailwind.css` and documented like the others — never a third-party style layer.
+**The Token-Or-Nothing Rule.** Never set type with raw utilities (`text-xs`,
+`text-sm`, `font-*`, `leading-*`, `tracking-*`) in project components. Go through
+`Typography`. Replace, don't layer: Tailwind emits raw size utilities _after_ the
+`type-*` utilities, so a leftover `text-sm` wins the cascade — and `cn()` will not
+resolve the collision. The scale is exposed as `@utility type-*`, not as `--text-*`
+theme keys, because `cn()` classifies unknown `text-*` strings as colors.
 
 ### Penpot
 
-The Penpot file mirrors this scale; it never defines it. Each role maps onto a token
-of the same name in the `sklad` token set — `type-display` ↔ `typography.display`,
-and likewise for the other roles.
+The Penpot file mirrors this scale; it never defines it. Each role maps onto a
+token of the same name in the `sklad` token set — `type-display` ↔
+`typography.display`, and likewise for the other roles.
 
 - **`Typography — Type Scale` is the scale's specimen frame** (page `Design system`,
   right of `Custom components`). One row per role, the specimen text bound to that
@@ -415,41 +483,41 @@ and likewise for the other roles.
   typography asset.
 - **The input is the only role with two states.** `type-input` is also the only
   utility carrying an `md:` override, so it maps to a base/md pair:
-  `typography.input.base` (16px, the mobile-first `text-base`) and
-  `typography.input.md` (14px, `text-sm`). Bind `typography.input.md` on frames
-  ≥768px and `typography.input.base` below. The pair exists only because Penpot has
-  no media queries — do not invent state pairs for the other six roles.
-- **Component-level type is the role — never a private token.** `Button` labels and the
-  `Command` group heading are caps labels: both take `typography.label` and nothing
-  else, in Penpot and in code. `Button`'s `tracking-widest` and `Command`'s heading
-  `tracking-wider` are drift to delete in favour of `type-label`; a component that wants
-  its own size, weight or tracking is asking for a role in the scale, not a local
-  override.
-- **Roles are composites of primitives.** Family is `font.heading`; size is a `text.*`
-  token, so the input sizes own their own `text.input.base` / `text.input.md`
-  primitives and never track `text.body`; plus `weight.*`, `tracking.*` and
-  `case.uppercase`. Change a primitive and every role referencing it follows. These
-  tiers (`font.*`, `text.*`, `weight.*`, `tracking.*`, `case.*`) exist only in the
-  Penpot token set — the numbers the scale above already names, written once.
+  `typography.input.base` (16px) and `typography.input.md` (14px). Bind
+  `typography.input.md` on frames ≥768px and `typography.input.base` below. The pair
+  exists only because Penpot has no media queries — do not invent state pairs for
+  the other six roles.
+- **Component-level type is the role — never a private token.** `Button` labels and
+  the `Command` group heading are caps labels: both take `typography.label` and
+  nothing else, in Penpot and in code. `Button`'s `tracking-widest` and `Command`'s
+  heading `tracking-wider` are drift to delete in favour of `type-label`; a
+  component that wants its own size, weight or tracking is asking for a role in the
+  scale, not a local override.
+- **Roles are composites of primitives.** Family is `font.heading`; size is a
+  `text.*` token, so the input sizes own their own `text.input.base` /
+  `text.input.md` primitives and never track `text.body`; plus `weight.*`,
+  `tracking.*` and `case.uppercase`. Change a primitive and every role referencing
+  it follows. These tiers (`font.*`, `text.*`, `weight.*`, `tracking.*`, `case.*`)
+  exist only in the Penpot token set — the numbers the scale above already names,
+  written once.
 - **Tracking tokens are absolute px, not em.** A typography token's `letterSpacing`
-  lands on the text as px, so each `tracking.*` primitive holds the px value of the em
-  the scale names, at that role's size: `tracking.label` 0.3 (0.025em @12),
-  `tracking.title` 0.9 (0.05em @18) and `tracking.display` 1.2 (0.05em @24). Leading and
-  other composite numbers stay bare multipliers; only
+  lands on the text as px, so each `tracking.*` primitive holds the px value of the
+  em the scale names, at that role's size: `tracking.label` 0.3 (0.025em @12),
+  `tracking.title` 0.9 (0.05em @18) and `tracking.display` 1.2 (0.05em @24). Leading
+  and other composite numbers stay bare multipliers; only
   `dimension`/`spacing`/`sizing` tokens keep `px`.
 - **Bind the composite; never set type by hand.** Apply `typography.*` to a text's
-  `typography` property and nothing else — any manual family, size, weight, leading or
-  tracking change on that text destroys the binding and leaves the literal behind.
-  Family arrives with the composite, so a bound text needs no separate `font.heading`
-  binding.
-- **Copy leading is 1.5 everywhere.** Card and Dialog descriptions are `type-body` like
-  any other copy; the `leading-relaxed` (1.625) on them in
+  `typography` property and nothing else — any manual family, size, weight, leading
+  or tracking change destroys the binding. Family arrives with the composite, so a
+  bound text needs no separate `font.heading` binding.
+- **Copy leading is 1.5 everywhere.** Card and Dialog descriptions are `type-body`
+  like any other copy; the `leading-relaxed` (1.625) on them in
   `src/components/ui/base/{card,dialog}.tsx` is code drift to remove.
-- **The frame's caption markers take `typography.label`.** They annotate the canvas
-  (specimen names, not copy) and are set in the caps label role; `typography.caption`
-  stays what the scale means by it — 12px copy at weight 400.
-- **`type-data`'s tabular figures have no Penpot equivalent.** A typography token has
-  no `font-variant-numeric` field, so `typography.data` carries size, leading and
+- **Frame caption markers take `typography.label`.** They annotate the canvas
+  (specimen names, not copy); `typography.caption` stays what the scale means by it
+  — 12px copy at weight 400.
+- **`type-data`'s tabular figures have no Penpot equivalent.** A typography token
+  has no `font-variant-numeric` field, so `typography.data` carries size, leading and
   weight only; the figure setting must be applied by hand in Penpot.
 - **Do not create typography assets.** The Penpot Assets ▸ Typographies list stays
   empty: a library typography is a frozen preset that references no token, so text
@@ -457,100 +525,199 @@ and likewise for the other roles.
   assets are reserved for what tokens cannot express — the `Button` component
   library — not for styles this scale already names.
 
-## Layout & spacing
+## Layout
 
-- 4px base spacing unit (Tailwind dynamic scale); use `gap-*` for all stacks.
-- App shell: `container mx-auto max-w-4xl` with a top `pt-16` offset for the
-  header (`src/layout/App.layout.tsx`).
-- Forms and filter rows: `flex items-end gap-4` / `gap-8`.
-- Field groups: `Field` (`flex w-full flex-col gap-3`) — `FieldLabel` above the
-  control; `FieldGroup` stacks fields at `gap-10`.
+The shell is a single content column, centred, with a fixed top offset for the
+header. Density is comfortable and rhythmic — 4px base unit, everything on
+`gap-*` stacks rather than margins.
 
-## Radius & elevation
+- **App shell** (`src/layout/App.layout.tsx`): header and main both
+  `container mx-auto max-w-4xl`; main carries `pt-16` so content clears the header.
+  A surface is added by widening this shell, not by re-inventing the container.
+- **Rhythm:** 4px base spacing unit (Tailwind dynamic scale). Stacks use `gap-*`:
+  `gap-2` inside controls, `gap-4` / `gap-6` / `gap-8` between blocks.
+- **Header:** `flex items-center justify-between p-4`; the nav is a `flex gap-8`
+  list.
+- **Filter and form rows:** `flex items-end gap-4` (rows of fields + submit), `gap-8`
+  between larger groups.
+- **Field groups:** `Field` is `flex w-full flex-col gap-3` with the `FieldLabel`
+  above the control; `FieldGroup` stacks fields at `gap-10`.
+- **Responsive:** one column at every width; forms collapse to stacked fields on
+  narrow viewports. No horizontal overflow at 375px or 1280px.
 
-- Sera is **sharp**: buttons, inputs, cards, dialogs, popovers and separators all
-  set `rounded-none`. The `--radius` ladder (frontmatter) stays in tokens for
-  surfaces that opt in, but component recipes must not restore rounding.
-- Depth is **tonal**, built from surface layering and hairline rings rather than
-  heavy drop shadows:
-  - **Tier 0 — Root basin** (`--background`): flat canvas.
-  - **Tier 1 — Surface containers** (`--sidebar`, `--muted`): tonal only, no
-    ring or shadow.
-  - **Tier 2 — Cards & tiles** (`--card`): `ring-1 ring-border/60` +
-    `shadow-sm`.
-  - **Tier 3 — Modals & popovers** (`--popover`): `ring-1 ring-border` +
-    `shadow-md`.
+### Named Rules
 
-## Component recipes
+**The One Column Rule.** Content lives in one `max-w-4xl` column. New surfaces
+inherit the shell instead of introducing a second grid.
 
-Recipes are `cva` variants in the shadcn components (`@base/*` →
-`src/components/ui/base`) and project-authored components (`@ui/*` →
-`src/components/ui`). Keep variant names stable so call sites stay standard.
+## Elevation & Depth
 
-| Recipe               | Component                                        | Notes                                                                            |
-| -------------------- | ------------------------------------------------ | -------------------------------------------------------------------------------- |
-| Primary action       | `Button` `default`                               | Brass fill + `primary-foreground`                                                |
-| Danger               | `Button` `destructive`                           | Brown fill (`bg-destructive`) + `destructive-foreground` text                    |
-| Secondary action     | `Button` `outline`                               | Border + transparent; **the app's default**                                      |
-| Subtle fill          | `Button` `secondary`                             | Olive secondary fill                                                             |
-| Nav / icon action    | `Button` `ghost`                                 | Hover wash only                                                                  |
-| Text link            | `Button` `link`                                  | Underlined                                                                       |
-| Circular icon action | `Button` `size="icon"` / `IconButton`            | `IconButton` = outline + `size="icon"`                                           |
-| Text field           | `Field` + `FieldLabel` + `Input`                 | Label above; `data-invalid` on `Field`, `aria-invalid` on `Input`                |
-| Form                 | `Form` + `useForm`/`zodResolver`                 | RHF owns validation; `Form` binds `handleSubmit` + `noValidate`, holds no styles |
-| Panel                | `Card`                                           | `CardHeader` / `CardTitle` / `CardDescription` / `CardContent` / `CardAction`    |
-| Separator            | `Separator`                                      | `bg-border`, `h-px` (Base UI separator, not a custom div)                        |
-| Loading              | `Spinner`                                        | `role="status"`, `size-4 animate-spin`                                           |
-| Command palette      | `Command` + `CommandInput/List/Empty/Group/Item` | `cmdk`; parts are flat named exports, not a `Command.*` namespace                |
+Depth is **tonal**, not shadowed. The system chooses a lighter surface before it
+chooses a drop shadow: cards sit visibly above the canvas because Warm Brown is a
+step up from Deep Forest, and floating layers sit above cards because they swap
+surface for `--popover` plus a full-strength ring. Hairline `--border` rings draw
+the edge; shadows are a whisper that confirms the lift, never the lift itself.
+
+### Shadow Vocabulary
+
+- **Surface confirmation** (`shadow-sm`): the tier-2 card ring companion. Cards
+  only.
+- **Floating confirmation** (`shadow-md`): tier-3 modals, popovers and the command
+  palette.
+
+### Named Rules
+
+**The Layer-Before-Shadow Rule.** To lift content, move one surface level up the
+tonal ladder (canvas → Surface 1 → Surface 2 → Surface 3) and add the matching
+`border` ring. Only then add `shadow-sm` / `shadow-md`, and never invent a third
+shadow value.
+
+## Shapes
+
+Form language is **sharp**: buttons, inputs, textareas, cards, dialogs, popovers,
+menu items and separators all set `rounded-none`. Nothing is a pill, nothing is
+soft — the geometry is cut, like a leather edge or a brass plate. The `--radius`
+ladder (frontmatter `rounded.*`, based on `--radius: 0.625rem`) stays registered in
+`tailwind.css` for surfaces that legitimately opt in, but a component recipe must
+never restore rounding on its own.
+
+Boundaries are drawn two ways only: a full box border on controls (`Button` carries
+`border border-transparent` plus a variant border), and a bottom-only underline on
+text fields (`border-b-input`). Clipping is equally plain — images inside cards are
+square to the card edge, no rounded masks, no bleed.
+
+### Named Rules
+
+**The Sharp Sera Rule.** `rounded-none` is the default and the shipped answer. If a
+component wants a radius, that is a system-level decision recorded here first — not
+a local `rounded-lg`.
+
+## Components
+
+Character: **sharp-edged brass hardware on tonal hide.** Controls are cut square,
+actions are brass or olive, and every surface they sit on is a step in the hide
+palette.
 
 ### Buttons
 
-- **Primary (Brass hardware):** `--primary` background, `--primary-foreground`
-  text, `font-semibold`. Hover drops to `bg-primary/80`; active nudges down 1px
-  (`translate-y-px`).
-- **Secondary (Olive):** `--secondary` background, `--secondary-foreground`
-  text; hover blends 5% `--foreground` into the fill.
+- **Shape:** square (radius 0); `border border-transparent` so variants can swap the
+  boundary without changing geometry.
+- **Typography:** `type-label` (uppercase caps) in every variant and size.
+- **Primary (brass):** `--primary` fill + `--primary-foreground` text; hover drops to
+  `primary/80`; active nudges down 1px (`translate-y-px`).
+- **Outline (the app's default secondary action):** `--border` border, transparent
+  fill; hover fills with `--input` at 30% (a deep-olive wash, `deep-olive.30`).
+- **Secondary (olive):** `--secondary` fill + `--secondary-foreground` text; hover
+  blends 5% `--foreground` into the fill.
 - **Ghost / tertiary:** transparent; hover applies `--muted` background with
   `--foreground` text.
-- **Outline (the app default):** `--border` border, transparent fill; hover
-  applies `--muted` background.
+- **Destructive:** `--destructive` (brown) fill + `--destructive-foreground` text;
+  hover `destructive/90`.
+- **Link:** `--primary` text, underlined, `underline-offset-4`.
+- **Focus / invalid:** `focus-visible:border-ring` plus a 2px `ring/30` ring;
+  `aria-invalid` swaps both to `--destructive` (`border-destructive`, ring at 20%).
+- **Disabled:** `opacity: 50%`, pointer events off.
+- **Icon:** `IconButton` = `variant="outline"` + `size="icon"` (`size-10`).
 
-### Form inputs
+### Chips
 
-- Transparent background with a bottom `border-b --input` underline.
-- On focus the underline switches to `--ring`.
-- Placeholder `--muted-foreground`; typed text `--foreground`.
-- On error the underline switches to `--destructive` and the message renders as a brown
-  strip (`bg-destructive` + `--destructive-foreground`) — the underline alone is too subtle
-  to carry the state.
+There is no chip or badge component in the shipped system. Status is carried by
+typography and by the surface a value sits in (e.g. a `MaterialTypeLabel` in
+`--muted-foreground`). Add a chip only by adding it to this document first.
 
-### Cards
+### Cards / Containers
 
-- `--card` surface, `ring-1 ring-border/60`, `shadow-sm`.
+- **Corner Style:** square (radius 0).
+- **Background:** `--card` (Warm Brown), text `--card-foreground`.
+- **Shadow Strategy:** `ring-1 ring-border/60` + `shadow-sm` (see Elevation).
+- **Internal Padding:** `--card-spacing` = 32px by default, 20px at `size="sm"`,
+  applied as vertical padding, inter-block `gap` and horizontal padding on
+  `CardHeader` / `CardContent` / `CardFooter`.
+- **Anatomy:** `CardHeader` (title + optional `CardAction` in the right column) →
+  `CardDescription` → `CardContent` → `CardFooter`. `CardTitle` is `type-title`;
+  descriptions are `type-body` in `--muted-foreground`. `Separator` (`bg-border`,
+  `h-px`) divides, it does not outline.
 
-**Control heights move together.** Button default `h-10`, `sm` `h-9`, `xs` `h-7`,
-`lg` `h-11`; input `h-10`. Change them as a set or forms misalign.
+### Inputs / Fields
+
+- **Style:** transparent background, no box — a single bottom underline in
+  `--input`, `rounded-none`, height 40px, `type-input`.
+- **Focus:** the underline switches to `--ring`.
+- **Placeholder** is `--muted-foreground`; typed text is `--foreground`.
+- **Invalid:** underline switches to `--destructive`, and the error must render as a
+  brown strip (`FieldError`: `bg-destructive` + `--destructive-foreground`,
+  `w-fit px-2 py-1`) — the underline alone is too subtle to carry the state.
+- **Disabled:** `opacity: 50%`, cursor not allowed.
+- **Composition:** `Field` (vertical, `gap-3`) owns label + control + error;
+  `FieldLabel` and `FieldTitle` are `type-label`; `FieldDescription` is `type-body`
+  in `--muted-foreground`. `FieldGroup` stacks at `gap-10`.
+- **Control heights move together:** button `default` 40px, `sm` 36px, `xs` 28px,
+  `lg` 44px; input 40px. Change them as a set or forms misalign.
+
+### Dialog & Popover
+
+Floating layers are tier 3: `--popover` surface, `ring-1 ring-border`, `shadow-md`,
+`rounded-none`, `gap-6`, 24px padding, `max-w-md` from `sm` up. The backdrop is
+`--overlay` at 20% with a small backdrop blur, and open/close transitions are
+`duration-100` fade + zoom. The close control is a ghost icon button on the
+secondary fill.
+
+### Command Palette (signature)
+
+The home surface is a `cmdk` command palette, and it is the clearest single
+expression of the world: a bordered, `shadow-md` panel, a search field built on the
+same underline `InputGroup`, `type-label` group headings in `--muted-foreground`,
+`type-body` items at `px-3 py-2` that light up with `data-selected:bg-muted`, and
+`type-label` shortcuts at the right edge. Selection is a tonal wash, not a brass
+highlight — brass stays reserved.
+
+### Navigation
+
+The header holds a `type-title` wordmark ("Sklad") and a horizontal nav of
+`type-label` links, `gap-8` apart, in `--muted-foreground` shifting to `--foreground`
+on hover with a color transition. The sidebar tokens exist in the palette but the
+shipped shell uses the header; if a sidebar appears it takes `--sidebar*` verbatim.
+
+### Separator & Loading
+
+`Separator` is a Base UI separator on `bg-border` at `h-px` (horizontal) — never a
+hand-rolled div. `Spinner` is `Loader2Icon` at `size-4` with `animate-spin`,
+`role="status"`.
 
 ## Do's and Don'ts
 
-**Do**
+### Do:
 
-- Reach for `Button variant="outline"` for the app's default secondary action.
-- Keep destructive/confirm actions visually distinct with `variant="destructive"`
-  or a Dialog-based confirmation.
-- Use `gap-*` stacks and the `max-w-4xl` shell for new pages.
-- Keep `--muted-foreground` for secondary text and `--foreground` for body.
-- Lift surfaces tonally (next surface level) before reaching for a shadow.
+- **Do** reach for `Button variant="outline"` for the app's default secondary
+  action, and `variant="default"` (brass) for the one primary CTA on a view.
+- **Do** keep destructive/confirm actions visually distinct with
+  `variant="destructive"`, and pair destructive intent with a Dialog confirmation.
+- **Do** put Deep Forest text on brass — `--primary-foreground` every time.
+- **Do** use `gap-*` stacks and the `max-w-4xl` shell for new surfaces.
+- **Do** keep `--muted-foreground` for secondary text and `--foreground` for body.
+- **Do** lift surfaces tonally (next surface level) before reaching for a shadow.
+- **Do** set all type through `Typography` / the `type-*` tokens.
+- **Do** keep `rounded-none` on shipped components.
+- **Do** use tabular figures (`type-data`) for any column of numbers.
+- **Do** verify the `--muted-foreground` pairing stays ≥ 4.5:1 when the neutral ramp
+  changes.
 
-**Don't**
+### Don't:
 
-- Don't put `--foreground` text on `--primary`.
-- Don't add radius, colors, or fonts outside the token set above.
-- Don't override a component's colors via `className`.
-- Don't introduce serif/extra display faces.
-- Don't bypass semantic tokens with raw palette colors (`text-green-600` etc.).
-- Don't style Penpot text with a typography asset or an off-scale face — bind a
-  `typography.*` token (see Penpot above).
+- **Don't** put `--foreground` (Warm Off-White) text on `--primary`; it is 2.04:1.
+- **Don't** use Warm Brown as an accent, a small control, or as text on the dark
+  canvas.
+- **Don't** add radius, colors, fonts or shadow values outside the token set above.
+- **Don't** override a component's colors via `className`.
+- **Don't** introduce serif, mono or additional display faces, and don't use
+  `font-mono` in project components.
+- **Don't** bypass semantic tokens with raw palette colors (`text-green-600` etc.).
+- **Don't** communicate status or error by color alone — pair it with a message or
+  icon.
+- **Don't** style Penpot text with a typography asset or an off-scale face — bind a
+  `typography.*` token.
+- **Don't** maintain or introduce a light theme unless the product requirements
+  explicitly change.
 
 ## UX principles
 
@@ -565,11 +732,5 @@ User goal → user task → workflow → interaction model → UI structure
   the workflow decides, not the entity count.
 - Every flow must define its empty state, error state, and destructive-action
   confirmation.
-- Current app surface: Materials, Material types, Variants, Settings — each
-  should be judged by the user task it serves, not by its CRUD shape.
-
-## Responsive
-
-- Single-column, `max-w-4xl` content column; forms collapse to stacked fields on
-  narrow viewports (inputs are `text-base` until `md`).
-- No horizontal overflow at 375px or 1280px.
+- Current app surface: Materials, Material types, Variants, Settings — each should
+  be judged by the user task it serves, not by its CRUD shape.
