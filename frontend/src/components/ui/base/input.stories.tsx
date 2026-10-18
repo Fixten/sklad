@@ -1,5 +1,6 @@
 import { fn } from "storybook/test";
 
+import { Field, FieldError } from "./field";
 import { Input } from "./input";
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
@@ -34,6 +35,19 @@ export const Invalid: Story = {
     "aria-invalid": true,
     defaultValue: "Not an email",
   },
+};
+
+export const WithErrorMessage: Story = {
+  args: {
+    "aria-invalid": true,
+    defaultValue: "Not an email",
+  },
+  render: (args) => (
+    <Field data-invalid>
+      <Input {...args} />
+      <FieldError>Please enter a valid email address.</FieldError>
+    </Field>
+  ),
 };
 
 export const File: Story = {

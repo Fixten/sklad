@@ -113,6 +113,10 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
   (`oklch(0.539 0.057 127.665)`) so a control boundary clears 3:1 on the canvas.
   `--overlay` carries `black.20`; `warm-brown-20/90` retire in favour of
   `ember-10/90`. See `DESIGN.md` §Colors.
-- The Penpot `Components` frame is colour-complete — no raw fills or strokes left —
-  but 82 of its texts bind the `fontSize`/`fontWeight` primitives instead of the
-  `typography.*` composite the rule asks for; queued behind the colour work.
+- The Penpot `Components` frame is complete: no raw fills or strokes, and all 83 of
+  its texts bind a `typography.*` composite (43 `label`, 21 `input`, 15 `body`, 4
+  `title`) instead of loose size/weight primitives — applying a composite consumes
+  those, so a bound text carries `typography` + `fill` only. Two specimens needed
+  geometry to suit the role sizes: the horizontal `Field` wrappers (fixed 60px, now
+  auto at 63px) and their label columns (label at y14 + 16px clearance from the
+  control, specimens 376 wide).

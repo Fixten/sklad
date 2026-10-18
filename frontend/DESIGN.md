@@ -90,6 +90,7 @@ spacing:
   6: "24px"
   8: "32px"
   10: "40px"
+  16: "64px"
 components:
   button-primary:
     backgroundColor: "{colors.muted-brass}"
@@ -212,8 +213,8 @@ components:
     typography: "{typography.label}"
     padding: "0"
   field-error:
-    backgroundColor: "{colors.warm-brown}"
-    textColor: "{colors.warm-off-white}"
+    backgroundColor: "{colors.ember}"
+    textColor: "{colors.deep-forest}"
     typography: "{typography.body}"
     padding: "4px 8px"
 ---
@@ -614,6 +615,15 @@ token of the same name in the `sklad` token set — `type-display` ↔
 - **Frame caption markers take `typography.label`.** They annotate the canvas
   (specimen names, not copy); `typography.caption` stays what the scale means by it
   — 14px copy at weight 400.
+- **The `Components` frame's role map** — the mapping every specimen text follows:
+  caption markers, `Button`/`Label`/`Dialog` labels, the `Command` group heading and
+  its shortcuts → `typography.label`; control-borne text (`Input`/`Textarea`/`Field`
+  placeholders, `Input Group` value and addon) → `typography.input`; card, dialog and
+  command copy, list content and `Field` hints and errors → `typography.body`; card
+  and dialog headings → `typography.title`. Applying a composite consumes any loose
+  `fontSize`/`fontWeight` binding on that text, and it is the only way to clear one —
+  `tokens` is getter-only and a `delete` is a silent no-op. Bind the composite first,
+  never the primitive.
 - **`type-data`'s tabular figures have no Penpot equivalent.** A typography token
   has no `font-variant-numeric` field, so `typography.data` carries size, leading and
   weight only; the figure setting must be applied by hand in Penpot.
@@ -625,9 +635,9 @@ token of the same name in the `sklad` token set — `type-display` ↔
 
 ## Layout
 
-The shell is a single content column, centred, with a fixed top offset for the
-header. Density is comfortable and rhythmic — 4px base unit, everything on
-`gap-*` stacks rather than margins.
+The shell is a single content column, centred, under a static header. Density is
+comfortable and rhythmic — 4px base unit, everything on `gap-*` stacks rather than
+margins.
 
 - **App shell** (`src/layout/App.layout.tsx`): the shell owns the gutters — header and
   main share `px-4 sm:px-6`, so the wordmark and the content column line up at every
@@ -635,6 +645,8 @@ header. Density is comfortable and rhythmic — 4px base unit, everything on
   the header is static, so there is no clearance offset and no `container` utility.
   The column _and_ the standard vertical stack live here; pages do not wrap themselves.
   A surface is added by widening this shell, not by re-inventing the container.
+  In Penpot the column width is the `size.shell.column` token (896px), bound to the
+  `header` and `main` of the `appLayout` component — the code's `max-w-4xl`.
 - **Rhythm:** 4px base spacing unit (Tailwind dynamic scale). Stacks use `gap-*`:
   `gap-2` inside controls, `gap-4` / `gap-6` / `gap-8` between blocks.
 - **Header:** `flex items-center justify-between px-4 py-4 sm:px-6`; the nav is a
@@ -749,8 +761,8 @@ typography and by the surface a value sits in (e.g. a `MaterialTypeLabel` in
   `--input`, `rounded-none`, height 40px, `type-input`.
 - **Focus:** the underline switches to `--ring`.
 - **Placeholder** is `--muted-foreground`; typed text is `--foreground`.
-- **Invalid:** underline switches to `--destructive`, and the error must render as a
-  brown strip (`FieldError`: `bg-destructive` + `--destructive-foreground`,
+- **Invalid:** underline switches to `--destructive`, and the error must render as an
+  ember strip (`FieldError`: `bg-destructive` + `--destructive-foreground`,
   `w-fit px-2 py-1`) — the underline alone is too subtle to carry the state.
 - **Disabled:** `opacity: 50%`, cursor not allowed.
 - **Composition:** `Field` (vertical, `gap-3`) owns label + control + error;
@@ -779,9 +791,11 @@ highlight — brass stays reserved.
 ### Navigation
 
 The header holds a `type-title` wordmark ("Sklad") and a horizontal nav of
-`type-label` links, `gap-8` apart, in `--muted-foreground` shifting to `--foreground`
-on hover with a color transition. The sidebar tokens exist in the palette but the
-shipped shell uses the header; if a sidebar appears it takes `--sidebar*` verbatim.
+`type-label` links, `gap-4 sm:gap-8` apart, in `--muted-foreground` shifting to
+`--foreground` on hover and staying `--foreground` for the current route
+(`aria-current="page"`) with a color transition. The sidebar tokens exist in the
+palette but the shipped shell uses the header; if a sidebar appears it takes
+`--sidebar*` verbatim.
 
 ### Separator & Loading
 
