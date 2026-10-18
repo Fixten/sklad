@@ -1,23 +1,25 @@
-import { MemoryRouter } from "react-router";
+import { MemoryRouter, Routes, Route } from "react-router";
 
-import Link from "./index";
+import { Link, NavLink } from "./index";
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-const meta = {
+const decorator = (Story: React.FC) => (
+  <MemoryRouter initialEntries={["/"]}>
+    <Routes>
+      <Route element={<Story />} />
+    </Routes>
+  </MemoryRouter>
+);
+
+const meta: Meta<typeof Link> = {
   component: Link,
   args: {
     to: "/",
     children: "Home",
   },
-  decorators: [
-    (Story) => (
-      <MemoryRouter>
-        <Story />
-      </MemoryRouter>
-    ),
-  ],
-} satisfies Meta<typeof Link>;
+  decorators: [decorator],
+};
 
 export default meta;
 
@@ -28,9 +30,9 @@ export const Default: Story = {};
 export const NavLinks: Story = {
   render: () => (
     <nav className="flex gap-8">
-      <Link to="/">Home</Link>
-      <Link to="/settings">Settings</Link>
-      <Link to="/material">Material</Link>
+      <NavLink to="/">Home</NavLink>
+      <NavLink to="/settings">Settings</NavLink>
+      <NavLink to="/material">Material</NavLink>
     </nav>
   ),
 };

@@ -1,6 +1,6 @@
 import { cn } from "cn";
 
-import Link from "../Link";
+import { NavLink } from "../Link";
 import Typography from "../Typography";
 
 interface Props {
@@ -14,7 +14,10 @@ interface Props {
 export default function Header(props: Props) {
   return (
     <header
-      className={cn("flex items-center justify-between p-4", props.className)}
+      className={cn(
+        "flex items-center justify-between px-4 py-4 sm:px-6",
+        props.className,
+      )}
     >
       <Typography variant="title" tagName="span">
         Sklad
@@ -24,10 +27,10 @@ export default function Header(props: Props) {
           {props.navItems.map(({ link, name }) => (
             <li key={link}>
               <Typography
-                tagName={Link}
+                tagName={NavLink}
                 to={link}
                 variant="label"
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground transition-colors"
               >
                 {name}
               </Typography>

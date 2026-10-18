@@ -1,15 +1,27 @@
-import { Link } from "react-router";
+import { Link as RouterLink, NavLink as RouterNavLink } from "react-router";
 
-interface Props {
+interface LinkProps {
   to: string;
   children: React.ReactNode;
   className?: string;
 }
 
-export default function (props: Props) {
+interface NavLinkProps extends LinkProps {
+  end?: boolean;
+}
+
+export function Link({ to, children, className }: LinkProps) {
   return (
-    <Link to={props.to} className={props.className}>
-      {props.children}
-    </Link>
+    <RouterLink to={to} className={className}>
+      {children}
+    </RouterLink>
+  );
+}
+
+export function NavLink({ to, children, className, end }: NavLinkProps) {
+  return (
+    <RouterNavLink to={to} className={className} end={end}>
+      {children}
+    </RouterNavLink>
   );
 }

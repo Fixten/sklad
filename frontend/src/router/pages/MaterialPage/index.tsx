@@ -46,12 +46,12 @@ export default function MaterialPage() {
   if (query.isLoading) return <Spinner />;
   else
     return (
-      <section className="flex flex-col gap-8">
+      <>
         <AddMaterial
           onSubmit={addMutation.mutateAsync}
           isError={addMutation.isError}
         />
         {/* {allMaterial} */}
-      </section>
+      </>
     );
 }
