@@ -26,14 +26,7 @@ export default function Header(props: Props) {
         <ul className="flex gap-4 sm:gap-8">
           {props.navItems.map(({ link, name }) => (
             <li key={link}>
-              <Typography
-                tagName={NavLink}
-                to={link}
-                variant="label"
-                className="text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground transition-colors"
-              >
-                {name}
-              </Typography>
+              <NavLink to={link}>{name}</NavLink>
             </li>
           ))}
         </ul>

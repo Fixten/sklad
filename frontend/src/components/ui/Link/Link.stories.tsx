@@ -7,7 +7,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 const decorator = (Story: React.FC) => (
   <MemoryRouter initialEntries={["/"]}>
     <Routes>
-      <Route element={<Story />} />
+      <Route path="*" element={<Story />} />
     </Routes>
   </MemoryRouter>
 );

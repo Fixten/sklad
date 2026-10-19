@@ -204,6 +204,16 @@ components:
     rounded: "{rounded.none}"
     padding: "8px 12px"
     width: "100%"
+  link:
+    backgroundColor: "{colors.transparent}"
+    textColor: "{colors.warm-off-white}"
+    rounded: "{rounded.none}"
+    padding: "0"
+  link-hover:
+    backgroundColor: "{colors.transparent}"
+    textColor: "{colors.muted-brass}"
+    rounded: "{rounded.none}"
+    padding: "0"
   nav-link:
     backgroundColor: "{colors.transparent}"
     textColor: "{colors.warm-beige}"
@@ -819,14 +829,29 @@ same underline `InputGroup`, `type-label` group headings in `--muted-foreground`
 `type-label` shortcuts at the right edge. Selection is a tonal wash, not a brass
 highlight — brass stays reserved.
 
+### Links
+
+Both recipes are owned by the component (`@ui/Link`); a consumer's `className` is
+for layout only, never for colour.
+
+- **`Link`** — inline navigation inside copy and rows: ink `--foreground`, whose
+  underline is the interactive marker at `decoration-primary` /
+  `underline-offset-4`, moving to `--primary` ink on hover. The brass is the
+  _line_, not the text, because brass ink on a brown surface is 3.45:1 while Warm
+  Off-White keeps the 4.5:1 body floor on the canvas and on a card alike — and it
+  is the line, not a colour state, that marks a link on a touch screen. `Link`
+  sets no type of its own; the surrounding role carries it.
+- **`NavLink`** — a route link for navigation rows: `type-label` in
+  `--muted-foreground` shifting to `--foreground` on hover and staying
+  `--foreground` for the current route (`aria-current="page"`), with
+  `whitespace-nowrap` and a color transition.
+
 ### Navigation
 
 The header holds a `type-title` wordmark ("Sklad") and a horizontal nav of
-`type-label` links, `gap-4 sm:gap-8` apart, in `--muted-foreground` shifting to
-`--foreground` on hover and staying `--foreground` for the current route
-(`aria-current="page"`) with a color transition. The sidebar tokens exist in the
-palette but the shipped shell uses the header; if a sidebar appears it takes
-`--sidebar*` verbatim.
+`NavLink`s, `gap-4 sm:gap-8` apart; it lays the list out and carries no link
+recipe of its own. The sidebar tokens exist in the palette but the shipped shell
+uses the header; if a sidebar appears it takes `--sidebar*` verbatim.
 
 ### Separator & Loading
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-19T05:27:14.000Z",
+  "generatedAt": "2026-10-19T07:15:39.000Z",
   "title": "Design System: Sklad",
   "extensions": {
     "colorMeta": {
@@ -348,12 +348,20 @@
       "css": ".ds-dialog { --popover: oklch(0.452 0.047 53.927); --popover-foreground: oklch(0.979 0.005 95.099); --muted-foreground: oklch(0.843 0.028 72.764); --border: oklch(0.539 0.057 127.665); --primary: oklch(0.757 0.079 88.436); --primary-foreground: oklch(0.267 0.033 131); --ring: oklch(0.757 0.079 88.436); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: grid; gap: 24px; width: 100%; max-width: 448px; padding: 24px; background: var(--popover); color: var(--popover-foreground); border-radius: 0; box-shadow: 0 0 0 1px var(--border), 0 4px 6px -1px oklch(0% 0 0 / 0.1), 0 2px 4px -2px oklch(0% 0 0 / 0.1); } .ds-dialog-title { font-size: 20px; font-weight: 600; line-height: 1.15; letter-spacing: 0.05em; text-transform: uppercase; } .ds-dialog-description { color: var(--muted-foreground); font-size: 16px; font-weight: 500; line-height: 24px; max-width: var(--measure-prose, 65ch); } .ds-dialog-footer { display: flex; justify-content: flex-end; gap: 8px; } .ds-dialog-cancel, .ds-dialog-confirm { display: inline-flex; align-items: center; justify-content: center; height: 40px; padding: 0 24px; border-radius: 0; font-family: inherit; font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; cursor: pointer; outline: none; transition: background-color 150ms, transform 150ms; } .ds-dialog-cancel { border: 1px solid var(--border); background: transparent; color: var(--popover-foreground); } .ds-dialog-cancel:hover { background: oklch(0.539 0.057 127.665 / 30%); } .ds-dialog-confirm { border: 1px solid transparent; background: var(--primary); color: var(--primary-foreground); } .ds-dialog-confirm:hover { background: oklch(0.757 0.079 88.436 / 80%); } .ds-dialog-cancel:focus-visible, .ds-dialog-confirm:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.757 0.079 88.436 / 30%); }"
     },
     {
+      "name": "Inline Link",
+      "kind": "custom",
+      "refersTo": "link",
+      "description": "Navigation inside copy and rows: Warm Off-White ink the brass underline marks as interactive, and the ink itself turns brass on hover. The brass is the line, not the text, so the 4.5:1 body floor holds on the canvas and on a brown card alike, and the line still marks a link on touch, where no hover exists. Type is inherited from the surrounding role.",
+      "html": "<a class=\"ds-link\" href=\"#\">Открыть приход</a>",
+      "css": ".ds-link { --foreground: oklch(0.979 0.005 95.099); --primary: oklch(0.757 0.079 88.436); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; color: var(--foreground); text-decoration: underline; text-decoration-color: var(--primary); text-underline-offset: 4px; transition: color 150ms; } .ds-link:hover { color: var(--primary); } .ds-link:focus-visible { outline: 2px solid oklch(0.757 0.079 88.436 / 50%); outline-offset: 2px; }"
+    },
+    {
       "name": "Header Navigation",
       "kind": "nav",
       "refersTo": "nav-link",
-      "description": "The shell header: a caps title wordmark on the left, a gap-8 row of caps label links on the right, muted beige shifting to off-white on hover.",
+      "description": "The shell header: a caps title wordmark on the left, a gap-8 row of caps label links on the right. The link recipe is the NavLink component's — muted beige shifting to off-white on hover and staying off-white for the current route; the header only lays the list out.",
       "html": "<header class=\"ds-header\"><span class=\"ds-header-wordmark\">Sklad</span><nav><ul class=\"ds-nav-list\"><li><a class=\"ds-nav-link\" href=\"#\">Главная</a></li><li><a class=\"ds-nav-link\" href=\"#\">Настройки</a></li><li><a class=\"ds-nav-link\" href=\"#\">Материалы</a></li></ul></nav></header>",
-      "css": ".ds-header { --foreground: oklch(0.979 0.005 95.099); --muted-foreground: oklch(0.843 0.028 72.764); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: flex; align-items: center; justify-content: space-between; padding: 16px; } .ds-header-wordmark { color: var(--foreground); font-size: 20px; font-weight: 600; line-height: 1.15; letter-spacing: 0.05em; text-transform: uppercase; } .ds-nav-list { display: flex; gap: 32px; margin: 0; padding: 0; list-style: none; } .ds-nav-link { color: var(--muted-foreground); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; text-decoration: none; transition: color 150ms; } .ds-nav-link:hover { color: var(--foreground); } .ds-nav-link:focus-visible { outline: 2px solid oklch(0.757 0.079 88.436 / 50%); outline-offset: 2px; }"
+      "css": ".ds-header { --foreground: oklch(0.979 0.005 95.099); --muted-foreground: oklch(0.843 0.028 72.764); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: flex; align-items: center; justify-content: space-between; padding: 16px; } .ds-header-wordmark { color: var(--foreground); font-size: 20px; font-weight: 600; line-height: 1.15; letter-spacing: 0.05em; text-transform: uppercase; } .ds-nav-list { display: flex; gap: 32px; margin: 0; padding: 0; list-style: none; } .ds-nav-link { color: var(--muted-foreground); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; text-decoration: none; white-space: nowrap; transition: color 150ms; } .ds-nav-link:hover { color: var(--foreground); } .ds-nav-link[aria-current=\"page\"] { color: var(--foreground); } .ds-nav-link:focus-visible { outline: 2px solid oklch(0.757 0.079 88.436 / 50%); outline-offset: 2px; }"
     }
   ],
   "narrative": {
