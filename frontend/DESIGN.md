@@ -225,11 +225,6 @@ components:
     typography: "{typography.label}"
     padding: "0"
   field-error:
-    backgroundColor: "{colors.transparent}"
-    textColor: "{colors.ember}"
-    typography: "{typography.body}"
-    padding: "4px 8px"
-  field-error-on-surface:
     backgroundColor: "{colors.ember-10}"
     textColor: "{colors.warm-off-white}"
     typography: "{typography.body}"
@@ -305,7 +300,7 @@ Exact values live in the frontmatter — this section carries meaning and role.
 ### Error
 
 - **Ember** — the one signal in the system that is neither green nor brass. It is
-  both the destructive action fill and the error ink, because brown could not do
+  both the destructive action fill and the error signal, because brown could not do
   that job: as surface _and_ destructive fill it made the action invisible on cards
   and dialogs (1.00:1) and weak on the floor (2.02:1). Ember is 4.73:1 on Deep
   Forest and takes Deep Forest text (4.73:1); Warm Off-White on Ember is 3.00:1 and
@@ -419,7 +414,7 @@ roles, so the same alpha can serve more than one token.
 | `muted-brass.50`   | `--ring`              | Global `outline` color (`@layer base` in `src/styles/tailwind.css`) |
 | `muted-brass.80`   | `--primary`           | Primary button hover fill                                           |
 | `warm-beige.10`    | `--muted-foreground`  | Kbd chip fill inside input groups                                   |
-| `ember.10`         | `--invalid`           | Error tint behind a message or field on a brown surface             |
+| `ember.10`         | `--invalid`           | Error tint behind a message or field, on any surface                |
 | `ember.90`         | `--destructive`       | Destructive button hover fill                                       |
 | `warm-charcoal.50` | `--muted`             | Ghost/outline button hover and field hover wash                     |
 | `warm-off-white.5` | `--foreground`        | Mixed into Deep Olive for the secondary button hover                |
@@ -458,10 +453,11 @@ surface level over a shadow to lift content.
   controls never sit on a brown surface. Raised surfaces separate tonally, and a
   control that must appear there changes pattern (ghost action, filled brass)
   instead of leaning on a line.
-- **Error on brown is never a coloured ink.** Only the light neutrals clear 4.5:1
-  there, so on a raised surface error is carried by an `ember.10` tint plus light
-  text and an icon — the ink stays `--foreground`. On the floor error uses
-  `--invalid` (Ember) as both ink and underline (4.73:1).
+- **Error is never a coloured ink.** Only the light neutrals clear 4.5:1 on brown,
+  and Ember ink on brown is 2.34:1, so error is carried by an `ember.10` tint plus
+  `--foreground` text everywhere — on the floor and on a raised surface alike — with
+  the underline in `--invalid` (4.73:1 on the floor) doing the pointing. One recipe,
+  no surface to get wrong.
 - Titles use the editorial ink `--popover-foreground`; body copy uses
   `--foreground`; metadata and inactive icons use `--muted-foreground`.
 
@@ -481,7 +477,7 @@ palette colors (`text-green-600`, `bg-amber-500`) are off-system, in components 
 in Penpot alike.
 
 **The Error Is Ember Rule.** Destruction and error are Ember: `--invalid` for the
-message, underline and icon; `--destructive` (Ember fill, Deep Forest label) on the
+underline and the error tint; `--destructive` (Ember fill, Deep Forest label) on the
 button that acts. Never Warm Off-White on Ember (3.00:1), never Ember as a surface,
 and never two Ember moments in one view.
 
@@ -800,10 +796,11 @@ typography and by the surface a value sits in (e.g. a `MaterialTypeLabel` in
   `--input`, `rounded-none`, height 40px, `type-input`.
 - **Focus:** the underline switches to `--ring`.
 - **Placeholder** is `--muted-foreground`; typed text is `--foreground`.
-- **Invalid:** the underline switches to `--invalid` (Ember, 4.73:1 on the floor) and the
-  field carries an error strip — on the canvas `--invalid` ink, on a brown surface the
-  `ember.10` tint with `--foreground` text (`FieldError`: `w-fit px-2 py-1`). Ember ink on
-  brown is 2.34:1 and is never used; the underline alone is too subtle to carry the state
+- **Invalid:** the underline switches to `--invalid` (Ember, 4.73:1 on the floor) and
+  the field carries an error strip: the `ember.10` tint with `--foreground` text
+  (`FieldError`: `w-fit px-2 py-1`). One recipe on every surface — the tint holds
+  `--foreground` at 13.4:1 on the floor and 7.05:1 on a card, where Ember ink would
+  be 2.34:1 and is never used; the underline alone is too subtle to carry the state
   on its own.
 - **Disabled:** `opacity: 50%`, cursor not allowed.
 - **Composition:** `Field` (vertical, `gap-3`) owns label + control + error;
@@ -817,8 +814,17 @@ typography and by the surface a value sits in (e.g. a `MaterialTypeLabel` in
 Floating layers are tier 3: `--popover` surface, `ring-1 ring-border`, `shadow-md`,
 `rounded-none`, `gap-6`, 24px padding, `max-w-md` from `sm` up. The backdrop is
 `--overlay` at 20% with a small backdrop blur, and open/close transitions are
-`duration-100` fade + zoom. The close control is a ghost icon button on the
-secondary fill.
+`duration-100` fade + zoom.
+
+**A dialog carries no corner ✕.** Its dismissal is a footer control, and that
+control is mandatory: `DialogFooter` always renders it — a `DialogClose` on a
+ghost button labelled `Закрыть`, ahead of whatever actions the dialog passes — so
+every dialog has a way out that a touch screen reader can reach. Escape and an
+outside press are bonus paths, never the only ones, and the 16px scrim a dialog
+leaves on a phone is not a dismissal target. The dismissal is ghost rather than
+outline because an olive boundary on the brown surface is 1.50:1; on a raised
+surface a control changes pattern instead of leaning on a line. Deleting the ✕ is
+a deliberate deviation from upstream shadcn — re-apply it after any `shadcn add`.
 
 ### Command Palette (signature)
 
@@ -886,7 +892,11 @@ hand-rolled div. `Spinner` is `Loader2Icon` at `size-4` with `animate-spin`,
 - **Don't** use Warm Brown as an accent, a small control, as text on the dark
   canvas, or as the destructive fill.
 - **Don't** put olive linework or an olive control on a brown surface, and don't
-  render error there as a coloured ink — tint plus light text instead.
+  render error as a coloured ink — the `ember.10` tint plus light text is the only
+  recipe, with `--invalid` left to the underline.
+- **Don't** put a corner ✕ on a dialog — dismissal is the footer's ghost `Закрыть`,
+  which `DialogFooter` renders for every dialog (upstream shadcn's ✕ is removed on
+  purpose).
 - **Don't** add radius, colors, fonts or shadow values outside the token set above.
 - **Don't** override a component's colors via `className`.
 - **Don't** introduce serif, mono or additional display faces, and don't use

@@ -41,14 +41,7 @@ function ControlledDialog() {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => {
-                setOpen(false);
-              }}
-            >
-              Close
-            </Button>
+            <Button variant="destructive">Delete</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -69,7 +62,6 @@ export const Default: Story = {
           <p>Dialog content goes here.</p>
         </div>
         <DialogFooter>
-          <Button variant="outline">Cancel</Button>
           <Button>Confirm</Button>
         </DialogFooter>
       </DialogContent>
@@ -97,9 +89,7 @@ export const LongContent: Story = {
             <p key={index}>Paragraph {index + 1} of the dialog content.</p>
           ))}
         </div>
-        <DialogFooter>
-          <Button>Close</Button>
-        </DialogFooter>
+        <DialogFooter />
       </DialogContent>
     </Dialog>
   ),
