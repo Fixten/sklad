@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-19T07:15:39.000Z",
+  "generatedAt": "2026-10-19T09:28:16.000Z",
   "title": "Design System: Sklad",
   "extensions": {
     "colorMeta": {
@@ -77,6 +77,21 @@
           "oklch(0.55 0.05 53.927)",
           "oklch(0.68 0.052 53.927)",
           "oklch(0.84 0.04 53.927)"
+        ]
+      },
+      "ember": {
+        "role": "error",
+        "displayName": "Ember",
+        "canonical": "oklch(0.661 0.08 45.402)",
+        "tonalRamp": [
+          "oklch(0.19 0.023 45.402)",
+          "oklch(0.28 0.034 45.402)",
+          "oklch(0.37 0.045 45.402)",
+          "oklch(0.47 0.057 45.402)",
+          "oklch(0.57 0.069 45.402)",
+          "oklch(0.661 0.08 45.402)",
+          "oklch(0.78 0.085 45.402)",
+          "oklch(0.9 0.078 45.402)"
         ]
       },
       "warm-charcoal": {
@@ -409,6 +424,11 @@
       {
         "name": "The One Face Rule",
         "body": "Manrope everywhere — copy, controls, headings and labels (`--font-heading` aliases `--font-sans`). No serif, no second display face, no designed mono. Geometry is expressed through caps headings and editorial spacing.",
+        "section": "typography"
+      },
+      {
+        "name": "The Body Floor Rule",
+        "body": "Unstyled text never lands on preflight defaults: the base `body` rule carries `type-body`, so raw `p`, `span`, `div` and reset headings inherit the body role (1rem / 500 / 1.5 / `pretty`) instead of 400-weight browser text. Roles still come from `Typography` or the matching `type-*` utility, which win the cascade.",
         "section": "typography"
       },
       {

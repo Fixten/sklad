@@ -19,6 +19,7 @@ the source of truth — when they conflict with code, change the code. Design mi
 # Rules
 
 - User may make changes between your edits, do not revert them.
+- Make issue explanations short and simple. Provide high level description which is easy to understand, if detailed technical explanation seems important - suggest to user further explanation.
 
 # Skills
 

@@ -17,10 +17,14 @@ mirroring the backend's feature split.
   are installed via `shadcn add` (`components.json` sets `aliases.ui = "@base"`). Keep
   upstream code verbatim except for design-driven edits required by `DESIGN.md` (token or
   recipe changes only — e.g. the destructive variant); re-apply those after any reinstall.
+- **Import UI only via `@ui/*`.** Code outside `src/components/ui/` must never import
+  `@base/*` directly — `@base` is an implementation detail. If `@ui` lacks the piece you
+  need, add a `@ui` entry first, even if it is only a re-export.
 - Aliases (`tsconfig.json`): `@/*` → `src`; `@ui/*` and `@base/*` as defined above.
 - `cn()` from the `cn` package — use it instead of concatenating class strings, or
   conflicting Tailwind utilities survive.
-- Use `@ui/Typography` for any text.
+- Use `@ui/Typography` for any text. Base `body` carries `type-body`, so raw `p`/`span`/`div`
+  (and reset headings) inherit the body role rather than preflight defaults; `type-*` still wins.
 - Icons come from `lucide-react`.
 - Each component should be created in own folder eg /folder/Component/index.tsx
 

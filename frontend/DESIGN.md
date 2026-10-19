@@ -574,6 +574,11 @@ component; `className` carries layout and semantic color only.
 (`--font-heading` aliases `--font-sans`). No serif, no second display face, no
 designed mono. Geometry is expressed through caps headings and editorial spacing.
 
+**The Body Floor Rule.** Unstyled text never lands on preflight defaults: the base
+`body` rule carries `type-body`, so raw `p`, `span`, `div` and reset headings inherit
+the body role (1rem / 500 / 1.5 / `pretty`) instead of 400-weight browser text. Roles
+still come from `Typography` or the matching `type-*` utility, which win the cascade.
+
 **The Token-Or-Nothing Rule.** Never set type with raw utilities (`text-xs`,
 `text-sm`, `font-*`, `leading-*`, `tracking-*`) in project components. Go through
 `Typography`. Replace, don't layer: Tailwind emits raw size utilities _after_ the
