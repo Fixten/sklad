@@ -211,7 +211,7 @@ function FieldError({
       role="alert"
       data-slot="field-error"
       className={cn(
-        "bg-destructive text-destructive-foreground type-body w-fit px-2 py-1",
+        "bg-invalid/10 text-foreground type-body w-fit px-2 py-1",
         className,
       )}
       {...props}

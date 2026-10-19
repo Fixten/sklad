@@ -15,7 +15,11 @@ colors:
   warm-brown: "oklch(0.452 0.047 53.927)"
   warm-charcoal: "oklch(0.288 0.009 67.447)"
   warm-beige: "oklch(0.843 0.028 72.764)"
+  muted-brass-5: "oklch(0.757 0.079 88.436 / 5%)"
+  muted-brass-10: "oklch(0.757 0.079 88.436 / 10%)"
+  muted-brass-20: "oklch(0.757 0.079 88.436 / 20%)"
   muted-brass-30: "oklch(0.757 0.079 88.436 / 30%)"
+  muted-brass-50: "oklch(0.757 0.079 88.436 / 50%)"
   muted-brass-80: "oklch(0.757 0.079 88.436 / 80%)"
   deep-olive-30: "oklch(0.539 0.057 127.665 / 30%)"
   deep-olive-50: "oklch(0.539 0.057 127.665 / 50%)"
@@ -23,14 +27,12 @@ colors:
   ember-10: "oklch(0.661 0.08 45.402 / 10%)"
   ember-90: "oklch(0.661 0.08 45.402 / 90%)"
   warm-charcoal-50: "oklch(0.288 0.009 67.447 / 50%)"
-  warm-brown-20: "oklch(0.452 0.047 53.927 / 20%)"
-  warm-brown-90: "oklch(0.452 0.047 53.927 / 90%)"
   black-20: "oklch(0% 0 0 / 20%)"
-  chart-1: "oklch(0.86 0.106 131)"
-  chart-2: "oklch(0.745 0.091 131)"
-  chart-3: "oklch(0.63 0.077 131)"
-  chart-4: "oklch(0.515 0.063 131)"
-  chart-5: "oklch(0.4 0.049 131)"
+  chart-1: "oklch(0.861 0.106 130.926)"
+  chart-2: "oklch(0.818 0.099 130.979)"
+  chart-3: "oklch(0.783 0.094 130.478)"
+  chart-4: "oklch(0.75 0.091 130.808)"
+  chart-5: "oklch(0.714 0.086 130.86)"
 typography:
   display:
     fontFamily: "Manrope Variable, -apple-system, system-ui, sans-serif"
@@ -135,15 +137,15 @@ components:
     padding: "0 24px"
     height: "40px"
   button-destructive:
-    backgroundColor: "{colors.warm-brown}"
-    textColor: "{colors.warm-off-white}"
+    backgroundColor: "{colors.ember}"
+    textColor: "{colors.deep-forest}"
     typography: "{typography.label}"
     rounded: "{rounded.none}"
     padding: "0 24px"
     height: "40px"
   button-destructive-hover:
-    backgroundColor: "{colors.warm-brown-90}"
-    textColor: "{colors.warm-off-white}"
+    backgroundColor: "{colors.ember-90}"
+    textColor: "{colors.deep-forest}"
     typography: "{typography.label}"
     rounded: "{rounded.none}"
     padding: "0 24px"
@@ -213,8 +215,13 @@ components:
     typography: "{typography.label}"
     padding: "0"
   field-error:
-    backgroundColor: "{colors.ember}"
-    textColor: "{colors.deep-forest}"
+    backgroundColor: "{colors.transparent}"
+    textColor: "{colors.ember}"
+    typography: "{typography.body}"
+    padding: "4px 8px"
+  field-error-on-surface:
+    backgroundColor: "{colors.ember-10}"
+    textColor: "{colors.warm-off-white}"
     typography: "{typography.body}"
     padding: "4px 8px"
 ---
@@ -314,10 +321,23 @@ Exact values live in the frontmatter — this section carries meaning and role.
 
 ### Main color palette
 
-A five-step ramp derived from the main brand color — same hue family, stepped in
-lightness from dark to light (`chart-1`…`chart-5`). This is **the main color's own
-palette**, meant for chart series, not a set of general-purpose brand colors.
-Series are told apart by lightness, never by adding hues.
+A five-step **tonal ramp of the main brand color**: one hue (≈131, Deep Forest's own),
+stepped in lightness from **light to dark** — `chart-1` is the lightest
+(`oklch(0.861 0.106 130.926)`, the design's chart color) and `chart-5` the deepest. This is
+**the main color's own palette**, meant for chart series, not a set of general-purpose
+brand colors and not a categorical palette. Series are told apart by tone, never by
+adding hues.
+
+`chart-1` is the step to reach for: a single-series chart, or the first series, is
+`--chart-1`. Every step clears 3:1 against the lightest surface a chart can sit on
+(`--card`: 5.04 / 4.37 / 3.88 / 3.45 / 3.02) and clears it with room on the canvas
+(10.18 / 8.82 / 7.83 / 6.96 / 6.11), so the ladder is monotonic on both surfaces and
+neighbouring steps read as one family.
+
+Past **three** series the ramp stops carrying meaning: five tones of one hue are no
+longer reliably distinguishable at phone size. Label the series directly (legend text or
+direct labels) and vary the line dash before reaching for a second hue — the palette has
+no second hue to give, and Ember is a signal, not a series colour.
 
 ### Token mapping
 
@@ -328,6 +348,12 @@ own. Values are in the frontmatter and in the `.dark` block of
 everywhere: **palette values** (frontmatter `colors`, Penpot `palette.*`), **alpha
 steps** (frontmatter `-<percent>` entries, Penpot `opacity.*`) and **roles** (the
 CSS variables below, Penpot `color.*`). Roles bind; palette values never do.
+
+**Penpot and the CSS carry the same values.** The `sklad` token set is what the values
+above are read from. The `.dark` block of `src/styles/tailwind.css` mirrors it: the lifted
+olive on `--border`, `--input`, `--secondary` and `--sidebar-border`, Ember on
+`--destructive` and `--invalid` with a Deep Forest label, `--overlay` as `black.20`, and
+the current chart ramp.
 
 | Token                          | Palette color                 |
 | ------------------------------ | ----------------------------- |
@@ -385,8 +411,6 @@ roles, so the same alpha can serve more than one token.
 | `warm-beige.10`    | `--muted-foreground`  | Kbd chip fill inside input groups                                   |
 | `ember.10`         | `--invalid`           | Error tint behind a message or field on a brown surface             |
 | `ember.90`         | `--destructive`       | Destructive button hover fill                                       |
-| `warm-brown.20`    | —                     | retired: invalid ring is `--invalid` at full strength               |
-| `warm-brown.90`    | —                     | retired: destructive hover is `ember.90`                            |
 | `warm-charcoal.50` | `--muted`             | Ghost/outline button hover and field hover wash                     |
 | `warm-off-white.5` | `--foreground`        | Mixed into Deep Olive for the secondary button hover                |
 | `black.20`         | `--overlay`           | Dialog scrim                                                        |
@@ -466,10 +490,13 @@ ink clears 4.5:1 (`--invalid`: 4.73:1). Never communicate status by color alone.
 The Penpot file carries the palette as tokens, never as swatches; the `Colors` frame
 (page `Design system`, right of `Components`) is a read-out of that token set and
 holds no value of its own. Four blocks: **Palette values** (the eight non-chart
-values, one swatch per `palette.*` token), **Chart ramp** (`palette.chart.1`…`5`),
+values, one swatch per `palette.*` token), **Chart ramp** (`palette.chart.1`…`5` — the
+tonal ladder in order, lightest step first),
 **Alpha steps over a card** (each `opacity.*` step composited over `color.card`, so a
 translucent step is read at the strength it really lands with) and **Roles** (every
 `color.*` role with its resolved hex and its contrast against `color.background`).
+Swatch labels carry the token name the swatch displays, so the frame is readable as a
+ledger: name, value, and — for roles — the contrast it lands with.
 
 - **The frame binds what it displays.** Each swatch carries the token it names —
   including the palette swatches, which is the one place a value token is allowed to
@@ -728,11 +755,13 @@ palette.
   blends 5% `--foreground` into the fill.
 - **Ghost / tertiary:** transparent; hover applies `--muted` background with
   `--foreground` text.
-- **Destructive:** `--destructive` (brown) fill + `--destructive-foreground` text;
-  hover `destructive/90`.
+- **Destructive:** `--destructive` (Ember) fill + `--destructive-foreground` (Deep
+  Forest) label; hover `ember.90`. This is the only place Ember is a fill — it is never
+  a surface, and never two Ember moments in one view.
 - **Link:** `--primary` text, underlined, `underline-offset-4`.
 - **Focus / invalid:** `focus-visible:border-ring` plus a 2px `ring/30` ring;
-  `aria-invalid` swaps both to `--destructive` (`border-destructive`, ring at 20%).
+  `aria-invalid` swaps both to `--invalid` (boundary and ring, Ember — the same role the
+  error message uses).
 - **Disabled:** `opacity: 50%`, pointer events off.
 - **Icon:** `IconButton` = `variant="outline"` + `size="icon"` (`size-10`).
 
@@ -761,9 +790,11 @@ typography and by the surface a value sits in (e.g. a `MaterialTypeLabel` in
   `--input`, `rounded-none`, height 40px, `type-input`.
 - **Focus:** the underline switches to `--ring`.
 - **Placeholder** is `--muted-foreground`; typed text is `--foreground`.
-- **Invalid:** underline switches to `--destructive`, and the error must render as an
-  ember strip (`FieldError`: `bg-destructive` + `--destructive-foreground`,
-  `w-fit px-2 py-1`) — the underline alone is too subtle to carry the state.
+- **Invalid:** the underline switches to `--invalid` (Ember, 4.73:1 on the floor) and the
+  field carries an error strip — on the canvas `--invalid` ink, on a brown surface the
+  `ember.10` tint with `--foreground` text (`FieldError`: `w-fit px-2 py-1`). Ember ink on
+  brown is 2.34:1 and is never used; the underline alone is too subtle to carry the state
+  on its own.
 - **Disabled:** `opacity: 50%`, cursor not allowed.
 - **Composition:** `Field` (vertical, `gap-3`) owns label + control + error;
   `FieldLabel` and `FieldTitle` are `type-label`; `FieldDescription` is `type-body`
@@ -819,6 +850,8 @@ hand-rolled div. `Spinner` is `Loader2Icon` at `size-4` with `animate-spin`,
 - **Do** set all type through `Typography` / the `type-*` tokens.
 - **Do** keep `rounded-none` on shipped components.
 - **Do** use tabular figures (`type-data`) for any column of numbers.
+- **Do** chart with the main color palette: `--chart-1` for a single series, deeper steps
+  in order for up to three, and direct labels past that.
 - **Do** verify the `--muted-foreground` pairing stays ≥ 4.5:1 when the neutral ramp
   changes.
 
@@ -834,6 +867,8 @@ hand-rolled div. `Spinner` is `Loader2Icon` at `size-4` with `animate-spin`,
 - **Don't** introduce serif, mono or additional display faces, and don't use
   `font-mono` in project components.
 - **Don't** bypass semantic tokens with raw palette colors (`text-green-600` etc.).
+- **Don't** separate chart series with a second hue or with Ember — the palette is a
+  tonal ladder of one hue; label the series or vary the line dash.
 - **Don't** communicate status or error by color alone — pair it with a message or
   icon.
 - **Don't** style Penpot text with a typography asset or an off-scale face — bind a

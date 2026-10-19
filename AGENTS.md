@@ -8,7 +8,7 @@ see `e2e/AGENTS.md`). Root scripts are thin `pnpm --filter <pkg>` delegates.
 # Docs
 
 `docs/INDEX.md` is the entry point; `product/prd/` splits business requirements by concern. Docs are
-the source of truth — when they conflict with code, change the code.
+the source of truth — when they conflict with code, change the code. Design might be the source of truth for docs and dictate changes.
 
 # Code style
 

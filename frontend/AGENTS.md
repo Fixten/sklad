@@ -77,7 +77,8 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
   strength. `--border` is a floor-only tone (3.03:1 on the canvas, 1.50:1 on
   `--card`), so a ring on an already-brown surface stays a whisper — open thread,
   not a settled recipe.
-  The Penpot `Components` frame (page `Design system`) mirrors `.dark`; its token layer
+  The Penpot `Components` frame (page `Design system`) is what `.dark` is being
+  reconciled to — Penpot carries the current design values, not the CSS; its token layer
   and type-binding rules live in `DESIGN.md` §Typography ▸ Penpot.
 - **`@base` needs its exact `tsconfig` path entry.** Without the non-wildcard `"@base"`
   mapping (after `@ui/*`), `aliases.ui` resolves to `frontend/@base` instead of
@@ -85,6 +86,11 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
   `npx shadcn info`.
 - **`server.js` is the production host**: Express 5 serving static `dist` plus an SPA catch-all
   `app.get('/{*splat}')` (Express 5 renamed `'*'`), run via `pm2-runtime` on `FRONTEND_PORT`.
+- **In Penpot, a token _value_ edit does not re-resolve existing bindings.** Shapes keep the
+  colour they resolved at bind time, and re-applying the same token is a no-op — write the new
+  value as a literal, re-apply the token, then verify binding _and_ rendered value.
+- **`.impeccable/design.json` is generated** from `DESIGN.md` frontmatter plus component
+  snippets (impeccable `document`); any token edit in `DESIGN.md` makes the sidecar stale.
 
 ## Open threads
 
@@ -95,25 +101,6 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
   `Label` peer overrides (`peer-data-[slot=checkbox|radio-group-item|switch]`), which
   `type-body` does not reset. `type-caption` has no slot in `base/**` —
   hints/descriptions are `type-body`.
-- The 65ch prose measure is applied in the prose slots (`CardDescription`,
-  `DialogDescription`, `FieldDescription`, `CommandEmpty`), never on `type-body`: the
-  role also covers full-width controls (command search field), which must keep their box.
-- The Penpot canvas still shows the old faces on `Page 1` and `Home — Working Day`
-  (~1.2k text layers). The token layer is migrated to Manrope (`typography.*`, no
-  typography assets — bind tokens, never a typography asset) and the
-  `Components` frame is re-fonted and bound role by role;
-  binding the remaining pages is deferred to the `penpot` agent.
-- Colour roles moved in Penpot ahead of the CSS: `--destructive` becomes Ember
-  (`oklch(0.661 0.08 45.402)`) with `--destructive-foreground` = Deep Forest, a new
-  `--invalid` role (Ember) takes error text and underline, and
-  `--border`/`--input`/`--secondary` take the lifted olive
-  (`oklch(0.539 0.057 127.665)`) so a control boundary clears 3:1 on the canvas.
-  `--overlay` carries `black.20`; `warm-brown-20/90` retire in favour of
-  `ember-10/90`. See `DESIGN.md` §Colors.
-- The Penpot `Components` frame is complete: no raw fills or strokes, and all 83 of
-  its texts bind a `typography.*` composite (43 `label`, 21 `input`, 15 `body`, 4
-  `title`) instead of loose size/weight primitives — applying a composite consumes
-  those, so a bound text carries `typography` + `fill` only. Two specimens needed
-  geometry to suit the role sizes: the horizontal `Field` wrappers (fixed 60px, now
-  auto at 63px) and their label columns (label at y14 + 16px clearance from the
-  control, specimens 376 wide).
+- The 65ch prose measure lives in the prose slots (`CardDescription`, `DialogDescription`,
+  `FieldDescription`, `CommandEmpty`), never on `type-body`: the role also covers
+  full-width controls (command search field), which must keep their box.
