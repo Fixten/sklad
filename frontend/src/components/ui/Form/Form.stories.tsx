@@ -7,7 +7,7 @@ import { Button } from "@base/button";
 import { Field, FieldError, FieldLabel } from "@base/field";
 import { Input } from "@base/input";
 
-import { Form } from "./form";
+import { Form } from "./index";
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { UseFormReturn } from "react-hook-form";

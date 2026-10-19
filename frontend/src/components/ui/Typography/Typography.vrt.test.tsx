@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { render } from "vitest-browser-react";
 
-import Typography from "./Typography";
+import Typography from "./index";
 
 const variants = [
   "display",

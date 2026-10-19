@@ -1,7 +1,7 @@
 import { PlusIcon, SettingsIcon } from "lucide-react";
 import { fn } from "storybook/test";
 
-import IconButton from "./IconButton";
+import IconButton from "./index";
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 

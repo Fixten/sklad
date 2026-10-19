@@ -20,12 +20,9 @@ mirroring the backend's feature split.
 - Aliases (`tsconfig.json`): `@/*` → `src`; `@ui/*` and `@base/*` as defined above.
 - `cn()` from the `cn` package — use it instead of concatenating class strings, or
   conflicting Tailwind utilities survive.
-- Type comes only from `@ui/Typography` (`variant` → a `type-*` token in
-  `src/styles/tailwind.css`, see `DESIGN.md` §Typography); never raw
-  `text-*`/`font-*`/`tracking-*` at call sites. One face: Manrope (`--font-heading`
-  == `--font-sans`). `font-mono` is a system stack reserved for shadcn internals
-  (`kbd`, code slots) — never use it in project components.
-- Icons come from `lucide-react` (see `components.json` → `iconLibrary`).
+- Use `@ui/Typography` for any text.
+- Icons come from `lucide-react`.
+- Each component should be created in own folder eg /folder/Component/index.tsx
 
 ## Adding API integration for a feature
 

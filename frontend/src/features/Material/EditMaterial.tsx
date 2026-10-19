@@ -5,7 +5,7 @@ import * as z from "zod";
 import { Button } from "@base/button";
 import { Field, FieldError, FieldLabel } from "@base/field";
 import { Input } from "@base/input";
-import { Form } from "@ui/form";
+import { Form } from "@ui/Form";
 
 import { MaterialDTO, MaterialModel } from "./Material.model";
 import SelectMaterialType from "./SelectMaterialType";
