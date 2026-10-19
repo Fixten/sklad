@@ -613,19 +613,15 @@ To disable a feature, set its key to `false`:
 Only a boolean value is honoured. A key with any other value type is ignored, and the feature is
 treated as enabled.
 
-### Behaviour on an unreadable configuration
-
-If the configuration file is missing or cannot be parsed, every feature is treated as enabled.
-
-The flags must never be the reason the application fails to start, and a broken configuration file
-must not take functionality down with it.
-
 ### Scope
 
-Flags control **backend route registration only**.
+Flags are applied on both sides of the application.
 
 - The backend registers a feature's router only when the feature is enabled. A disabled feature has
   no routes, so its endpoints answer `404 Not Found`.
+- The frontend hides a disabled feature from navigation (header, Home menu) and does not register
+  its route. The feature's pages and modules stay in the code, so enabling it again requires only a
+  configuration change.
 - A disabled feature is not partial: the whole feature's route is either registered or not. Flags are
   not applied inside a feature, to individual endpoints, or to business logic.
 - Flags are not applied to database schemas, migrations, or services. A disabled feature's data stays
@@ -644,9 +640,9 @@ whether or not a feature is currently enabled.
 
 ### Application of flags
 
-Flags are applied when the application builds its route table at startup. They are not re-read per
-request, and changing a flag therefore requires a restart of the built application, which in Docker
-means a rebuild of the backend image.
+Flags are applied when the application builds its route table at startup on the backend, and when
+the frontend is built (the frontend bundles `features.config.json`). They are not re-read per request
+or at runtime, so changing a flag requires restarting the backend and rebuilding the frontend image.
 
 ---
 

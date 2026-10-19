@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-19T09:28:16.000Z",
+  "generatedAt": "2026-10-19T10:25:45.000Z",
   "title": "Design System: Sklad",
   "extensions": {
     "colorMeta": {
@@ -312,7 +312,7 @@
       "refersTo": "button-primary",
       "description": "The one brass CTA on a view. Deep Forest text on Muted Brass, cut square, caps label. Hover drops to brass at 80%; press nudges 1px down.",
       "html": "<button class=\"ds-btn-primary\">Создать</button>",
-      "css": ".ds-btn-primary { --primary: oklch(0.757 0.079 88.436); --primary-foreground: oklch(0.267 0.033 131); --ring: oklch(0.757 0.079 88.436); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 40px; padding: 0 24px; border: 1px solid transparent; border-radius: 0; background: var(--primary); color: var(--primary-foreground); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; white-space: nowrap; cursor: pointer; outline: none; transition: background-color 150ms, transform 150ms; } .ds-btn-primary:hover { background: oklch(0.757 0.079 88.436 / 80%); } .ds-btn-primary:active { transform: translateY(1px); } .ds-btn-primary:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.757 0.079 88.436 / 30%); } .ds-btn-primary:disabled { opacity: 50%; pointer-events: none; }"
+      "css": ".ds-btn-primary { --primary: oklch(0.757 0.079 88.436); --primary-foreground: oklch(0.267 0.033 131); --ring: oklch(0.757 0.079 88.436); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 24px; border: 1px solid transparent; border-radius: 0; background: var(--primary); color: var(--primary-foreground); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; white-space: nowrap; cursor: pointer; outline: none; transition: background-color 150ms, transform 150ms; } .ds-btn-primary:hover { background: oklch(0.757 0.079 88.436 / 80%); } .ds-btn-primary:active { transform: translateY(1px); } .ds-btn-primary:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.757 0.079 88.436 / 30%); } .ds-btn-primary:disabled { opacity: 50%; pointer-events: none; }"
     },
     {
       "name": "Outline Button",
@@ -320,15 +320,61 @@
       "refersTo": "button-outline",
       "description": "The app's default secondary action: Deep Olive hairline border on a transparent fill. Hover fills with Deep Olive at 30% — a bottle-green wash, never brass.",
       "html": "<button class=\"ds-btn-outline\">Отмена</button>",
-      "css": ".ds-btn-outline { --border: oklch(0.539 0.057 127.665); --foreground: oklch(0.979 0.005 95.099); --ring: oklch(0.757 0.079 88.436); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 40px; padding: 0 24px; border: 1px solid var(--border); border-radius: 0; background: transparent; color: var(--foreground); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; white-space: nowrap; cursor: pointer; outline: none; transition: background-color 150ms, border-color 150ms, transform 150ms; } .ds-btn-outline:hover { background: oklch(0.539 0.057 127.665 / 30%); } .ds-btn-outline:active { transform: translateY(1px); } .ds-btn-outline:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.757 0.079 88.436 / 30%); } .ds-btn-outline:disabled { opacity: 50%; pointer-events: none; }"
+      "css": ".ds-btn-outline { --border: oklch(0.539 0.057 127.665); --foreground: oklch(0.979 0.005 95.099); --ring: oklch(0.757 0.079 88.436); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 24px; border: 1px solid var(--border); border-radius: 0; background: transparent; color: var(--foreground); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; white-space: nowrap; cursor: pointer; outline: none; transition: background-color 150ms, border-color 150ms, transform 150ms; } .ds-btn-outline:hover { background: oklch(0.539 0.057 127.665 / 30%); } .ds-btn-outline:active { transform: translateY(1px); } .ds-btn-outline:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.757 0.079 88.436 / 30%); } .ds-btn-outline:disabled { opacity: 50%; pointer-events: none; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "The olive action: Deep Olive fill, Warm Off-White label, cut square. Hover blends 5% Warm Off-White into the fill — the only control that lightens by mixing ink instead of dropping its own opacity.",
+      "html": "<button class=\"ds-btn-secondary\">Изменить</button>",
+      "css": ".ds-btn-secondary { --secondary: oklch(0.539 0.057 127.665); --secondary-foreground: oklch(0.979 0.005 95.099); --foreground: oklch(0.979 0.005 95.099); --ring: oklch(0.757 0.079 88.436); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 24px; border: 1px solid transparent; border-radius: 0; font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; white-space: nowrap; cursor: pointer; outline: none; background: var(--secondary); color: var(--secondary-foreground); transition: background-color 150ms, transform 150ms; } .ds-btn-secondary:hover { background: color-mix(in oklch, var(--secondary), var(--foreground) 5%); } .ds-btn-secondary:active { transform: translateY(1px); } .ds-btn-secondary:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.757 0.079 88.436) / 30%; } .ds-btn-secondary:disabled { opacity: 50%; pointer-events: none; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "The quiet action: no fill, no border, Warm Off-White label that takes a Warm Charcoal wash on hover. It is the pattern for a control that must sit on a brown surface, where an olive boundary collapses to 1.50:1.",
+      "html": "<button class=\"ds-btn-ghost\">Закрыть</button>",
+      "css": ".ds-btn-ghost { --foreground: oklch(0.979 0.005 95.099); --muted: oklch(0.288 0.009 67.447); --ring: oklch(0.757 0.079 88.436); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 24px; border: 1px solid transparent; border-radius: 0; font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; white-space: nowrap; cursor: pointer; outline: none; background: transparent; color: var(--foreground); transition: background-color 150ms, color 150ms, transform 150ms; } .ds-btn-ghost:hover { background: oklch(0.288 0.009 67.447 / 50%); color: var(--foreground); } .ds-btn-ghost:active { transform: translateY(1px); } .ds-btn-ghost:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.757 0.079 88.436) / 30%; } .ds-btn-ghost:disabled { opacity: 50%; pointer-events: none; }"
     },
     {
       "name": "Destructive Button",
       "kind": "button",
       "refersTo": "button-destructive",
-      "description": "Destructive intent is Ember — the one signal in the system that is neither green nor brass, and never a red. Deep Forest label on the fill; hover drops to Ember at 90%. Ember is never a surface and never spent twice in one view.",
+      "description": "Destructive intent is Ember — the one signal in the system that is neither green nor brass, and never a red. Deep Forest label on the fill; hover drops to Ember at 90%. Ember is never a surface.",
       "html": "<button class=\"ds-btn-destructive\">Удалить</button>",
-      "css": ".ds-btn-destructive { --destructive: oklch(0.661 0.08 45.402); --destructive-foreground: oklch(0.267 0.033 131); --ring: oklch(0.757 0.079 88.436); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 40px; padding: 0 24px; border: 1px solid transparent; border-radius: 0; background: var(--destructive); color: var(--destructive-foreground); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; white-space: nowrap; cursor: pointer; outline: none; transition: background-color 150ms, transform 150ms; } .ds-btn-destructive:hover { background: oklch(0.661 0.08 45.402 / 90%); } .ds-btn-destructive:active { transform: translateY(1px); } .ds-btn-destructive:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.757 0.079 88.436 / 30%); }"
+      "css": ".ds-btn-destructive { --destructive: oklch(0.661 0.08 45.402); --destructive-foreground: oklch(0.267 0.033 131); --ring: oklch(0.757 0.079 88.436); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 24px; border: 1px solid transparent; border-radius: 0; background: var(--destructive); color: var(--destructive-foreground); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; white-space: nowrap; cursor: pointer; outline: none; transition: background-color 150ms, transform 150ms; } .ds-btn-destructive:hover { background: oklch(0.661 0.08 45.402 / 90%); } .ds-btn-destructive:active { transform: translateY(1px); } .ds-btn-destructive:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.757 0.079 88.436 / 30%); }"
+    },
+    {
+      "name": "Link Button",
+      "kind": "button",
+      "refersTo": "button-link",
+      "description": "A Button that reads as a link: brass ink, underlined, 4px offset, inside the standard button box, with no hover change. It is not the Inline Link component — a link inside prose keeps Warm Off-White ink and marks itself with the brass underline.",
+      "html": "<button class=\"ds-btn-link\">Показать все</button>",
+      "css": ".ds-btn-link { --primary: oklch(0.757 0.079 88.436); --ring: oklch(0.757 0.079 88.436); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 24px; border: 1px solid transparent; border-radius: 0; font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; white-space: nowrap; cursor: pointer; outline: none; background: transparent; color: var(--primary); text-decoration: underline; text-underline-offset: 4px; transition: color 150ms; } .ds-btn-link:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.757 0.079 88.436) / 30%; } .ds-btn-link:disabled { opacity: 50%; pointer-events: none; }"
+    },
+    {
+      "name": "Icon Button",
+      "kind": "button",
+      "refersTo": "button-icon",
+      "description": "The square action: the outline pattern at `size-10` carrying one 14px inline glyph — add, edit, dismiss. As an outline control its Deep Olive hairline lives on the canvas; on a brown surface it changes pattern to ghost.",
+      "html": "<button class=\"ds-btn-icon\" aria-label=\"Создать\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\" /><path d=\"M12 5v14\" /></svg></button>",
+      "css": ".ds-btn-icon { --border: oklch(0.539 0.057 127.665); --foreground: oklch(0.979 0.005 95.099); --ring: oklch(0.757 0.079 88.436); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 0; border: 1px solid var(--border); border-radius: 0; background: transparent; color: var(--foreground); cursor: pointer; outline: none; transition: background-color 150ms, border-color 150ms, transform 150ms; } .ds-btn-icon svg { width: 14px; height: 14px; } .ds-btn-icon:hover { background: oklch(0.539 0.057 127.665 / 30%); } .ds-btn-icon:active { transform: translateY(1px); } .ds-btn-icon:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.757 0.079 88.436) / 30%; } .ds-btn-icon:disabled { opacity: 50%; pointer-events: none; }"
+    },
+    {
+      "name": "Separator",
+      "kind": "custom",
+      "description": "One pixel of Deep Olive: a rule that divides and never outlines. Horizontal at full width, or vertical stretching to its row; the command palette's own divider is the same rule at 50%.",
+      "html": "<hr class=\"ds-separator\" />",
+      "css": ".ds-separator { --border: oklch(0.539 0.057 127.665); height: 1px; width: 100%; margin: 0; border: 0; background: var(--border); }"
+    },
+    {
+      "name": "Spinner",
+      "kind": "custom",
+      "description": "The waiting mark: a 16px glyph in the ink it inherits, `role=\"status\"`, one turn per second, replacing loading copy rather than accompanying it.",
+      "html": "<svg class=\"ds-spinner\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" role=\"status\" aria-label=\"Загрузка\"><path d=\"M21 12a9 9 0 1 1-6.219-8.56\" /></svg>",
+      "css": ".ds-spinner { --foreground: oklch(0.979 0.005 95.099); width: 16px; height: 16px; color: var(--foreground); animation: ds-spin 1s linear infinite; } @keyframes ds-spin { to { transform: rotate(360deg); } }"
     },
     {
       "name": "Text Field",
@@ -344,15 +390,15 @@
       "refersTo": "card",
       "description": "Tier-2 surface: Warm Brown above the Deep Forest canvas, held by a Deep Olive hairline ring at 60% and a whisper of shadow. Square corners, 32px internal rhythm, action cluster in the header's right column; descriptions cap at the 65ch prose measure.",
       "html": "<div class=\"ds-card\"><div class=\"ds-card-header\"><div class=\"ds-card-title\">Кожа растительного дубления</div><div class=\"ds-card-action\"><button class=\"ds-card-icon-btn\" aria-label=\"Удалить\">✕</button><button class=\"ds-card-icon-btn\" aria-label=\"Изменить\">✎</button></div></div><div class=\"ds-card-description\">Описание: плотная кожа для ремней и сумок</div><div class=\"ds-card-content\">Тип: Кожа</div></div>",
-      "css": ".ds-card { --card: oklch(0.452 0.047 53.927); --card-foreground: oklch(0.979 0.005 95.099); --muted-foreground: oklch(0.843 0.028 72.764); --border: oklch(0.539 0.057 127.665); --ring: oklch(0.757 0.079 88.436); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: flex; flex-direction: column; gap: 32px; padding: 32px; background: var(--card); color: var(--card-foreground); border-radius: 0; box-shadow: 0 0 0 1px oklch(0.539 0.057 127.665 / 60%), 0 1px 2px 0 oklch(0% 0 0 / 0.05); } .ds-card-header { display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 6px; } .ds-card-title { font-size: 20px; font-weight: 600; line-height: 1.15; letter-spacing: 0.05em; text-transform: uppercase; } .ds-card-action { display: flex; gap: 8px; grid-column: 2; grid-row: 1; justify-self: end; } .ds-card-icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 1px solid var(--border); border-radius: 0; background: transparent; color: var(--card-foreground); cursor: pointer; outline: none; transition: background-color 150ms; } .ds-card-icon-btn:hover { background: oklch(0.288 0.009 67.447 / 50%); } .ds-card-icon-btn:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.757 0.079 88.436 / 30%); } .ds-card-description { color: var(--muted-foreground); font-size: 16px; font-weight: 500; line-height: 24px; max-width: var(--measure-prose, 65ch); } .ds-card-content { font-size: 16px; font-weight: 500; line-height: 24px; }"
+      "css": ".ds-card { --card: oklch(0.452 0.047 53.927); --card-foreground: oklch(0.979 0.005 95.099); --muted-foreground: oklch(0.843 0.028 72.764); --border: oklch(0.539 0.057 127.665); --ring: oklch(0.757 0.079 88.436); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: flex; flex-direction: column; gap: 32px; padding: 32px; background: var(--card); color: var(--card-foreground); border-radius: 0; box-shadow: 0 0 0 1px oklch(0.539 0.057 127.665 / 60%), 0 1px 2px 0 oklch(0% 0 0 / 0.05); } .ds-card-header { display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 8px; } .ds-card-title { font-size: 20px; font-weight: 600; line-height: 1.15; letter-spacing: 0.05em; text-transform: uppercase; } .ds-card-action { display: flex; gap: 8px; grid-column: 2; grid-row: 1; justify-self: end; } .ds-card-icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 1px solid var(--border); border-radius: 0; background: transparent; color: var(--card-foreground); cursor: pointer; outline: none; transition: background-color 150ms; } .ds-card-icon-btn:hover { background: oklch(0.288 0.009 67.447 / 50%); } .ds-card-icon-btn:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.757 0.079 88.436 / 30%); } .ds-card-description { color: var(--muted-foreground); font-size: 16px; font-weight: 500; line-height: 24px; max-width: var(--measure-prose, 65ch); } .ds-card-content { font-size: 16px; font-weight: 500; line-height: 24px; }"
     },
     {
       "name": "Command Palette",
       "kind": "custom",
       "refersTo": "command-item",
       "description": "The signature surface: the cmdk palette that is the app's home. Bordered and lifted, with the same underline search field; selection is a Warm Charcoal tonal wash, never brass.",
-      "html": "<div class=\"ds-command\"><div class=\"ds-command-search\"><input class=\"ds-command-input\" placeholder=\"Поиск\" value=\"Материалы\" /></div><div class=\"ds-command-list\"><div class=\"ds-command-heading\">Меню</div><div class=\"ds-command-item\" data-selected=\"true\">Материалы</div><div class=\"ds-command-item\">Настройки</div></div></div>",
-      "css": ".ds-command { --border: oklch(0.539 0.057 127.665); --foreground: oklch(0.979 0.005 95.099); --muted: oklch(0.288 0.009 67.447); --muted-foreground: oklch(0.843 0.028 72.764); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; width: 320px; background: var(--card, oklch(0.452 0.047 53.927)); color: var(--foreground); border: 1px solid var(--border); border-radius: 0; overflow: hidden; box-shadow: 0 4px 6px -1px oklch(0% 0 0 / 0.1), 0 2px 4px -2px oklch(0% 0 0 / 0.1); } .ds-command-search { padding: 4px; } .ds-command-input { width: 100%; height: 40px; padding: 0 12px; border: 1px solid transparent; border-bottom-color: var(--border); border-radius: 0; background: transparent; color: var(--foreground); font-family: inherit; font-size: 16px; font-weight: 500; line-height: 1.5; outline: none; } .ds-command-input::placeholder { color: var(--muted-foreground); } .ds-command-search:focus-within .ds-command-input { border-bottom-color: oklch(0.757 0.079 88.436); } .ds-command-list { padding: 6px; } .ds-command-heading { padding: 8px 12px; color: var(--muted-foreground); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; } .ds-command-item { display: flex; align-items: center; gap: 8px; padding: 8px 12px; font-size: 16px; font-weight: 500; line-height: 24px; cursor: default; user-select: none; } .ds-command-item[data-selected=\"true\"] { background: var(--muted); color: var(--foreground); }"
+      "html": "<div class=\"ds-command\"><div class=\"ds-command-search\"><input class=\"ds-command-input\" placeholder=\"Поиск\" value=\"Материалы\" /></div><div class=\"ds-command-separator\"></div><div class=\"ds-command-list\"><div class=\"ds-command-heading\">Меню</div><div class=\"ds-command-item\" data-selected=\"true\">Материалы</div><div class=\"ds-command-item\">Настройки</div></div></div>",
+      "css": ".ds-command { --popover: oklch(0.452 0.047 53.927); --input: oklch(0.539 0.057 127.665); --border: oklch(0.539 0.057 127.665); --foreground: oklch(0.979 0.005 95.099); --muted: oklch(0.288 0.009 67.447); --muted-foreground: oklch(0.843 0.028 72.764); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; background: var(--popover, oklch(0.452 0.047 53.927)); color: var(--foreground); border: 1px solid var(--border); border-radius: 0; overflow: hidden; box-shadow: 0 4px 6px -1px oklch(0% 0 0 / 0.1), 0 2px 4px -2px oklch(0% 0 0 / 0.1); } .ds-command-search { padding: 4px; } .ds-command-input { width: 100%; height: 40px; padding: 0 12px; border: 1px solid transparent; border-bottom-color: var(--input); border-radius: 0; background: transparent; color: var(--foreground); font-family: inherit; font-size: 16px; font-weight: 500; line-height: 1.5; outline: none; } .ds-command-input::placeholder { color: var(--muted-foreground); } .ds-command-search:focus-within .ds-command-input { border-bottom-color: oklch(0.757 0.079 88.436); } .ds-command-separator { height: 1px; margin: 6px -6px; background: oklch(0.539 0.057 127.665 / 50%); } .ds-command-list { padding: 6px; } .ds-command-heading { padding: 8px 12px; color: var(--muted-foreground); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; } .ds-command-item { display: flex; align-items: center; gap: 8px; padding: 8px 12px; font-size: 16px; font-weight: 500; line-height: 24px; cursor: default; user-select: none; } .ds-command-item[data-selected=\"true\"] { background: var(--muted); color: var(--foreground); }"
     },
     {
       "name": "Dialog",
@@ -398,7 +444,7 @@
       },
       {
         "name": "The Brown Is A Surface Rule",
-        "body": "Warm Brown fills big surfaces only. It is never an accent, never a small control, and never text on the dark canvas.",
+        "body": "Warm Brown fills big surfaces only. It is never an accent, never a small control, never text on the dark canvas, and never an action fill — brown on brown is 1.00:1, which is exactly how the destructive button used to disappear on cards and dialogs.",
         "section": "colors"
       },
       {
@@ -408,7 +454,7 @@
       },
       {
         "name": "The Error Is Ember Rule",
-        "body": "Destruction and error are Ember: `--invalid` for the underline and the error tint; `--destructive` (Ember fill, Deep Forest label) on the button that acts. Never Warm Off-White on Ember (3.00:1), never Ember as a surface, and never two Ember moments in one view.",
+        "body": "Destruction and error are Ember: `--invalid` for the underline and the error tint; `--destructive` (Ember fill, Deep Forest label) on the button that acts. Never Warm Off-White on Ember (3.00:1); never Ember as a surface.",
         "section": "colors"
       },
       {
@@ -418,7 +464,7 @@
       },
       {
         "name": "The Contrast Floor Rule",
-        "body": "`--muted-foreground` on `--background`, `--muted` and `--card` is the secondary-text pairing and stays ≥ 4.5:1 (4.60:1 on brown) whenever the neutral ramp is touched. Never communicate status by color alone.",
+        "body": "`--muted-foreground` on `--background`, `--muted` and `--card` is the secondary-text pairing and stays ≥ 4.5:1 (4.60:1 on brown) whenever the neutral ramp is touched. A control boundary clears 3:1 against the surface it actually sits on (`--input`/`--border`/`--secondary` on the floor: 3.03:1) and error ink clears 4.5:1 (`--invalid`: 4.73:1). Never communicate status by color alone.",
         "section": "colors"
       },
       {

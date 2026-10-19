@@ -1,5 +1,6 @@
 import { Outlet } from "react-router";
 
+import { isFeatureEnabled } from "@/config/features";
 import pathsRouter from "@/router/paths.router";
 import Header from "@ui/Header";
 
@@ -7,10 +8,9 @@ import { ThemeProvider } from "./ThemeProvider";
 
 export const navItems = [
   { link: pathsRouter.home, name: "Главная" },
-  {
-    link: pathsRouter.settings,
-    name: "Настройки",
-  },
+  ...(isFeatureEnabled("settings")
+    ? [{ link: pathsRouter.settings, name: "Настройки" }]
+    : []),
   {
     link: pathsRouter.material,
     name: "Материалы",

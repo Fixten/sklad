@@ -25,6 +25,7 @@ colors:
   deep-olive-50: "oklch(0.539 0.057 127.665 / 50%)"
   deep-olive-60: "oklch(0.539 0.057 127.665 / 60%)"
   ember-10: "oklch(0.661 0.08 45.402 / 10%)"
+  ember-30: "oklch(0.661 0.08 45.402 / 30%)"
   ember-90: "oklch(0.661 0.08 45.402 / 90%)"
   warm-charcoal-50: "oklch(0.288 0.009 67.447 / 50%)"
   black-20: "oklch(0% 0 0 / 20%)"
@@ -124,6 +125,13 @@ components:
     height: "40px"
   button-secondary:
     backgroundColor: "{colors.deep-olive}"
+    textColor: "{colors.warm-off-white}"
+    typography: "{typography.label}"
+    rounded: "{rounded.none}"
+    padding: "0 24px"
+    height: "40px"
+  button-ghost:
+    backgroundColor: "{colors.transparent}"
     textColor: "{colors.warm-off-white}"
     typography: "{typography.label}"
     rounded: "{rounded.none}"
@@ -304,8 +312,7 @@ Exact values live in the frontmatter — this section carries meaning and role.
   that job: as surface _and_ destructive fill it made the action invisible on cards
   and dialogs (1.00:1) and weak on the floor (2.02:1). Ember is 4.73:1 on Deep
   Forest and takes Deep Forest text (4.73:1); Warm Off-White on Ember is 3.00:1 and
-  is forbidden. Ember is never a surface, never decorative, and never spent twice
-  in one view.
+  is forbidden. Ember is never a surface and never decorative.
 
 ### Neutral
 
@@ -415,6 +422,7 @@ roles, so the same alpha can serve more than one token.
 | `muted-brass.80`   | `--primary`           | Primary button hover fill                                           |
 | `warm-beige.10`    | `--muted-foreground`  | Kbd chip fill inside input groups                                   |
 | `ember.10`         | `--invalid`           | Error tint behind a message or field, on any surface                |
+| `ember.30`         | `--invalid`           | Invalid control ring, paired with a full-strength `--invalid` edge  |
 | `ember.90`         | `--destructive`       | Destructive button hover fill                                       |
 | `warm-charcoal.50` | `--muted`             | Ghost/outline button hover and field hover wash                     |
 | `warm-off-white.5` | `--foreground`        | Mixed into Deep Olive for the secondary button hover                |
@@ -478,8 +486,7 @@ in Penpot alike.
 
 **The Error Is Ember Rule.** Destruction and error are Ember: `--invalid` for the
 underline and the error tint; `--destructive` (Ember fill, Deep Forest label) on the
-button that acts. Never Warm Off-White on Ember (3.00:1), never Ember as a surface,
-and never two Ember moments in one view.
+button that acts. Never Warm Off-White on Ember (3.00:1); never Ember as a surface.
 
 **The Floor-Only Olive Rule.** Deep Olive is tuned against Deep Forest and stays
 there. On a brown surface olive linework is a whisper and an olive control is
@@ -767,12 +774,13 @@ palette.
 - **Ghost / tertiary:** transparent; hover applies `--muted` background with
   `--foreground` text.
 - **Destructive:** `--destructive` (Ember) fill + `--destructive-foreground` (Deep
-  Forest) label; hover `ember.90`. This is the only place Ember is a fill — it is never
-  a surface, and never two Ember moments in one view.
+  Forest) label; hover `ember.90`. This is the only place Ember is a fill, and it is
+  never a surface.
 - **Link:** `--primary` text, underlined, `underline-offset-4`.
-- **Focus / invalid:** `focus-visible:border-ring` plus a 2px `ring/30` ring;
-  `aria-invalid` swaps both to `--invalid` (boundary and ring, Ember — the same role the
-  error message uses).
+- **Focus / invalid:** `focus-visible:border-ring` plus a 2px `ring/30` ring
+  (`muted-brass.30`); `aria-invalid` swaps both to `--invalid` — the 1px edge at full
+  strength (4.73:1 on the floor) and the ring at `ember.30`, the same role the error
+  message uses.
 - **Disabled:** `opacity: 50%`, pointer events off.
 - **Icon:** `IconButton` = `variant="outline"` + `size="icon"` (`size-10`).
 
