@@ -19,5 +19,8 @@ test.each(variants)("renders the %s variant", async (variant) => {
     </Typography>,
   );
 
-  await expect(screen.getByTestId("typography")).toMatchScreenshot();
+  const text = screen.getByTestId("typography");
+  await expect.element(text).toBeInTheDocument();
+
+  await expect(text).toMatchScreenshot();
 });

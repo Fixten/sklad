@@ -14,4 +14,11 @@ const freezeAnimations = () => {
   document.head.append(style);
 };
 
-beforeEach(freezeAnimations);
+const applyDarkTheme = () => {
+  document.documentElement.classList.add("dark");
+};
+
+beforeEach(() => {
+  applyDarkTheme();
+  freezeAnimations();
+});

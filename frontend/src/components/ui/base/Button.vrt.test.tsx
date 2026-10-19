@@ -15,7 +15,8 @@ const variants = [
 test.each(variants)("renders the %s variant", async (variant) => {
   const screen = await render(<Button variant={variant}>{variant}</Button>);
 
-  await expect(
-    screen.getByRole("button", { name: variant }),
-  ).toMatchScreenshot();
+  const button = screen.getByRole("button", { name: variant });
+  await expect.element(button).toBeInTheDocument();
+
+  await expect(button).toMatchScreenshot();
 });
