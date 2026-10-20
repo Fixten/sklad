@@ -12,7 +12,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@base/dialog";
-import { InputGroup, InputGroupAddon } from "@base/input-group";
 
 function Command({
   className,
@@ -62,20 +61,19 @@ function CommandInput({
   ...props
 }: React.ComponentProps<typeof CommandPrimitive.Input>) {
   return (
-    <div data-slot="command-input-wrapper">
-      <InputGroup className="has-[input:focus-visible]:border-b-ring bg-transparent px-3">
-        <CommandPrimitive.Input
-          data-slot="command-input"
-          className={cn(
-            "type-body w-full px-2 outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
-            className,
-          )}
-          {...props}
-        />
-        <InputGroupAddon>
-          <SearchIcon className="size-3.5 shrink-0 opacity-50" />
-        </InputGroupAddon>
-      </InputGroup>
+    <div
+      data-slot="command-input-wrapper"
+      className="flex h-10 items-center px-3"
+    >
+      <SearchIcon className="size-3.5 shrink-0 opacity-50" />
+      <CommandPrimitive.Input
+        data-slot="command-input"
+        className={cn(
+          "type-body caret-primary w-full bg-transparent px-2 outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
+          className,
+        )}
+        {...props}
+      />
     </div>
   );
 }

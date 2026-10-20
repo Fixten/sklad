@@ -62,27 +62,23 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
   the browser/vrt env renders unstyled and screenshots are meaningless. Browser/vrt
   load `src/test/browser.setup.ts` (imports app CSS, freezes animations).
 - `Error` snapshots drop own props (e.g. `ApiError.status`) — snapshot plain fields.
-- If vrt testing failes, do not investigate it. Stop to ask user about what you should do with it.
+- If vrt testing fails, do not investigate it. Stop to ask user about what you should do with it.
 
 ## Gotchas & decisions
 
 - **Dark theme is active — never style from light values.** The app renders dark
-  (`.dark` block in `src/styles/tailwind.css`); the `:root` light block is documentation
-  only and unused. Style via semantic tokens (`bg-popover`, `text-muted-foreground`, …),
-  never hardcoded or light-derived hex. `dark:` overrides are the effective values here,
-  so drop them when they only weaken a base value (the `base-*` registry ships a soft
-  destructive — `bg-destructive/10 text-destructive` — built for a saturated hue; with a
-  brown `--destructive` it was brown-on-brown, which is why `DESIGN.md` makes the
-  role an Ember fill with a Deep Forest label, patched to `bg-destructive` +
-  `text-destructive-foreground`).
-  The `base-*` registry also rings lifted surfaces with a `--foreground` tint
-  (5% on Card, 10% on Dialog); per `DESIGN.md` structural linework is
-  `--border`, so both are patched to that token — Card at 60%, Dialog at full
-  strength. `--border` is a floor-only tone (3.03:1 on the canvas, 1.50:1 on
-  `--card`), so a ring on an already-brown surface stays a whisper — open thread,
-  not a settled recipe.
-  The Penpot `Components` frame (page `Design system`) is what `.dark` is being
-  reconciled to — Penpot carries the current design values, not the CSS; its token layer
+  (`.dark` in `src/styles/tailwind.css`); `:root` is unused documentation. Style via
+  semantic tokens, never hardcoded or light-derived hex. One hue (forest, H≈131)
+  carries surfaces, linework and text; hide browns are defined but unbound.
+  Two line weights: `--border` is decoration (1.67:1 on the canvas, 1.40:1 on
+  `--card`), and anything that must read as a control edge uses `--control-border`
+  (3.96/3.32). Hovers step up the ramp through `--primary-hover` /
+  `--destructive-hover` — never `/opacity` on the fill, which darkens it instead.
+  `base-*` patches to re-apply after `shadcn add`: destructive = `bg-destructive` +
+  `text-destructive-foreground`; the `FieldError` capsule takes the same fill pair
+  (the soft `bg-destructive/10 text-destructive` predates it); surfaces carry no
+  ring — Card, Dialog and the command list separate by tone step and shadow. Penpot's `Components`
+  frame (page `Design system`) is the source of truth for values; its token layer
   and type-binding rules live in `DESIGN.md` §Typography ▸ Penpot.
 - **`@base` needs its exact `tsconfig` path entry.** Without the non-wildcard `"@base"`
   mapping (after `@ui/*`), `aliases.ui` resolves to `frontend/@base` instead of
@@ -105,6 +101,11 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
   `Label` peer overrides (`peer-data-[slot=checkbox|radio-group-item|switch]`), which
   `type-body` does not reset. `type-caption` has no slot in `base/**` —
   hints/descriptions are `type-body`.
+- `:root` still documents the pre-ladder light palette; light is unshipped, so it was left
+  alone. Rebuild it from the forest ladder if a light theme is ever revived.
+- `--primary-hover` / `--destructive-hover` are CSS-only state roles — Penpot carries the
+  component states, not the roles. They exist so a hover steps up the ramp; don't swap them
+  for `/opacity` on the fill.
 - The 65ch prose measure lives in the prose slots (`CardDescription`, `DialogDescription`,
   `FieldDescription`, `CommandEmpty`), never on `type-body`: the role also covers
-  full-width controls (command search field), which must keep their box.
+  full-width controls, whose measure comes from their container.

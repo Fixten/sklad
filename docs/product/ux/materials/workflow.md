@@ -1,128 +1,176 @@
 # UX Design: Material Management
 
+Scope: Epic 1 (material catalog) and Epic 2 (material supplies). Product templates,
+production and sales are out of scope here.
+
 ## 1. User Goals & Tasks
 
-### Primary Goal: Acquire New Materials (Add Supply)
-The most frequent operation: recording a purchase of materials from a supplier.
-- **Task**: Find the material variant.
-- **Task**: Enter purchase details (quantity, price, supplier).
-- **Task**: Create new material/variant if it doesn't exist.
+### Primary: Record a purchase
+- Find the material variant the purchase belongs to.
+- Enter what was bought and for how much.
+- Create the material if the catalog does not have it yet.
 
-### Secondary Goal: Verify Material Availability
-Checking stock levels before starting production.
-- **Task**: Search for a material variant.
-- **Task**: View aggregate stock.
-- **Task**: Inspect specific supply batches.
+### Secondary: See what exists and how much is left
+- Scan materials and their stock.
+- Open a material to see its variants and the supplies behind the stock.
+- Check the unit purchase cost of a batch.
 
-### Tertiary Goal: Correct Inventory Errors
-Fixing mistakes in recorded supply data.
-- **Task**: Locate the erroneous supply record.
-- **Task**: Update quantity or price.
+### Tertiary: Correct a mistake
+- Locate the supply, fix quantity, price or supplier.
+- Remove a supply that should not exist.
+
+### Maintenance: Keep definitions right
+- Add, rename, hide and restore materials, variants and types.
+- Rename or archive a type.
 
 ---
 
 ## 2. Approved Workflows
 
-### Workflow: Add Supply (The "One-Stop" Entry)
-**Starting Context**: Global "Add Supply" action.
-**Intent**: Record a new purchase.
+### Surface
+One page, top to bottom:
 
-**Flow**:
-1. **Material Selection**:
-   - User types in a search/combobox.
-   - System suggests `Material Variants` with hierarchy context: `Type > Material > Variant`.
-   - **Exception**: If no match is found, user selects "Add New Material" $\rightarrow$ Contextual editor for `Type/Material/Variant` $\rightarrow$ Return to search.
-2. **Supply Details**:
-   - Once variant is selected, the `Unit` is pre-filled.
-   - User enters `Quantity`, `Purchase Price`, `Supplier` (free-text entry allowed), and optional `Description/URL`.
-   - System calculates `Unit Purchase Cost` in real-time.
-3. **Outcome**: Supply created $\rightarrow$ Variant aggregate stock updated.
+1. Page title «Материалы».
+2. The actions palette — one line at rest (`Поиск и действия`, `/` hint).
+3. Materials as cards. A card is the material: type as an eyebrow label, name,
+   stock on the right, variant count under it.
+4. A quiet «Скрытые · n» row at the bottom, only when something is hidden.
 
-### Workflow: Stock Verification & Discovery
-**Starting Context**: Inventory View.
-**Intent**: Check if material is available.
+There is no table, no column header, no second search field, no primary button,
+no catalog page and no per-entity CRUD pages.
 
-**Flow**:
-1. **Discovery**:
-   - User uses a flat, searchable list of all `Material Variants`.
-   - List is filterable by `Type` or `Material`.
-2. **Verification**:
-   - User sees **Total Available Stock** for the variant.
-3. **Drill-down**:
-   - User expands the variant to see a list of individual `Supplies` (batches) making up that total.
+### Workflow: Actions palette
+**Starting context**: the page, keyboard or pointer.
+**Intent**: start something without first finding a row.
 
-### Workflow: Inventory Correction
-**Starting Context**: Material Variant detail (from Drill-down).
-**Intent**: Fix a data entry error.
+1. Closed at rest — one line; no list, no heading.
+2. Focus, a click, or `/` opens an absolute overlay under the line; the page does
+   not move and is dimmed behind the overlay.
+3. Two groups, in this order:
+   - `Действия` — «Записать приход», «Новый материал», «Типы материалов»,
+     plus «Скрытые записи» when something is hidden.
+   - `Материалы` — every visible material, each with type, variant count (or the
+     matching variant names) and stock.
+4. Typing filters both groups in one pass. A material matches on its name, its type
+   or any of its variants.
+5. Selecting an action opens its sheet. Selecting a material closes the palette,
+   expands that material's card, expands the variants that matched the query, scrolls
+   to it and puts focus on the card.
+6. Escape, an outside press, or a selection closes the palette and clears the query.
 
-**Flow**:
-1. **Action**: User edits a specific `Supply` record.
-2. **Update**: User changes `Quantity` or `Price`.
-3. **Outcome**: Total stock for the variant is updated automatically.
+### Workflow: Record a supply
+**Starting context**: palette → «Записать приход», or a variant → «Приход».
+**Intent**: add a purchased quantity.
 
-### Workflow: Actions Palette
-**Starting Context**: the palette line in the toolbar — click, focus, or `/`.
-**Intent**: Reach an action without leaving the inventory surface.
+1. **Material** (skipped when the variant is known): a search field. The list appears
+   on the first keystroke, showing variant, type › material and current stock.
+2. **New material** — the last result is always `Новый материал: «X»`. It opens an
+   inline panel: type (existing or a new name), material, variant, unit. Creating
+   returns to the same sheet with the variant selected.
+3. **Details**: quantity (hint «в штуках / в метрах» from the variant), total purchase
+   price, supplier with suggestions from past suppliers; the unit purchase cost is
+   calculated live. Note or URL sits behind «Заметка или ссылка».
+4. **Save** — the card's stock and the variant's supplies update in place, the sheet
+   closes with a toast. No navigation, no page reload.
 
-**Flow**:
-1. **Closed at rest** — one line; no list or heading is rendered.
-2. **Open** — focus, click, or `/` opens an absolute overlay under the line, so the
-   inventory never moves.
-3. **Close** — Escape, an outside press, or a selection closes it.
-4. **Current scope** — no actions are wired yet, so the open overlay shows
-   `Пока нет действий`.
+Both steps live in one sheet. «Назад» returns to the material step without losing the
+query; the step is skipped entirely when the variant is already known.
+
+### Workflow: Verify stock
+**Starting context**: the card list.
+**Intent**: know whether there is enough material.
+
+1. Scan cards; stock is shown when all variants of a material share a unit, otherwise
+   only the variant count is shown (a sum across units is meaningless).
+2. Open a material — variants with their stock and unit.
+3. Open a variant — its supplies: supplier, note, quantity, unit purchase cost.
+4. Stock is never edited directly; it is the sum of the supplies.
+
+### Workflow: Correct a supply
+**Starting context**: variant → supplies.
+**Intent**: fix a wrong batch.
+
+1. Selecting a supply opens the same sheet, prefilled, at the details step.
+2. Saving recalculates the variant stock and the material total.
+3. «Удалить приход» sits in the sheet's footer behind a confirmation; the quantity
+   already consumed by product items does not change.
+
+### Workflow: Maintain definitions
+- Material: card → «Изменить» (name, type). Type can be an existing one or a new name
+  when the catalog has no types yet.
+- Variant: card → variant → «Изменить» (name, unit). The unit is locked once the
+  variant has supplies — changing it would silently reinterpret the stock.
+- Add: «Вариант» on a material card, «Новый материал» in the palette.
+- Types: palette → «Типы материалов» — list with material counts, rename in place,
+  hide, restore, and one field to add a new type. Types have no page of their own.
+
+### Workflow: Hide, delete, restore
+- A material with variants is hidden, not deleted; a material without variants is
+  deleted for real.
+- A variant with supplies is hidden; without supplies it is deleted.
+- A hidden type stays attached to its materials and is no longer offered in picks.
+- Hidden materials and variants are collected under «Скрытые · n» at the bottom of the
+  page; «Вернуть» restores them in place. A type is restored in the types sheet.
+- Hiding never touches supply history or recorded consumption.
+
+### Empty states
+- No materials: a short explanation plus «Приход» and «Новый материал».
+- Everything hidden: the empty state points at «Скрытые».
+- No palette results: «Ничего не нашлось» inside the overlay.
+- No variant matches in the supply sheet: only the «Новый материал» result remains.
+- A material without variants: the card says «нет вариантов»; the only creation action
+  inside is «Вариант».
 
 ---
 
-## 3. Interaction Model Summary
+## 3. Interaction Model
 
-| Goal | Interaction | UI Component |
-| :--- | :--- | :--- |
-| **Add Supply** | Search $\rightarrow$ Fill $\rightarrow$ Save | Modal or Drawer |
-| **New Material** | Just-in-time creation | Nested Contextual Editor |
-| **Find Material** | Flat search with hierarchy tags | Searchable Table / List |
-| **Verify Stock** | Aggregate $\rightarrow$ Detail | Expandable Row |
-| **Correct Stock** | Inline edit of supply batch | Row Edit / Modal |
-| **Run Action** | Focus / click / `/` → select | Command palette (absolute overlay) |
+- Record a supply — palette or variant → search → details → save: one sheet, two steps.
+- Find anything — palette: focus, click or `/`, type, select.
+- Verify stock — cards → material → variant → supplies.
+- Correct a supply — supply row → the same sheet, prefilled.
+- Maintain — inline row actions inside the expanded card; types through the palette.
+- Hide/restore — confirmation for defined data, «Скрытые» for restore.
+
+---
 
 ## 4. Constraints & Decisions
-- **No CRUD Pages**: No separate "Materials Page" or "Supplies Page". The `/material`
-  route is the Materials surface — inventory plus the actions palette; all actions emerge
-  from search and inventory views, and editing stays in dialogs/drawers.
-- **Flattened Hierarchy**: The 4-level hierarchy is used for organization/context in search, not for navigation.
-- **Supplier Entry**: Handled as free-text/suggested within the Add Supply flow to minimize navigation.
-- **Stock Calculation**: Only Supplies have quantity; Variants/Materials are aggregate views.
+
+- **No tables.** Cards and rows without columns, column headers or a grid; the
+  material is the unit of the list, not a record in a report.
+- **The material is the list.** Type is a property shown as an eyebrow; variants and
+  supplies live inside the material. Types do not get a level of navigation.
+- **One entry, not four.** The palette is the only way to start an action; the page
+  has no primary button and no separate search.
+- **The palette needs richer items.** The shipped `CommandPalette` renders a label and
+  an action only, and caps the line at `md:w-[28rem]`. This design needs two-line items
+  with a trailing value (name / type · count / stock), a line that spans the content
+  column at every breakpoint, and a dimmed page while the overlay is open.
+- **No CRUD pages, no catalog surface.** Every write is a sheet or an inline form.
+- **The unit belongs to the variant** and is locked while supplies exist.
+- **Stock is derived** from supplies; there is no stock field to edit.
+- **Hide vs delete** is decided by references, never by asking the user to choose.
+- **Suppliers stay free text** with suggestions from past supplies; no supplier entity.
 
 ---
 
 ## 5. Prototype
 
-- File: `prototype.html` — disposable, mocked data, not production code. Unlike the earlier
-  `materials.html`, it is set in the shipped visual world of `frontend/DESIGN.md`
-  (Forest & Hide: dark, sharp corners, brass/olive/brown on the forest floor, Russian copy) and
-  inside the shipped shell: `App.layout` header (wordmark, «Главная · Настройки · Материалы») over
-  one `max-w-4xl` column.
-- One page, as in `materials.html`: a search field that filters the list in place, one primary
-  action («Приход») and the palette line (`/` hint). No sections or tabs — everything else
-  opens as a dialog over the list.
-- Command palette — the app's `Command` pattern on the toolbar: closed by default as one
-  line, opened by focus, click, or `/` as an absolute overlay under the line. Actions only
-  (record a supply, open the catalog, add type/material/variant): searching entities is
-  the page field's job, so the palette never competes with it.
-- Surfaces, in the order the working day needs them:
-  - Inventory — flat list of variants with hierarchy context and aggregate stock; a row opens
-    the variant's batches.
-  - `Каталог` — a wide dialog with types → materials → variants; add, edit, hide and restore,
-    plus the «Скрытые» block. Hiding, rather than deleting, keeps referenced entities intact.
-  - `Приход материала` — variant search (the list appears once you type, so the whole form fits),
-    just-in-time creation of type/material/variant, unit from the variant, live unit purchase
-    cost, supplier suggestions.
-  - `Партии` — the variant's supplies with quantity, unit cost, inline correction and a
-    destructive delete behind a confirmation.
+- File: `prototype.html` — disposable, mocked data, not production code. It is the
+  second iteration: `materials.html` is the earlier artifact, kept only for history.
+- Status: approved by the user; ready to drive implementation.
+- Visual world: `frontend/DESIGN.md` (Forest & Hide, dark, sharp corners, Russian copy)
+  inside the shipped shell (`App.layout` header, one `max-w-4xl` column).
 - Footer toggle (prototype-only): данные / пусто — validates the empty state.
-- Validation walkthrough: filter the list in place and clear it, record a supply from the toolbar
-  and from the palette, create a material by just-in-time search, open the catalog from the
-  palette, edit an entity, hide a referenced variant, restore it, correct and delete a batch,
-  empty state, keyboard only (palette arrows, Enter, `/`, Esc).
-- `materials.html` stays as the earlier disposable validation artifact.
-
+- Validation walkthrough:
+  1. `/` → palette: groups, filter by material and by variant, select → card expands.
+  2. Card → variant → supplies → a supply → edit quantity → stock and totals update.
+  3. Palette → «Записать приход» → search → details → save; stock grows.
+  4. Search with no match → «Новый материал» → create type/material/variant → details →
+     save; the new card appears.
+  5. Save with an empty quantity, price or supplier → the field reports the error.
+  6. Material → «Скрыть» with variants → card disappears → «Скрытые» → «Вернуть».
+  7. Types: rename changes the eyebrow on every card of that type; hide and restore.
+  8. Empty state, then data again.
+  9. Keyboard only: `/`, arrows, Enter, Escape; mobile: sheet from the bottom,
+     palette overlay full width.

@@ -101,12 +101,12 @@ export default function CommandPalette({
     <div
       ref={wrapperRef}
       data-testid="command-palette"
-      className="relative w-full md:w-[28rem]"
+      className="relative w-full"
       onKeyDown={handleKeyDown}
     >
       <Command
         label={heading ?? placeholder}
-        className="bg-popover overflow-visible shadow-md"
+        className="overflow-visible shadow-md"
       >
         <CommandInput
           placeholder={placeholder}
@@ -125,7 +125,7 @@ export default function CommandPalette({
         {open && (
           <CommandList
             label={heading ?? placeholder}
-            className="bg-popover absolute inset-x-0 top-full z-50 border-x border-b shadow-md"
+            className="bg-popover absolute inset-x-0 top-full z-50 shadow-md"
           >
             <CommandEmpty className="text-muted-foreground">
               {emptyMessage}

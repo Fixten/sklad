@@ -33,6 +33,7 @@
     --brass-30: oklch(0.757 0.079 88.436 / 30%);
     --ember-90: oklch(0.661 0.08 45.402 / 90%);
     --scrim: oklch(0% 0 0 / 20%);
+    --scrim-strong: oklch(0% 0 0 / 45%);
     --shadow-sm: 0 1px 2px oklch(0% 0 0 / 25%);
     --shadow-md: 0 8px 24px oklch(0% 0 0 / 40%);
     --font: "Manrope", "Manrope Variable", -apple-system, system-ui, sans-serif;
@@ -89,50 +90,48 @@
   .shell {
     max-width: 56rem; margin: 0 auto;
     padding: 24px 16px 64px;
-    display: flex; flex-direction: column; gap: 32px;
+    display: flex; flex-direction: column; gap: 24px;
   }
   @media (min-width: 640px) { .shell { padding: 24px 24px 64px; } }
-  .head { display: flex; flex-direction: column; gap: 8px; }
-  .bar { display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
-  .bar > .grow { flex: 1 1 220px; }
 
-  .fieldbar { display: flex; align-items: center; gap: 12px; width: 100%; height: 40px; padding: 0 4px; border-bottom: 1px solid var(--input); }
-  .fieldbar:focus-within { border-bottom-color: var(--ring); }
-  .fieldbar > .i { color: var(--muted-foreground); }
-  .fieldbar input { flex: 1 1 auto; min-width: 0; height: 38px; padding: 0; border: 0; background: transparent; font-size: 1rem; font-weight: 500; }
-  .fieldbar input::placeholder { color: var(--muted-foreground); font-weight: 400; }
-  .fieldbar input:focus-visible { outline: none; }
-  .fieldbar input[type="search"]::-webkit-search-cancel-button { display: none; }
-
-  .cmdbtn { padding: 0 16px; }
-  .cmdbtn kbd { margin-left: 2px; }
+  /* Command palette — one line at rest, absolute overlay under it */
+  .palette { position: relative; z-index: 30; }
+  .palette__scrim { position: fixed; inset: 0; z-index: -1; background: var(--scrim-strong); backdrop-filter: blur(2px); }
+  .palette__line {
+    display: flex; align-items: center; gap: 12px;
+    height: 44px; padding: 0 4px;
+    border-bottom: 1px solid var(--input);
+  }
+  .palette__line:focus-within { border-bottom-color: var(--ring); }
+  .palette__line > .i { color: var(--muted-foreground); }
+  .palette__line input {
+    flex: 1 1 auto; min-width: 0; height: 42px; padding: 0;
+    border: 0; background: transparent; font-size: 1rem; font-weight: 500;
+  }
+  .palette__line input::placeholder { color: var(--muted-foreground); font-weight: 400; }
+  .palette__line input:focus-visible { outline: none; }
+  .palette__panel {
+    position: absolute; inset-inline: 0; top: calc(100% + 4px); z-index: 50;
+    max-height: min(24rem, 60vh); overflow-y: auto; padding: 6px;
+    background: var(--popover); color: var(--foreground);
+    box-shadow: 0 0 0 1px var(--border), var(--shadow-md);
+  }
+  .palette__heading { padding: 8px 12px 4px; color: var(--muted-foreground); }
+  .palette__empty { margin: 0; padding: 20px 12px; text-align: center; color: var(--muted-foreground); }
+  .pitem {
+    display: flex; align-items: center; gap: 10px; width: 100%;
+    padding: 8px 12px; border: 0; background: transparent; color: inherit; text-align: left;
+  }
+  .pitem:hover, .pitem[data-active] { background: var(--muted); }
+  .pitem > .i { width: 16px; height: 16px; color: var(--muted-foreground); }
+  .pitem__id { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1 1 auto; }
+  .pitem__name { font-size: 1rem; font-weight: 500; line-height: 1.35; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pitem__meta { font-size: .875rem; font-weight: 400; line-height: 1.3; color: var(--muted-foreground); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pitem__value { margin-left: auto; font-size: .875rem; font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--muted-foreground); }
   kbd {
     padding: 3px 6px; background: oklch(0.843 0.028 72.764 / 10%); color: var(--muted-foreground);
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .75rem; line-height: 1;
   }
-
-  /* Command palette — mirrors the app's Command dialog */
-  .dialog.dialog--palette { align-items: start; justify-items: center; }
-  .cmd {
-    position: relative; width: 100%; max-width: 34rem; margin-top: 33vh;
-    display: flex; flex-direction: column; overflow: hidden;
-    background: var(--popover); color: var(--foreground);
-    box-shadow: 0 0 0 1px var(--border), var(--shadow-md);
-    animation: dialog-in .1s ease-out;
-  }
-  .cmd__search { display: flex; align-items: center; height: 40px; margin: 4px; padding: 0 12px; border-bottom: 1px solid var(--input); }
-  .cmd__search > .i { width: 16px; height: 16px; color: var(--muted-foreground); opacity: .5; }
-  .cmd__search input { flex: 1 1 auto; min-width: 0; height: 38px; padding: 0 8px; border: 0; background: transparent; font-size: 1rem; font-weight: 500; }
-  .cmd__search input::placeholder { color: var(--muted-foreground); font-weight: 400; }
-  .cmd__search input:focus-visible { outline: none; }
-  .cmd__list { max-height: min(20rem, 45vh); overflow-y: auto; padding: 6px; }
-  .cmd__heading { padding: 8px 12px; color: var(--muted-foreground); }
-  .cmd__item { display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: 0; background: transparent; color: inherit; text-align: left; }
-  .cmd__item > .i { width: 16px; height: 16px; color: var(--muted-foreground); }
-  .cmd__item[data-active] { background: var(--muted); }
-  .cmd__item[data-active] > .i { color: var(--foreground); }
-  .cmd__item__label { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .cmd__empty { max-width: 65ch; margin: 0 auto; padding: 24px 12px; text-align: center; color: var(--muted-foreground); }
 
   /* Controls */
   .btn {
@@ -173,6 +172,7 @@
   .linkbtn:hover { color: var(--foreground); }
   .linkbtn .i { width: 14px; height: 14px; }
   .linkbtn--danger { color: var(--invalid); }
+  .linkbtn--danger:hover { color: var(--invalid); background: none; text-decoration: underline; }
 
   .field { display: flex; flex-direction: column; gap: 12px; width: 100%; }
   .field__label { color: var(--muted-foreground); }
@@ -189,7 +189,7 @@
   .input::placeholder { color: var(--muted-foreground); font-weight: 400; }
   .input:focus-visible, .select:focus-visible { outline: none; border-bottom-color: var(--ring); }
   .input[aria-invalid="true"], .select[aria-invalid="true"] { border-bottom-color: var(--invalid); }
-  .input[readonly] { color: var(--muted-foreground); }
+  .input[readonly], .select:disabled { color: var(--muted-foreground); }
   input[list]::-webkit-calendar-picker-indicator { display: none; }
   .select {
     appearance: none; padding-right: 24px;
@@ -198,6 +198,9 @@
   }
   .select option { background: var(--card); color: var(--foreground); }
   input[type="search"]::-webkit-search-cancel-button { display: none; }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
 
   .search { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--input); }
   .search:focus-within { border-bottom-color: var(--ring); }
@@ -205,45 +208,96 @@
   .search .input { border-bottom: 0; height: 44px; }
   .search .input:focus-visible { border-bottom: 0; }
 
-  /* Surfaces */
-  .card { background: var(--card); color: var(--foreground); box-shadow: 0 0 0 1px var(--card-line), var(--shadow-sm); }
-  .rows { display: flex; flex-direction: column; }
-  .row {
-    display: flex; align-items: center; gap: 16px; width: 100%;
-    padding: 14px 20px; text-align: left; color: inherit;
-    background: transparent; border: 0; border-top: 1px solid var(--card-line);
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .stack { display: flex; flex-direction: column; gap: 20px; }
+  .panel { display: flex; flex-direction: column; gap: 20px; padding: 20px; background: var(--muted); }
+
+  .more > summary { list-style: none; cursor: pointer; width: fit-content; }
+  .more > summary::-webkit-details-marker { display: none; }
+  .more > summary::before { content: "+"; margin-right: 6px; }
+  .more[open] > summary::before { content: "−"; }
+  .more__body { padding-top: 16px; }
+
+  .listbox { margin-top: -4px; max-height: 240px; overflow-y: auto; }
+  .option {
+    display: flex; align-items: center; gap: 12px; width: 100%;
+    padding: 10px 12px; text-align: left; color: inherit;
+    background: transparent; border: 0;
   }
-  .rows > .row:first-child { border-top: 0; }
+  .option:hover, .option[data-active] { background: var(--muted); }
   .row__main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .option > .row__main { flex: 1 1 auto; }
+  .option--new { color: var(--foreground); }
+
+  /* Material cards — no table, no column headers */
+  .cards { display: flex; flex-direction: column; gap: 12px; }
+  .mcard { background: var(--card); color: var(--foreground); box-shadow: 0 0 0 1px var(--card-line), var(--shadow-sm); }
+  .mcard__head {
+    display: flex; align-items: center; gap: 16px; width: 100%;
+    padding: 16px 20px; border: 0; background: transparent; color: inherit; text-align: left;
+  }
+  @media (hover: hover) { .mcard__head:hover { background: var(--muted); } }
+  .mcard__id { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .mcard__type { color: var(--muted-foreground); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mcard__name { font-size: 1rem; font-weight: 600; line-height: 1.4; }
+  .mcard__value { margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+  .mcard__stock { font-size: 1rem; line-height: 1.3; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .mcard__count { font-size: .875rem; line-height: 1.4; color: var(--muted-foreground); white-space: nowrap; }
+  .mcard__body { display: flex; flex-direction: column; gap: 16px; padding: 16px 20px 20px; border-top: 1px solid var(--card-line); }
+  .mcard__acts { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+
+  .variants { display: flex; flex-direction: column; border-top: 1px solid var(--card-line); }
+  .variant { border-top: 1px solid var(--card-line); }
+  .variant:first-child { border-top: 0; }
+  .variant__head {
+    display: flex; align-items: center; gap: 16px; width: 100%;
+    padding: 12px 0; border: 0; background: transparent; color: inherit; text-align: left;
+  }
+  .variant__id { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
   .row__name { font-size: 1rem; font-weight: 500; line-height: 1.5; }
-  .row__what { font-size: .875rem; font-weight: 400; line-height: 1.5; color: var(--muted-foreground); }  .row__value { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+  .row__what { font-size: .875rem; font-weight: 400; line-height: 1.5; color: var(--muted-foreground); }
   .row__stock { font-size: 1rem; font-weight: 400; line-height: 1.3; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .row__stock[data-zero="true"] { color: var(--muted-foreground); }
-  .row__chev { color: var(--muted-foreground); }
-  .row--link { cursor: pointer; }
-  @media (hover: hover) { .row--link:hover { background: var(--muted); } }
-  .row--link:active { background: var(--muted); }
+  .variant__value { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+  .variant__body { display: flex; flex-direction: column; gap: 12px; padding: 0 0 16px; }
+  .variant__acts { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
 
-  .empty { padding: 32px 24px; display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
-  .empty .i { width: 24px; height: 24px; color: var(--muted-foreground); }
-
-  /* Catalog tree */
-  .tree { display: flex; flex-direction: column; }
-  .tree__type { border-top: 1px solid var(--card-line); padding: 20px 0 8px; }
-  .tree__type:first-child { border-top: 0; }
-  .tree__head { display: flex; align-items: center; gap: 12px; padding: 0 20px; }
-  .tree__name { font-size: 1rem; font-weight: 600; }
-  .tree__label { color: var(--muted-foreground); }
-  .tree__acts { margin-left: auto; display: flex; align-items: center; gap: 4px; }
-  .tree__item { display: flex; align-items: center; gap: 12px; padding: 10px 20px 10px 32px; }
-  .tree__item--leaf { padding-left: 48px; padding-top: 8px; padding-bottom: 8px; }
-  .tree__meta { font-size: .875rem; font-weight: 400; color: var(--muted-foreground); }
-  .is-hidden .tree__name, .is-hidden .tree__meta, .is-hidden .row__name { color: var(--muted-foreground); text-decoration: line-through; text-decoration-color: var(--card-line); }
-
-  .group__title {
-    display: flex; align-items: baseline; gap: 12px;
-    padding: 20px 20px 12px;
+  .supplies { display: flex; flex-direction: column; gap: 4px; }
+  .supply {
+    display: flex; align-items: center; gap: 16px; width: 100%;
+    padding: 10px 12px; border: 0; background: var(--muted); color: inherit; text-align: left;
   }
+  @media (hover: hover) { .supply:hover { background: var(--olive-30); } }
+  .supply__id { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .supply__value { margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+
+  .chev { display: grid; place-items: center; color: var(--muted-foreground); transition: transform .12s; }
+  .chev.is-open { transform: rotate(90deg); }
+
+  .empty { padding: 32px 0; display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+  .empty .i { width: 24px; height: 24px; color: var(--muted-foreground); }
+  .empty__acts { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+  .hiddenbar {
+    display: flex; align-items: center; gap: 8px; width: 100%;
+    padding: 12px 16px; border: 0; background: transparent;
+    font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--muted-foreground);
+  }
+  .hiddenbar:hover { color: var(--foreground); background: var(--muted); }
+  .hiddenbar .chev { margin-left: auto; }
+  .hidden-list { display: flex; flex-direction: column; background: var(--muted); box-shadow: 0 0 0 1px var(--card-line); }
+  .hidden-item { display: flex; align-items: center; gap: 16px; padding: 12px 16px; border-top: 1px solid var(--card-line); }
+  .hidden-item:first-child { border-top: 0; }
+  .hidden-item__id { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .hidden-item .row__name { color: var(--muted-foreground); text-decoration: line-through; text-decoration-color: var(--card-line); }
+  .hidden-item .btn { margin-left: auto; }
+
+  .typerow { display: flex; align-items: center; gap: 16px; padding: 10px 0; border-top: 1px solid var(--card-line); }
+  .typerow:first-child { border-top: 0; }
+  .typerow__id { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .typerow__acts { margin-left: auto; display: flex; align-items: center; gap: 4px; }
+  .typerow.is-hidden .row__name { color: var(--muted-foreground); text-decoration: line-through; }
 
   /* Dialog */
   .dialog { position: fixed; inset: 0; display: grid; place-items: center; padding: 16px; }
@@ -255,38 +309,15 @@
     box-shadow: 0 0 0 1px var(--border), var(--shadow-md);
     animation: dialog-in .1s ease-out;
   }
-  .dialog__panel--wide { max-width: 40rem; }
+  .dialog__panel--wide { max-width: 34rem; }
   @keyframes dialog-in { from { opacity: 0; transform: translateY(4px) scale(.985); } to { opacity: 1; transform: none; } }
   .dialog__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 24px 24px 0; }
   .dialog__lead { display: flex; flex-direction: column; gap: 6px; }
   .dialog__body { min-height: 0; display: flex; flex-direction: column; gap: 24px; overflow-y: auto; padding: 24px; }
-  .dialog__foot { display: flex; gap: 12px; justify-content: flex-end; padding: 20px 24px 24px; border-top: 1px solid var(--card-line); }
-  .dialog__foot .btn--ghost { margin-right: auto; }
-  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .stack { display: flex; flex-direction: column; gap: 20px; }
-
-  .panel { display: flex; flex-direction: column; gap: 20px; padding: 20px; background: var(--muted); }
-
-  .listbox { margin-top: -4px; max-height: 240px; overflow-y: auto; }
-  .option {
-    display: flex; align-items: center; gap: 12px; width: 100%;
-    padding: 10px 12px; text-align: left; color: inherit;
-    background: transparent; border: 0;
-  }
-  .option:hover, .option[data-active] { background: var(--muted); }
-  .option--new { color: var(--foreground); }
-  .option > .row__main { flex: 1 1 auto; }
-  .option__path { font-size: .875rem; color: var(--muted-foreground); }
-
-  .batches { display: flex; flex-direction: column; }
-  .batch { display: flex; flex-direction: column; gap: 12px; padding: 16px 0; border-top: 1px solid var(--card-line); }
-  .batches > .batch:first-child { border-top: 0; }
-  .batch__top { display: flex; align-items: center; gap: 16px; }
-  .batch__id { display: flex; flex-direction: column; gap: 2px; }
-  .batch__cost { color: var(--muted-foreground); white-space: nowrap; }
-  .batch__form { display: flex; flex-direction: column; gap: 20px; }
-  .batch__acts { display: flex; align-items: center; gap: 20px; }
-  .batch__acts .save { margin-right: auto; }
+  .dialog__foot { display: flex; align-items: center; gap: 12px; padding: 20px 24px 24px; border-top: 1px solid var(--card-line); }
+  .foot__left, .foot__right { display: flex; align-items: center; gap: 12px; }
+  .foot__right { margin-left: auto; }
+  .foot__right .btn--ghost { color: var(--muted-foreground); }
 
   /* Toast */
   .toast {
@@ -324,13 +355,11 @@
   @media (max-width: 639px) {
     .dialog { align-items: flex-end; padding: 0; }
     .dialog__panel { max-width: none; max-height: 92vh; animation-name: dialog-up; }
-    .dialog.dialog--palette { align-items: start; padding: 16px; }
-    .cmd { margin-top: 0; max-height: 85vh; animation-name: dialog-up; }
-    .bar > .btn { flex: 1 1 auto; }
     @keyframes dialog-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
     .dialog__head { padding: 20px 20px 0; }
     .dialog__body { padding: 20px; }
-    .dialog__foot { padding: 0 20px 20px; }
+    .dialog__foot { padding: 0 20px 20px; border-top: 0; }
+    .pair { grid-template-columns: 1fr; }
     .toast { bottom: 96px; }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -340,9 +369,6 @@
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <g id="g" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"></g>
-  </defs>
   <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
   <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M20.5 20.5 16.6 16.6" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
   <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
@@ -369,26 +395,30 @@
 </header>
 
 <main class="shell">
-  <div class="head">
-    <h1 class="t-display">Материалы</h1>
-    <p class="t-caption prose" id="page-summary"></p>
-  </div>
+  <h1 class="t-display">Материалы</h1>
 
-  <div class="bar">
-    <div class="fieldbar grow">
+  <div class="palette" id="palette">
+    <div class="palette__scrim" id="palette-scrim" hidden></div>
+    <div class="palette__line">
       <svg class="i" aria-hidden="true"><use href="#i-search"/></svg>
-      <input id="q" type="search" autocomplete="off" placeholder="Название, материал или тип" aria-label="Поиск по материалам" />
-      <button type="button" class="iconbtn iconbtn--sm" id="q-clear" aria-label="Очистить поиск" hidden><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button>
+      <input
+        id="palette-input"
+        type="text"
+        role="combobox"
+        aria-expanded="false"
+        aria-controls="palette-panel"
+        aria-autocomplete="list"
+        aria-label="Поиск и действия"
+        autocomplete="off"
+        placeholder="Поиск и действия"
+      />
+      <kbd>/</kbd>
     </div>
-    <button type="button" class="btn btn--ghost cmdbtn" id="openPalette" aria-haspopup="dialog">
-      Действия <kbd>/</kbd>
-    </button>
-    <button type="button" class="btn btn--primary" id="addSupply">
-      <svg class="i" aria-hidden="true"><use href="#i-plus"/></svg>Приход
-    </button>
+    <div class="palette__panel" id="palette-panel" role="listbox" aria-label="Действия и материалы" hidden></div>
   </div>
 
-  <div class="card" id="inv-list"></div>
+  <div class="cards" id="list"></div>
+  <div id="hidden-block"></div>
 </main>
 
 <div id="dialogs"></div>
@@ -398,6 +428,7 @@
   <span class="proto__tag">прототип</span>
   <button type="button" id="toggleData" aria-pressed="true">данные: есть</button>
 </div>
+
 <script>
 (() => {
   "use strict";
@@ -407,12 +438,23 @@
   const esc = (value) =>
     String(value).replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
   const icon = (id) => '<svg class="i" aria-hidden="true"><use href="#' + id + '"/></svg>';
+  const chev = (open) => '<span class="chev' + (open ? " is-open" : "") + '">' + icon("i-chevron") + "</span>";
 
   const UNITS = ["шт", "м"];
-  const UNIT_WORD = { "шт": "штуки", "м": "метры" };
+  const UNIT_WORD = { "шт": "в штуках", "м": "в метрах" };
   const num = (value, digits = 2) => Number(value).toLocaleString("ru-RU", { maximumFractionDigits: digits });
   const money = (value) => num(value, 2) + " ₽";
   const unitCost = (supply) => (supply.qty > 0 ? supply.price / supply.qty : 0);
+  const plural = (count, forms) => {
+    const mod10 = count % 10;
+    const mod100 = count % 100;
+    if (mod10 === 1 && mod100 !== 11) return count + " " + forms[0];
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return count + " " + forms[1];
+    return count + " " + forms[2];
+  };
+  const variantsWord = (count) => plural(count, ["вариант", "варианта", "вариантов"]);
+  const suppliesWord = (count) => plural(count, ["приход", "прихода", "приходов"]);
+  const materialsWord = (count) => plural(count, ["материал", "материала", "материалов"]);
 
   const seed = () => ({
     types: [
@@ -451,33 +493,43 @@
   });
 
   let db = seed();
-  const ui = { query: "", hasData: true };
+  const ui = { hasData: true, openMaterials: new Set(), openVariants: new Set(), hiddenOpen: false };
   let seq = 0;
   const uid = (prefix) => prefix + "_" + (++seq) + Date.now().toString(36);
 
-  const typeOf = (variant) => {
-    const material = db.materials.find((m) => m.id === variant.materialId);
-    return material ? db.types.find((t) => t.id === material.typeId) : undefined;
+  const typeById = (id) => db.types.find((type) => type.id === id);
+  const materialById = (id) => db.materials.find((material) => material.id === id);
+  const variantById = (id) => db.variants.find((variant) => variant.id === id);
+  const typeNameOf = (material) => {
+    const type = typeById(material.typeId);
+    return type ? type.name : "Без типа";
   };
-  const materialOf = (variant) => db.materials.find((m) => m.id === variant.materialId);
-  const materialHidden = (material) => {
-    const type = db.types.find((t) => t.id === material.typeId);
-    return Boolean(material.hidden || (type && type.hidden));
+  const materialPath = (material) => typeNameOf(material) + " · " + material.name;
+  const variantPath = (variant) => {
+    const material = materialById(variant.materialId);
+    return material ? materialPath(material) + " · " + variant.name : variant.name;
   };
-  const variantHidden = (variant) => {
-    const material = materialOf(variant);
-    return Boolean(variant.hidden || (material && materialHidden(material)));
+  const visibleMaterials = () => db.materials.filter((material) => !material.hidden);
+  const allVariantsOf = (materialId) => db.variants.filter((variant) => variant.materialId === materialId);
+  const variantsOf = (materialId) => allVariantsOf(materialId).filter((variant) => !variant.hidden);
+  const suppliesOf = (variantId) => db.supplies.filter((supply) => supply.variantId === variantId);
+  const stockOf = (variantId) => suppliesOf(variantId).reduce((sum, supply) => sum + supply.qty, 0);
+  const materialStock = (material) => {
+    const variants = variantsOf(material.id);
+    if (!variants.length) return null;
+    const units = new Set(variants.map((variant) => variant.unit));
+    if (units.size !== 1) return null;
+    return { qty: variants.reduce((sum, variant) => sum + stockOf(variant.id), 0), unit: variants[0].unit };
   };
-  const visibleVariants = () => db.variants.filter((v) => !variantHidden(v));
-  const stockOf = (variantId) =>
-    db.supplies.filter((s) => s.variantId === variantId).reduce((sum, s) => sum + s.qty, 0);
-  const pathOf = (variant) => {
-    const material = materialOf(variant);
-    const type = typeOf(variant);
-    return [type && type.name, material && material.name].filter(Boolean).join(" › ");
-  };
-  const suppliers = () => Array.from(new Set(db.supplies.map((s) => s.supplier))).sort((a, b) => a.localeCompare(b, "ru"));
-  const variantSort = (a, b) => pathOf(a).localeCompare(pathOf(b), "ru") || a.name.localeCompare(b.name, "ru");
+  const sortedMaterials = () =>
+    visibleMaterials()
+      .slice()
+      .sort((a, b) => typeNameOf(a).localeCompare(typeNameOf(b), "ru") || a.name.localeCompare(b.name, "ru"));
+  const suppliers = () =>
+    Array.from(new Set(db.supplies.map((supply) => supply.supplier))).sort((a, b) => a.localeCompare(b, "ru"));
+  const hiddenMaterials = () => db.materials.filter((material) => material.hidden);
+  const hiddenVariants = () => db.variants.filter((variant) => variant.hidden);
+  const hiddenCount = () => hiddenMaterials().length + hiddenVariants().length;
 
   const toastEl = $("#toast");
   let toastTimer;
@@ -488,186 +540,345 @@
     toastTimer = window.setTimeout(() => toastEl.classList.remove("show"), 2600);
   };
 
-  // ── Inventory ──────────────────────────────────────────────────────────
-  function renderInventory() {
-    const query = ui.query.trim().toLowerCase();
-    const all = visibleVariants();
-    const rows = all
-      .filter((v) => {
-        if (!query) return true;
-        const material = materialOf(v);
-        const type = typeOf(v);
-        return [v.name, material && material.name, type && type.name].join(" ").toLowerCase().includes(query);
-      })
-      .sort(variantSort);
+  // ── Material cards ─────────────────────────────────────────────────────
+  function supplyMarkup(supply, variant) {
+    return (
+      '<button type="button" class="supply" data-edit-supply="' + esc(supply.id) + '" ' +
+      'aria-label="Исправить приход: ' + esc(supply.supplier) + '">' +
+      '<span class="supply__id"><span class="row__name">' + esc(supply.supplier) + "</span>" +
+      (supply.note ? '<span class="row__what">' + esc(supply.note) + "</span>" : "") +
+      "</span>" +
+      '<span class="supply__value"><span class="row__stock">' + num(supply.qty) + " " + esc(variant.unit) + "</span>" +
+      '<span class="row__what">' + money(unitCost(supply)) + " / " + esc(variant.unit) + "</span></span>" +
+      "</button>"
+    );
+  }
 
-    const list = $("#inv-list");
-    if (!rows.length) {
-      list.innerHTML = all.length
-        ? '<div class="empty">' + icon("i-search") +
-          '<p class="t-caption prose">Ничего не нашлось. Проверьте написание или запишите материал новым приходом.</p></div>'
-        : '<div class="empty">' + icon("i-box") +
-          '<p class="t-caption prose">Материалов пока нет. Запишите первый приход — тип, материал и вариант создадутся на месте.</p></div>';
+  function variantMarkup(variant) {
+    const supplies = suppliesOf(variant.id);
+    const stock = stockOf(variant.id);
+    const open = ui.openVariants.has(variant.id);
+    return (
+      '<div class="variant" data-variant="' + esc(variant.id) + '">' +
+      '<button type="button" class="variant__head" data-toggle-variant="' + esc(variant.id) + '" aria-expanded="' + open + '">' +
+      '<span class="variant__id"><span class="row__name">' + esc(variant.name) + "</span>" +
+      '<span class="row__what">' + (supplies.length ? suppliesWord(supplies.length) : "нет приходов") + "</span></span>" +
+      '<span class="variant__value"><span class="row__stock" data-zero="' + (stock <= 0) + '">' + num(stock) + " " + esc(variant.unit) + "</span>" +
+      chev(open) + "</span></button>" +
+      (open
+        ? '<div class="variant__body">' +
+          '<div class="variant__acts">' +
+          '<button type="button" class="linkbtn" data-edit-variant="' + esc(variant.id) + '">' + icon("i-pencil") + "Изменить</button>" +
+          '<button type="button" class="linkbtn" data-hide-variant="' + esc(variant.id) + '">' + icon("i-eyeoff") + "Скрыть</button>" +
+          '<button type="button" class="linkbtn" data-supply-for="' + esc(variant.id) + '">' + icon("i-plus") + "Приход</button>" +
+          "</div>" +
+          (supplies.length
+            ? '<div class="supplies">' + supplies.slice().reverse().map((supply) => supplyMarkup(supply, variant)).join("") + "</div>"
+            : '<p class="t-caption">Приходов нет. Первый приход задаст остаток.</p>') +
+          "</div>"
+        : "") +
+      "</div>"
+    );
+  }
+
+  function cardBody(material) {
+    const variants = variantsOf(material.id);
+    return (
+      '<div class="mcard__acts">' +
+      '<button type="button" class="linkbtn" data-add-variant="' + esc(material.id) + '">' + icon("i-plus") + "Вариант</button>" +
+      '<button type="button" class="linkbtn" data-edit-material="' + esc(material.id) + '">' + icon("i-pencil") + "Изменить</button>" +
+      '<button type="button" class="linkbtn" data-hide-material="' + esc(material.id) + '">' + icon("i-eyeoff") + "Скрыть</button>" +
+      "</div>" +
+      (variants.length
+        ? '<div class="variants">' + variants.map(variantMarkup).join("") + "</div>"
+        : '<p class="t-caption">Вариантов пока нет. Вариант задаёт единицу и остаток.</p>')
+    );
+  }
+
+  function cardMarkup(material) {
+    const variants = variantsOf(material.id);
+    const stock = materialStock(material);
+    const open = ui.openMaterials.has(material.id);
+    return (
+      '<article class="mcard" data-material="' + esc(material.id) + '">' +
+      '<button type="button" class="mcard__head" data-toggle-material="' + esc(material.id) + '" aria-expanded="' + open + '">' +
+      '<span class="mcard__id"><span class="mcard__type t-label">' + esc(typeNameOf(material)) + "</span>" +
+      '<span class="mcard__name">' + esc(material.name) + "</span></span>" +
+      '<span class="mcard__value">' +
+      (stock ? '<span class="mcard__stock">' + num(stock.qty) + " " + esc(stock.unit) + "</span>" : "") +
+      '<span class="mcard__count">' + (variants.length ? variantsWord(variants.length) : "нет вариантов") + "</span>" +
+      "</span>" + chev(open) + "</button>" +
+      (open ? '<div class="mcard__body">' + cardBody(material) + "</div>" : "") +
+      "</article>"
+    );
+  }
+
+  function emptyMarkup() {
+    const hidden = hiddenCount();
+    return (
+      '<div class="empty">' + icon("i-box") +
+      '<p class="t-caption prose">' +
+      (hidden ? "Все записи скрыты. Верните их в «Скрытых»." : "Материалов пока нет. Запишите приход — тип, материал и вариант создадутся на месте.") +
+      "</p>" +
+      (hidden
+        ? ""
+        : '<div class="empty__acts"><button type="button" class="btn btn--primary" data-new-supply>' + icon("i-plus") + "Приход</button>" +
+          '<button type="button" class="btn btn--ghost" data-new-material>Новый материал</button></div>') +
+      "</div>"
+    );
+  }
+
+  function renderList() {
+    const materials = sortedMaterials();
+    const list = $("#list");
+    list.innerHTML = materials.length ? materials.map(cardMarkup).join("") : emptyMarkup();
+  }
+
+  function renderHidden() {
+    const wrap = $("#hidden-block");
+    const items = []
+      .concat(
+        hiddenMaterials().map((material) => ({
+          kind: "material",
+          id: material.id,
+          name: material.name,
+          meta: "Материал · " + typeNameOf(material)
+        }))
+      )
+      .concat(
+        hiddenVariants().map((variant) => ({
+          kind: "variant",
+          id: variant.id,
+          name: variant.name,
+          meta: "Вариант · " + variantPath(variant)
+        }))
+      );
+
+    if (!items.length) {
+      ui.hiddenOpen = false;
+      wrap.innerHTML = "";
       return;
     }
-    list.innerHTML =
-      '<div class="rows">' +
-      rows
-        .map((v) => {
-          const stock = stockOf(v.id);
-          return (
-            '<button type="button" class="row row--link" data-open-variant="' + esc(v.id) + '">' +
-            '<span class="row__main"><span class="row__name">' + esc(v.name) + '</span>' +
-            '<span class="row__what">' + esc(pathOf(v)) + "</span></span>" +
-            '<span class="row__value"><span class="row__stock" data-zero="' + (stock <= 0) + '">' +
-            num(stock) + " " + esc(v.unit) + "</span>" +
-            '<span class="row__chev">' + icon("i-chevron") + "</span></span></button>"
-          );
-        })
-        .join("") +
-      "</div>";
-  }
 
-  // ── Catalog ────────────────────────────────────────────────────────────
-  let catalogLayer = null;
-
-  const hideButton = (kind, id) =>
-    '<button type="button" class="iconbtn iconbtn--sm" data-act="hide" data-kind="' + kind + '" data-id="' + esc(id) +
-    '" aria-label="Скрыть">' + icon("i-eyeoff") + "</button>";
-  const editButton = (kind, id) =>
-    '<button type="button" class="iconbtn iconbtn--sm" data-act="edit" data-kind="' + kind + '" data-id="' + esc(id) +
-    '" aria-label="Изменить">' + icon("i-pencil") + "</button>";
-
-  function renderCatalog() {
-    const tree = $("#cat-tree");
-    if (!tree) return;
-    if (!db.types.length) {
-      tree.innerHTML = '<div class="empty">' + icon("i-box") +
-        '<p class="t-caption prose">Каталог пуст. Начните с типа материала — например, «Кожа».</p></div>';
-    } else {
-      tree.innerHTML =
-        '<div class="tree">' +
-        db.types
-          .filter((type) => !type.hidden)
-          .map((type) => {
-            const materials = db.materials.filter((m) => m.typeId === type.id);
-            let html =
-              '<div class="tree__type">' +
-              '<div class="tree__head"><span class="t-label tree__label">' + esc(type.name) + "</span>" +
-              '<span class="tree__acts">' +
-              '<button type="button" class="linkbtn" data-act="add-material" data-id="' + esc(type.id) + '">' +
-              icon("i-plus") + "Материал</button>" +
-              editButton("type", type.id) + hideButton("type", type.id) +
-              "</span></div>";
-            html += materials
-              .filter((material) => !material.hidden)
-              .map((material) => {
-                const variants = db.variants.filter((v) => v.materialId === material.id);
-                let row =
-                  '<div class="tree__item">' +
-                  '<span class="tree__name">' + esc(material.name) + "</span>" +
-                  '<span class="tree__acts">' +
-                  '<button type="button" class="linkbtn" data-act="add-variant" data-id="' + esc(material.id) + '">' +
-                  icon("i-plus") + "Вариант</button>" +
-                  editButton("material", material.id) + hideButton("material", material.id) +
-                  "</span></div>";
-                row += variants
-                  .filter((variant) => !variant.hidden)
-                  .map(
-                    (variant) =>
-                      '<div class="tree__item tree__item--leaf">' +
-                      '<span class="row__name">' + esc(variant.name) + "</span>" +
-                      '<span class="tree__meta">' + num(stockOf(variant.id)) + " " + esc(variant.unit) + "</span>" +
-                      '<span class="tree__acts">' + editButton("variant", variant.id) + hideButton("variant", variant.id) + "</span></div>"
-                  )
-                  .join("");
-                return row;
-              })
-              .join("");
-            return html + "</div>";
-          })
-          .join("") +
-        "</div>";
-    }
-
-    const hidden = []
-      .concat(db.types.filter((t) => t.hidden).map((t) => ({ kind: "type", id: t.id, name: t.name, where: "Тип материала" })))
-      .concat(db.materials.filter((m) => m.hidden).map((m) => {
-        const type = db.types.find((t) => t.id === m.typeId);
-        return { kind: "material", id: m.id, name: m.name, where: "Материал · " + (type ? type.name : "—") };
-      }))
-      .concat(db.variants.filter((v) => v.hidden).map((v) => ({ kind: "variant", id: v.id, name: v.name, where: "Вариант · " + pathOf(v) })));
-
-    const wrap = $("#cat-hidden-wrap");
-    if (!wrap) return;
-    wrap.hidden = !hidden.length;
-    if (!hidden.length) return;
-    $("#cat-hidden").innerHTML =
-      '<div class="rows">' +
-      hidden
-        .map(
-          (item) =>
-            '<div class="row is-hidden"><span class="row__main"><span class="row__name">' + esc(item.name) + "</span>" +
-            '<span class="row__what">' + esc(item.where) + "</span></span>" +
-            '<span class="row__value"><button type="button" class="btn btn--ghost btn--sm" data-act="restore" data-kind="' +
-            item.kind + '" data-id="' + esc(item.id) + '">' + icon("i-undo") + "Вернуть</button></span></div>"
-        )
-        .join("") +
-      "</div>";
-  }
-
-  function renderSummary() {
-    const variants = visibleVariants().length;
-    const types = db.types.filter((t) => !t.hidden).length;
-    $("#page-summary").textContent = variants
-      ? variants + " вариантов · " + types + " типа · " + db.supplies.length + " приходов"
-      : "Склад пуст";
+    wrap.innerHTML =
+      '<button type="button" class="hiddenbar" data-toggle-hidden aria-expanded="' + ui.hiddenOpen + '">' +
+      icon("i-eyeoff") + "<span>Скрытые · " + items.length + "</span>" + chev(ui.hiddenOpen) + "</button>" +
+      (ui.hiddenOpen
+        ? '<div class="card hidden-list">' +
+          items
+            .map(
+              (item) =>
+                '<div class="hidden-item"><span class="hidden-item__id">' +
+                '<span class="row__name">' + esc(item.name) + "</span>" +
+                '<span class="row__what">' + esc(item.meta) + "</span></span>" +
+                '<button type="button" class="btn btn--ghost btn--sm" data-restore="' + item.kind + '" data-id="' + esc(item.id) + '">' +
+                icon("i-undo") + "Вернуть</button></div>"
+            )
+            .join("") +
+          "</div>"
+        : "");
   }
 
   function renderAll() {
-    renderSummary();
-    renderInventory();
-    renderCatalog();
+    renderList();
+    renderHidden();
+    if (!$("#palette-panel").hidden) renderPalette();
   }
 
-  function openCatalog() {
-    catalogLayer = openLayer(
-      shell({
-        id: "dlg-catalog-tree",
-        title: "Каталог",
-        note: "Скрытая запись остаётся в истории приходов",
-        wide: true,
-        body:
-          '<div class="card" id="cat-tree"></div>' +
-          '<section class="stack" id="cat-hidden-wrap" hidden><h2 class="t-title">Скрытые</h2><div class="card" id="cat-hidden"></div></section>',
-        foot:
-          '<button type="button" class="btn btn--outline" data-add="type">' + icon("i-plus") + "Тип материала</button>" +
-          '<button type="button" class="btn btn--ghost" data-close>Закрыть</button>'
-      })
-    );
-    catalogLayer.addEventListener("click", (event) => {
-      const add = event.target.closest("[data-add]");
-      if (add) return openCatalogDialog({ kind: add.dataset.add });
-      const action = event.target.closest("[data-act]");
-      if (!action) return;
-      const kind = action.dataset.kind;
-      const id = action.dataset.id;
-      const act = action.dataset.act;
-      if (act === "restore") restoreEntity(kind, id);
-      else if (act === "hide") openHideConfirm(kind, id);
-      else if (act === "edit") openCatalogDialog({ kind, entity: findEntity(kind, id) });
-      else if (act === "add-material") openCatalogDialog({ kind: "material", parentId: id });
-      else if (act === "add-variant") openCatalogDialog({ kind: "variant", parentId: id });
-    });
-    renderCatalog();
+  // ── Palette ────────────────────────────────────────────────────────────
+  const paletteEl = $("#palette");
+  const paletteInput = $("#palette-input");
+  const palettePanel = $("#palette-panel");
+
+  const paletteActions = () => {
+    const actions = [
+      { label: "Записать приход", hint: "Новая партия материала", icon: "i-plus", run: () => openSupply({}) },
+      { label: "Новый материал", hint: "Тип, материал и вариант", icon: "i-box", run: () => openMaterialForm() },
+      { label: "Типы материалов", hint: "Свойства и скрытые типы", icon: "i-layers", run: () => openTypes() }
+    ];
+    if (hiddenCount()) {
+      actions.push({
+        label: "Скрытые записи",
+        hint: hiddenCount() + " шт",
+        icon: "i-eyeoff",
+        run: () => {
+          ui.hiddenOpen = true;
+          renderHidden();
+          const bar = $(".hiddenbar");
+          if (bar) bar.scrollIntoView({ block: "center" });
+        }
+      });
+    }
+    return actions;
+  };
+
+  function paletteMatch(material, query) {
+    if (!query) return { material: true, variants: [] };
+    const haystack = [material.name, typeNameOf(material), ...allVariantsOf(material.id).map((variant) => variant.name)]
+      .join(" ")
+      .toLowerCase();
+    if (!haystack.includes(query)) return null;
+    return {
+      material: true,
+      variants: allVariantsOf(material.id).filter((variant) => variant.name.toLowerCase().includes(query)).map((variant) => variant.id)
+    };
   }
+
+  function renderPalette() {
+    const query = paletteInput.value.trim().toLowerCase();
+    const groups = [];
+
+    const actions = paletteActions().filter(
+      (action) => !query || (action.label + " " + action.hint).toLowerCase().includes(query)
+    );
+    if (actions.length) {
+      groups.push({
+        title: "Действия",
+        items: actions.map((action) => ({
+          value: "",
+          run: action.run,
+          html:
+            icon(action.icon) +
+            '<span class="pitem__id"><span class="pitem__name">' + esc(action.label) + "</span>" +
+            '<span class="pitem__meta">' + esc(action.hint) + "</span></span>"
+        }))
+      });
+    }
+
+    const materials = [];
+    sortedMaterials().forEach((material) => {
+      const match = paletteMatch(material, query);
+      if (!match) return;
+      const variants = variantsOf(material.id);
+      const stock = materialStock(material);
+      const matched = match.variants
+        .map((id) => variantById(id))
+        .filter(Boolean)
+        .map((variant) => variant.name);
+      const meta = [typeNameOf(material), matched.length ? matched.join(", ") : variants.length ? variantsWord(variants.length) : "нет вариантов"]
+        .filter(Boolean)
+        .join(" · ");
+      materials.push({
+        value: stock ? num(stock.qty) + " " + stock.unit : "",
+        run: () => jumpToMaterial(material.id, match.variants),
+        html:
+          '<span class="pitem__id"><span class="pitem__name">' + esc(material.name) + "</span>" +
+          '<span class="pitem__meta">' + esc(meta) + "</span></span>"
+      });
+    });
+    if (materials.length) groups.push({ title: "Материалы", items: materials });
+
+    const flat = [];
+    palettePanel.innerHTML = groups.length
+      ? groups
+          .map(
+            (group) =>
+              '<p class="palette__heading t-label">' + esc(group.title) + "</p>" +
+              group.items
+                .map((item) => {
+                  const index = flat.push(item.run) - 1;
+                  return (
+                    '<button type="button" class="pitem" role="option" data-index="' + index + '">' +
+                    item.html +
+                    (item.value ? '<span class="pitem__value">' + esc(item.value) + "</span>" : "") +
+                    "</button>"
+                  );
+                })
+                .join("")
+          )
+          .join("")
+      : '<p class="palette__empty t-body">Ничего не нашлось</p>';
+
+    paletteRuns = flat;
+    setPaletteActive(0);
+  }
+
+  let paletteRuns = [];
+  const paletteItems = () => $$(".pitem", palettePanel);
+
+  function setPaletteActive(index) {
+    const items = paletteItems();
+    items.forEach((item, position) => item.toggleAttribute("data-active", position === index));
+    if (items[index]) items[index].scrollIntoView({ block: "nearest" });
+  }
+
+  function paletteOpen() {
+    $("#palette-scrim").hidden = false;
+    palettePanel.hidden = false;
+    paletteInput.setAttribute("aria-expanded", "true");
+    renderPalette();
+  }
+
+  function paletteClose(clear = true) {
+    $("#palette-scrim").hidden = true;
+    palettePanel.hidden = true;
+    paletteInput.setAttribute("aria-expanded", "false");
+    if (clear) paletteInput.value = "";
+  }
+
+  function jumpToMaterial(id, variantIds) {
+    ui.openMaterials.add(id);
+    (variantIds || []).forEach((variantId) => ui.openVariants.add(variantId));
+    paletteClose();
+    renderList();
+    const card = $('.mcard[data-material="' + id + '"]');
+    if (card) {
+      card.scrollIntoView({ block: "center" });
+      const head = $(".mcard__head", card);
+      if (head) head.focus();
+    }
+  }
+
+  paletteInput.addEventListener("focus", paletteOpen);
+  paletteInput.addEventListener("click", paletteOpen);
+  paletteInput.addEventListener("input", () => {
+    if (palettePanel.hidden) paletteOpen();
+    else renderPalette();
+  });
+  paletteInput.addEventListener("keydown", (event) => {
+    const items = paletteItems();
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      if (!items.length) return;
+      event.preventDefault();
+      const step = event.key === "ArrowDown" ? 1 : -1;
+      const current = items.findIndex((item) => item.hasAttribute("data-active"));
+      const next = current < 0 ? (step > 0 ? 0 : items.length - 1) : (current + step + items.length) % items.length;
+      setPaletteActive(next);
+    } else if (event.key === "Enter") {
+      if (!items.length) return;
+      event.preventDefault();
+      const current = items.find((item) => item.hasAttribute("data-active")) || items[0];
+      const run = paletteRuns[Number(current.dataset.index)];
+      paletteClose();
+      if (run) run();
+    } else if (event.key === "Escape") {
+      event.preventDefault();
+      paletteClose();
+    }
+  });
+  palettePanel.addEventListener("click", (event) => {
+    const item = event.target.closest(".pitem");
+    if (!item) return;
+    const run = paletteRuns[Number(item.dataset.index)];
+    paletteClose();
+    if (run) run();
+  });
+  $("#palette-scrim").addEventListener("pointerdown", () => paletteClose());
+  paletteEl.addEventListener("focusout", (event) => {
+    if (!paletteEl.contains(event.relatedTarget)) paletteClose();
+  });
+  document.addEventListener("pointerdown", (event) => {
+    if (palettePanel.hidden) return;
+    if (paletteEl.contains(event.target)) return;
+    paletteClose();
+  });
 
   // ── Dialog plumbing ────────────────────────────────────────────────────
   const layers = $("#dialogs");
 
-  function openLayer(markup, modifier) {
+  function openLayer(markup) {
     const layer = document.createElement("div");
-    layer.className = "dialog" + (modifier ? " " + modifier : "");
+    layer.className = "dialog";
     layer.style.zIndex = String(60 + layers.children.length);
     layer.innerHTML = '<div class="dialog__scrim" data-close></div>' + markup;
     layers.appendChild(layer);
@@ -677,7 +888,6 @@
 
   function closeLayer(layer) {
     if (!layer) return;
-    if (layer === catalogLayer) catalogLayer = null;
     layer.remove();
     if (!layers.children.length) document.body.classList.remove("is-locked");
   }
@@ -702,9 +912,10 @@
     '<div class="field" data-field="' + name + '"><label class="field__label t-label" for="' + name + '">' + esc(label) + "</label>" +
     control + '<p class="field__error">' + icon("i-alert") + "<span>" + esc(error || "Заполните поле") + "</span></p></div>";
 
-  const unitOptions = (name) =>
+  const unitOptions = (name, selected) =>
     '<select class="select" id="' + name + '">' +
-    UNITS.map((u) => '<option value="' + esc(u) + '">' + esc(UNIT_WORD[u]) + "</option>").join("") + "</select>";
+    UNITS.map((unit) => '<option value="' + esc(unit) + '"' + (selected === unit ? " selected" : "") + ">" + esc(unit) + "</option>").join("") +
+    "</select>";
 
   function markInvalid(layer, name, invalid) {
     const wrapper = layer.querySelector('[data-field="' + name + '"]');
@@ -718,9 +929,9 @@
         title: options.title,
         body: '<p class="t-caption prose">' + esc(options.body) + "</p>",
         foot:
-          '<button type="button" class="btn btn--ghost" data-close>Отмена</button>' +
+          '<div class="foot__right"><button type="button" class="btn btn--ghost" data-close>Отмена</button>' +
           '<button type="button" class="btn ' + (options.tone === "danger" ? "btn--destructive" : "btn--primary") + '" data-confirm>' +
-          esc(options.action) + "</button>"
+          esc(options.action) + "</button></div>"
       })
     );
     layer.addEventListener("click", (event) => {
@@ -732,250 +943,241 @@
     layer.querySelector("[data-confirm]").focus();
   }
 
-  // ── Command palette ────────────────────────────────────────────────────
-  const hiddenCount = () =>
-    db.types.filter((t) => t.hidden).length +
-    db.materials.filter((m) => m.hidden).length +
-    db.variants.filter((v) => v.hidden).length;
+  // ── Supply sheet: variant → details ────────────────────────────────────
+  function openSupply(options = {}) {
+    const existing = options.supplyId ? db.supplies.find((supply) => supply.id === options.supplyId) : null;
+    const initialVariant = existing ? existing.variantId : options.variantId || null;
+    const state = { variantId: initialVariant, mode: existing ? "edit" : "create", step: initialVariant ? 2 : 1 };
 
-  function paletteActions() {
-    const actions = [
-      { label: "Записать приход", icon: "i-plus", run: () => openSupplyDialog() },
-      {
-        label: hiddenCount() ? "Каталог и скрытые (" + hiddenCount() + ")" : "Каталог",
-        icon: "i-layers",
-        run: openCatalog
-      },
-      { label: "Добавить тип материала", icon: "i-plus", run: () => openCatalogDialog({ kind: "type" }) }
-    ];
-    if (db.types.length) {
-      actions.push({ label: "Добавить материал", icon: "i-plus", run: () => openCatalogDialog({ kind: "material" }) });
-    }
-    if (db.materials.length) {
-      actions.push({ label: "Добавить вариант", icon: "i-plus", run: () => openCatalogDialog({ kind: "variant" }) });
-    }
-    return actions;
-  }
-
-  function openPalette() {
-    const layer = openLayer(
-      '<div class="cmd" role="dialog" aria-modal="true" aria-label="Поиск и действия">' +
-        '<div class="cmd__search">' + icon("i-search") +
-        '<input id="cmd-input" type="text" role="combobox" aria-expanded="true" aria-controls="cmd-list" aria-autocomplete="list" autocomplete="off" placeholder="Поиск" />' +
-        "</div>" +
-        '<div class="cmd__list" id="cmd-list" role="listbox" aria-label="Действия и материалы"></div>' +
-        "</div>",
-      "dialog--palette"
-    );
-    const input = $("#cmd-input", layer);
-    const list = $("#cmd-list", layer);
-    const run = [];
-    const entries = () => $$(".cmd__item", list);
-
-    function setActive(index) {
-      const all = entries();
-      all.forEach((item, position) => item.toggleAttribute("data-active", position === index));
-      if (all[index]) all[index].scrollIntoView({ block: "nearest" });
-    }
-
-    function render() {
-      const query = input.value.trim().toLowerCase();
-      const groups = [];
-      const actions = paletteActions().filter((action) => !query || action.label.toLowerCase().includes(query));
-      if (actions.length) {
-        groups.push({
-          title: "Действия",
-          items: actions.map((action) => ({
-            inner: icon(action.icon) + '<span class="t-body cmd__item__label">' + esc(action.label) + "</span>",
-            run: action.run
-          }))
-        });
-      }
-      run.length = 0;
-      list.innerHTML = groups.length
-        ? groups
-            .map(
-              (group) =>
-                '<div class="cmd__group"><p class="cmd__heading t-label">' + esc(group.title) + "</p>" +
-                group.items
-                  .map((item) => {
-                    const index = run.push(item.run) - 1;
-                    return '<button type="button" class="cmd__item" role="option" data-index="' + index + '">' + item.inner + "</button>";
-                  })
-                  .join("") +
-                "</div>"
-            )
-            .join("")
-        : '<p class="cmd__empty t-body">Ничего не нашлось</p>';
-      if (run.length) setActive(0);
-    }
-
-    function select(index) {
-      const action = run[index];
-      closeLayer(layer);
-      if (action) action();
-    }
-
-    input.addEventListener("input", render);
-    input.addEventListener("keydown", (event) => {
-      const all = entries();
-      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
-        if (!all.length) return;
-        event.preventDefault();
-        const step = event.key === "ArrowDown" ? 1 : -1;
-        const current = all.findIndex((item) => item.hasAttribute("data-active"));
-        const next = current < 0 ? (step > 0 ? 0 : all.length - 1) : (current + step + all.length) % all.length;
-        setActive(next);
-      } else if (event.key === "Enter") {
-        event.preventDefault();
-        const current = all.find((item) => item.hasAttribute("data-active")) || all[0];
-        if (current) select(Number(current.dataset.index));
-      }
-    });
-    list.addEventListener("click", (event) => {
-      const item = event.target.closest(".cmd__item");
-      if (item) select(Number(item.dataset.index));
-    });
-
-    render();
-    input.focus();
-  }
-
-  // ── Приход материала ───────────────────────────────────────────────────
-  function openSupplyDialog(preselectId) {
-    const state = { variantId: null, unit: "шт" };
     const body =
+      '<div class="stack" id="sup-1"' + (state.step === 2 ? " hidden" : "") + ">" +
       '<div class="field" data-field="variant">' +
       '<label class="field__label t-label" for="s-variant">Материал</label>' +
       '<div class="search">' + icon("i-search") +
       '<input class="input" id="s-variant" type="text" role="combobox" aria-expanded="false" aria-controls="s-list" aria-autocomplete="list" autocomplete="off" placeholder="Название, тип или материал" />' +
       "</div>" +
       '<div class="listbox" id="s-list" role="listbox" aria-label="Варианты материала" hidden></div>' +
-      '<p class="t-caption" id="s-path" hidden></p>' +
+      '<p class="t-caption" id="s-hint">Начните вводить название — варианты появятся сразу.</p>' +
       '<p class="field__error">' + icon("i-alert") + "<span>Выберите материал</span></p></div>" +
-      '<div class="panel" id="s-jit" hidden><p class="t-label" style="color:var(--muted-foreground)">Новый материал</p>' +
-      field("Тип", "s-type", '<input class="input" id="s-type" type="text" autocomplete="off" placeholder="Древесина" />', "Укажите тип") +
+      '<div class="panel" id="s-jit" hidden>' +
+      '<p class="t-label" style="color:var(--muted-foreground)">Новый материал</p>' +
+      '<div class="field" data-field="s-type"><label class="field__label t-label" for="s-type">Тип</label>' +
+      '<select class="select" id="s-type"></select>' +
+      '<input class="input" id="s-newtype" type="text" autocomplete="off" placeholder="Название нового типа" hidden />' +
+      '<p class="field__error">' + icon("i-alert") + "<span>Укажите тип</span></p></div>" +
       field("Материал", "s-mat", '<input class="input" id="s-mat" type="text" autocomplete="off" placeholder="Дуб" />', "Укажите материал") +
       field("Вариант", "s-var", '<input class="input" id="s-var" type="text" autocomplete="off" placeholder="Доска 40 мм" />', "Укажите вариант") +
       field("Единица", "s-jit-unit", unitOptions("s-jit-unit"), "Выберите единицу") +
-      '<button type="button" class="btn btn--ghost btn--sm" id="s-jit-create">' + icon("i-check") + "Создать и выбрать</button></div>" +
+      '<button type="button" class="btn btn--primary btn--sm" id="s-jit-create">' + icon("i-check") + "Создать и продолжить</button>" +
+      "</div></div>" +
+      '<div class="stack" id="sup-2"' + (state.step === 1 ? " hidden" : "") + ">" +
+      '<p class="t-caption" id="s-path"></p>' +
       '<div class="pair">' +
-      field("Единица", "s-unit-ro", '<input class="input" id="s-unit-ro" type="text" readonly value="—" />', "") +
-      field("Количество", "s-qty", '<input class="input" id="s-qty" type="number" min="0" step="0.01" inputmode="decimal" autocomplete="off" placeholder="0" />', "Укажите количество") +
+      field("Количество", "s-qty", '<input class="input" id="s-qty" type="number" min="0" step="0.01" inputmode="decimal" autocomplete="off" placeholder="0" /><span class="field__hint t-caption" id="s-unit"></span>', "Укажите количество") +
+      field("Цена закупки, всего", "s-price", '<input class="input" id="s-price" type="number" min="0" step="0.01" inputmode="decimal" autocomplete="off" placeholder="0" /><span class="field__hint t-caption" id="s-unit-cost">Цена за единицу: —</span>', "Укажите цену") +
       "</div>" +
-      field("Цена закупки, всего", "s-price",
-        '<input class="input" id="s-price" type="number" min="0" step="0.01" inputmode="decimal" autocomplete="off" placeholder="0" />' +
-        '<span class="field__hint t-caption" id="s-unit-cost">Цена за единицу: —</span>', "Укажите цену") +
       field("Поставщик", "s-supplier",
         '<input class="input" id="s-supplier" type="text" autocomplete="off" list="s-suppliers" placeholder="Кожевенный двор" />' +
-        '<datalist id="s-suppliers">' + suppliers().map((s) => '<option value="' + esc(s) + '"></option>').join("") + "</datalist>",
+        '<datalist id="s-suppliers">' + suppliers().map((supplier) => '<option value="' + esc(supplier) + '"></option>').join("") + "</datalist>",
         "Укажите поставщика") +
-      field("Заметка или ссылка", "s-note", '<input class="input" id="s-note" type="text" autocomplete="off" placeholder="Необязательно" />', "");
+      '<details class="more"><summary class="linkbtn">Заметка или ссылка</summary>' +
+      '<div class="more__body">' + field("Заметка", "s-note", '<input class="input" id="s-note" type="text" autocomplete="off" placeholder="Необязательно" />', "") + "</div>" +
+      "</details>" +
+      "</div>";
 
     const layer = openLayer(
       shell({
         id: "dlg-supply",
-        title: "Приход материала",
-        note: "Новая партия увеличит остаток варианта",
+        title: existing ? "Исправить приход" : "Приход материала",
+        note: existing ? "Остаток варианта пересчитается" : "Новая партия увеличит остаток варианта",
         body,
         form: true,
-        foot: '<button type="button" class="btn btn--ghost" data-close>Отмена</button><button type="submit" class="btn btn--primary">Сохранить приход</button>'
+        foot:
+          '<div class="foot__left">' +
+          '<button type="button" class="btn btn--ghost" data-back hidden>Назад</button>' +
+          '<button type="button" class="linkbtn linkbtn--danger" data-delete-supply hidden>' + icon("i-trash") + "Удалить приход</button>" +
+          "</div>" +
+          '<div class="foot__right"><button type="button" class="btn btn--ghost" data-cancel>Отмена</button>' +
+          '<button type="submit" class="btn btn--primary" data-save hidden>Сохранить приход</button></div>'
       })
     );
 
-    const input = $("#s-variant", layer);
+    const step1 = $("#sup-1", layer);
+    const step2 = $("#sup-2", layer);
+    const backBtn = $("[data-back]", layer);
+    const deleteBtn = $("[data-delete-supply]", layer);
+    const saveBtn = $("[data-save]", layer);
+    const cancelBtn = $("[data-cancel]", layer);
+    const searchInput = $("#s-variant", layer);
     const list = $("#s-list", layer);
-    const pathHint = $("#s-path", layer);
+
+    function syncSteps() {
+      step1.hidden = state.step !== 1;
+      step2.hidden = state.step !== 2;
+      backBtn.hidden = !(state.mode === "create" && state.step === 2);
+      deleteBtn.hidden = state.mode !== "edit";
+      cancelBtn.hidden = state.step === 2;
+      saveBtn.hidden = state.step !== 2;
+    }
+
+    function updateUnitHint() {
+      const variant = variantById(state.variantId);
+      $("#s-unit", layer).textContent = variant ? UNIT_WORD[variant.unit] || variant.unit : "";
+      $("#s-path", layer).textContent = variant ? variantPath(variant) : "";
+    }
+
+    function updateCost() {
+      const qty = Number($("#s-qty", layer).value);
+      const price = Number($("#s-price", layer).value);
+      const variant = variantById(state.variantId);
+      const unit = variant ? variant.unit : "";
+      $("#s-unit-cost", layer).textContent =
+        qty > 0 && unit ? "Цена за единицу: " + money(price / qty) + " / " + unit : "Цена за единицу: —";
+    }
 
     function renderList() {
-      const query = input.value.trim().toLowerCase();
-      if (!query) return hideList();
-      const found = visibleVariants()
-        .filter((v) => {
-          const material = materialOf(v);
-          const type = typeOf(v);
-          const haystack = [v.name, material && material.name, type && type.name].join(" ").toLowerCase();
-          return haystack.includes(query);
-        })
-        .sort(variantSort)
-        .slice(0, 8);
-      const options = found.map((v) => {
-        const stock = stockOf(v.id);
+      const query = searchInput.value.trim().toLowerCase();
+      if (!query) {
+        list.hidden = true;
+        $("#s-hint", layer).hidden = false;
+        searchInput.setAttribute("aria-expanded", "false");
+        return;
+      }
+      const found = [];
+      sortedMaterials().forEach((material) => {
+        variantsOf(material.id).forEach((variant) => {
+          const haystack = [variant.name, material.name, typeNameOf(material)].join(" ").toLowerCase();
+          if (!haystack.includes(query)) return;
+          found.push({ variant, material });
+        });
+      });
+      found.sort((a, b) => materialPath(a.material).localeCompare(materialPath(b.material), "ru") || a.variant.name.localeCompare(b.variant.name, "ru"));
+      const options = found.slice(0, 8).map(({ variant, material }) => {
+        const stock = stockOf(variant.id);
         return (
-          '<button type="button" class="option" role="option" data-option="' + esc(v.id) + '"><span class="row__main">' +
-          '<span class="row__name">' + esc(v.name) + '</span><span class="option__path">' + esc(pathOf(v)) + "</span></span>" +
-          '<span class="row__stock" data-zero="' + (stock <= 0) + '">' + num(stock) + " " + esc(v.unit) + "</span></button>"
+          '<button type="button" class="option" role="option" data-option="' + esc(variant.id) + '"><span class="row__main">' +
+          '<span class="row__name">' + esc(variant.name) + "</span>" +
+          '<span class="row__what">' + esc(materialPath(material)) + "</span></span>" +
+          '<span class="row__stock" data-zero="' + (stock <= 0) + '">' + num(stock) + " " + esc(variant.unit) + "</span></button>"
         );
       });
-      const typed = input.value.trim();
-      if (typed) options.push('<button type="button" class="option option--new" role="option" data-new>' + icon("i-plus") + "<span>Новый материал: «" + esc(typed) + "»</span></button>");
-      if (!options.length) return hideList();
+      const typed = searchInput.value.trim();
+      if (typed) {
+        options.push(
+          '<button type="button" class="option option--new" role="option" data-new>' + icon("i-plus") +
+          "<span>Новый материал: «" + esc(typed) + "»</span></button>"
+        );
+      }
+      if (!options.length) {
+        list.hidden = true;
+        $("#s-hint", layer).hidden = false;
+        searchInput.setAttribute("aria-expanded", "false");
+        return;
+      }
       list.innerHTML = options.join("");
       list.hidden = false;
-      input.setAttribute("aria-expanded", "true");
+      $("#s-hint", layer).hidden = true;
+      searchInput.setAttribute("aria-expanded", "true");
     }
 
     function hideList() {
       list.hidden = true;
-      input.setAttribute("aria-expanded", "false");
+      searchInput.setAttribute("aria-expanded", "false");
     }
 
-    function selectVariant(id) {
-      const variant = db.variants.find((v) => v.id === id);
+    function hideHint() {
+      $("#s-hint", layer).hidden = true;
+    }
+
+    function goDetails(variantId) {
+      const variant = variantById(variantId);
       if (!variant) return;
       state.variantId = variant.id;
-      state.unit = variant.unit;
-      input.value = variant.name;
-      pathHint.textContent = pathOf(variant);
-      pathHint.hidden = false;
-      $("#s-unit-ro", layer).value = UNIT_WORD[variant.unit] || variant.unit;
-      $("#s-jit", layer).hidden = true;
+      state.step = 2;
       markInvalid(layer, "variant", false);
+      syncSteps();
+      updateUnitHint();
+      updateCost();
+      $("#s-qty", layer).focus();
+    }
+
+    function selectVariant(variantId) {
+      const variant = variantById(variantId);
+      if (!variant) return;
+      searchInput.value = variant.name;
       hideList();
+      goDetails(variant.id);
     }
 
     function showJit() {
-      const typed = input.value.trim();
+      const typed = searchInput.value.trim();
+      const typeSelect = $("#s-type", layer);
+      typeSelect.innerHTML =
+        '<option value="">— выберите тип —</option>' +
+        db.types
+          .filter((type) => !type.hidden)
+          .map((type) => '<option value="' + esc(type.id) + '">' + esc(type.name) + "</option>")
+          .join("") + '<option value="__new">+ Новый тип</option>';
       $("#s-jit", layer).hidden = false;
-      if (!$("#s-var", layer).value) $("#s-var", layer).value = typed;
+      hideHint();
+      $("#s-newtype", layer).hidden = true;
+      $("#s-mat", layer).value = typed;
+      $("#s-var", layer).value = "";
       hideList();
-      $("#s-type", layer).focus();
+      if (typed) $("#s-var", layer).focus();
+      else $("#s-mat", layer).focus();
     }
 
     function createFromJit() {
-      const typeName = $("#s-type", layer).value.trim();
+      const typeSelect = $("#s-type", layer);
+      const wantsNewType = typeSelect.value === "__new";
+      const typeName = wantsNewType ? $("#s-newtype", layer).value.trim() : (typeById(typeSelect.value) || {}).name;
       const materialName = $("#s-mat", layer).value.trim();
       const variantName = $("#s-var", layer).value.trim();
       const unit = $("#s-jit-unit", layer).value;
       let valid = true;
-      [["s-type", typeName], ["s-mat", materialName], ["s-var", variantName]].forEach(([name, value]) => {
+      markInvalid(layer, "s-type", !typeName);
+      if (!typeName) valid = false;
+      ["s-mat", "s-var"].forEach((name) => {
+        const value = $("#" + name, layer).value.trim();
         markInvalid(layer, name, !value);
         if (!value) valid = false;
       });
       if (!valid) return;
-      let type = db.types.find((t) => t.name.toLowerCase() === typeName.toLowerCase());
+
+      let type = db.types.find((entry) => entry.name.toLowerCase() === typeName.toLowerCase());
       if (!type) {
         type = { id: uid("t"), name: typeName };
         db.types.push(type);
       }
       type.hidden = false;
-      let material = db.materials.find((m) => m.typeId === type.id && m.name.toLowerCase() === materialName.toLowerCase());
+
+      let material = db.materials.find(
+        (entry) => entry.typeId === type.id && entry.name.toLowerCase() === materialName.toLowerCase()
+      );
       if (!material) {
         material = { id: uid("m"), typeId: type.id, name: materialName };
         db.materials.push(material);
       }
       material.hidden = false;
-      let variant = db.variants.find((v) => v.materialId === material.id && v.name.toLowerCase() === variantName.toLowerCase());
+
+      let variant = db.variants.find(
+        (entry) => entry.materialId === material.id && entry.name.toLowerCase() === variantName.toLowerCase()
+      );
       if (!variant) {
         variant = { id: uid("v"), materialId: material.id, name: variantName, unit };
         db.variants.push(variant);
+      } else if (!suppliesOf(variant.id).length) {
+        variant.unit = unit;
       }
       variant.hidden = false;
-      ui.hasData = true;
+
+      ui.openMaterials.add(material.id);
+      ui.openVariants.add(variant.id);
+      $("#s-jit", layer).hidden = true;
       renderAll();
-      selectVariant(variant.id);
       toast("Материал создан");
-      $("#s-qty", layer).focus();
+      goDetails(variant.id);
     }
 
     function validate() {
@@ -1001,25 +1203,18 @@
       return valid;
     }
 
-    const updateCost = () => {
-      const qty = Number($("#s-qty", layer).value);
-      const price = Number($("#s-price", layer).value);
-      $("#s-unit-cost", layer).textContent =
-        qty > 0 ? "Цена за единицу: " + money(price / qty) + " / " + state.unit : "Цена за единицу: —";
-    };
-
-    input.addEventListener("input", () => {
+    searchInput.addEventListener("input", () => {
       markInvalid(layer, "variant", false);
       renderList();
     });
-    input.addEventListener("keydown", (event) => {
+    searchInput.addEventListener("keydown", (event) => {
       const options = $$(".option", list);
       if (event.key === "ArrowDown" || event.key === "ArrowUp") {
         if (!options.length) return;
         event.preventDefault();
         const step = event.key === "ArrowDown" ? 1 : -1;
-        let next = options.findIndex((option) => option.hasAttribute("data-active"));
-        next = next < 0 ? (step > 0 ? 0 : options.length - 1) : (next + step + options.length) % options.length;
+        const current = options.findIndex((option) => option.hasAttribute("data-active"));
+        const next = current < 0 ? (step > 0 ? 0 : options.length - 1) : (current + step + options.length) % options.length;
         options.forEach((option, index) => option.toggleAttribute("data-active", index === next));
         options[next].scrollIntoView({ block: "nearest" });
       } else if (event.key === "Enter" && !list.hidden) {
@@ -1037,6 +1232,12 @@
       if (option.hasAttribute("data-new")) showJit();
       else selectVariant(option.dataset.option);
     });
+    $("#s-type", layer).addEventListener("change", () => {
+      const wantsNewType = $("#s-type", layer).value === "__new";
+      const newType = $("#s-newtype", layer);
+      newType.hidden = !wantsNewType;
+      if (wantsNewType) newType.focus();
+    });
     $("#s-jit-create", layer).addEventListener("click", createFromJit);
     ["s-qty", "s-price"].forEach((name) => {
       $("#" + name, layer).addEventListener("input", () => {
@@ -1045,286 +1246,373 @@
       });
     });
     $("#s-supplier", layer).addEventListener("input", () => markInvalid(layer, "s-supplier", false));
+    backBtn.addEventListener("click", () => {
+      state.step = 1;
+      syncSteps();
+      searchInput.focus();
+    });
+    deleteBtn.addEventListener("click", () => {
+      if (!existing) return;
+      const variant = variantById(existing.variantId);
+      openConfirm({
+        title: "Удалить приход?",
+        body:
+          "Партия «" + existing.supplier + "» — " + num(existing.qty) + " " + (variant ? variant.unit : "") +
+          ". Расход в изделиях не изменится, остаток пересчитается. Действие нельзя отменить.",
+        action: "Удалить",
+        tone: "danger",
+        onConfirm: () => {
+          db.supplies = db.supplies.filter((supply) => supply.id !== existing.id);
+          closeLayer(layer);
+          renderAll();
+          toast("Приход удалён");
+        }
+      });
+    });
 
     layer.querySelector("form").addEventListener("submit", (event) => {
       event.preventDefault();
+      if (state.step !== 2) return;
       if (!validate()) {
-        const first = layer.querySelector('.field[data-invalid] .input, .field[data-invalid] .select');
+        const first = layer.querySelector(".field[data-invalid] .input, .field[data-invalid] .select");
         if (first) first.focus();
         return;
       }
+      const variant = variantById(state.variantId);
       const qty = Number($("#s-qty", layer).value);
-      db.supplies.push({
-        id: uid("s"),
-        variantId: state.variantId,
-        qty,
-        price: Number($("#s-price", layer).value),
-        supplier: $("#s-supplier", layer).value.trim(),
-        note: $("#s-note", layer).value.trim()
-      });
-      ui.hasData = true;
-      const unit = state.unit;
-      closeLayer(layer);
-      renderAll();
-      toast("Приход записан · +" + num(qty) + " " + unit);
-    });
-
-    if (preselectId) selectVariant(preselectId);
-    else input.focus();
-  }
-
-  // ── Партии варианта ────────────────────────────────────────────────────
-  function openBatchesDialog(variantId) {
-    const variant = db.variants.find((v) => v.id === variantId);
-    if (!variant) return;
-    let editing = null;
-
-    const layer = openLayer(
-      shell({
-        id: "dlg-batches",
-        title: variant.name,
-        note: pathOf(variant),
-        body: '<div class="stack" id="batches-body"></div>',
-        foot: '<button type="button" class="btn btn--ghost" data-close>Закрыть</button><button type="button" class="btn btn--primary" data-new-supply>Ещё приход</button>'
-      })
-    );
-
-    function batchRow(supply) {
-      const head =
-        '<div class="batch__top"><div class="batch__id"><span class="row__name">' + esc(supply.supplier) + '</span>' +
-        (supply.note ? '<span class="row__what">' + esc(supply.note) + "</span>" : "") + "</div>" +
-        '<div class="row__value"><span class="row__stock">' + num(supply.qty) + " " + esc(variant.unit) + "</span>" +
-        '<span class="row__what batch__cost">' + money(unitCost(supply)) + " / " + esc(variant.unit) + "</span></div></div>";
-      if (editing !== supply.id) {
-        return '<div class="batch">' + head + '<div class="batch__acts"><button type="button" class="linkbtn" data-edit="' + esc(supply.id) + '">Исправить</button></div></div>';
-      }
-      return (
-        '<div class="batch">' + head + '<div class="batch__form"><div class="pair">' +
-        field("Количество", "b-qty", '<input class="input" id="b-qty" type="number" min="0" step="0.01" value="' + esc(supply.qty) + '" />', "Больше нуля") +
-        field("Цена закупки", "b-price", '<input class="input" id="b-price" type="number" min="0" step="0.01" value="' + esc(supply.price) + '" />', "Укажите цену") +
-        "</div>" +
-        field("Поставщик", "b-supplier", '<input class="input" id="b-supplier" type="text" value="' + esc(supply.supplier) + '" />', "Укажите поставщика") +
-        field("Заметка или ссылка", "b-note", '<input class="input" id="b-note" type="text" value="' + esc(supply.note) + '" />', "") +
-        '<div class="batch__acts"><button type="button" class="btn btn--primary btn--sm save" data-save="' + esc(supply.id) + '">Сохранить</button>' +
-        '<button type="button" class="linkbtn linkbtn--danger" data-delete="' + esc(supply.id) + '">' + icon("i-trash") + "Удалить приход</button></div></div></div>"
-      );
-    }
-
-    function render() {
-      const supplies = db.supplies.filter((s) => s.variantId === variant.id).slice().reverse();
-      layer.querySelector("[data-new-supply]").hidden = Boolean(editing);
-      $("#batches-body", layer).innerHTML =
-        '<p class="t-caption">Всего в наличии: <span class="t-data">' + num(stockOf(variant.id)) + " " + esc(variant.unit) + "</span></p>" +
-        (supplies.length
-          ? '<div class="batches">' + supplies.map(batchRow).join("") + "</div>"
-          : '<p class="t-caption prose">Приходов ещё нет. Запишите первый — он задаст остаток.</p>');
-    }
-
-    layer.addEventListener("click", (event) => {
-      const toggle = event.target.closest("[data-edit]");
-      if (toggle) {
-        editing = toggle.dataset.edit;
-        render();
-        return;
-      }
-      const save = event.target.closest("[data-save]");
-      if (save) {
-        const supply = db.supplies.find((s) => s.id === save.dataset.save);
-        const qty = Number($("#b-qty", layer).value);
-        const price = $("#b-price", layer).value;
-        const supplier = $("#b-supplier", layer).value.trim();
-        let valid = true;
-        if (!(qty > 0)) {
-          markInvalid(layer, "b-qty", true);
-          valid = false;
-        }
-        if (price === "" || !(Number(price) >= 0)) {
-          markInvalid(layer, "b-price", true);
-          valid = false;
-        }
-        if (!supplier) {
-          markInvalid(layer, "b-supplier", true);
-          valid = false;
-        }
-        if (!valid) return;
-        supply.qty = qty;
-        supply.price = Number(price);
-        supply.supplier = supplier;
-        supply.note = $("#b-note", layer).value.trim();
-        editing = null;
-        render();
-        renderAll();
-        toast("Партия исправлена");
-        return;
-      }
-      const remove = event.target.closest("[data-delete]");
-      if (remove) {
-        const supply = db.supplies.find((s) => s.id === remove.dataset.delete);
-        openConfirm({
-          title: "Удалить приход?",
-          body: "Партия «" + supply.supplier + "» — " + num(supply.qty) + " " + variant.unit + ". Расход в изделиях не изменится. Действие нельзя отменить.",
-          action: "Удалить",
-          tone: "danger",
-          onConfirm: () => {
-            db.supplies = db.supplies.filter((s) => s.id !== supply.id);
-            editing = null;
-            render();
-            renderAll();
-            toast("Приход удалён");
-          }
-        });
-        return;
-      }
-      if (event.target.closest("[data-new-supply]")) {
+      const price = Number($("#s-price", layer).value);
+      const supplier = $("#s-supplier", layer).value.trim();
+      const note = $("#s-note", layer).value.trim();
+      if (existing) {
+        existing.qty = qty;
+        existing.price = price;
+        existing.supplier = supplier;
+        existing.note = note;
         closeLayer(layer);
-        openSupplyDialog(variant.id);
+        renderAll();
+        toast("Приход исправлен");
+      } else {
+        db.supplies.push({ id: uid("s"), variantId: variant.id, qty, price, supplier, note });
+        closeLayer(layer);
+        renderAll();
+        toast("Приход записан · +" + num(qty) + " " + variant.unit);
       }
     });
 
-    render();
+    if (existing) {
+      $("#s-qty", layer).value = existing.qty;
+      $("#s-price", layer).value = existing.price;
+      $("#s-supplier", layer).value = existing.supplier;
+      $("#s-note", layer).value = existing.note;
+    }
+    syncSteps();
+    if (state.step === 2) {
+      updateUnitHint();
+      updateCost();
+      $("#s-qty", layer).focus();
+    } else {
+      searchInput.focus();
+    }
   }
 
-  // ── Каталог ────────────────────────────────────────────────────────────
-  const findEntity = (kind, id) =>
-    kind === "type" ? db.types.find((t) => t.id === id) : kind === "material" ? db.materials.find((m) => m.id === id) : db.variants.find((v) => v.id === id);
-
-  const materialPath = (material) => {
-    const type = db.types.find((t) => t.id === material.typeId);
-    return [type && type.name, material.name].filter(Boolean).join(" › ");
-  };
-
-  function openCatalogDialog(options) {
-    const kind = options.kind;
-    const entity = options.entity;
-    const titles = {
-      type: entity ? "Изменить тип" : "Новый тип материала",
-      material: entity ? "Изменить материал" : "Новый материал",
-      variant: entity ? "Изменить вариант" : "Новый вариант"
-    };
-    let note = "";
-    const needsParent = kind === "material" || kind === "variant";
-    const parentId = entity ? (kind === "material" ? entity.typeId : entity.materialId) : options.parentId;
-    const picksParent = needsParent && !entity && !parentId;
-    const parentOptions =
-      kind === "material"
-        ? db.types.filter((t) => !t.hidden).map((t) => ({ id: t.id, label: t.name }))
-        : kind === "variant"
-          ? db.materials.filter((m) => !materialHidden(m)).map((m) => ({ id: m.id, label: materialPath(m) }))
-          : [];
-    if (kind === "material" && !picksParent) {
-      const type = db.types.find((t) => t.id === parentId);
-      note = type ? "Тип: " + type.name : "";
+  // ── Material and variant forms ─────────────────────────────────────────
+  function findOrCreateType(name) {
+    let type = db.types.find((entry) => entry.name.toLowerCase() === name.toLowerCase());
+    if (!type) {
+      type = { id: uid("t"), name };
+      db.types.push(type);
     }
-    if (kind === "variant" && !picksParent) {
-      const material = db.materials.find((m) => m.id === parentId);
-      note = material ? "Материал: " + materialPath(material) : "";
-    }
-    const parentField = picksParent
-      ? field(
-          kind === "material" ? "Тип" : "Материал",
-          "c-parent",
-          '<select class="select" id="c-parent">' +
-            parentOptions.map((option) => '<option value="' + esc(option.id) + '">' + esc(option.label) + "</option>").join("") +
+    type.hidden = false;
+    return type;
+  }
+
+  function openMaterialForm(material) {
+    const options = db.types.filter((type) => !type.hidden || (material && type.id === material.typeId));
+    const useText = options.length === 0;
+    const body =
+      field("Название", "f-name", '<input class="input" id="f-name" type="text" autocomplete="off" value="' +
+        esc(material ? material.name : "") + '" placeholder="Растительного дубления" />', "Заполните название") +
+      field("Тип", "f-type",
+        useText
+          ? '<input class="input" id="f-type" type="text" autocomplete="off" placeholder="Кожа" />'
+          : '<select class="select" id="f-type">' +
+            options.map((type) => '<option value="' + esc(type.id) + '"' + (material && material.typeId === type.id ? " selected" : "") + ">" +
+              esc(type.name) + (type.hidden ? " (скрыт)" : "") + "</option>").join("") +
             "</select>",
-          "Выберите родительскую запись"
-        )
-      : "";
+        "Выберите тип");
+
     const layer = openLayer(
       shell({
-        id: "dlg-catalog",
-        title: titles[kind],
-        note,
+        id: "dlg-material",
+        title: material ? "Изменить материал" : "Новый материал",
+        note: "Тип — свойство материала",
+        body,
         form: true,
-        body:
-          parentField +
-          field(kind === "type" ? "Название типа" : "Название", "c-name", '<input class="input" id="c-name" type="text" autocomplete="off" value="' + esc(entity ? entity.name : "") + '" />', "Заполните название") +
-          (kind === "variant" ? field("Единица", "c-unit", unitOptions("c-unit"), "Выберите единицу") : ""),
-        foot: '<button type="button" class="btn btn--ghost" data-close>Отмена</button><button type="submit" class="btn btn--primary">Сохранить</button>'
+        foot:
+          '<div class="foot__right"><button type="button" class="btn btn--ghost" data-close>Отмена</button>' +
+          '<button type="submit" class="btn btn--primary">Сохранить</button></div>'
       })
     );
-    const chosenParent = () => (picksParent ? $("#c-parent", layer).value : parentId);
-    if (kind === "variant") {
-      const unitSelect = $("#c-unit", layer);
-      const unitFor = (materialId) => {
-        if (entity) return entity.unit;
-        const sibling = db.variants.find((v) => v.materialId === materialId);
-        return sibling ? sibling.unit : UNITS[0];
-      };
-      unitSelect.value = unitFor(chosenParent());
-      if (picksParent) {
-        const parentSelect = $("#c-parent", layer);
-        parentSelect.addEventListener("change", () => {
-          unitSelect.value = unitFor(parentSelect.value);
-        });
-      }
-    }
-    const nameInput = $("#c-name", layer);
+
+    const nameInput = $("#f-name", layer);
     nameInput.focus();
     nameInput.select();
+
     layer.querySelector("form").addEventListener("submit", (event) => {
       event.preventDefault();
       const name = nameInput.value.trim();
       if (!name) {
-        markInvalid(layer, "c-name", true);
+        markInvalid(layer, "f-name", true);
         nameInput.focus();
         return;
       }
-      if (entity) {
-        entity.name = name;
-        if (kind === "variant") entity.unit = $("#c-unit", layer).value;
-      } else if (kind === "type") db.types.push({ id: uid("t"), name });
-      else if (kind === "material") db.materials.push({ id: uid("m"), typeId: chosenParent(), name });
-      else db.variants.push({ id: uid("v"), materialId: chosenParent(), name, unit: $("#c-unit", layer).value });
-      ui.hasData = true;
+      let typeId;
+      if (useText) {
+        const typeName = $("#f-type", layer).value.trim();
+        if (!typeName) {
+          markInvalid(layer, "f-type", true);
+          $("#f-type", layer).focus();
+          return;
+        }
+        typeId = findOrCreateType(typeName).id;
+      } else {
+        typeId = $("#f-type", layer).value;
+      }
+      if (material) {
+        material.name = name;
+        material.typeId = typeId;
+      } else {
+        const created = { id: uid("m"), typeId, name };
+        db.materials.push(created);
+        ui.openMaterials.add(created.id);
+      }
       closeLayer(layer);
       renderAll();
-      toast(entity ? "Сохранено" : "Добавлено в каталог");
+      toast(material ? "Сохранено" : "Материал добавлен");
     });
   }
 
-  function removeEntity(kind, id) {
-    if (kind === "type") {
-      db.materials.filter((m) => m.typeId === id).forEach((m) => removeEntity("material", m.id));
-      db.types = db.types.filter((t) => t.id !== id);
-    } else if (kind === "material") {
-      db.variants.filter((v) => v.materialId === id).forEach((v) => removeEntity("variant", v.id));
-      db.materials = db.materials.filter((m) => m.id !== id);
-    } else {
-      db.variants = db.variants.filter((v) => v.id !== id);
-      db.supplies = db.supplies.filter((s) => s.variantId !== id);
-    }
+  function openVariantForm(material, variant) {
+    const locked = variant ? suppliesOf(variant.id).length > 0 : false;
+    const body =
+      field("Название", "f-name", '<input class="input" id="f-name" type="text" autocomplete="off" value="' +
+        esc(variant ? variant.name : "") + '" placeholder="Доска 40 мм" />', "Заполните название") +
+      field("Единица", "f-unit",
+        '<select class="select" id="f-unit"' + (locked ? " disabled" : "") + ">" +
+          UNITS.map((unit) => '<option value="' + esc(unit) + '"' + ((variant ? variant.unit : "шт") === unit ? " selected" : "") + ">" + esc(unit) + "</option>").join("") +
+        "</select>" +
+        (locked ? '<span class="field__hint t-caption">Единицу нельзя изменить: у варианта есть приходы.</span>' : ""),
+        "Выберите единицу");
+
+    const layer = openLayer(
+      shell({
+        id: "dlg-variant",
+        title: variant ? "Изменить вариант" : "Новый вариант",
+        note: (material ? materialPath(material) : "") + (locked ? " · единица закреплена" : ""),
+        body,
+        form: true,
+        foot:
+          '<div class="foot__right"><button type="button" class="btn btn--ghost" data-close>Отмена</button>' +
+          '<button type="submit" class="btn btn--primary">Сохранить</button></div>'
+      })
+    );
+
+    const nameInput = $("#f-name", layer);
+    nameInput.focus();
+    nameInput.select();
+
+    layer.querySelector("form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const name = nameInput.value.trim();
+      if (!name) {
+        markInvalid(layer, "f-name", true);
+        nameInput.focus();
+        return;
+      }
+      const unit = locked && variant ? variant.unit : $("#f-unit", layer).value;
+      if (variant) {
+        variant.name = name;
+        variant.unit = unit;
+      } else {
+        const created = { id: uid("v"), materialId: material.id, name, unit };
+        db.variants.push(created);
+        ui.openMaterials.add(material.id);
+        ui.openVariants.add(created.id);
+      }
+      closeLayer(layer);
+      renderAll();
+      toast(variant ? "Сохранено" : "Вариант добавлен");
+    });
   }
 
-  function openHideConfirm(kind, id) {
-    const entity = findEntity(kind, id);
-    if (!entity) return;
-    const references =
-      kind === "type" ? db.materials.filter((m) => m.typeId === id).length
-      : kind === "material" ? db.variants.filter((v) => v.materialId === id).length
-      : db.supplies.filter((s) => s.variantId === id).length;
-    const word = { type: "Тип", material: "Материал", variant: "Вариант" }[kind];
-    openConfirm({
-      title: references ? "Скрыть запись?" : "Удалить запись?",
-      body: references
-        ? word + " «" + entity.name + "» ещё используется — связанных записей: " + references + ". Он будет скрыт, а не удалён: история приходов сохранится, вернуть его можно в разделе «Скрытые»."
-        : word + " «" + entity.name + "» нигде не используется. Удаление нельзя отменить.",
-      action: references ? "Скрыть" : "Удалить",
-      tone: references ? "normal" : "danger",
-      onConfirm: () => {
-        if (references) entity.hidden = true;
-        else removeEntity(kind, id);
-        renderAll();
-        toast(references ? "Скрыто — вернуть можно в каталоге" : "Удалено");
+  // ── Material types sheet ───────────────────────────────────────────────
+  function openTypes() {
+    let editingId = null;
+
+    const layer = openLayer(
+      shell({
+        id: "dlg-types",
+        title: "Типы материалов",
+        note: "Скрытый тип остаётся у существующих материалов",
+        body:
+          '<div class="stack" id="types-body"></div>' +
+          '<div class="field"><label class="field__label t-label" for="type-new">Новый тип</label>' +
+          '<div class="search"><input class="input" id="type-new" type="text" autocomplete="off" placeholder="Например, Камень" />' +
+          '<button type="button" class="btn btn--primary btn--sm" data-add-type>Добавить</button></div></div>',
+        foot: '<div class="foot__right"><button type="button" class="btn btn--ghost" data-close>Закрыть</button></div>'
+      })
+    );
+
+    const typeCount = (typeId) => db.materials.filter((material) => material.typeId === typeId).length;
+
+    function typeRow(type) {
+      if (editingId === type.id) {
+        return (
+          '<div class="typerow">' +
+          '<input class="input" id="type-edit" type="text" value="' + esc(type.name) + '" />' +
+          '<button type="button" class="iconbtn iconbtn--sm" data-save-type="' + esc(type.id) + '" aria-label="Сохранить">' +
+          icon("i-check") + "</button>" +
+          "</div>"
+        );
+      }
+      return (
+        '<div class="typerow' + (type.hidden ? " is-hidden" : "") + '">' +
+        '<span class="typerow__id"><span class="row__name">' + esc(type.name) + "</span>" +
+        '<span class="row__what">' + materialsWord(typeCount(type.id)) + (type.hidden ? " · скрыт" : "") + "</span></span>" +
+        '<span class="typerow__acts">' +
+        (type.hidden
+          ? '<button type="button" class="btn btn--ghost btn--sm" data-restore-type="' + esc(type.id) + '">' + icon("i-undo") + "Вернуть</button>"
+          : '<button type="button" class="iconbtn iconbtn--sm" data-edit-type="' + esc(type.id) + '" aria-label="Переименовать">' + icon("i-pencil") + "</button>" +
+            '<button type="button" class="iconbtn iconbtn--sm" data-hide-type="' + esc(type.id) + '" aria-label="Скрыть">' + icon("i-eyeoff") + "</button>") +
+        "</span></div>"
+      );
+    }
+
+    function renderTypes() {
+      const active = db.types.filter((type) => !type.hidden).sort((a, b) => a.name.localeCompare(b.name, "ru"));
+      const hidden = db.types.filter((type) => type.hidden).sort((a, b) => a.name.localeCompare(b.name, "ru"));
+      $("#types-body", layer).innerHTML =
+        (active.length
+          ? '<div class="types">' + active.map(typeRow).join("") + "</div>"
+          : '<p class="t-caption">Типов пока нет. Первый тип создастся вместе с материалом.</p>') +
+        (hidden.length
+          ? '<div class="stack"><p class="t-label" style="color:var(--muted-foreground)">Скрытые</p><div class="types">' +
+            hidden.map(typeRow).join("") + "</div></div>"
+          : "");
+    }
+
+    function commit() {
+      renderTypes();
+      renderAll();
+    }
+
+    layer.addEventListener("click", (event) => {
+      const edit = event.target.closest("[data-edit-type]");
+      if (edit) {
+        editingId = edit.dataset.editType;
+        renderTypes();
+        const input = $("#type-edit", layer);
+        if (input) {
+          input.focus();
+          input.select();
+        }
+        return;
+      }
+      const save = event.target.closest("[data-save-type]");
+      if (save) {
+        const type = typeById(save.dataset.saveType);
+        const input = $("#type-edit", layer);
+        const name = input.value.trim();
+        if (type && name) {
+          type.name = name;
+          editingId = null;
+          commit();
+          toast("Тип переименован");
+        }
+        return;
+      }
+      const hide = event.target.closest("[data-hide-type]");
+      if (hide) {
+        const type = typeById(hide.dataset.hideType);
+        if (!type) return;
+        type.hidden = true;
+        commit();
+        toast("Тип скрыт");
+        return;
+      }
+      const restore = event.target.closest("[data-restore-type]");
+      if (restore) {
+        const type = typeById(restore.dataset.restoreType);
+        if (!type) return;
+        type.hidden = false;
+        commit();
+        toast("Тип возвращён");
+        return;
+      }
+      if (event.target.closest("[data-add-type]")) {
+        const input = $("#type-new", layer);
+        const name = input.value.trim();
+        if (!name) {
+          input.focus();
+          return;
+        }
+        const type = findOrCreateType(name);
+        input.value = "";
+        commit();
+        toast("Тип добавлен");
+        input.focus();
       }
     });
+    layer.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter") return;
+      if (event.target.id === "type-edit") {
+        event.preventDefault();
+        const save = $("[data-save-type]", layer);
+        if (save) save.click();
+      } else if (event.target.id === "type-new") {
+        event.preventDefault();
+        const add = $("[data-add-type]", layer);
+        if (add) add.click();
+      }
+    });
+
+    renderTypes();
+    $("#type-new", layer).focus();
   }
 
-  function restoreEntity(kind, id) {
-    const entity = findEntity(kind, id);
+  // ── Hide / delete ──────────────────────────────────────────────────────
+  function removeMaterial(id) {
+    db.variants = db.variants.filter((variant) => variant.materialId !== id);
+    db.materials = db.materials.filter((material) => material.id !== id);
+  }
+
+  function askRemove(kind, id) {
+    const entity = kind === "material" ? materialById(id) : variantById(id);
     if (!entity) return;
-    entity.hidden = false;
-    renderAll();
-    toast("Возвращено в каталог");
+    const references = kind === "material" ? allVariantsOf(id).length : suppliesOf(id).length;
+    const word = kind === "material" ? "Материал" : "Вариант";
+    const action = references ? "Скрыть" : "Удалить";
+    openConfirm({
+      title: action + " " + (kind === "material" ? "материал" : "вариант") + "?",
+      body: references
+        ? word + " «" + entity.name + "» используется: связанных записей — " + references +
+          ". Он будет скрыт, история приходов и расход в изделиях сохранятся. Вернуть можно в «Скрытых»."
+        : word + " «" + entity.name + "» нигде не используется. Удаление нельзя отменить.",
+      action,
+      tone: references ? "normal" : "danger",
+      onConfirm: () => {
+        if (references) {
+          entity.hidden = true;
+        } else if (kind === "material") {
+          removeMaterial(id);
+        } else {
+          db.variants = db.variants.filter((variant) => variant.id !== id);
+        }
+        ui.openMaterials.delete(id);
+        renderAll();
+        toast(references ? "Скрыто — вернуть можно в «Скрытых»" : "Удалено");
+      }
+    });
   }
 
   // ── Prototype state toggle ─────────────────────────────────────────────
@@ -1338,6 +1626,8 @@
       snapshot = db;
       db = { types: [], materials: [], variants: [], supplies: [] };
     }
+    ui.openMaterials.clear();
+    ui.openVariants.clear();
     const button = $("#toggleData");
     button.setAttribute("aria-pressed", String(ui.hasData));
     button.textContent = "данные: " + (ui.hasData ? "есть" : "пусто");
@@ -1345,43 +1635,119 @@
   }
 
   // ── Wiring ─────────────────────────────────────────────────────────────
-  $$(".nav a").forEach((link) =>
-    link.addEventListener("click", (event) => {
-      event.preventDefault();
-      if (link.dataset.nav === "materials") $("#q").focus();
-      else toast("Раздел вне прототипа", "i-alert");
-    })
-  );
-  $("#openPalette").addEventListener("click", openPalette);
-  $("#addSupply").addEventListener("click", () => openSupplyDialog());
-  const searchInput = $("#q");
-  const syncSearch = () => {
-    $("#q-clear").hidden = !searchInput.value;
-    ui.query = searchInput.value;
-    renderInventory();
-  };
-  searchInput.addEventListener("input", syncSearch);
-  $("#q-clear").addEventListener("click", () => {
-    searchInput.value = "";
-    syncSearch();
-    searchInput.focus();
+  document.addEventListener("click", (event) => {
+    const toggleMaterial = event.target.closest("[data-toggle-material]");
+    if (toggleMaterial) {
+      const id = toggleMaterial.dataset.toggleMaterial;
+      if (ui.openMaterials.has(id)) ui.openMaterials.delete(id);
+      else ui.openMaterials.add(id);
+      renderList();
+      return;
+    }
+    const toggleVariant = event.target.closest("[data-toggle-variant]");
+    if (toggleVariant) {
+      const id = toggleVariant.dataset.toggleVariant;
+      if (ui.openVariants.has(id)) ui.openVariants.delete(id);
+      else ui.openVariants.add(id);
+      renderList();
+      return;
+    }
+    if (event.target.closest("[data-toggle-hidden]")) {
+      ui.hiddenOpen = !ui.hiddenOpen;
+      renderHidden();
+      return;
+    }
+    if (event.target.closest("[data-new-supply]")) {
+      openSupply({});
+      return;
+    }
+    if (event.target.closest("[data-new-material]")) {
+      openMaterialForm();
+      return;
+    }
+    const supplyFor = event.target.closest("[data-supply-for]");
+    if (supplyFor) {
+      openSupply({ variantId: supplyFor.dataset.supplyFor });
+      return;
+    }
+    const editSupply = event.target.closest("[data-edit-supply]");
+    if (editSupply) {
+      openSupply({ supplyId: editSupply.dataset.editSupply });
+      return;
+    }
+    const addVariant = event.target.closest("[data-add-variant]");
+    if (addVariant) {
+      const material = materialById(addVariant.dataset.addVariant);
+      if (material) openVariantForm(material, null);
+      return;
+    }
+    const editMaterial = event.target.closest("[data-edit-material]");
+    if (editMaterial) {
+      const material = materialById(editMaterial.dataset.editMaterial);
+      if (material) openMaterialForm(material);
+      return;
+    }
+    const hideMaterial = event.target.closest("[data-hide-material]");
+    if (hideMaterial) {
+      askRemove("material", hideMaterial.dataset.hideMaterial);
+      return;
+    }
+    const editVariant = event.target.closest("[data-edit-variant]");
+    if (editVariant) {
+      const variant = variantById(editVariant.dataset.editVariant);
+      const material = variant ? materialById(variant.materialId) : null;
+      if (variant && material) openVariantForm(material, variant);
+      return;
+    }
+    const hideVariant = event.target.closest("[data-hide-variant]");
+    if (hideVariant) {
+      askRemove("variant", hideVariant.dataset.hideVariant);
+      return;
+    }
+    const restore = event.target.closest("[data-restore]");
+    if (restore) {
+      const entity = restore.dataset.restore === "material" ? materialById(restore.dataset.id) : variantById(restore.dataset.id);
+      if (!entity) return;
+      entity.hidden = false;
+      renderAll();
+      toast("Возвращено");
+    }
   });
-  $("#inv-list").addEventListener("click", (event) => {
-    const row = event.target.closest("[data-open-variant]");
-    if (row) openBatchesDialog(row.dataset.openVariant);
-  });
-  $("#toggleData").addEventListener("click", toggleData);
+
   layers.addEventListener("click", (event) => {
     if (event.target.closest("[data-close]")) closeLayer(event.target.closest(".dialog"));
   });
+
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") return closeTop();
+    if (event.key === "Escape") {
+      if (!palettePanel.hidden) {
+        paletteClose();
+        return;
+      }
+      closeTop();
+      return;
+    }
     const typing = /^(input|textarea|select)$/i.test(event.target.tagName || "");
     if (event.key === "/" && !typing && !layers.children.length) {
       event.preventDefault();
-      openPalette();
+      paletteInput.focus();
+      paletteOpen();
     }
   });
+
+  $$(".nav a").forEach((link) =>
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      if (link.dataset.nav === "materials") {
+        paletteInput.focus();
+        paletteOpen();
+      } else {
+        toast("Раздел вне прототипа", "i-alert");
+      }
+    })
+  );
+
+  $("#toggleData").addEventListener("click", toggleData);
 
   renderAll();
 })();

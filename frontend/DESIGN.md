@@ -1,33 +1,30 @@
 ---
 name: Sklad
 description: >-
-  Inventory manager for a small atelier. Forest & Hide: deep forest green, warm
-  brown and charcoal neutrals, brass actions, olive accents, sharp sera geometry.
+  Inventory manager for a small atelier. One forest hue stepped into a tonal
+  ladder of surfaces, linework and text; brass hardware for actions; ember for
+  signal only.
 colors:
-  black: "oklch(0% 0 0)"
   white: "oklch(100% 0 0)"
   transparent: "oklch(0 0 0 / 0)"
-  deep-forest: "oklch(0.267 0.033 131)"
-  warm-off-white: "oklch(0.979 0.005 95.099)"
-  muted-brass: "oklch(0.757 0.079 88.436)"
-  deep-olive: "oklch(0.539 0.057 127.665)"
-  ember: "oklch(0.661 0.08 45.402)"
-  warm-brown: "oklch(0.452 0.047 53.927)"
-  warm-charcoal: "oklch(0.288 0.009 67.447)"
-  warm-beige: "oklch(0.843 0.028 72.764)"
-  muted-brass-5: "oklch(0.757 0.079 88.436 / 5%)"
-  muted-brass-10: "oklch(0.757 0.079 88.436 / 10%)"
-  muted-brass-20: "oklch(0.757 0.079 88.436 / 20%)"
-  muted-brass-30: "oklch(0.757 0.079 88.436 / 30%)"
-  muted-brass-50: "oklch(0.757 0.079 88.436 / 50%)"
-  muted-brass-80: "oklch(0.757 0.079 88.436 / 80%)"
-  deep-olive-30: "oklch(0.539 0.057 127.665 / 30%)"
-  deep-olive-50: "oklch(0.539 0.057 127.665 / 50%)"
-  deep-olive-60: "oklch(0.539 0.057 127.665 / 60%)"
-  ember-10: "oklch(0.661 0.08 45.402 / 10%)"
-  ember-30: "oklch(0.661 0.08 45.402 / 30%)"
-  ember-90: "oklch(0.661 0.08 45.402 / 90%)"
-  warm-charcoal-50: "oklch(0.288 0.009 67.447 / 50%)"
+  forest-950: "oklch(0.145 0.012 132.1)"
+  forest-850: "oklch(0.235 0.020 129.5)"
+  forest-800: "oklch(0.267 0.033 131.0)"
+  forest-700: "oklch(0.336 0.028 130.7)"
+  forest-600: "oklch(0.406 0.032 131.4)"
+  forest-500: "oklch(0.538 0.055 130.8)"
+  forest-300: "oklch(0.721 0.037 130.6)"
+  forest-100: "oklch(0.900 0.021 131.5)"
+  forest-50: "oklch(0.971 0.006 128.5)"
+  brass-500: "oklch(0.757 0.079 88.4)"
+  brass-400: "oklch(0.819 0.090 88.1)"
+  brass-300: "oklch(0.870 0.080 88.4)"
+  ember-600: "oklch(0.621 0.076 46.1)"
+  ember-500: "oklch(0.661 0.080 45.4)"
+  forest-60: "oklch(0.336 0.028 130.7 / 60%)"
+  brass-30: "oklch(0.870 0.080 88.4 / 30%)"
+  brass-10: "oklch(0.870 0.080 88.4 / 10%)"
+  ember-10: "oklch(0.661 0.080 45.4 / 10%)"
   black-20: "oklch(0% 0 0 / 20%)"
   chart-1: "oklch(0.861 0.106 130.926)"
   chart-2: "oklch(0.818 0.099 130.979)"
@@ -96,83 +93,83 @@ spacing:
   16: "64px"
 components:
   button-primary:
-    backgroundColor: "{colors.muted-brass}"
-    textColor: "{colors.deep-forest}"
+    backgroundColor: "{colors.brass-500}"
+    textColor: "{colors.forest-950}"
     typography: "{typography.label}"
     rounded: "{rounded.none}"
     padding: "0 24px"
     height: "40px"
   button-primary-hover:
-    backgroundColor: "{colors.muted-brass-80}"
-    textColor: "{colors.deep-forest}"
+    backgroundColor: "{colors.brass-400}"
+    textColor: "{colors.forest-950}"
     typography: "{typography.label}"
     rounded: "{rounded.none}"
     padding: "0 24px"
     height: "40px"
   button-outline:
     backgroundColor: "{colors.transparent}"
-    textColor: "{colors.foreground}"
+    textColor: "{colors.forest-100}"
     typography: "{typography.label}"
     rounded: "{rounded.none}"
     padding: "0 24px"
     height: "40px"
   button-outline-hover:
-    backgroundColor: "{colors.deep-olive-30}"
-    textColor: "{colors.warm-off-white}"
+    backgroundColor: "{colors.forest-60}"
+    textColor: "{colors.forest-100}"
     typography: "{typography.label}"
     rounded: "{rounded.none}"
     padding: "0 24px"
     height: "40px"
   button-secondary:
-    backgroundColor: "{colors.deep-olive}"
-    textColor: "{colors.warm-off-white}"
+    backgroundColor: "{colors.forest-600}"
+    textColor: "{colors.forest-50}"
     typography: "{typography.label}"
     rounded: "{rounded.none}"
     padding: "0 24px"
     height: "40px"
   button-ghost:
     backgroundColor: "{colors.transparent}"
-    textColor: "{colors.warm-off-white}"
+    textColor: "{colors.forest-100}"
     typography: "{typography.label}"
     rounded: "{rounded.none}"
     padding: "0 24px"
     height: "40px"
   button-ghost-hover:
-    backgroundColor: "{colors.warm-charcoal-50}"
-    textColor: "{colors.warm-off-white}"
+    backgroundColor: "{colors.forest-850}"
+    textColor: "{colors.forest-100}"
     typography: "{typography.label}"
     rounded: "{rounded.none}"
     padding: "0 24px"
     height: "40px"
   button-destructive:
-    backgroundColor: "{colors.ember}"
-    textColor: "{colors.deep-forest}"
+    backgroundColor: "{colors.ember-500}"
+    textColor: "{colors.forest-950}"
     typography: "{typography.label}"
     rounded: "{rounded.none}"
     padding: "0 24px"
     height: "40px"
   button-destructive-hover:
-    backgroundColor: "{colors.ember-90}"
-    textColor: "{colors.deep-forest}"
+    backgroundColor: "{colors.ember-600}"
+    textColor: "{colors.forest-950}"
     typography: "{typography.label}"
     rounded: "{rounded.none}"
     padding: "0 24px"
     height: "40px"
   button-link:
     backgroundColor: "{colors.transparent}"
-    textColor: "{colors.muted-brass}"
+    textColor: "{colors.brass-500}"
     typography: "{typography.label}"
     rounded: "{rounded.none}"
     padding: "0"
   button-icon:
     backgroundColor: "{colors.transparent}"
-    textColor: "{colors.foreground}"
+    textColor: "{colors.forest-100}"
     typography: "{typography.label}"
     rounded: "{rounded.none}"
     size: "40px"
   input:
     backgroundColor: "{colors.transparent}"
-    textColor: "{colors.warm-off-white}"
+    textColor: "{colors.forest-100}"
     typography: "{typography.input}"
     rounded: "{rounded.none}"
     padding: "4px 0"
@@ -180,61 +177,61 @@ components:
     height: "40px"
   textarea:
     backgroundColor: "{colors.transparent}"
-    textColor: "{colors.warm-off-white}"
+    textColor: "{colors.forest-100}"
     typography: "{typography.input}"
     rounded: "{rounded.none}"
     padding: "12px 0"
     width: "100%"
   card:
-    backgroundColor: "{colors.warm-brown}"
-    textColor: "{colors.warm-off-white}"
+    backgroundColor: "{colors.forest-850}"
+    textColor: "{colors.forest-100}"
     typography: "{typography.body}"
     rounded: "{rounded.none}"
     padding: "32px 32px"
   dialog:
-    backgroundColor: "{colors.warm-brown}"
-    textColor: "{colors.warm-off-white}"
+    backgroundColor: "{colors.forest-800}"
+    textColor: "{colors.forest-100}"
     typography: "{typography.body}"
     rounded: "{rounded.none}"
     padding: "24px"
     width: "100%"
   command-item:
     backgroundColor: "{colors.transparent}"
-    textColor: "{colors.warm-off-white}"
+    textColor: "{colors.forest-100}"
     typography: "{typography.body}"
     rounded: "{rounded.none}"
     padding: "8px 12px"
     width: "100%"
   command-item-selected:
-    backgroundColor: "{colors.warm-charcoal}"
-    textColor: "{colors.warm-off-white}"
+    backgroundColor: "{colors.forest-850}"
+    textColor: "{colors.forest-100}"
     typography: "{typography.body}"
     rounded: "{rounded.none}"
     padding: "8px 12px"
     width: "100%"
   link:
     backgroundColor: "{colors.transparent}"
-    textColor: "{colors.warm-off-white}"
+    textColor: "{colors.forest-100}"
     rounded: "{rounded.none}"
     padding: "0"
   link-hover:
     backgroundColor: "{colors.transparent}"
-    textColor: "{colors.muted-brass}"
+    textColor: "{colors.brass-500}"
     rounded: "{rounded.none}"
     padding: "0"
   nav-link:
     backgroundColor: "{colors.transparent}"
-    textColor: "{colors.warm-beige}"
+    textColor: "{colors.forest-300}"
     typography: "{typography.label}"
     padding: "0"
   nav-link-hover:
     backgroundColor: "{colors.transparent}"
-    textColor: "{colors.warm-off-white}"
+    textColor: "{colors.forest-100}"
     typography: "{typography.label}"
     padding: "0"
   field-error:
-    backgroundColor: "{colors.ember-10}"
-    textColor: "{colors.warm-off-white}"
+    backgroundColor: "{colors.ember-500}"
+    textColor: "{colors.forest-950}"
     typography: "{typography.body}"
     padding: "4px 8px"
 ---
@@ -243,282 +240,265 @@ components:
 
 ## Overview
 
-**Creative North Star: "The Forest & Hide Atelier"**
+**Creative North Star: "The Forest Atelier"**
 
-Sklad is the working tool of a small atelier that builds physical goods by hand
-and runs the whole business itself. The visual world answers to that room: deep
-forest green as the page floor, warm hide and charcoal as the surfaces, muted
-brass as the only thing that shines. It is the disciplined serenity of a leather
-artisan's workshop translated into an interface — organic warmth and natural
-shelter, never cold tech-noir, never neon, never a glowing dashboard.
+Sklad is the working tool of a small atelier that builds physical goods by hand and
+runs the whole business itself. The world answers to that room: a single forest
+green, stepped from a near-black floor to a pale sage ink, holds every surface,
+every line and every word. Brass is the only thing that shines.
 
 The system is quiet by construction. Because recording a material receipt or a
-batch is a break in the work rather than a sitting-down task, the UI recedes:
-one content column, no ornament, no color competing with the data. What carries
-the identity is not decoration but geometry and material — a single sans face
-set in uppercase editorial caps, sharp unrounded corners on every shipped
-element, and depth built from tonal surface steps rather than floating cards.
-Hierarchy comes from type weight and from how light a surface is, not from
-borders drawn in a second color.
+batch is a break in the work rather than a sitting-down task, the UI recedes: one
+content column, no ornament, no colour competing with the data. Identity is
+carried by geometry and material — one sans face in uppercase editorial caps,
+sharp unrounded corners, and depth built from tonal steps rather than floating
+cards. Hierarchy comes from type weight and from how light a surface is, not from
+borders drawn in a second colour.
 
-Reliability here is visual: numbers, counts and costs must be readable at a
-glance on a phone at the bench, and a destructive action must never be mistaken
-for an ordinary one. Every rule below exists to keep that reading honest.
+Reliability here is visual: numbers, counts and costs must be readable at a glance
+on a phone at the bench, and a destructive action must never be mistaken for an
+ordinary one. Every rule below exists to keep that reading honest.
 
 **Key Characteristics:**
 
 - Dark-only presentation; the light block in `tailwind.css` is documentation, not a shipped mode.
-- One typeface (Manrope) in an uppercase-caps editorial hierarchy, at a 1rem reading floor with a 65ch prose measure.
-- Brass is rare and always carries Deep Forest text; brown is a surface, never an accent.
+- One hue for the whole world: forest (H≈131), stepped into nine tones that carry floor, surfaces, linework and text.
+- Surfaces are tone steps, never a second hue: floor `forest.950` → card `forest.850` → popover `forest.800`.
+- Brass has two jobs: hardware at `brass.500` (the CTA), highlight at `brass.300` (accent and focus ring).
+- Borders are decoration (1.40–1.67:1); every control edge owns `--control-border` and clears 3:1.
 - `rounded-none` on every shipped component — sharp sera geometry.
-- Depth by tonal layering plus hairline `--border` rings; shadows only as a whisper (`shadow-sm`, `shadow-md`).
+- Depth by tonal layering plus shadow; surfaces carry no ring (`shadow-card`, `shadow-md`).
 - Single-column `max-w-4xl` shell with a 4px spacing rhythm.
 
 ## Colors
 
-The palette is material, not chromatic: two greens, a hide brown, a stone
-neutral and one brass accent, all sharing low chroma so nothing ever shouts.
-Exact values live in the frontmatter — this section carries meaning and role.
+The palette is one material, not a spectrum: the forest ladder carries everything
+structural, brass is hardware and ember is a signal. Exact values live in the
+frontmatter — this section carries meaning and role.
 
 ### Primary
 
-- **Deep Forest** — the main brand color and identity anchor. It is the app canvas
-  (`--background`) and every brand moment, and it is the text color on brass. It is
-  the page floor: the system is anchored by it, not filled with it.
-- **Muted Brass** — the action color, reserved for the most important things only:
-  the primary CTA, the focus ring and key highlights. Always carries Deep Forest
-  text. It is never a general hover wash.
+- **Forest** — the world's one hue (H≈131), from `forest.950` (`#080B06`) as the
+  floor to `forest.50` (`#F4F6F2`) as the lightest ink on a filled control. Every
+  structural role reads from this ladder: canvas 950, card 850, popover 800,
+  border 700, quiet fill 600, control edge 500, secondary text 300, body ink 100.
+- **Brass** — the action metal, in two steps that never swap jobs. `brass.500`
+  (`#C5AE75`) is hardware: the primary CTA and the one important action on a view,
+  always with `forest.950` text (9.13:1). `brass.300` (`#EAD297`) is highlight:
+  `--accent`, `--ring` and the focus edge (13.35:1 on the floor). The steps are far
+  enough apart that brass is either a surface or a line, never a muddy in-between.
 
 ### Secondary
 
-- **Deep Olive** — secondary actions and interactive/active elements: the secondary
-  button fill, selected states, structural borders and input underlines. Carries
-  Warm Off-White text. Its lightness is set so a control boundary clears the floor
-  against Deep Forest (3.03:1) — do not darken it back toward the brand green. It
-  is a _floor-only_ material: on brown surfaces linework and olive controls lose
-  their boundary (see §Linework & accents).
-
-### Tertiary
-
-- **Warm Brown** — big surfaces only: cards and floating layers. The warm hide that
-  contrasts the brand green. Never an accent, never a small control, never text on
-  a dark surface — and never an action fill: a brown control on a brown surface has
-  no boundary at all (1.00:1).
+- **`forest.600`** (`#434D3B`) — the secondary action fill (`--secondary`), one
+  step below the card: green that reads as "the other button" without leaving the
+  ladder. It carries `forest.50` text (8.17:1 against the fill, 15.27:1 on a card). Its own boundary
+  against the floor is 2.23:1 — a documented exemption, because the control is
+  identified by its filled body and 15:1 label, not by its edge.
 
 ### Error
 
-- **Ember** — the one signal in the system that is neither green nor brass. It is
-  both the destructive action fill and the error signal, because brown could not do
-  that job: as surface _and_ destructive fill it made the action invisible on cards
-  and dialogs (1.00:1) and weak on the floor (2.02:1). Ember is 4.73:1 on Deep
-  Forest and takes Deep Forest text (4.73:1); Warm Off-White on Ember is 3.00:1 and
-  is forbidden. Ember is never a surface and never decorative.
+- **Ember** (`ember.500` `#BC8369`, `ember.600` `#AD785F` on hover) — the one
+  signal that is neither green nor brass. Destructive fill and error signal only:
+  6.21:1 against the floor and 5.21:1 against a card, taking `forest.950` ink
+  (6.21:1). Never a surface, never a series colour, never decorative. `ember.10`
+  exists for the invalid ring behind a control, not for the error message body.
 
 ### Neutral
 
-- **Warm Off-White** — primary readable text and foreground icons on dark, olive
-  and brown surfaces (`--foreground` and every light `-foreground`). Never a large
-  page background.
-- **Warm Charcoal** — quiet fills: muted bands, ghost and hover washes, the sidebar
-  nav hover. The subdued counterpart to the brown surfaces.
-- **Warm Beige** — secondary text, metadata, helper text, inactive icons
-  (`--muted-foreground`).
-- **Black** — absolute darkness, deliberately kept out of the palette; registered
-  only as `--overlay`, and the dialog scrim is the alpha step `black.20` (20%) —
-  the token carries the alpha, not the solid black.
-- **White** — absolute lightness; unused by shipped components (framework defaults
-  such as the ring offset color only).
-- **Transparent** — the 0 step: control backgrounds (`bg-transparent`) and the
-  button's pre-focus boundary (`border-transparent`).
+- **`forest.100`** (`#D9E1D3`) — body ink and foreground icons; 14.76:1 on the
+  floor, 12.38:1 on a card.
+- **`forest.300`** (`#9DAA92`) — secondary text, metadata, placeholders, inactive
+  icons (`--muted-foreground`); 8.11:1 on the floor, 6.80:1 on a card.
+- **`forest.950` / `forest.850` / `forest.800`** — canvas, card, popover. A surface
+  is a step, never a shadow: card over floor is 1.19:1, popover over card 1.10:1,
+  and that is deliberately almost nothing.
+- **Overlay** — the dialog scrim is the alpha step `black.20` (20%), carrying the
+  alpha rather than a solid black. Black is not a palette tone.
+- **White** — absolute lightness, unused by shipped components (framework defaults
+  only).
+- **Transparent** — the 0 step: control backgrounds and the button's pre-focus
+  boundary.
 
 ### Main color palette
 
-A five-step **tonal ramp of the main brand color**: one hue (≈131, Deep Forest's own),
-stepped in lightness from **light to dark** — `chart-1` is the lightest
-(`oklch(0.861 0.106 130.926)`, the design's chart color) and `chart-5` the deepest. This is
-**the main color's own palette**, meant for chart series, not a set of general-purpose
-brand colors and not a categorical palette. Series are told apart by tone, never by
-adding hues.
+A five-step tonal ramp of the same forest hue, light to dark: `chart-1` is the
+lightest (`oklch(0.861 0.106 130.926)`) and `chart-5` the deepest. This is the
+world's own ladder used as data, not a categorical palette; series are told apart
+by tone, never by adding hues.
 
-`chart-1` is the step to reach for: a single-series chart, or the first series, is
-`--chart-1`. Every step clears 3:1 against the lightest surface a chart can sit on
-(`--card`: 5.04 / 4.37 / 3.88 / 3.45 / 3.02) and clears it with room on the canvas
-(10.18 / 8.82 / 7.83 / 6.96 / 6.11), so the ladder is monotonic on both surfaces and
-neighbouring steps read as one family.
+Every step clears 3:1 against every surface a chart can sit on — against `--card`
+the ladder runs 11.20 / 9.71 / 8.62 / 7.66 / 6.72 and against the floor
+13.35 / 11.58 / 10.28 / 9.14 / 8.01 — so it is monotonic on both, with room to
+spare.
 
 Past **three** series the ramp stops carrying meaning: five tones of one hue are no
-longer reliably distinguishable at phone size. Label the series directly (legend text or
-direct labels) and vary the line dash before reaching for a second hue — the palette has
-no second hue to give, and Ember is a signal, not a series colour.
+longer reliably distinguishable at phone size. Label the series directly and vary
+the line dash before reaching for a second hue — the palette has no second hue to
+give, and Ember is a signal, not a series colour.
 
 ### Token mapping
 
 Components use semantic tokens only — never a raw palette value in a component
-class. Every role resolves to one palette entry, so no token carries a value of its
+class. Every role resolves to one palette tone, so no token carries a value of its
 own. Values are in the frontmatter and in the `.dark` block of
 `src/styles/tailwind.css`; this table is the mapping. Three layers, the same three
-everywhere: **palette values** (frontmatter `colors`, Penpot `palette.*`), **alpha
+everywhere: **palette tones** (frontmatter `colors`, Penpot `palette.*`), **alpha
 steps** (frontmatter `-<percent>` entries, Penpot `opacity.*`) and **roles** (the
-CSS variables below, Penpot `color.*`). Roles bind; palette values never do.
+CSS variables below, Penpot `color.*`). Roles bind; palette tones never do.
 
-**Penpot and the CSS carry the same values.** The `sklad` token set is what the values
-above are read from. The `.dark` block of `src/styles/tailwind.css` mirrors it: the lifted
-olive on `--border`, `--input`, `--secondary` and `--sidebar-border`, Ember on
-`--destructive` and `--invalid` with a Deep Forest label, `--overlay` as `black.20`, and
-the current chart ramp.
-
-| Token                          | Palette color                 |
+| Token                          | Palette tone                  |
 | ------------------------------ | ----------------------------- |
-| `--background`                 | Deep Forest                   |
-| `--foreground`                 | Warm Off-White                |
-| `--card`                       | Warm Brown                    |
-| `--card-foreground`            | Warm Off-White                |
-| `--popover`                    | Warm Brown                    |
-| `--popover-foreground`         | Warm Off-White                |
-| `--primary`                    | Muted Brass                   |
-| `--primary-foreground`         | Deep Forest                   |
-| `--secondary`                  | Deep Olive                    |
-| `--secondary-foreground`       | Warm Off-White                |
-| `--muted`                      | Warm Charcoal                 |
-| `--muted-foreground`           | Warm Beige                    |
-| `--accent`                     | Muted Brass                   |
-| `--accent-foreground`          | Deep Forest                   |
-| `--destructive`                | Ember                         |
-| `--destructive-foreground`     | Deep Forest                   |
-| `--invalid`                    | Ember                         |
-| `--border`                     | Deep Olive                    |
-| `--input`                      | Deep Olive                    |
-| `--ring`                       | Muted Brass                   |
-| `--overlay`                    | Black, step `black.20`        |
-| `--sidebar`                    | Deep Forest                   |
-| `--sidebar-foreground`         | Warm Off-White                |
-| `--sidebar-primary`            | Muted Brass                   |
-| `--sidebar-primary-foreground` | Deep Forest                   |
-| `--sidebar-accent`             | Warm Charcoal                 |
-| `--sidebar-accent-foreground`  | Warm Off-White                |
-| `--sidebar-border`             | Deep Olive                    |
-| `--sidebar-ring`               | Muted Brass                   |
+| `--background`                 | `forest.950`                  |
+| `--foreground`                 | `forest.100`                  |
+| `--card`                       | `forest.850`                  |
+| `--card-foreground`            | `forest.100`                  |
+| `--popover`                    | `forest.800`                  |
+| `--popover-foreground`         | `forest.100`                  |
+| `--primary`                    | `brass.500`                   |
+| `--primary-hover`              | `brass.400`                   |
+| `--primary-foreground`         | `forest.950`                  |
+| `--secondary`                  | `forest.600`                  |
+| `--secondary-foreground`       | `forest.50`                   |
+| `--muted`                      | `forest.850`                  |
+| `--muted-foreground`           | `forest.300`                  |
+| `--accent`                     | `brass.300`                   |
+| `--accent-foreground`          | `forest.950`                  |
+| `--destructive`                | `ember.500`                   |
+| `--destructive-hover`          | `ember.600`                   |
+| `--destructive-foreground`     | `forest.950`                  |
+| `--invalid`                    | `ember.500`                   |
+| `--border`                     | `forest.700`                  |
+| `--control-border`             | `forest.500`                  |
+| `--input`                      | alias of `--control-border`   |
+| `--ring`                       | `brass.300`                   |
+| `--overlay`                    | `black.20` (alpha step)       |
+| `--sidebar`                    | `forest.950`                  |
+| `--sidebar-foreground`         | `forest.100`                  |
+| `--sidebar-primary`            | `brass.500`                   |
+| `--sidebar-primary-foreground` | `forest.950`                  |
+| `--sidebar-accent`             | `forest.850`                  |
+| `--sidebar-accent-foreground`  | `forest.100`                  |
+| `--sidebar-border`             | `forest.700`                  |
+| `--sidebar-ring`               | `brass.300`                   |
+| `--border-hairline`            | `forest.700` at 60% (alpha)   |
 | `--chart-1…5`                  | Main color palette, steps 1–5 |
+
+`--primary-hover` and `--destructive-hover` are component state roles, not palette
+entries: a hover steps one tone up the ramp (brass.500 → brass.400) instead of
+dropping the fill's own opacity, which darkens it. `--input` is an alias of
+`--control-border`, not a second colour: a text field's
+underline and an outline button's edge must carry the same weight of line, or forms
+and buttons stop agreeing.
+
+**Penpot and the CSS carry the same values.** The `sklad` token set is what the
+values above are read from; the `Colors` frame is its read-out, and the `.dark`
+block of `src/styles/tailwind.css` resolves the same ladder. Change one, change all
+three — a token edited in only one place is a divergence, not a design decision.
 
 ### Opacity steps
 
-Transparency is an alpha step on a palette color, named
-`<palette-color>.<percent>` — `deep-olive.60` is Deep Olive at 60% alpha (names
-are the kebab-case of the palette entry). Percentages are the only
-axis; there is no separate opacity scale. The complete set in use is **5, 10, 20,
-30, 50, 60, 80, 90**; any other step is off-system. A color can back several
-roles, so the same alpha can serve more than one token.
+Transparency is an alpha step on a palette tone, named `<palette-tone>.<percent>`,
+and the set is deliberately **five** steps — every alpha in the system earns a job:
 
-| Opacity value      | Role                  | Where used                                                          |
-| ------------------ | --------------------- | ------------------------------------------------------------------- |
-| `deep-olive.30`    | `--input`             | Outline button hover fill                                           |
-| `deep-olive.50`    | `--border`            | Command palette separator                                           |
-| `deep-olive.60`    | `--border`            | Card hairline ring (Tier 2)                                         |
-| `muted-brass.5`    | `--primary`           | Checked field fill _(light block only)_                             |
-| `muted-brass.10`   | `--primary`           | Checked field fill                                                  |
-| `muted-brass.20`   | `--primary`           | Checked field border                                                |
-| `muted-brass.30`   | `--primary`, `--ring` | Checked field border _(light block only)_; focus rings              |
-| `muted-brass.50`   | `--ring`              | Global `outline` color (`@layer base` in `src/styles/tailwind.css`) |
-| `muted-brass.80`   | `--primary`           | Primary button hover fill                                           |
-| `warm-beige.10`    | `--muted-foreground`  | Kbd chip fill inside input groups                                   |
-| `ember.10`         | `--invalid`           | Error tint behind a message or field, on any surface                |
-| `ember.30`         | `--invalid`           | Invalid control ring, paired with a full-strength `--invalid` edge  |
-| `ember.90`         | `--destructive`       | Destructive button hover fill                                       |
-| `warm-charcoal.50` | `--muted`             | Ghost/outline button hover and field hover wash                     |
-| `warm-off-white.5` | `--foreground`        | Mixed into Deep Olive for the secondary button hover                |
-| `black.20`         | `--overlay`           | Dialog scrim                                                        |
+| Opacity value | Role                            | Where used                                        |
+| ------------- | ------------------------------- | ------------------------------------------------- |
+| `forest.60`   | `--border-hairline`, hover wash | Swatch keyline; outline and icon-button hover     |
+| `brass.30`    | `--ring`                        | Focus ring at 30% (and the global outline colour) |
+| `brass.10`    | `--primary`                     | Checked field fill                                |
+| `ember.10`    | `--invalid`                     | Invalid control ring behind a field               |
+| `black.20`    | `--overlay`                     | Dialog scrim                                      |
 
-Element opacity is separate from color alpha and is not tokenized: disabled and
-inactive states use `opacity: 50%` (buttons, inputs, labels, command items), and
-the command item check indicator toggles `opacity: 0%` → `100%`.
+Any other step is off-system. A colour can back several roles, so the same alpha can
+serve more than one token. Element opacity is separate from colour alpha and is not
+tokenized: disabled and inactive states use `opacity: 50%`, and the command item
+check indicator toggles `0%` → `100%`.
 
 ### Surface architecture
 
 Surfaces layer tonally, from the canvas up to floating layers. Prefer the next
-surface level over a shadow to lift content.
+surface step over a shadow to lift content.
 
-| Level       | Role                             | Token                   |
-| ----------- | -------------------------------- | ----------------------- |
-| Canvas      | Root page background             | `--background`          |
-| Surface 1   | Sidebars, quiet bands            | `--sidebar` / `--muted` |
-| Surface 2   | Cards, grids, callouts           | `--card`                |
-| Surface 3   | Floating layers, nested panels   | `--popover`             |
-| Interactive | Secondary actions, active states | `--secondary`           |
-| Highlight   | Primary CTA, focus               | `--primary` / `--ring`  |
+| Level       | Role                             | Token                       |
+| ----------- | -------------------------------- | --------------------------- |
+| Canvas      | Root page background             | `forest.950`                |
+| Surface 1   | Sidebars, quiet bands            | `forest.950` / `forest.850` |
+| Surface 2   | Cards, grids, callouts           | `forest.850`                |
+| Surface 3   | Floating layers, nested panels   | `forest.800`                |
+| Interactive | Secondary actions, active states | `forest.600`                |
+| Highlight   | Primary CTA, focus               | `brass.500` / `brass.300`   |
 
 ### Linework & accents
 
-- Structural borders are `--border`; control boundaries (input underlines) use
-  `--input`. Surface hairline rings on lifted layers are the same token — cards at
-  `border/60`, modals and popovers at full `border` strength — never a
-  `--foreground` tint.
-- Interactive borders (focus, active input) use `--ring`.
+- **Two weights of line, two jobs.** `--border` (`forest.700`) is decoration:
+  separators and section outlines at 1.40–1.67:1. `--control-border`
+  (`forest.500`) is a control edge: outline buttons, input underlines, icon buttons
+  at 3.02–3.96:1. A line that must be _seen_ as an edge is a control border.
+- **Surfaces carry no ring.** Cards, dialogs and the command list are delimited by
+  their tone step and their shadow only; a border on a surface is a maintenance tax
+  that reads as almost nothing at this ladder's contrast. `--border-hairline`
+  survives as the specimen keyline on Colors swatches, never as a surface edge.
+- Interactive borders (focus, active input) use `--ring`; invalid fields swap the
+  underline to `--invalid`.
 - Active/interactive fills — toggle states, secondary buttons — use `--secondary`
-  (olive); quiet hover bands use `--muted`.
-- **Olive is floor-only.** `--border`, `--input` and `--secondary` are tuned against
-  Deep Forest (3.03:1). On brown they collapse — `--border` on `--card` is 1.50:1
-  and an olive control stroke on a dialog is 1.24:1 — so olive linework and olive
-  controls never sit on a brown surface. Raised surfaces separate tonally, and a
-  control that must appear there changes pattern (ghost action, filled brass)
-  instead of leaning on a line.
-- **Error is never a coloured ink.** Only the light neutrals clear 4.5:1 on brown,
-  and Ember ink on brown is 2.34:1, so error is carried by an `ember.10` tint plus
-  `--foreground` text everywhere — on the floor and on a raised surface alike — with
-  the underline in `--invalid` (4.73:1 on the floor) doing the pointing. One recipe,
-  no surface to get wrong.
+  (`forest.600`); quiet hover washes use `--muted` (`forest.850`).
+- **One hue per surface.** The forest ladder is the only surface family; a second
+  hue in a structural role is exactly the competition this system removed.
+- **Error is never a coloured ink.** Error is an Ember capsule (`--destructive`
+  fill, `forest.950` label) plus an `--invalid` underline: one recipe on the floor
+  and on a card alike, because coloured body text would make a signal look like
+  copy.
 - Titles use the editorial ink `--popover-foreground`; body copy uses
   `--foreground`; metadata and inactive icons use `--muted-foreground`.
 
 ### Named Rules
 
-**The One Voice Rule.** Muted Brass is spent on at most one important thing per
-view. It always carries Deep Forest text; Warm Off-White on brass is 2.04:1 and
-must never be used.
+**The One Voice Rule.** Brass is spent on at most one important thing per view.
+`brass.500` always carries `forest.950` text; `forest.100` on `brass.500` is 1.62:1
+(1.11:1 on the highlight) and must never be used.
 
-**The Brown Is A Surface Rule.** Warm Brown fills big surfaces only. It is never an
-accent, never a small control, never text on the dark canvas, and never an action
-fill — brown on brown is 1.00:1, which is exactly how the destructive button used to
-disappear on cards and dialogs.
+**The One Hue Rule.** The world is a single hue (H≈131). Surfaces, linework, text
+and charts all step through it; a second hue in a structural role is a bug, not a
+flavour. Ember is a signal, never a surface.
+
+**The Border Is Decoration Rule.** `--border` is allowed to whisper (1.40–1.67:1).
+Anything a user is expected to see as a boundary — a control edge, an underline, a
+focus edge — uses `--control-border`, `--ring` or `--invalid`, all of which clear
+3:1 against the surface they sit on.
 
 **The No Raw Palette Rule.** Components reach for semantic tokens. Raw Tailwind
-palette colors (`text-green-600`, `bg-amber-500`) are off-system, in components and
+palette colours (`text-green-600`, `bg-amber-500`) are off-system, in components and
 in Penpot alike.
 
 **The Error Is Ember Rule.** Destruction and error are Ember: `--invalid` for the
-underline and the error tint; `--destructive` (Ember fill, Deep Forest label) on the
-button that acts. Never Warm Off-White on Ember (3.00:1); never Ember as a surface.
+underline, `--destructive` (Ember fill, `forest.950` label) for the button or
+capsule that acts. Never `forest.100` on Ember (2.38:1); never Ember as a surface.
 
-**The Floor-Only Olive Rule.** Deep Olive is tuned against Deep Forest and stays
-there. On a brown surface olive linework is a whisper and an olive control is
-invisible — lift the surface or change the pattern, never darken the token.
-
-**The Contrast Floor Rule.** `--muted-foreground` on `--background`, `--muted` and
-`--card` is the secondary-text pairing and stays ≥ 4.5:1 (4.60:1 on brown) whenever
-the neutral ramp is touched. A control boundary clears 3:1 against the surface it
-actually sits on (`--input`/`--border`/`--secondary` on the floor: 3.03:1) and error
-ink clears 4.5:1 (`--invalid`: 4.73:1). Never communicate status by color alone.
+**The Contrast Floor Rule.** `--muted-foreground` on any forest surface stays
+≥ 4.5:1 (8.11 floor / 6.80 card). A control boundary clears 3:1 against the surface
+it actually sits on (`--control-border`: 3.02–3.96). Error and destructive clear
+4.5:1 (5.21–6.21). Never communicate status by colour alone.
 
 ### Penpot
 
-The Penpot file carries the palette as tokens, never as swatches; the `Colors` frame
-(page `Design system`, right of `Components`) is a read-out of that token set and
-holds no value of its own. Four blocks: **Palette values** (the eight non-chart
-values, one swatch per `palette.*` token), **Chart ramp** (`palette.chart.1`…`5` — the
-tonal ladder in order, lightest step first),
-**Alpha steps over a card** (each `opacity.*` step composited over `color.card`, so a
-translucent step is read at the strength it really lands with) and **Roles** (every
-`color.*` role with its resolved hex and its contrast against `color.background`).
-Swatch labels carry the token name the swatch displays, so the frame is readable as a
-ledger: name, value, and — for roles — the contrast it lands with.
+The Penpot file carries the palette as tokens, never as swatches; the `Colors`
+frame (page `Design system`, right of `Components`) is a read-out of that token set
+and holds no value of its own. Four blocks: **Tone ramps** (every forest, brass and
+ember tone with name and hex; the brass label states which step is
+hardware and which is highlight), **Chart ramp** (`palette.chart.1…5`, lightest
+step first), **Alpha steps over a popover** (each `opacity.*` step composited over
+`color.popover`, so a translucent step is read at the strength it really lands
+with) and **Roles** (every `color.*` role with its resolved hex and its contrast
+against both `color.background` and `color.card`).
 
 - **The frame binds what it displays.** Each swatch carries the token it names —
-  including the palette swatches, which is the one place a value token is allowed to
-  bind: a specimen of a value is that value. Everywhere else roles bind (§Token
-  mapping).
-- **Swatches carry a `color.border-hairline` keyline.** Deep Forest, Warm Charcoal and
-  the dark chart steps are otherwise invisible on the frame's `color.background`.
-- **The numbers are written at build time, not by hand.** Change a token and re-read
-  the frame; never trust a contrast figure that has outlived the value it describes.
+  including palette swatches, which is the one place a value token is allowed to
+  bind: a specimen of a value is that value. Everywhere else roles bind.
+- **Swatches carry a `color.border-hairline` keyline.** The floor and card
+  steps are otherwise invisible on the frame's own `color.background`.
+- **The numbers are written at build time, not by hand.** Change a token, re-run the
+  rebind pass and re-read the frame; never trust a contrast figure that has outlived
+  the value it describes.
 
 ## Typography
 
@@ -549,7 +529,7 @@ title, 1.4px at display). Tracking must never shrink with the caps.
   safe only because label text never wraps — buttons carry `whitespace-nowrap`.
 - **Body** (500, 1rem, line-height 1.5, `text-wrap: pretty`): default copy and card
   content. Weight 500 is the light-on-dark compensation: Manrope 400 at 1rem on the
-  deep forest canvas and the hide-brown cards reads thinner than it does on paper.
+  forest canvas and the raised forest cards reads thinner than it does on paper.
   One whole step above caption rather than an axis value between the two, so the
   role renders the same in code and in the Penpot file.
 - **Caption** (400, 0.875rem, line-height 1.5, `text-wrap: pretty`): descriptions
@@ -714,25 +694,24 @@ inherit the shell instead of introducing a second grid.
 
 ## Elevation & Depth
 
-Depth is **tonal**, not shadowed. The system chooses a lighter surface before it
-chooses a drop shadow: cards sit visibly above the canvas because Warm Brown is a
-step up from Deep Forest, and floating layers sit above cards because they swap
-surface for `--popover` plus a full-strength ring. Hairline `--border` rings draw
-the edge; shadows are a whisper that confirms the lift, never the lift itself.
+Depth is **tonal**, not shadowed. The system picks a lighter surface before it
+picks a drop shadow: cards sit above the canvas because `forest.850` is a step up
+from `forest.950`, and floating layers sit above cards because they move to
+`forest.800`. Surfaces carry no ring: tone draws the edge, and the shadow is a
+whisper that confirms the lift, never the lift itself.
 
 ### Shadow Vocabulary
 
-- **Surface confirmation** (`shadow-sm`): the tier-2 card ring companion. Cards
-  only.
+- **Surface confirmation** (`shadow-card`): a contact plus ambient shadow that
+  seats the tier-2 card on the floor. Cards only.
 - **Floating confirmation** (`shadow-md`): tier-3 modals, popovers and the command
   palette.
 
 ### Named Rules
 
-**The Layer-Before-Shadow Rule.** To lift content, move one surface level up the
-tonal ladder (canvas → Surface 1 → Surface 2 → Surface 3) and add the matching
-`border` ring. Only then add `shadow-sm` / `shadow-md`, and never invent a third
-shadow value.
+**The Layer-Before-Shadow Rule.** To lift content, move one step up the ladder
+(950 → 850 → 800). Only then add `shadow-card` / `shadow-md`, and never invent a
+third shadow value. A surface never earns a ring to prove it was lifted.
 
 ## Shapes
 
@@ -745,8 +724,9 @@ never restore rounding on its own.
 
 Boundaries are drawn two ways only: a full box border on controls (`Button` carries
 `border border-transparent` plus a variant border), and a bottom-only underline on
-text fields (`border-b-input`). Clipping is equally plain — images inside cards are
-square to the card edge, no rounded masks, no bleed.
+text fields (`border-b-input`). Surfaces draw neither: they separate by tone and
+shadow. Clipping is equally plain — images inside cards are square to the card edge,
+no rounded masks, no bleed.
 
 ### Named Rules
 
@@ -756,33 +736,36 @@ a local `rounded-lg`.
 
 ## Components
 
-Character: **sharp-edged brass hardware on tonal hide.** Controls are cut square,
-actions are brass or olive, and every surface they sit on is a step in the hide
-palette.
+Character: **sharp-edged brass hardware on a forest ladder.** Controls are cut
+square, actions are brass or one step of green, and every surface they sit on is a
+step in the same hue.
 
 ### Buttons
 
-- **Shape:** square (radius 0); `border border-transparent` so variants can swap the
+- **Shape:** square (radius 0); `border border-transparent` so variants swap the
   boundary without changing geometry.
 - **Typography:** `type-label` (uppercase caps) in every variant and size.
-- **Primary (brass):** `--primary` fill + `--primary-foreground` text; hover drops to
-  `primary/80`; active nudges down 1px (`translate-y-px`).
-- **Outline (the app's default secondary action):** `--border` border, transparent
-  fill; hover fills with `--input` at 30% (a deep-olive wash, `deep-olive.30`).
-- **Secondary (olive):** `--secondary` fill + `--secondary-foreground` text; hover
-  blends 5% `--foreground` into the fill.
+- **Primary (brass):** `--primary` fill + `--primary-foreground` text; hover
+  `brass.400`; active nudges down 1px (`translate-y-px`).
+- **Outline (the app's default secondary action):** `--control-border` edge,
+  transparent fill; hover fills with `forest.60` (60% forest linework) — a neutral
+  lift, not a brass wash.
+- **Secondary (green):** `--secondary` fill + `--secondary-foreground` text; hover
+  blends 5% `--foreground` into the fill. The fill itself is 2.23:1 against the
+  floor — exempt from the boundary floor because the 8.17:1 label carries the
+  control.
 - **Ghost / tertiary:** transparent; hover applies `--muted` background with
   `--foreground` text.
-- **Destructive:** `--destructive` (Ember) fill + `--destructive-foreground` (Deep
-  Forest) label; hover `ember.90`. This is the only place Ember is a fill, and it is
-  never a surface.
+- **Destructive:** `--destructive` (Ember) fill + `--destructive-foreground`
+  (`forest.950`) label; hover `ember.600`. The only place Ember fills a large
+  control, and never a surface.
 - **Link:** `--primary` text, underlined, `underline-offset-4`.
 - **Focus / invalid:** `focus-visible:border-ring` plus a 2px `ring/30` ring
-  (`muted-brass.30`); `aria-invalid` swaps both to `--invalid` — the 1px edge at full
-  strength (4.73:1 on the floor) and the ring at `ember.30`, the same role the error
-  message uses.
+  (`brass.30`); `aria-invalid` swaps both to `--invalid` — the full-strength edge
+  (6.21:1 on the floor) plus an `ember.10` ring.
 - **Disabled:** `opacity: 50%`, pointer events off.
-- **Icon:** `IconButton` = `variant="outline"` + `size="icon"` (`size-10`).
+- **Icon:** `IconButton` = `variant="outline"` + `size="icon"` (`size-10`), edge on
+  `--control-border`, hover on `forest.60`.
 
 ### Chips
 
@@ -793,8 +776,8 @@ typography and by the surface a value sits in (e.g. a `MaterialTypeLabel` in
 ### Cards / Containers
 
 - **Corner Style:** square (radius 0).
-- **Background:** `--card` (Warm Brown), text `--card-foreground`.
-- **Shadow Strategy:** `ring-1 ring-border/60` + `shadow-sm` (see Elevation).
+- **Background:** `--card` (`forest.850`), text `--card-foreground`.
+- **Shadow Strategy:** `shadow-card` only, no ring (see Elevation).
 - **Internal Padding:** `--card-spacing` = 32px by default, 20px at `size="sm"`,
   applied as vertical padding, inter-block `gap` and horizontal padding on
   `CardHeader` / `CardContent` / `CardFooter`.
@@ -806,15 +789,15 @@ typography and by the surface a value sits in (e.g. a `MaterialTypeLabel` in
 ### Inputs / Fields
 
 - **Style:** transparent background, no box — a single bottom underline in
-  `--input`, `rounded-none`, height 40px, `type-input`.
+  `--control-border` (alias of `--input`), `rounded-none`, height 40px,
+  `type-input`.
 - **Focus:** the underline switches to `--ring`.
 - **Placeholder** is `--muted-foreground`; typed text is `--foreground`.
-- **Invalid:** the underline switches to `--invalid` (Ember, 4.73:1 on the floor) and
-  the field carries an error strip: the `ember.10` tint with `--foreground` text
-  (`FieldError`: `w-fit px-2 py-1`). One recipe on every surface — the tint holds
-  `--foreground` at 13.4:1 on the floor and 7.05:1 on a card, where Ember ink would
-  be 2.34:1 and is never used; the underline alone is too subtle to carry the state
-  on its own.
+- **Invalid:** the underline switches to `--invalid` and the field carries an Ember
+  capsule — `--destructive` fill with `--destructive-foreground` label
+  (`FieldError`: `w-fit px-2 py-1`). One recipe on every surface (6.21:1 on the
+  floor, 5.21:1 on a card), because the underline alone is too subtle to carry the
+  state. It is a fill with dark ink, never Ember text.
 - **Disabled:** `opacity: 50%`, cursor not allowed.
 - **Composition:** `Field` (vertical, `gap-3`) owns label + control + error;
   `FieldLabel` and `FieldTitle` are `type-label`; `FieldDescription` is `type-body`
@@ -824,10 +807,11 @@ typography and by the surface a value sits in (e.g. a `MaterialTypeLabel` in
 
 ### Dialog & Popover
 
-Floating layers are tier 3: `--popover` surface, `ring-1 ring-border`, `shadow-md`,
+Floating layers are tier 3: `--popover` surface (`forest.800`), `shadow-md`,
 `rounded-none`, `gap-6`, 24px padding, `max-w-md` from `sm` up. The backdrop is
 `--overlay` at 20% with a small backdrop blur, and open/close transitions are
-`duration-100` fade + zoom.
+`duration-100` fade + zoom. The layer carries no ring: it is identified by its
+tonal step and its shadow, not by its edge.
 
 **A dialog carries no corner ✕.** Its dismissal is a footer control, and that
 control is mandatory: `DialogFooter` always renders it — a `DialogClose` on a
@@ -835,27 +819,30 @@ ghost button labelled `Закрыть`, ahead of whatever actions the dialog pas
 every dialog has a way out that a touch screen reader can reach. Escape and an
 outside press are bonus paths, never the only ones, and the 16px scrim a dialog
 leaves on a phone is not a dismissal target. The dismissal is ghost rather than
-outline because an olive boundary on the brown surface is 1.50:1; on a raised
-surface a control changes pattern instead of leaning on a line. Deleting the ✕ is
-a deliberate deviation from upstream shadcn — re-apply it after any `shadcn add`.
+outline because the dialog's own surface is only 1.10:1 from the card beneath, so
+a boundary there would be a whisper anyway; on a raised surface a control changes
+pattern instead of leaning on a line. Deleting the ✕ is a deliberate deviation
+from upstream shadcn — re-apply it after any `shadcn add`.
 
 ### Command Palette (signature)
 
-The command palette is the search entry on Home and Materials, and it is the clearest
-single expression of the world. It rests as one line on the `--popover` surface: a
-`shadow-md` slab with square corners and no outline of its own, closed by the single
-underline of the `InputGroup` at its bottom edge, with a search icon and a `type-body`
-placeholder. The underline turns brass while the field has keyboard focus, like every
-field. No list, heading, or item renders at rest. Focus, a click, or `/` opens it.
+The command palette is the search entry on Home and Materials, and it is the
+clearest single expression of the world. It rests as one line on the `--popover`
+surface: a `shadow-md` slab with square corners and no outline of its own, holding
+a search icon and a `type-body` placeholder. There is no underline under the field
+and no divider to the list — the slab edge is the boundary, and a brass caret is
+the only state signal. No list, heading, or item renders at rest. Focus, a click,
+or `/` opens it.
 
-The open list is an absolute overlay under the line — `top-full`, full width, `z-50`
-— bordered on its sides and bottom but not on top, so the field's underline remains
-the only divider between the field and the list, and surrounding content never moves.
-Internals are unchanged: `type-label` group
-headings in `--muted-foreground`, `type-body` items at `px-3 py-2` that light up with
-`data-selected:bg-muted`, and `type-label` shortcuts at the right edge. Selection is a
-tonal wash, not a brass highlight — brass stays reserved. Escape, an outside press, or
-a selection closes it; the empty message lives inside the open overlay.
+The open list is an absolute overlay flush under the line — `top-full`, full width,
+`z-50`, the same `--popover` fill and `shadow-md`, no border and no divider — so the
+palette reads as one continuous panel, and surrounding content never moves.
+Internals are unchanged: `type-label` group headings in `--muted-foreground`,
+`type-body` items at `px-3 py-2` that light up with `data-selected:bg-muted` — a
+step _down_ from the popover, since the list already sits on the highest surface —
+and `type-label` shortcuts at the right edge. Selection is tonal, not brass; brass
+stays reserved. Escape, an outside press, or a selection closes it; the empty
+message lives inside the open overlay.
 
 ### Links
 
@@ -865,10 +852,9 @@ for layout only, never for colour.
 - **`Link`** — inline navigation inside copy and rows: ink `--foreground`, whose
   underline is the interactive marker at `decoration-primary` /
   `underline-offset-4`, moving to `--primary` ink on hover. The brass is the
-  _line_, not the text, because brass ink on a brown surface is 3.45:1 while Warm
-  Off-White keeps the 4.5:1 body floor on the canvas and on a card alike — and it
-  is the line, not a colour state, that marks a link on a touch screen. `Link`
-  sets no type of its own; the surrounding role carries it.
+  _line_, not the text: brass ink on a card is 7.66:1, but the line is what marks
+  a link on a touch screen, and body copy stays in `forest.100` on the canvas and
+  on a card alike. `Link` sets no type of its own; the surrounding role carries it.
 - **`NavLink`** — a route link for navigation rows: `type-label` in
   `--muted-foreground` shifting to `--foreground` on hover and staying
   `--foreground` for the current route (`aria-current="page"`), with
@@ -879,13 +865,14 @@ for layout only, never for colour.
 The header holds a `type-title` wordmark ("Sklad") and a horizontal nav of
 `NavLink`s, `gap-4 sm:gap-8` apart; it lays the list out and carries no link
 recipe of its own. The sidebar tokens exist in the palette but the shipped shell
-uses the header; if a sidebar appears it takes `--sidebar*` verbatim.
+uses the header; if a sidebar appears it takes `--sidebar*` verbatim — all of
+which now sit on the same forest ladder.
 
 ### Separator & Loading
 
 `Separator` is a Base UI separator on `bg-border` at `h-px` (horizontal) — never a
-hand-rolled div. `Spinner` is `Loader2Icon` at `size-4` with `animate-spin`,
-`role="status"`.
+hand-rolled div; it is decoration, so it takes the decorative border. `Spinner` is
+`Loader2Icon` at `size-4` with `animate-spin`, `role="status"`.
 
 ## Do's and Don'ts
 
@@ -894,28 +881,36 @@ hand-rolled div. `Spinner` is `Loader2Icon` at `size-4` with `animate-spin`,
 - **Do** reach for `Button variant="outline"` for the app's default secondary
   action, and `variant="default"` (brass) for the one primary CTA on a view.
 - **Do** keep destructive/confirm actions visually distinct with
-  `variant="destructive"` (Ember fill, Deep Forest label), and pair destructive
+  `variant="destructive"` (Ember fill, `forest.950` label), and pair destructive
   intent with a Dialog confirmation.
-- **Do** put Deep Forest text on brass — `--primary-foreground` every time.
+- **Do** put `forest.950` text on brass — `--primary-foreground` every time.
+- **Do** put every boundary that must be seen — control edges, underlines, focus
+  edges — on `--control-border`, `--ring` or `--invalid`.
+- **Do** step surfaces up the forest ladder (950 → 850 → 800) before reaching for a
+  shadow.
 - **Do** use `gap-*` stacks and the `max-w-4xl` shell for new surfaces.
 - **Do** keep `--muted-foreground` for secondary text and `--foreground` for body.
-- **Do** lift surfaces tonally (next surface level) before reaching for a shadow.
 - **Do** set all type through `Typography` / the `type-*` tokens.
 - **Do** keep `rounded-none` on shipped components.
 - **Do** use tabular figures (`type-data`) for any column of numbers.
-- **Do** chart with the main color palette: `--chart-1` for a single series, deeper steps
-  in order for up to three, and direct labels past that.
-- **Do** verify the `--muted-foreground` pairing stays ≥ 4.5:1 when the neutral ramp
-  changes.
+- **Do** chart with the main color palette: `--chart-1` for a single series, deeper
+  steps in order for up to three, and direct labels past that.
+- **Do** re-run the rebind pass (`literal → apply token`) after editing a token
+  value, in Penpot and in CSS.
+- **Do** verify the `--muted-foreground` pairing stays ≥ 4.5:1 when the forest
+  ladder changes.
 
 ### Don't:
 
-- **Don't** put `--foreground` (Warm Off-White) text on `--primary`; it is 2.04:1.
-- **Don't** use Warm Brown as an accent, a small control, as text on the dark
-  canvas, or as the destructive fill.
-- **Don't** put olive linework or an olive control on a brown surface, and don't
-  render error as a coloured ink — the `ember.10` tint plus light text is the only
-  recipe, with `--invalid` left to the underline.
+- **Don't** put `--foreground` (`forest.100`) text on `--primary`; it is 1.62:1.
+- **Don't** introduce a second hue into surfaces, linework or text — Ember is a
+  signal, not a surface, and there is no second material family.
+- **Don't** ring a surface (card, dialog, command list) — they separate by tone and
+  shadow; a border there is maintenance that reads as almost nothing.
+- **Don't** draw a control edge with `--border`; 1.40–1.67:1 is a whisper, not a
+  boundary.
+- **Don't** render error as a coloured ink — the Ember capsule plus `--invalid`
+  underline is the only recipe.
 - **Don't** put a corner ✕ on a dialog — dismissal is the footer's ghost `Закрыть`,
   which `DialogFooter` renders for every dialog (upstream shadcn's ✕ is removed on
   purpose).

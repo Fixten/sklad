@@ -1,172 +1,205 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-19T10:25:45.000Z",
+  "generatedAt": "2026-10-20T17:11:31.877Z",
   "title": "Design System: Sklad",
   "extensions": {
     "colorMeta": {
-      "deep-forest": {
-        "role": "primary",
-        "displayName": "Deep Forest",
-        "canonical": "oklch(0.267 0.033 131)",
-        "tonalRamp": [
-          "oklch(0.18 0.022 131)",
-          "oklch(0.223 0.028 131)",
-          "oklch(0.267 0.033 131)",
-          "oklch(0.34 0.04 131)",
-          "oklch(0.44 0.05 131)",
-          "oklch(0.58 0.065 131)",
-          "oklch(0.74 0.085 131)",
-          "oklch(0.9 0.1 131)"
-        ]
-      },
-      "muted-brass": {
-        "role": "primary",
-        "displayName": "Muted Brass",
-        "canonical": "oklch(0.757 0.079 88.436)",
-        "tonalRamp": [
-          "oklch(0.2 0.02 88.436)",
-          "oklch(0.29 0.03 88.436)",
-          "oklch(0.4 0.042 88.436)",
-          "oklch(0.51 0.053 88.436)",
-          "oklch(0.62 0.065 88.436)",
-          "oklch(0.757 0.079 88.436)",
-          "oklch(0.855 0.07 88.436)",
-          "oklch(0.94 0.045 88.436)"
-        ]
-      },
-      "warm-off-white": {
+      "forest-950": {
         "role": "neutral",
-        "displayName": "Warm Off-White",
-        "canonical": "oklch(0.979 0.005 95.099)",
+        "displayName": "Forest 950",
+        "canonical": "oklch(0.145 0.012 132.1)",
         "tonalRamp": [
-          "oklch(0.2 0.006 95.099)",
-          "oklch(0.31 0.006 95.099)",
-          "oklch(0.43 0.005 95.099)",
-          "oklch(0.55 0.005 95.099)",
-          "oklch(0.67 0.005 95.099)",
-          "oklch(0.79 0.005 95.099)",
-          "oklch(0.89 0.005 95.099)",
-          "oklch(0.979 0.005 95.099)"
+          "oklch(0.145 0.012 132.1)",
+          "oklch(0.235 0.020 129.5)",
+          "oklch(0.267 0.033 131.0)",
+          "oklch(0.336 0.028 130.7)",
+          "oklch(0.406 0.032 131.4)",
+          "oklch(0.538 0.055 130.8)",
+          "oklch(0.721 0.037 130.6)",
+          "oklch(0.900 0.021 131.5)",
+          "oklch(0.971 0.006 128.5)"
         ]
       },
-      "deep-olive": {
+      "forest-850": {
+        "role": "neutral",
+        "displayName": "Forest 850",
+        "canonical": "oklch(0.235 0.020 129.5)",
+        "tonalRamp": [
+          "oklch(0.145 0.012 132.1)",
+          "oklch(0.235 0.020 129.5)",
+          "oklch(0.267 0.033 131.0)",
+          "oklch(0.336 0.028 130.7)",
+          "oklch(0.406 0.032 131.4)",
+          "oklch(0.538 0.055 130.8)",
+          "oklch(0.721 0.037 130.6)",
+          "oklch(0.900 0.021 131.5)",
+          "oklch(0.971 0.006 128.5)"
+        ]
+      },
+      "forest-800": {
+        "role": "neutral",
+        "displayName": "Forest 800",
+        "canonical": "oklch(0.267 0.033 131.0)",
+        "tonalRamp": [
+          "oklch(0.145 0.012 132.1)",
+          "oklch(0.235 0.020 129.5)",
+          "oklch(0.267 0.033 131.0)",
+          "oklch(0.336 0.028 130.7)",
+          "oklch(0.406 0.032 131.4)",
+          "oklch(0.538 0.055 130.8)",
+          "oklch(0.721 0.037 130.6)",
+          "oklch(0.900 0.021 131.5)",
+          "oklch(0.971 0.006 128.5)"
+        ]
+      },
+      "forest-700": {
+        "role": "neutral",
+        "displayName": "Forest 700",
+        "canonical": "oklch(0.336 0.028 130.7)",
+        "tonalRamp": [
+          "oklch(0.145 0.012 132.1)",
+          "oklch(0.235 0.020 129.5)",
+          "oklch(0.267 0.033 131.0)",
+          "oklch(0.336 0.028 130.7)",
+          "oklch(0.406 0.032 131.4)",
+          "oklch(0.538 0.055 130.8)",
+          "oklch(0.721 0.037 130.6)",
+          "oklch(0.900 0.021 131.5)",
+          "oklch(0.971 0.006 128.5)"
+        ]
+      },
+      "forest-600": {
         "role": "secondary",
-        "displayName": "Deep Olive",
-        "canonical": "oklch(0.539 0.057 127.665)",
+        "displayName": "Forest 600",
+        "canonical": "oklch(0.406 0.032 131.4)",
         "tonalRamp": [
-          "oklch(0.2 0.024 127.665)",
-          "oklch(0.28 0.032 127.665)",
-          "oklch(0.36 0.041 127.665)",
-          "oklch(0.44 0.05 127.665)",
-          "oklch(0.539 0.057 127.665)",
-          "oklch(0.66 0.061 127.665)",
-          "oklch(0.79 0.06 127.665)",
-          "oklch(0.92 0.045 127.665)"
+          "oklch(0.145 0.012 132.1)",
+          "oklch(0.235 0.020 129.5)",
+          "oklch(0.267 0.033 131.0)",
+          "oklch(0.336 0.028 130.7)",
+          "oklch(0.406 0.032 131.4)",
+          "oklch(0.538 0.055 130.8)",
+          "oklch(0.721 0.037 130.6)",
+          "oklch(0.900 0.021 131.5)",
+          "oklch(0.971 0.006 128.5)"
         ]
       },
-      "warm-brown": {
-        "role": "tertiary",
-        "displayName": "Warm Brown",
-        "canonical": "oklch(0.452 0.047 53.927)",
+      "forest-500": {
+        "role": "neutral",
+        "displayName": "Forest 500",
+        "canonical": "oklch(0.538 0.055 130.8)",
         "tonalRamp": [
-          "oklch(0.19 0.02 53.927)",
-          "oklch(0.26 0.027 53.927)",
-          "oklch(0.33 0.034 53.927)",
-          "oklch(0.39 0.041 53.927)",
-          "oklch(0.452 0.047 53.927)",
-          "oklch(0.55 0.05 53.927)",
-          "oklch(0.68 0.052 53.927)",
-          "oklch(0.84 0.04 53.927)"
+          "oklch(0.145 0.012 132.1)",
+          "oklch(0.235 0.020 129.5)",
+          "oklch(0.267 0.033 131.0)",
+          "oklch(0.336 0.028 130.7)",
+          "oklch(0.406 0.032 131.4)",
+          "oklch(0.538 0.055 130.8)",
+          "oklch(0.721 0.037 130.6)",
+          "oklch(0.900 0.021 131.5)",
+          "oklch(0.971 0.006 128.5)"
         ]
       },
-      "ember": {
+      "forest-300": {
+        "role": "neutral",
+        "displayName": "Forest 300",
+        "canonical": "oklch(0.721 0.037 130.6)",
+        "tonalRamp": [
+          "oklch(0.145 0.012 132.1)",
+          "oklch(0.235 0.020 129.5)",
+          "oklch(0.267 0.033 131.0)",
+          "oklch(0.336 0.028 130.7)",
+          "oklch(0.406 0.032 131.4)",
+          "oklch(0.538 0.055 130.8)",
+          "oklch(0.721 0.037 130.6)",
+          "oklch(0.900 0.021 131.5)",
+          "oklch(0.971 0.006 128.5)"
+        ]
+      },
+      "forest-100": {
+        "role": "neutral",
+        "displayName": "Forest 100",
+        "canonical": "oklch(0.900 0.021 131.5)",
+        "tonalRamp": [
+          "oklch(0.145 0.012 132.1)",
+          "oklch(0.235 0.020 129.5)",
+          "oklch(0.267 0.033 131.0)",
+          "oklch(0.336 0.028 130.7)",
+          "oklch(0.406 0.032 131.4)",
+          "oklch(0.538 0.055 130.8)",
+          "oklch(0.721 0.037 130.6)",
+          "oklch(0.900 0.021 131.5)",
+          "oklch(0.971 0.006 128.5)"
+        ]
+      },
+      "forest-50": {
+        "role": "neutral",
+        "displayName": "Forest 50",
+        "canonical": "oklch(0.971 0.006 128.5)",
+        "tonalRamp": [
+          "oklch(0.145 0.012 132.1)",
+          "oklch(0.235 0.020 129.5)",
+          "oklch(0.267 0.033 131.0)",
+          "oklch(0.336 0.028 130.7)",
+          "oklch(0.406 0.032 131.4)",
+          "oklch(0.538 0.055 130.8)",
+          "oklch(0.721 0.037 130.6)",
+          "oklch(0.900 0.021 131.5)",
+          "oklch(0.971 0.006 128.5)"
+        ]
+      },
+      "brass-500": {
+        "role": "primary",
+        "displayName": "Brass 500",
+        "canonical": "oklch(0.757 0.079 88.4)",
+        "tonalRamp": [
+          "oklch(0.757 0.079 88.4)",
+          "oklch(0.819 0.090 88.1)",
+          "oklch(0.870 0.080 88.4)"
+        ]
+      },
+      "brass-400": {
+        "role": "primary",
+        "displayName": "Brass 400",
+        "canonical": "oklch(0.819 0.090 88.1)",
+        "tonalRamp": [
+          "oklch(0.757 0.079 88.4)",
+          "oklch(0.819 0.090 88.1)",
+          "oklch(0.870 0.080 88.4)"
+        ]
+      },
+      "brass-300": {
+        "role": "primary",
+        "displayName": "Brass 300",
+        "canonical": "oklch(0.870 0.080 88.4)",
+        "tonalRamp": [
+          "oklch(0.757 0.079 88.4)",
+          "oklch(0.819 0.090 88.1)",
+          "oklch(0.870 0.080 88.4)"
+        ]
+      },
+      "ember-600": {
         "role": "error",
-        "displayName": "Ember",
-        "canonical": "oklch(0.661 0.08 45.402)",
-        "tonalRamp": [
-          "oklch(0.19 0.023 45.402)",
-          "oklch(0.28 0.034 45.402)",
-          "oklch(0.37 0.045 45.402)",
-          "oklch(0.47 0.057 45.402)",
-          "oklch(0.57 0.069 45.402)",
-          "oklch(0.661 0.08 45.402)",
-          "oklch(0.78 0.085 45.402)",
-          "oklch(0.9 0.078 45.402)"
-        ]
+        "displayName": "Ember 600",
+        "canonical": "oklch(0.621 0.076 46.1)",
+        "tonalRamp": ["oklch(0.621 0.076 46.1)", "oklch(0.661 0.080 45.4)"]
       },
-      "warm-charcoal": {
-        "role": "neutral",
-        "displayName": "Warm Charcoal",
-        "canonical": "oklch(0.288 0.009 67.447)",
-        "tonalRamp": [
-          "oklch(0.16 0.005 67.447)",
-          "oklch(0.22 0.007 67.447)",
-          "oklch(0.288 0.009 67.447)",
-          "oklch(0.37 0.009 67.447)",
-          "oklch(0.48 0.009 67.447)",
-          "oklch(0.61 0.009 67.447)",
-          "oklch(0.75 0.009 67.447)",
-          "oklch(0.9 0.009 67.447)"
-        ]
-      },
-      "warm-beige": {
-        "role": "neutral",
-        "displayName": "Warm Beige",
-        "canonical": "oklch(0.843 0.028 72.764)",
-        "tonalRamp": [
-          "oklch(0.2 0.008 72.764)",
-          "oklch(0.3 0.012 72.764)",
-          "oklch(0.41 0.017 72.764)",
-          "oklch(0.52 0.021 72.764)",
-          "oklch(0.63 0.025 72.764)",
-          "oklch(0.74 0.027 72.764)",
-          "oklch(0.843 0.028 72.764)",
-          "oklch(0.93 0.018 72.764)"
-        ]
-      },
-      "black": {
-        "role": "neutral",
-        "displayName": "Black",
-        "canonical": "oklch(0% 0 0)",
-        "tonalRamp": [
-          "oklch(0% 0 0)",
-          "oklch(0.13 0 0)",
-          "oklch(0.26 0 0)",
-          "oklch(0.4 0 0)",
-          "oklch(0.54 0 0)",
-          "oklch(0.68 0 0)",
-          "oklch(0.82 0 0)",
-          "oklch(1 0 0)"
-        ]
-      },
-      "white": {
-        "role": "neutral",
-        "displayName": "White",
-        "canonical": "oklch(100% 0 0)",
-        "tonalRamp": [
-          "oklch(0.13 0 0)",
-          "oklch(0.26 0 0)",
-          "oklch(0.4 0 0)",
-          "oklch(0.54 0 0)",
-          "oklch(0.68 0 0)",
-          "oklch(0.82 0 0)",
-          "oklch(0.91 0 0)",
-          "oklch(1 0 0)"
-        ]
+      "ember-500": {
+        "role": "error",
+        "displayName": "Ember 500",
+        "canonical": "oklch(0.661 0.080 45.4)",
+        "tonalRamp": ["oklch(0.621 0.076 46.1)", "oklch(0.661 0.080 45.4)"]
       },
       "chart-1": {
         "role": "chart",
         "displayName": "Forest Ramp 1",
         "canonical": "oklch(0.861 0.106 130.926)",
         "tonalRamp": [
-          "oklch(0.6 0.075 130.926)",
-          "oklch(0.65 0.082 130.926)",
-          "oklch(0.7 0.088 130.926)",
-          "oklch(0.76 0.095 130.926)",
-          "oklch(0.81 0.101 130.926)",
           "oklch(0.861 0.106 130.926)",
-          "oklch(0.92 0.08 130.926)",
-          "oklch(0.97 0.04 130.926)"
+          "oklch(0.818 0.099 130.979)",
+          "oklch(0.783 0.094 130.478)",
+          "oklch(0.75 0.091 130.808)",
+          "oklch(0.714 0.086 130.86)"
         ]
       },
       "chart-2": {
@@ -174,14 +207,11 @@
         "displayName": "Forest Ramp 2",
         "canonical": "oklch(0.818 0.099 130.979)",
         "tonalRamp": [
-          "oklch(0.5 0.06 130.979)",
-          "oklch(0.55 0.068 130.979)",
-          "oklch(0.61 0.075 130.979)",
-          "oklch(0.68 0.083 130.979)",
-          "oklch(0.75 0.091 130.979)",
+          "oklch(0.861 0.106 130.926)",
           "oklch(0.818 0.099 130.979)",
-          "oklch(0.89 0.075 130.979)",
-          "oklch(0.96 0.04 130.979)"
+          "oklch(0.783 0.094 130.478)",
+          "oklch(0.75 0.091 130.808)",
+          "oklch(0.714 0.086 130.86)"
         ]
       },
       "chart-3": {
@@ -189,14 +219,11 @@
         "displayName": "Forest Ramp 3",
         "canonical": "oklch(0.783 0.094 130.478)",
         "tonalRamp": [
-          "oklch(0.44 0.053 130.478)",
-          "oklch(0.49 0.06 130.478)",
-          "oklch(0.56 0.067 130.478)",
-          "oklch(0.64 0.076 130.478)",
-          "oklch(0.72 0.086 130.478)",
+          "oklch(0.861 0.106 130.926)",
+          "oklch(0.818 0.099 130.979)",
           "oklch(0.783 0.094 130.478)",
-          "oklch(0.87 0.072 130.478)",
-          "oklch(0.95 0.038 130.478)"
+          "oklch(0.75 0.091 130.808)",
+          "oklch(0.714 0.086 130.86)"
         ]
       },
       "chart-4": {
@@ -204,14 +231,11 @@
         "displayName": "Forest Ramp 4",
         "canonical": "oklch(0.75 0.091 130.808)",
         "tonalRamp": [
-          "oklch(0.4 0.048 130.808)",
-          "oklch(0.45 0.055 130.808)",
-          "oklch(0.52 0.063 130.808)",
-          "oklch(0.6 0.072 130.808)",
-          "oklch(0.68 0.082 130.808)",
+          "oklch(0.861 0.106 130.926)",
+          "oklch(0.818 0.099 130.979)",
+          "oklch(0.783 0.094 130.478)",
           "oklch(0.75 0.091 130.808)",
-          "oklch(0.85 0.07 130.808)",
-          "oklch(0.94 0.036 130.808)"
+          "oklch(0.714 0.086 130.86)"
         ]
       },
       "chart-5": {
@@ -219,14 +243,11 @@
         "displayName": "Forest Ramp 5",
         "canonical": "oklch(0.714 0.086 130.86)",
         "tonalRamp": [
-          "oklch(0.36 0.043 130.86)",
-          "oklch(0.41 0.05 130.86)",
-          "oklch(0.48 0.058 130.86)",
-          "oklch(0.56 0.067 130.86)",
-          "oklch(0.64 0.077 130.86)",
-          "oklch(0.714 0.086 130.86)",
-          "oklch(0.82 0.066 130.86)",
-          "oklch(0.93 0.034 130.86)"
+          "oklch(0.861 0.106 130.926)",
+          "oklch(0.818 0.099 130.979)",
+          "oklch(0.783 0.094 130.478)",
+          "oklch(0.75 0.091 130.808)",
+          "oklch(0.714 0.086 130.86)"
         ]
       }
     },
@@ -245,7 +266,7 @@
       },
       "body": {
         "displayName": "Body",
-        "purpose": "Default copy and card content at 16px, weight 500, line-height 1.5 with text-wrap: pretty. Weight 500 is the light-on-dark compensation on the forest canvas and hide-brown cards, one whole step above caption."
+        "purpose": "Default copy and card content at 16px, weight 500, line-height 1.5 with text-wrap: pretty. Weight 500 is the light-on-dark compensation on the forest canvas and raised forest cards, one whole step above caption."
       },
       "caption": {
         "displayName": "Caption",
@@ -263,13 +284,13 @@
     "shadows": [
       {
         "name": "surface-confirmation",
-        "value": "var(--tw-shadow-sm, 0 1px 2px 0 oklch(0% 0 0 / 0.05))",
-        "purpose": "Tier-2 cards: confirms the tonal lift above the canvas without drawing the edge. Paired with ring-1 ring-border/60."
+        "value": "var(--shadow-card, 0 1px 2px 0 oklch(0% 0 0 / 0.4), 0 10px 24px -14px oklch(0% 0 0 / 0.5))",
+        "purpose": "Tier-2 cards: a contact plus ambient shadow that seats the card on the floor without drawing an edge. The only depth cue beyond the tone step — cards carry no ring."
       },
       {
         "name": "floating-confirmation",
         "value": "var(--tw-shadow-md, 0 4px 6px -1px oklch(0% 0 0 / 0.1), 0 2px 4px -2px oklch(0% 0 0 / 0.1))",
-        "purpose": "Tier-3 modals, popovers and the command palette. Paired with a full-strength ring-1 ring-border."
+        "purpose": "Tier-3 modals, popovers and the command palette. The only edge cue — floating layers carry no ring."
       }
     ],
     "motion": [
@@ -310,161 +331,163 @@
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "The one brass CTA on a view. Deep Forest text on Muted Brass, cut square, caps label. Hover drops to brass at 80%; press nudges 1px down.",
+      "description": "The one brass CTA on a view. Forest 950 text on Brass 500, cut square, caps label. Hover steps to Brass 400; press nudges 1px down.",
       "html": "<button class=\"ds-btn-primary\">Создать</button>",
-      "css": ".ds-btn-primary { --primary: oklch(0.757 0.079 88.436); --primary-foreground: oklch(0.267 0.033 131); --ring: oklch(0.757 0.079 88.436); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 24px; border: 1px solid transparent; border-radius: 0; background: var(--primary); color: var(--primary-foreground); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; white-space: nowrap; cursor: pointer; outline: none; transition: background-color 150ms, transform 150ms; } .ds-btn-primary:hover { background: oklch(0.757 0.079 88.436 / 80%); } .ds-btn-primary:active { transform: translateY(1px); } .ds-btn-primary:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.757 0.079 88.436 / 30%); } .ds-btn-primary:disabled { opacity: 50%; pointer-events: none; }"
+      "css": ".ds-btn-primary { --primary: oklch(0.757 0.079 88.4); --primary-foreground: oklch(0.145 0.012 132.1); --ring: oklch(0.870 0.080 88.4); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 24px; border: 1px solid transparent; border-radius: 0; background: var(--primary); color: var(--primary-foreground); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; white-space: nowrap; cursor: pointer; outline: none; transition: background-color 150ms, transform 150ms; } .ds-btn-primary:hover { background: oklch(0.819 0.090 88.1); } .ds-btn-primary:active { transform: translateY(1px); } .ds-btn-primary:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.870 0.080 88.4 / 30%); } .ds-btn-primary:disabled { opacity: 50%; pointer-events: none; }"
     },
     {
       "name": "Outline Button",
       "kind": "button",
       "refersTo": "button-outline",
-      "description": "The app's default secondary action: Deep Olive hairline border on a transparent fill. Hover fills with Deep Olive at 30% — a bottle-green wash, never brass.",
+      "description": "The app's default secondary action: a Forest 500 control edge on a transparent fill. Hover fills with forest linework at 60% — a neutral lift, never brass.",
       "html": "<button class=\"ds-btn-outline\">Отмена</button>",
-      "css": ".ds-btn-outline { --border: oklch(0.539 0.057 127.665); --foreground: oklch(0.979 0.005 95.099); --ring: oklch(0.757 0.079 88.436); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 24px; border: 1px solid var(--border); border-radius: 0; background: transparent; color: var(--foreground); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; white-space: nowrap; cursor: pointer; outline: none; transition: background-color 150ms, border-color 150ms, transform 150ms; } .ds-btn-outline:hover { background: oklch(0.539 0.057 127.665 / 30%); } .ds-btn-outline:active { transform: translateY(1px); } .ds-btn-outline:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.757 0.079 88.436 / 30%); } .ds-btn-outline:disabled { opacity: 50%; pointer-events: none; }"
+      "css": ".ds-btn-outline { --control-border: oklch(0.538 0.055 130.8); --foreground: oklch(0.900 0.021 131.5); --ring: oklch(0.870 0.080 88.4); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 24px; border: 1px solid var(--control-border); border-radius: 0; background: transparent; color: var(--foreground); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; white-space: nowrap; cursor: pointer; outline: none; transition: background-color 150ms, border-color 150ms, transform 150ms; } .ds-btn-outline:hover { background: oklch(0.336 0.028 130.7 / 60%); } .ds-btn-outline:active { transform: translateY(1px); } .ds-btn-outline:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.870 0.080 88.4 / 30%); } .ds-btn-outline:disabled { opacity: 50%; pointer-events: none; }"
     },
     {
       "name": "Secondary Button",
       "kind": "button",
       "refersTo": "button-secondary",
-      "description": "The olive action: Deep Olive fill, Warm Off-White label, cut square. Hover blends 5% Warm Off-White into the fill — the only control that lightens by mixing ink instead of dropping its own opacity.",
+      "description": "The green action: Forest 600 fill, Forest 50 label, cut square. Hover blends 5% foreground into the fill — the only control that lightens by mixing ink instead of dropping its own opacity.",
       "html": "<button class=\"ds-btn-secondary\">Изменить</button>",
-      "css": ".ds-btn-secondary { --secondary: oklch(0.539 0.057 127.665); --secondary-foreground: oklch(0.979 0.005 95.099); --foreground: oklch(0.979 0.005 95.099); --ring: oklch(0.757 0.079 88.436); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 24px; border: 1px solid transparent; border-radius: 0; font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; white-space: nowrap; cursor: pointer; outline: none; background: var(--secondary); color: var(--secondary-foreground); transition: background-color 150ms, transform 150ms; } .ds-btn-secondary:hover { background: color-mix(in oklch, var(--secondary), var(--foreground) 5%); } .ds-btn-secondary:active { transform: translateY(1px); } .ds-btn-secondary:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.757 0.079 88.436) / 30%; } .ds-btn-secondary:disabled { opacity: 50%; pointer-events: none; }"
+      "css": ".ds-btn-secondary { --secondary: oklch(0.406 0.032 131.4); --secondary-foreground: oklch(0.971 0.006 128.5); --foreground: oklch(0.900 0.021 131.5); --ring: oklch(0.870 0.080 88.4); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 24px; border: 1px solid transparent; border-radius: 0; font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; white-space: nowrap; cursor: pointer; outline: none; background: var(--secondary); color: var(--secondary-foreground); transition: background-color 150ms, transform 150ms; } .ds-btn-secondary:hover { background: color-mix(in oklch, var(--secondary), var(--foreground) 5%); } .ds-btn-secondary:active { transform: translateY(1px); } .ds-btn-secondary:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.870 0.080 88.4 / 30%); } .ds-btn-secondary:disabled { opacity: 50%; pointer-events: none; }"
     },
     {
       "name": "Ghost Button",
       "kind": "button",
       "refersTo": "button-ghost",
-      "description": "The quiet action: no fill, no border, Warm Off-White label that takes a Warm Charcoal wash on hover. It is the pattern for a control that must sit on a brown surface, where an olive boundary collapses to 1.50:1.",
+      "description": "The quiet action: no fill, no border, Forest 100 label that takes a forest 850 wash on hover. It is the pattern for a control that must sit on a raised surface, where a decorative boundary would collapse to a whisper.",
       "html": "<button class=\"ds-btn-ghost\">Закрыть</button>",
-      "css": ".ds-btn-ghost { --foreground: oklch(0.979 0.005 95.099); --muted: oklch(0.288 0.009 67.447); --ring: oklch(0.757 0.079 88.436); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 24px; border: 1px solid transparent; border-radius: 0; font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; white-space: nowrap; cursor: pointer; outline: none; background: transparent; color: var(--foreground); transition: background-color 150ms, color 150ms, transform 150ms; } .ds-btn-ghost:hover { background: oklch(0.288 0.009 67.447 / 50%); color: var(--foreground); } .ds-btn-ghost:active { transform: translateY(1px); } .ds-btn-ghost:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.757 0.079 88.436) / 30%; } .ds-btn-ghost:disabled { opacity: 50%; pointer-events: none; }"
+      "css": ".ds-btn-ghost { --foreground: oklch(0.900 0.021 131.5); --muted: oklch(0.235 0.020 129.5); --ring: oklch(0.870 0.080 88.4); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 24px; border: 1px solid transparent; border-radius: 0; font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; white-space: nowrap; cursor: pointer; outline: none; background: transparent; color: var(--foreground); transition: background-color 150ms, color 150ms, transform 150ms; } .ds-btn-ghost:hover { background: var(--muted); color: var(--foreground); } .ds-btn-ghost:active { transform: translateY(1px); } .ds-btn-ghost:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.870 0.080 88.4 / 30%); } .ds-btn-ghost:disabled { opacity: 50%; pointer-events: none; }"
     },
     {
       "name": "Destructive Button",
       "kind": "button",
       "refersTo": "button-destructive",
-      "description": "Destructive intent is Ember — the one signal in the system that is neither green nor brass, and never a red. Deep Forest label on the fill; hover drops to Ember at 90%. Ember is never a surface.",
+      "description": "Destructive intent is Ember — the one signal in the system that is neither green nor brass, and never a red. Forest 950 label on the fill; hover steps to Ember 600. Ember is never a surface.",
       "html": "<button class=\"ds-btn-destructive\">Удалить</button>",
-      "css": ".ds-btn-destructive { --destructive: oklch(0.661 0.08 45.402); --destructive-foreground: oklch(0.267 0.033 131); --ring: oklch(0.757 0.079 88.436); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 24px; border: 1px solid transparent; border-radius: 0; background: var(--destructive); color: var(--destructive-foreground); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; white-space: nowrap; cursor: pointer; outline: none; transition: background-color 150ms, transform 150ms; } .ds-btn-destructive:hover { background: oklch(0.661 0.08 45.402 / 90%); } .ds-btn-destructive:active { transform: translateY(1px); } .ds-btn-destructive:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.757 0.079 88.436 / 30%); }"
+      "css": ".ds-btn-destructive { --destructive: oklch(0.661 0.080 45.4); --destructive-foreground: oklch(0.145 0.012 132.1); --ring: oklch(0.870 0.080 88.4); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 24px; border: 1px solid transparent; border-radius: 0; background: var(--destructive); color: var(--destructive-foreground); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; white-space: nowrap; cursor: pointer; outline: none; transition: background-color 150ms, transform 150ms; } .ds-btn-destructive:hover { background: oklch(0.621 0.076 46.1); } .ds-btn-destructive:active { transform: translateY(1px); } .ds-btn-destructive:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.870 0.080 88.4 / 30%); }"
     },
     {
       "name": "Link Button",
       "kind": "button",
       "refersTo": "button-link",
-      "description": "A Button that reads as a link: brass ink, underlined, 4px offset, inside the standard button box, with no hover change. It is not the Inline Link component — a link inside prose keeps Warm Off-White ink and marks itself with the brass underline.",
+      "description": "A Button that reads as a link: brass ink, underlined, 4px offset, inside the standard button box. It is not the Inline Link component — a link inside prose keeps Forest 100 ink and marks itself with the brass underline.",
       "html": "<button class=\"ds-btn-link\">Показать все</button>",
-      "css": ".ds-btn-link { --primary: oklch(0.757 0.079 88.436); --ring: oklch(0.757 0.079 88.436); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 24px; border: 1px solid transparent; border-radius: 0; font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; white-space: nowrap; cursor: pointer; outline: none; background: transparent; color: var(--primary); text-decoration: underline; text-underline-offset: 4px; transition: color 150ms; } .ds-btn-link:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.757 0.079 88.436) / 30%; } .ds-btn-link:disabled { opacity: 50%; pointer-events: none; }"
+      "css": ".ds-btn-link { --primary: oklch(0.757 0.079 88.4); --ring: oklch(0.870 0.080 88.4); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 24px; border: 1px solid transparent; border-radius: 0; font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; white-space: nowrap; cursor: pointer; outline: none; background: transparent; color: var(--primary); text-decoration: underline; text-underline-offset: 4px; transition: color 150ms; } .ds-btn-link:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.870 0.080 88.4 / 30%); } .ds-btn-link:disabled { opacity: 50%; pointer-events: none; }"
     },
     {
       "name": "Icon Button",
       "kind": "button",
       "refersTo": "button-icon",
-      "description": "The square action: the outline pattern at `size-10` carrying one 14px inline glyph — add, edit, dismiss. As an outline control its Deep Olive hairline lives on the canvas; on a brown surface it changes pattern to ghost.",
+      "description": "The square action: the outline pattern at `size-10` carrying one 14px inline glyph — add, edit, dismiss. Its edge is a Forest 500 control border on the canvas; on a raised surface it changes pattern to ghost.",
       "html": "<button class=\"ds-btn-icon\" aria-label=\"Создать\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\" /><path d=\"M12 5v14\" /></svg></button>",
-      "css": ".ds-btn-icon { --border: oklch(0.539 0.057 127.665); --foreground: oklch(0.979 0.005 95.099); --ring: oklch(0.757 0.079 88.436); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 0; border: 1px solid var(--border); border-radius: 0; background: transparent; color: var(--foreground); cursor: pointer; outline: none; transition: background-color 150ms, border-color 150ms, transform 150ms; } .ds-btn-icon svg { width: 14px; height: 14px; } .ds-btn-icon:hover { background: oklch(0.539 0.057 127.665 / 30%); } .ds-btn-icon:active { transform: translateY(1px); } .ds-btn-icon:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.757 0.079 88.436) / 30%; } .ds-btn-icon:disabled { opacity: 50%; pointer-events: none; }"
+      "css": ".ds-btn-icon { --control-border: oklch(0.538 0.055 130.8); --foreground: oklch(0.900 0.021 131.5); --ring: oklch(0.870 0.080 88.4); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 0; border: 1px solid var(--control-border); border-radius: 0; background: transparent; color: var(--foreground); cursor: pointer; outline: none; transition: background-color 150ms, border-color 150ms, transform 150ms; } .ds-btn-icon svg { width: 14px; height: 14px; } .ds-btn-icon:hover { background: oklch(0.336 0.028 130.7 / 60%); } .ds-btn-icon:active { transform: translateY(1px); } .ds-btn-icon:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.870 0.080 88.4 / 30%); } .ds-btn-icon:disabled { opacity: 50%; pointer-events: none; }"
     },
     {
       "name": "Separator",
       "kind": "custom",
-      "description": "One pixel of Deep Olive: a rule that divides and never outlines. Horizontal at full width, or vertical stretching to its row; the command palette's own divider is the same rule at 50%.",
+      "description": "One pixel of Forest 700: a rule that divides and never outlines. Horizontal at full width, or vertical stretching to its row; the command palette’s own divider is the same rule at the overlay edge.",
       "html": "<hr class=\"ds-separator\" />",
-      "css": ".ds-separator { --border: oklch(0.539 0.057 127.665); height: 1px; width: 100%; margin: 0; border: 0; background: var(--border); }"
+      "css": ".ds-separator { --border: oklch(0.336 0.028 130.7); height: 1px; width: 100%; margin: 0; border: 0; background: var(--border); }"
     },
     {
       "name": "Spinner",
       "kind": "custom",
       "description": "The waiting mark: a 16px glyph in the ink it inherits, `role=\"status\"`, one turn per second, replacing loading copy rather than accompanying it.",
       "html": "<svg class=\"ds-spinner\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" role=\"status\" aria-label=\"Загрузка\"><path d=\"M21 12a9 9 0 1 1-6.219-8.56\" /></svg>",
-      "css": ".ds-spinner { --foreground: oklch(0.979 0.005 95.099); width: 16px; height: 16px; color: var(--foreground); animation: ds-spin 1s linear infinite; } @keyframes ds-spin { to { transform: rotate(360deg); } }"
+      "css": ".ds-spinner { --foreground: oklch(0.900 0.021 131.5); width: 16px; height: 16px; color: var(--foreground); animation: ds-spin 1s linear infinite; } @keyframes ds-spin { to { transform: rotate(360deg); } }"
     },
     {
       "name": "Text Field",
       "kind": "input",
       "refersTo": "input",
-      "description": "No box: a single Deep Olive underline under transparent 1rem type, switching to brass on focus and Ember on invalid. One size at every breakpoint. The error strip is one recipe on every surface — the `ember.10` tint with `--foreground` text (13.4:1 on the floor, 7.05:1 on a card), where Ember ink on brown would be 2.34:1 and is never used — because the underline alone is too subtle to carry the state.",
+      "description": "No box: a single Forest 500 underline under transparent 1rem type, switching to brass on focus and Ember on invalid. One size at every breakpoint. Invalid also carries an Ember capsule — destructive fill, Forest 950 label (6.21:1 on the floor, 5.21:1 on a card) — because the underline alone is too subtle to carry the state; the message is never Ember ink.",
       "html": "<div class=\"ds-field\"><label class=\"ds-field-label\" for=\"ds-material-name\">Название</label><input id=\"ds-material-name\" class=\"ds-input\" value=\"Кожа растительного дубления\" /><p class=\"ds-field-error\">Слишком коротко</p></div>",
-      "css": ".ds-field { --foreground: oklch(0.979 0.005 95.099); --muted-foreground: oklch(0.843 0.028 72.764); --input: oklch(0.539 0.057 127.665); --ring: oklch(0.757 0.079 88.436); --invalid: oklch(0.661 0.08 45.402); --ember-10: oklch(0.661 0.08 45.402 / 10%); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: flex; flex-direction: column; gap: 12px; width: 100%; } .ds-field-label { color: var(--foreground); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; } .ds-input { width: 100%; height: 40px; padding: 4px 0; border: 1px solid transparent; border-bottom-color: var(--input); border-radius: 0; background: transparent; color: var(--foreground); font-family: inherit; font-size: 16px; font-weight: 500; line-height: 1.5; outline: none; transition: border-color 150ms; } .ds-input::placeholder { color: var(--muted-foreground); } .ds-input:focus-visible { border-bottom-color: var(--ring); } .ds-input[aria-invalid=\"true\"] { border-bottom-color: var(--invalid); } .ds-field-error { width: fit-content; margin: 0; padding: 4px 8px; background: var(--ember-10); color: var(--foreground); font-size: 16px; font-weight: 500; line-height: 24px; }"
+      "css": ".ds-field { --foreground: oklch(0.900 0.021 131.5); --muted-foreground: oklch(0.721 0.037 130.6); --input: oklch(0.538 0.055 130.8); --ring: oklch(0.870 0.080 88.4); --invalid: oklch(0.661 0.080 45.4); --destructive: oklch(0.661 0.080 45.4); --destructive-foreground: oklch(0.145 0.012 132.1); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: flex; flex-direction: column; gap: 12px; width: 100%; } .ds-field-label { color: var(--foreground); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; } .ds-input { width: 100%; height: 40px; padding: 4px 0; border: 1px solid transparent; border-bottom-color: var(--input); border-radius: 0; background: transparent; color: var(--foreground); font-family: inherit; font-size: 16px; font-weight: 500; line-height: 1.5; outline: none; transition: border-color 150ms; } .ds-input::placeholder { color: var(--muted-foreground); } .ds-input:focus-visible { border-bottom-color: var(--ring); } .ds-input[aria-invalid=\"true\"] { border-bottom-color: var(--invalid); } .ds-field-error { width: fit-content; margin: 0; padding: 4px 8px; background: var(--destructive); color: var(--destructive-foreground); font-size: 16px; font-weight: 500; line-height: 24px; }"
     },
     {
       "name": "Card",
       "kind": "card",
       "refersTo": "card",
-      "description": "Tier-2 surface: Warm Brown above the Deep Forest canvas, held by a Deep Olive hairline ring at 60% and a whisper of shadow. Square corners, 32px internal rhythm, action cluster in the header's right column; descriptions cap at the 65ch prose measure.",
+      "description": "Tier-2 surface: Forest 850 above the Forest 950 canvas, held by tone and a whisper of shadow, with no ring. Square corners, 32px internal rhythm, action cluster in the header’s right column; descriptions cap at the 65ch prose measure.",
       "html": "<div class=\"ds-card\"><div class=\"ds-card-header\"><div class=\"ds-card-title\">Кожа растительного дубления</div><div class=\"ds-card-action\"><button class=\"ds-card-icon-btn\" aria-label=\"Удалить\">✕</button><button class=\"ds-card-icon-btn\" aria-label=\"Изменить\">✎</button></div></div><div class=\"ds-card-description\">Описание: плотная кожа для ремней и сумок</div><div class=\"ds-card-content\">Тип: Кожа</div></div>",
-      "css": ".ds-card { --card: oklch(0.452 0.047 53.927); --card-foreground: oklch(0.979 0.005 95.099); --muted-foreground: oklch(0.843 0.028 72.764); --border: oklch(0.539 0.057 127.665); --ring: oklch(0.757 0.079 88.436); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: flex; flex-direction: column; gap: 32px; padding: 32px; background: var(--card); color: var(--card-foreground); border-radius: 0; box-shadow: 0 0 0 1px oklch(0.539 0.057 127.665 / 60%), 0 1px 2px 0 oklch(0% 0 0 / 0.05); } .ds-card-header { display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 8px; } .ds-card-title { font-size: 20px; font-weight: 600; line-height: 1.15; letter-spacing: 0.05em; text-transform: uppercase; } .ds-card-action { display: flex; gap: 8px; grid-column: 2; grid-row: 1; justify-self: end; } .ds-card-icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 1px solid var(--border); border-radius: 0; background: transparent; color: var(--card-foreground); cursor: pointer; outline: none; transition: background-color 150ms; } .ds-card-icon-btn:hover { background: oklch(0.288 0.009 67.447 / 50%); } .ds-card-icon-btn:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.757 0.079 88.436 / 30%); } .ds-card-description { color: var(--muted-foreground); font-size: 16px; font-weight: 500; line-height: 24px; max-width: var(--measure-prose, 65ch); } .ds-card-content { font-size: 16px; font-weight: 500; line-height: 24px; }"
+      "css": ".ds-card { --card: oklch(0.235 0.020 129.5); --card-foreground: oklch(0.900 0.021 131.5); --muted-foreground: oklch(0.721 0.037 130.6); --border: oklch(0.336 0.028 130.7); --muted: oklch(0.235 0.020 129.5); --ring: oklch(0.870 0.080 88.4); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: flex; flex-direction: column; gap: 32px; padding: 32px; background: var(--card); color: var(--card-foreground); border-radius: 0; box-shadow: 0 1px 2px 0 oklch(0% 0 0 / 0.4), 0 10px 24px -14px oklch(0% 0 0 / 0.5); } .ds-card-header { display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 8px; } .ds-card-title { font-size: 20px; font-weight: 600; line-height: 1.15; letter-spacing: 0.05em; text-transform: uppercase; } .ds-card-action { display: flex; gap: 8px; grid-column: 2; grid-row: 1; justify-self: end; } .ds-card-icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 1px solid var(--border); border-radius: 0; background: transparent; color: var(--card-foreground); cursor: pointer; outline: none; transition: background-color 150ms; } .ds-card-icon-btn:hover { background: var(--muted); } .ds-card-icon-btn:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.870 0.080 88.4 / 30%); } .ds-card-description { color: var(--muted-foreground); font-size: 16px; font-weight: 500; line-height: 24px; max-width: var(--measure-prose, 65ch); } .ds-card-content { font-size: 16px; font-weight: 500; line-height: 24px; }"
     },
     {
       "name": "Command Palette",
       "kind": "custom",
       "refersTo": "command-item",
-      "description": "The signature surface: the cmdk palette that rests as one line on the popover surface — a shadowed slab with no outline, closed by the underline search field alone. Focus, click, or `/` opens the absolute overlay under that line so content never moves; the field's underline is the only divider, and selection is a Warm Charcoal tonal wash, never brass.",
+      "description": "The signature surface: the cmdk palette that rests as one line on the Forest 800 popover — a shadowed slab with no outline and no underline. Focus, click, or `/` opens the absolute overlay flush under that line so content never moves; the panel stays continuous, and selection is a Forest 850 tonal step down, never brass.",
       "html": "<div class=\"ds-command\"><div class=\"ds-command-search\"><svg class=\"ds-command-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"></circle><path d=\"m16 16 4 4\"></path></svg><input class=\"ds-command-input\" placeholder=\"Поиск\" /></div><div class=\"ds-command-overlay\"><div class=\"ds-command-heading\">Меню</div><div class=\"ds-command-item\" data-selected=\"true\">Материалы</div><div class=\"ds-command-item\">Настройки</div></div></div>",
-      "css": ".ds-command { --popover: oklch(0.452 0.047 53.927); --input: oklch(0.539 0.057 127.665); --border: oklch(0.539 0.057 127.665); --foreground: oklch(0.979 0.005 95.099); --muted: oklch(0.288 0.009 67.447); --muted-foreground: oklch(0.843 0.028 72.764); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; position: relative; width: 448px; max-width: 100%; background: var(--popover); color: var(--foreground); border-radius: 0; box-shadow: 0 4px 6px -1px oklch(0% 0 0 / 0.1), 0 2px 4px -2px oklch(0% 0 0 / 0.1); } .ds-command-search { position: relative; } .ds-command-icon { position: absolute; left: 16px; top: 50%; width: 14px; height: 14px; transform: translateY(-50%); color: var(--muted-foreground); opacity: 0.5; pointer-events: none; } .ds-command-input { width: 100%; height: 40px; padding: 0 12px 0 32px; border: 1px solid transparent; border-bottom-color: var(--input); border-radius: 0; background: transparent; color: var(--foreground); font-family: inherit; font-size: 16px; font-weight: 500; line-height: 1.5; outline: none; } .ds-command-input::placeholder { color: var(--muted-foreground); } .ds-command-search:focus-within .ds-command-input { border-bottom-color: oklch(0.757 0.079 88.436); } .ds-command-overlay { position: absolute; top: 100%; left: 0; right: 0; display: none; padding: 6px; background: var(--popover); border: 1px solid var(--border); border-top: 0; border-radius: 0; box-shadow: 0 4px 6px -1px oklch(0% 0 0 / 0.1), 0 2px 4px -2px oklch(0% 0 0 / 0.1); } .ds-command:focus-within .ds-command-overlay { display: block; } .ds-command-heading { padding: 8px 12px; color: var(--muted-foreground); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; } .ds-command-item { display: flex; align-items: center; gap: 8px; padding: 8px 12px; font-size: 16px; font-weight: 500; line-height: 24px; cursor: default; user-select: none; } .ds-command-item[data-selected=\"true\"] { background: var(--muted); color: var(--foreground); }"
+      "css": ".ds-command { --popover: oklch(0.267 0.033 131.0); --input: oklch(0.538 0.055 130.8); --border: oklch(0.336 0.028 130.7); --foreground: oklch(0.900 0.021 131.5); --muted: oklch(0.235 0.020 129.5); --muted-foreground: oklch(0.721 0.037 130.6); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; position: relative; width: 100%; background: var(--popover); color: var(--foreground); border-radius: 0; box-shadow: 0 4px 6px -1px oklch(0% 0 0 / 0.1), 0 2px 4px -2px oklch(0% 0 0 / 0.1); } .ds-command-search { position: relative; } .ds-command-icon { position: absolute; left: 16px; top: 50%; width: 14px; height: 14px; transform: translateY(-50%); color: var(--muted-foreground); opacity: 0.5; pointer-events: none; } .ds-command-input { width: 100%; height: 40px; padding: 0 12px 0 32px; border: 0; border-radius: 0; background: transparent; caret-color: oklch(0.870 0.080 88.4); color: var(--foreground); font-family: inherit; font-size: 16px; font-weight: 500; line-height: 1.5; outline: none; } .ds-command-input::placeholder { color: var(--muted-foreground); } .ds-command-overlay { position: absolute; top: 100%; left: 0; right: 0; display: none; padding: 6px; background: var(--popover); border-radius: 0; box-shadow: 0 4px 6px -1px oklch(0% 0 0 / 0.1), 0 2px 4px -2px oklch(0% 0 0 / 0.1); } .ds-command:focus-within .ds-command-overlay { display: block; } .ds-command-heading { padding: 8px 12px; color: var(--muted-foreground); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; } .ds-command-item { display: flex; align-items: center; gap: 8px; padding: 8px 12px; font-size: 16px; font-weight: 500; line-height: 24px; cursor: default; user-select: none; } .ds-command-item[data-selected=\"true\"] { background: var(--muted); color: var(--foreground); }"
     },
     {
       "name": "Dialog",
       "kind": "custom",
       "refersTo": "dialog",
-      "description": "Tier-3 floating layer on the Warm Brown popover surface, held by a full-strength Deep Olive ring and shadow-md. Opens at 100ms with a fade and 95% zoom; descriptions cap at the 65ch prose measure. Its dismissal is the footer's ghost Закрыть — DialogFooter renders it for every dialog, ahead of the actions, and no dialog carries a corner ✕ (upstream shadcn's default, removed on purpose); Escape and an outside press are bonus paths. The action on a brown surface is Ember, per the destructive rule.",
+      "description": "Tier-3 floating layer on the Forest 800 popover surface, held by shadow-md and its tone step, with no ring. Opens at 100ms with a fade and 95% zoom; descriptions cap at the 65ch prose measure. Its dismissal is the footer’s ghost Закрыть — DialogFooter renders it for every dialog, ahead of the actions, and no dialog carries a corner ✕ (upstream shadcn’s default, removed on purpose); Escape and an outside press are bonus paths. The destructive action is Ember, per the destructive rule.",
       "html": "<div class=\"ds-dialog\"><div class=\"ds-dialog-title\">Удалить материал?</div><div class=\"ds-dialog-description\">Приходы и партии, ссылающиеся на него, останутся в истории.</div><div class=\"ds-dialog-footer\"><button class=\"ds-dialog-close\">Закрыть</button><button class=\"ds-dialog-confirm\">Удалить</button></div></div>",
-      "css": ".ds-dialog { --popover: oklch(0.452 0.047 53.927); --popover-foreground: oklch(0.979 0.005 95.099); --muted-foreground: oklch(0.843 0.028 72.764); --border: oklch(0.539 0.057 127.665); --destructive: oklch(0.661 0.08 45.402); --destructive-foreground: oklch(0.267 0.033 131); --ring: oklch(0.757 0.079 88.436); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: grid; gap: 24px; width: 100%; max-width: 448px; padding: 24px; background: var(--popover); color: var(--popover-foreground); border-radius: 0; box-shadow: 0 0 0 1px var(--border), 0 4px 6px -1px oklch(0% 0 0 / 0.1), 0 2px 4px -2px oklch(0% 0 0 / 0.1); } .ds-dialog-title { font-size: 20px; font-weight: 600; line-height: 1.15; letter-spacing: 0.05em; text-transform: uppercase; } .ds-dialog-description { color: var(--muted-foreground); font-size: 16px; font-weight: 500; line-height: 24px; max-width: var(--measure-prose, 65ch); } .ds-dialog-footer { display: flex; justify-content: flex-end; gap: 8px; } .ds-dialog-close, .ds-dialog-confirm { display: inline-flex; align-items: center; justify-content: center; height: 40px; padding: 0 24px; border-radius: 0; font-family: inherit; font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; cursor: pointer; outline: none; transition: background-color 150ms, transform 150ms; } .ds-dialog-close { border: 1px solid transparent; background: transparent; color: var(--popover-foreground); } .ds-dialog-close:hover { background: oklch(0.288 0.009 67.447 / 50%); } .ds-dialog-confirm { border: 1px solid transparent; background: var(--destructive); color: var(--destructive-foreground); } .ds-dialog-confirm:hover { background: oklch(0.661 0.08 45.402 / 90%); } .ds-dialog-close:focus-visible, .ds-dialog-confirm:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.757 0.079 88.436 / 30%); }"
+      "css": ".ds-dialog { --popover: oklch(0.267 0.033 131.0); --popover-foreground: oklch(0.900 0.021 131.5); --muted-foreground: oklch(0.721 0.037 130.6); --border: oklch(0.336 0.028 130.7); --muted: oklch(0.235 0.020 129.5); --destructive: oklch(0.661 0.080 45.4); --destructive-foreground: oklch(0.145 0.012 132.1); --ring: oklch(0.870 0.080 88.4); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: grid; gap: 24px; width: 100%; max-width: 448px; padding: 24px; background: var(--popover); color: var(--popover-foreground); border-radius: 0; box-shadow: 0 4px 6px -1px oklch(0% 0 0 / 0.1), 0 2px 4px -2px oklch(0% 0 0 / 0.1); } .ds-dialog-title { font-size: 20px; font-weight: 600; line-height: 1.15; letter-spacing: 0.05em; text-transform: uppercase; } .ds-dialog-description { color: var(--muted-foreground); font-size: 16px; font-weight: 500; line-height: 24px; max-width: var(--measure-prose, 65ch); } .ds-dialog-footer { display: flex; justify-content: flex-end; gap: 8px; } .ds-dialog-close, .ds-dialog-confirm { display: inline-flex; align-items: center; justify-content: center; height: 40px; padding: 0 24px; border-radius: 0; font-family: inherit; font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; cursor: pointer; outline: none; transition: background-color 150ms, transform 150ms; } .ds-dialog-close { border: 1px solid transparent; background: transparent; color: var(--popover-foreground); } .ds-dialog-close:hover { background: var(--muted); } .ds-dialog-confirm { border: 1px solid transparent; background: var(--destructive); color: var(--destructive-foreground); } .ds-dialog-confirm:hover { background: oklch(0.621 0.076 46.1); } .ds-dialog-close:focus-visible, .ds-dialog-confirm:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.870 0.080 88.4 / 30%); }"
     },
     {
       "name": "Inline Link",
       "kind": "custom",
       "refersTo": "link",
-      "description": "Navigation inside copy and rows: Warm Off-White ink the brass underline marks as interactive, and the ink itself turns brass on hover. The brass is the line, not the text, so the 4.5:1 body floor holds on the canvas and on a brown card alike, and the line still marks a link on touch, where no hover exists. Type is inherited from the surrounding role.",
+      "description": "Navigation inside copy and rows: Forest 100 ink that the brass underline marks as interactive, and the ink itself turns brass on hover. The brass is the line, not the text, so the 4.5:1 body floor holds on the canvas and on a card alike, and the line still marks a link on touch, where no hover exists. Type is inherited from the surrounding role.",
       "html": "<a class=\"ds-link\" href=\"#\">Открыть приход</a>",
-      "css": ".ds-link { --foreground: oklch(0.979 0.005 95.099); --primary: oklch(0.757 0.079 88.436); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; color: var(--foreground); text-decoration: underline; text-decoration-color: var(--primary); text-underline-offset: 4px; transition: color 150ms; } .ds-link:hover { color: var(--primary); } .ds-link:focus-visible { outline: 2px solid oklch(0.757 0.079 88.436 / 50%); outline-offset: 2px; }"
+      "css": ".ds-link { --foreground: oklch(0.900 0.021 131.5); --primary: oklch(0.757 0.079 88.4); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; color: var(--foreground); text-decoration: underline; text-decoration-color: var(--primary); text-underline-offset: 4px; transition: color 150ms; } .ds-link:hover { color: var(--primary); } .ds-link:focus-visible { outline: 2px solid oklch(0.870 0.080 88.4 / 50%); outline-offset: 2px; }"
     },
     {
       "name": "Header Navigation",
       "kind": "nav",
       "refersTo": "nav-link",
-      "description": "The shell header: a caps title wordmark on the left, a gap-8 row of caps label links on the right. The link recipe is the NavLink component's — muted beige shifting to off-white on hover and staying off-white for the current route; the header only lays the list out.",
+      "description": "The shell header: a caps title wordmark on the left, a gap-8 row of caps label links on the right. The link recipe is the NavLink component’s — Forest 300 shifting to Forest 100 on hover and staying Forest 100 for the current route; the header only lays the list out.",
       "html": "<header class=\"ds-header\"><span class=\"ds-header-wordmark\">Sklad</span><nav><ul class=\"ds-nav-list\"><li><a class=\"ds-nav-link\" href=\"#\">Главная</a></li><li><a class=\"ds-nav-link\" href=\"#\">Настройки</a></li><li><a class=\"ds-nav-link\" href=\"#\">Материалы</a></li></ul></nav></header>",
-      "css": ".ds-header { --foreground: oklch(0.979 0.005 95.099); --muted-foreground: oklch(0.843 0.028 72.764); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: flex; align-items: center; justify-content: space-between; padding: 16px; } .ds-header-wordmark { color: var(--foreground); font-size: 20px; font-weight: 600; line-height: 1.15; letter-spacing: 0.05em; text-transform: uppercase; } .ds-nav-list { display: flex; gap: 32px; margin: 0; padding: 0; list-style: none; } .ds-nav-link { color: var(--muted-foreground); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; text-decoration: none; white-space: nowrap; transition: color 150ms; } .ds-nav-link:hover { color: var(--foreground); } .ds-nav-link[aria-current=\"page\"] { color: var(--foreground); } .ds-nav-link:focus-visible { outline: 2px solid oklch(0.757 0.079 88.436 / 50%); outline-offset: 2px; }"
+      "css": ".ds-header { --foreground: oklch(0.900 0.021 131.5); --muted-foreground: oklch(0.721 0.037 130.6); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: flex; align-items: center; justify-content: space-between; padding: 16px; } .ds-header-wordmark { color: var(--foreground); font-size: 20px; font-weight: 600; line-height: 1.15; letter-spacing: 0.05em; text-transform: uppercase; } .ds-nav-list { display: flex; gap: 32px; margin: 0; padding: 0; list-style: none; } .ds-nav-link { color: var(--muted-foreground); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; text-decoration: none; white-space: nowrap; transition: color 150ms; } .ds-nav-link:hover { color: var(--foreground); } .ds-nav-link[aria-current=\"page\"] { color: var(--foreground); } .ds-nav-link:focus-visible { outline: 2px solid oklch(0.870 0.080 88.4 / 50%); outline-offset: 2px; }"
     }
   ],
   "narrative": {
-    "northStar": "The Forest & Hide Atelier",
-    "overview": "Sklad is the working tool of a small atelier that builds physical goods by hand and runs the whole business itself. The visual world answers to that room: deep forest green as the page floor, warm hide and charcoal as the surfaces, muted brass as the only thing that shines. It is the disciplined serenity of a leather artisan's workshop translated into an interface — organic warmth and natural shelter, never cold tech-noir, never neon, never a glowing dashboard.\n\nThe system is quiet by construction. Because recording a material receipt or a batch is a break in the work rather than a sitting-down task, the UI recedes: one content column, no ornament, no color competing with the data. What carries the identity is not decoration but geometry and material — a single sans face set in uppercase editorial caps, sharp unrounded corners on every shipped element, and depth built from tonal surface steps rather than floating cards. Hierarchy comes from type weight and from how light a surface is, not from borders drawn in a second color.\n\nReliability here is visual: numbers, counts and costs must be readable at a glance on a phone at the bench, and a destructive action must never be mistaken for an ordinary one. Every rule below exists to keep that reading honest.",
+    "northStar": "The Forest Atelier",
+    "overview": "Sklad is the working tool of a small atelier that builds physical goods by hand and runs the whole business itself. The world answers to that room: a single forest green, stepped from a near-black floor to a pale sage ink, holds every surface, every line and every word. Brass is the only thing that shines. The system is quiet by construction. Because recording a material receipt or a batch is a break in the work rather than a sitting-down task, the UI recedes: one content column, no ornament, no colour competing with the data. Identity is carried by geometry and material — one sans face in uppercase editorial caps, sharp unrounded corners, and depth built from tonal steps rather than floating cards. Hierarchy comes from type weight and from how light a surface is, not from borders drawn in a second colour. Reliability here is visual: numbers, counts and costs must be readable at a glance on a phone at the bench, and a destructive action must never be mistaken for an ordinary one. Every rule below exists to keep that reading honest.",
     "keyCharacteristics": [
       "Dark-only presentation; the light block in `tailwind.css` is documentation, not a shipped mode.",
-      "One typeface (Manrope) in an uppercase-caps editorial hierarchy, at a 1rem reading floor with a 65ch prose measure.",
-      "Brass is rare and always carries Deep Forest text; brown is a surface, never an accent.",
+      "One hue for the whole world: forest (H≈131), stepped into nine tones that carry floor, surfaces, linework and text.",
+      "Surfaces are tone steps, never a second hue: floor `forest.950` → card `forest.850` → popover `forest.800`.",
+      "Brass has two jobs: hardware at `brass.500` (the CTA), highlight at `brass.300` (accent and focus ring).",
+      "Borders are decoration (1.40–1.67:1); every control edge owns `--control-border` and clears 3:1.",
       "`rounded-none` on every shipped component — sharp sera geometry.",
-      "Depth by tonal layering plus hairline `--border` rings; shadows only as a whisper (`shadow-sm`, `shadow-md`).",
+      "Depth by tonal layering plus shadow; surfaces carry no ring (`shadow-card`, `shadow-md`).",
       "Single-column `max-w-4xl` shell with a 4px spacing rhythm."
     ],
     "rules": [
       {
         "name": "The One Voice Rule",
-        "body": "Muted Brass is spent on at most one important thing per view. It always carries Deep Forest text; Warm Off-White on brass is 2.04:1 and must never be used.",
+        "body": "Brass is spent on at most one important thing per view. `brass.500` always carries `forest.950` text; `forest.100` on `brass.500` is 1.62:1 (1.11:1 on the highlight) and must never be used.",
         "section": "colors"
       },
       {
-        "name": "The Brown Is A Surface Rule",
-        "body": "Warm Brown fills big surfaces only. It is never an accent, never a small control, never text on the dark canvas, and never an action fill — brown on brown is 1.00:1, which is exactly how the destructive button used to disappear on cards and dialogs.",
+        "name": "The One Hue Rule",
+        "body": "The world is a single hue (H≈131). Surfaces, linework, text and charts all step through it; a second hue in a structural role is a bug, not a flavour. Ember is a signal, never a surface.",
+        "section": "colors"
+      },
+      {
+        "name": "The Border Is Decoration Rule",
+        "body": "`--border` is allowed to whisper (1.40–1.67:1). Anything a user is expected to see as a boundary — a control edge, an underline, a focus edge — uses `--control-border`, `--ring` or `--invalid`, all of which clear 3:1 against the surface they sit on.",
         "section": "colors"
       },
       {
         "name": "The No Raw Palette Rule",
-        "body": "Components reach for semantic tokens. Raw Tailwind palette colors (`text-green-600`, `bg-amber-500`) are off-system, in components and in Penpot alike.",
-        "section": "colors"
+        "body": "Components reach for semantic tokens. Raw Tailwind palette colours (`text-green-600`, `bg-amber-500`) are off-system, in components and in Penpot alike.",
+        "section": "components"
       },
       {
         "name": "The Error Is Ember Rule",
-        "body": "Destruction and error are Ember: `--invalid` for the underline and the error tint; `--destructive` (Ember fill, Deep Forest label) on the button that acts. Never Warm Off-White on Ember (3.00:1); never Ember as a surface.",
-        "section": "colors"
-      },
-      {
-        "name": "The Floor-Only Olive Rule",
-        "body": "Deep Olive is tuned against Deep Forest and stays there. On a brown surface olive linework is a whisper and an olive control is invisible — lift the surface or change the pattern, never darken the token.",
+        "body": "Destruction and error are Ember: `--invalid` for the underline, `--destructive` (Ember fill, `forest.950` label) for the button or capsule that acts. Never `forest.100` on Ember (2.38:1); never Ember as a surface.",
         "section": "colors"
       },
       {
         "name": "The Contrast Floor Rule",
-        "body": "`--muted-foreground` on `--background`, `--muted` and `--card` is the secondary-text pairing and stays ≥ 4.5:1 (4.60:1 on brown) whenever the neutral ramp is touched. A control boundary clears 3:1 against the surface it actually sits on (`--input`/`--border`/`--secondary` on the floor: 3.03:1) and error ink clears 4.5:1 (`--invalid`: 4.73:1). Never communicate status by color alone.",
+        "body": "`--muted-foreground` on any forest surface stays ≥ 4.5:1 (8.11 floor / 6.80 card). A control boundary clears 3:1 against the surface it actually sits on (`--control-border`: 3.02–3.96). Error and destructive clear 4.5:1 (5.21–6.21). Never communicate status by colour alone.",
         "section": "colors"
       },
       {
@@ -499,7 +522,7 @@
       },
       {
         "name": "The Layer-Before-Shadow Rule",
-        "body": "To lift content, move one surface level up the tonal ladder (canvas → Surface 1 → Surface 2 → Surface 3) and add the matching `border` ring. Only then add `shadow-sm` / `shadow-md`, and never invent a third shadow value.",
+        "body": "To lift content, move one step up the ladder (950 → 850 → 800). Only then add `shadow-card` / `shadow-md`, and never invent a third shadow value. A surface never earns a ring to prove it was lifted.",
         "section": "elevation"
       },
       {
@@ -509,31 +532,35 @@
       }
     ],
     "dos": [
-      "Do reach for `Button variant=\"outline\"` for the app's default secondary action, and `variant=\"default\"` (brass) for the one primary CTA on a view.",
-      "Do keep destructive/confirm actions visually distinct with `variant=\"destructive\"`, and pair destructive intent with a Dialog confirmation.",
-      "Do put Deep Forest text on brass — `--primary-foreground` every time.",
-      "Do use `gap-*` stacks and the `max-w-4xl` shell for new surfaces.",
-      "Do keep `--muted-foreground` for secondary text and `--foreground` for body.",
-      "Do lift surfaces tonally (next surface level) before reaching for a shadow.",
-      "Do set all type through `Typography` / the `type-*` tokens.",
-      "Do keep `rounded-none` on shipped components.",
-      "Do use tabular figures (`type-data`) for any column of numbers.",
-      "Do verify the `--muted-foreground` pairing stays ≥ 4.5:1 when the neutral ramp changes.",
-      "Do chart with the main color palette: `--chart-1` for a single series, deeper steps in order for up to three, and direct labels past that."
+      "**Do** reach for `Button variant=\"outline\"` for the app's default secondary action, and `variant=\"default\"` (brass) for the one primary CTA on a view.",
+      "**Do** keep destructive/confirm actions visually distinct with `variant=\"destructive\"` (Ember fill, `forest.950` label), and pair destructive intent with a Dialog confirmation.",
+      "**Do** put `forest.950` text on brass — `--primary-foreground` every time.",
+      "**Do** put every boundary that must be seen — control edges, underlines, focus edges — on `--control-border`, `--ring` or `--invalid`.",
+      "**Do** step surfaces up the forest ladder (950 → 850 → 800) before reaching for a shadow.",
+      "**Do** use `gap-*` stacks and the `max-w-4xl` shell for new surfaces.",
+      "**Do** keep `--muted-foreground` for secondary text and `--foreground` for body.",
+      "**Do** set all type through `Typography` / the `type-*` tokens.",
+      "**Do** keep `rounded-none` on shipped components.",
+      "**Do** use tabular figures (`type-data`) for any column of numbers.",
+      "**Do** chart with the main color palette: `--chart-1` for a single series, deeper steps in order for up to three, and direct labels past that.",
+      "**Do** re-run the rebind pass (`literal → apply token`) after editing a token value, in Penpot and in CSS.",
+      "**Do** verify the `--muted-foreground` pairing stays ≥ 4.5:1 when the forest ladder changes."
     ],
     "donts": [
-      "Don't put `--foreground` (Warm Off-White) text on `--primary`; it is 2.04:1.",
-      "Don't use Warm Brown as an accent, a small control, or as text on the dark canvas.",
-      "Don't add radius, colors, fonts or shadow values outside the token set above.",
-      "Don't override a component's colors via `className`.",
-      "Don't introduce serif, mono or additional display faces, and don't use `font-mono` in project components.",
-      "Don't bypass semantic tokens with raw palette colors (`text-green-600` etc.).",
-      "Don't communicate status or error by color alone — pair it with a message or icon.",
-      "Don't style Penpot text with a typography asset or an off-scale face — bind a `typography.*` token.",
-      "Don't maintain or introduce a light theme unless the product requirements explicitly change.",
-      "Don't separate chart series with a second hue or with Ember — the main color palette is a tonal ladder of one hue; label the series or vary the line dash.",
-      "Don't put olive linework or an olive control on a brown surface, and don't render error as a coloured ink — the `ember.10` tint plus light text is the only recipe, with `--invalid` left to the underline.",
-      "Don't put a corner ✕ on a dialog — dismissal is the footer's ghost `Закрыть`, which `DialogFooter` renders for every dialog (upstream shadcn's ✕ is removed on purpose)."
+      "**Don't** put `--foreground` (`forest.100`) text on `--primary`; it is 1.62:1.",
+      "**Don't** introduce a second hue into surfaces, linework or text — Ember is a signal, not a surface, and there is no second material family.",
+      "**Don't** ring a surface (card, dialog, command list) — they separate by tone and shadow; a border there is maintenance that reads as almost nothing.",
+      "**Don't** draw a control edge with `--border`; 1.40–1.67:1 is a whisper, not a boundary.",
+      "**Don't** render error as a coloured ink — the Ember capsule plus `--invalid` underline is the only recipe.",
+      "**Don't** put a corner ✕ on a dialog — dismissal is the footer's ghost `Закрыть`, which `DialogFooter` renders for every dialog (upstream shadcn's ✕ is removed on purpose).",
+      "**Don't** add radius, colors, fonts or shadow values outside the token set above.",
+      "**Don't** override a component's colors via `className`.",
+      "**Don't** introduce serif, mono or additional display faces, and don't use `font-mono` in project components.",
+      "**Don't** bypass semantic tokens with raw palette colors (`text-green-600` etc.).",
+      "**Don't** separate chart series with a second hue or with Ember — the palette is a tonal ladder of one hue; label the series or vary the line dash.",
+      "**Don't** communicate status or error by color alone — pair it with a message or icon.",
+      "**Don't** style Penpot text with a typography asset or an off-scale face — bind a `typography.*` token.",
+      "**Don't** maintain or introduce a light theme unless the product requirements explicitly change."
     ]
   }
 }
