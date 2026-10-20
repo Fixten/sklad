@@ -38,7 +38,7 @@ const isTypingTarget = (target: EventTarget | null) => {
 export default function CommandPalette({
   items,
   heading,
-  placeholder = "Поиск",
+  placeholder = "Начать работу",
   emptyMessage = "Нету",
 }: Props) {
   const [open, setOpen] = useState(false);

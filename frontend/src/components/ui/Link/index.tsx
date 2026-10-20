@@ -13,28 +13,39 @@ interface LinkProps {
   to: string;
   children: React.ReactNode;
   className?: string;
+  unstyled?: boolean;
 }
 
 interface NavLinkProps extends LinkProps {
   end?: boolean;
 }
 
-export function Link({ to, children, className }: LinkProps) {
+export default function Link({ to, children, className, unstyled }: LinkProps) {
   return (
     <RouterLink
       to={to}
-      className={cn(linkClassName, focusClassName, className)}
+      className={
+        unstyled ? className : cn(linkClassName, focusClassName, className)
+      }
     >
       {children}
     </RouterLink>
   );
 }
 
-export function NavLink({ to, children, className, end }: NavLinkProps) {
+export function NavLink({
+  to,
+  children,
+  className,
+  end,
+  unstyled,
+}: NavLinkProps) {
   return (
     <RouterNavLink
       to={to}
-      className={cn(navLinkClassName, focusClassName, className)}
+      className={
+        unstyled ? className : cn(navLinkClassName, focusClassName, className)
+      }
       end={end}
     >
       {children}

@@ -7,7 +7,6 @@ import Header from "@ui/Header";
 import { ThemeProvider } from "./ThemeProvider";
 
 export const navItems = [
-  { link: pathsRouter.home, name: "Главная" },
   ...(isFeatureEnabled("settings")
     ? [{ link: pathsRouter.settings, name: "Настройки" }]
     : []),

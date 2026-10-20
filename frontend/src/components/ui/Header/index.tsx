@@ -1,6 +1,8 @@
 import { cn } from "cn";
 
-import { NavLink } from "../Link";
+import pathsRouter from "@/router/paths.router";
+
+import Link, { NavLink } from "../Link";
 import Typography from "../Typography";
 
 interface Props {
@@ -20,7 +22,9 @@ export default function Header(props: Props) {
       )}
     >
       <Typography variant="title" tagName="span">
-        Sklad
+        <Link unstyled to={pathsRouter.home}>
+          Sklad
+        </Link>
       </Typography>
       <nav>
         <ul className="flex gap-4 sm:gap-8">

@@ -1,6 +1,6 @@
 import { MemoryRouter, Routes, Route } from "react-router";
 
-import { Link, NavLink } from "./index";
+import Link, { NavLink } from "./index";
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
