@@ -1,3 +1,11 @@
+import CommandPalette from "@ui/CommandPalette";
+
 export default function MaterialPage() {
-  return null; //todo
+  return (
+    <CommandPalette
+      items={[]}
+      placeholder="Поиск действий"
+      emptyMessage="Пока нет действий"
+    />
+  );
 }

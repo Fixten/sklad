@@ -62,8 +62,8 @@ function CommandInput({
   ...props
 }: React.ComponentProps<typeof CommandPrimitive.Input>) {
   return (
-    <div data-slot="command-input-wrapper" className="p-1">
-      <InputGroup className="bg-transparent px-3">
+    <div data-slot="command-input-wrapper">
+      <InputGroup className="has-[input:focus-visible]:border-b-ring bg-transparent px-3">
         <CommandPrimitive.Input
           data-slot="command-input"
           className={cn(

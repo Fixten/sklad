@@ -841,12 +841,21 @@ a deliberate deviation from upstream shadcn — re-apply it after any `shadcn ad
 
 ### Command Palette (signature)
 
-The home surface is a `cmdk` command palette, and it is the clearest single
-expression of the world: a bordered, `shadow-md` panel, a search field built on the
-same underline `InputGroup`, `type-label` group headings in `--muted-foreground`,
-`type-body` items at `px-3 py-2` that light up with `data-selected:bg-muted`, and
-`type-label` shortcuts at the right edge. Selection is a tonal wash, not a brass
-highlight — brass stays reserved.
+The command palette is the search entry on Home and Materials, and it is the clearest
+single expression of the world. It rests as one line on the `--popover` surface: a
+`shadow-md` slab with square corners and no outline of its own, closed by the single
+underline of the `InputGroup` at its bottom edge, with a search icon and a `type-body`
+placeholder. The underline turns brass while the field has keyboard focus, like every
+field. No list, heading, or item renders at rest. Focus, a click, or `/` opens it.
+
+The open list is an absolute overlay under the line — `top-full`, full width, `z-50`
+— bordered on its sides and bottom but not on top, so the field's underline remains
+the only divider between the field and the list, and surrounding content never moves.
+Internals are unchanged: `type-label` group
+headings in `--muted-foreground`, `type-body` items at `px-3 py-2` that light up with
+`data-selected:bg-muted`, and `type-label` shortcuts at the right edge. Selection is a
+tonal wash, not a brass highlight — brass stays reserved. Escape, an outside press, or
+a selection closes it; the empty message lives inside the open overlay.
 
 ### Links
 

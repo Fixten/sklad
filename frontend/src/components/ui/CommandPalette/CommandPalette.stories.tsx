@@ -1,4 +1,4 @@
-import { fn } from "storybook/test";
+import { fn, userEvent, within } from "storybook/test";
 
 import CommandPalette from "./index";
 
@@ -21,3 +21,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+
+export const Open: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.click(canvas.getByPlaceholderText("Поиск"));
+  },
+};

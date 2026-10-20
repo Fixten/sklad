@@ -19,14 +19,16 @@ The home page is the entry point for the working-day flow (`prd/overview.md`).
 - Mobile-first: single scrollable page, editors open as bottom sheets, user never
   leaves the home page to record something.
 - Full target UX designed up front; degrades behind feature flags as epics land.
-- Command palette (current `Home`) is kept as the search entry, not the page itself.
+- Command palette (current `Home`) is kept as the search entry, not the page itself:
+  closed by default as a one-line trigger, opening into an absolute overlay.
 
 ---
 
 ## 2. Approved Workflows
 
 ### Layout (top → bottom)
-1. **Header** — date + global search (command palette).
+1. **Header** — date + global search (command palette, one line at rest, opens as an
+   absolute overlay).
 2. **Quick actions** — three verbs: `Продажа` · `Приход материалов` · `Производство`.
 3. **Stock snapshot** — total items in stock, counts grouped by Product Template.
 4. **Recently sold** — today / this week, with date, price, customer.
@@ -73,8 +75,13 @@ The home page is the entry point for the working-day flow (`prd/overview.md`).
 3. **Cost visibility** — costs are shown only here, never on the home page itself.
 
 ### Workflow: Command Palette
-**Starting Context**: tap search or press `/`.
-- Searches actions, templates, inventory, and sections; Esc closes.
+**Starting Context**: tap the line, focus it, or press `/`.
+- Closed by default: one line under the header, with no list until opened.
+- Focus, a click, or `/` opens an absolute overlay under the line, so the page
+  content never moves.
+- Searches actions, templates, inventory, and sections.
+- Escape, an outside press, or a selection closes it; an empty message lives inside
+  the open overlay.
 - Power-user path to everything above.
 
 ---
@@ -88,7 +95,7 @@ The home page is the entry point for the working-day flow (`prd/overview.md`).
 | Produce | pick template → fill → release | Bottom sheet (2 steps) |
 | Review stock | summary → grouped rows → full list | Inline card → overlay screen |
 | Check cost | inventory → item | Overlay screen |
-| Find anything | type → select | Command palette (`/`) |
+| Find anything | focus / click / `/` → type → select | Command palette (one line, absolute overlay) |
 
 All sheets are multi-step in place (back returns to the pick step), so context is
 never lost and no navigation happens.

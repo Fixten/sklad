@@ -60,6 +60,18 @@ Fixing mistakes in recorded supply data.
 2. **Update**: User changes `Quantity` or `Price`.
 3. **Outcome**: Total stock for the variant is updated automatically.
 
+### Workflow: Actions Palette
+**Starting Context**: the palette line in the toolbar — click, focus, or `/`.
+**Intent**: Reach an action without leaving the inventory surface.
+
+**Flow**:
+1. **Closed at rest** — one line; no list or heading is rendered.
+2. **Open** — focus, click, or `/` opens an absolute overlay under the line, so the
+   inventory never moves.
+3. **Close** — Escape, an outside press, or a selection closes it.
+4. **Current scope** — no actions are wired yet, so the open overlay shows
+   `Пока нет действий`.
+
 ---
 
 ## 3. Interaction Model Summary
@@ -71,9 +83,12 @@ Fixing mistakes in recorded supply data.
 | **Find Material** | Flat search with hierarchy tags | Searchable Table / List |
 | **Verify Stock** | Aggregate $\rightarrow$ Detail | Expandable Row |
 | **Correct Stock** | Inline edit of supply batch | Row Edit / Modal |
+| **Run Action** | Focus / click / `/` → select | Command palette (absolute overlay) |
 
 ## 4. Constraints & Decisions
-- **No CRUD Pages**: No separate "Materials Page" or "Supplies Page". All actions emerge from search and inventory views.
+- **No CRUD Pages**: No separate "Materials Page" or "Supplies Page". The `/material`
+  route is the Materials surface — inventory plus the actions palette; all actions emerge
+  from search and inventory views, and editing stays in dialogs/drawers.
 - **Flattened Hierarchy**: The 4-level hierarchy is used for organization/context in search, not for navigation.
 - **Supplier Entry**: Handled as free-text/suggested within the Add Supply flow to minimize navigation.
 - **Stock Calculation**: Only Supplies have quantity; Variants/Materials are aggregate views.
@@ -88,11 +103,12 @@ Fixing mistakes in recorded supply data.
   inside the shipped shell: `App.layout` header (wordmark, «Главная · Настройки · Материалы») over
   one `max-w-4xl` column.
 - One page, as in `materials.html`: a search field that filters the list in place, one primary
-  action («Приход») and the palette trigger (a plain «Действия» button, `/` hint). No sections
-  or tabs — everything else opens as a dialog over the list.
-- Command palette — the app's `Command` pattern, opened from the toolbar or `/`. Actions only
-  (record a supply, open the catalog, add type/material/variant): searching entities is the page
-  field's job, so the palette never competes with it.
+  action («Приход») and the palette line (`/` hint). No sections or tabs — everything else
+  opens as a dialog over the list.
+- Command palette — the app's `Command` pattern on the toolbar: closed by default as one
+  line, opened by focus, click, or `/` as an absolute overlay under the line. Actions only
+  (record a supply, open the catalog, add type/material/variant): searching entities is
+  the page field's job, so the palette never competes with it.
 - Surfaces, in the order the working day needs them:
   - Inventory — flat list of variants with hierarchy context and aggregate stock; a row opens
     the variant's batches.
