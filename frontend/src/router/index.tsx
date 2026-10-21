@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router";
 
-import { isFeatureEnabled } from "@/config/features";
+import { isFeatureEnabled, isMaterialEnabled } from "@/config/features";
 import Home from "@/router/pages/Home";
 
 import AppLayout from "../layout/App.layout";
@@ -25,10 +25,14 @@ const router = createBrowserRouter([
             },
           ]
         : []),
-      {
-        path: pathsRouter.material,
-        Component: MaterialPage,
-      },
+      ...(isMaterialEnabled()
+        ? [
+            {
+              path: pathsRouter.material,
+              Component: MaterialPage,
+            },
+          ]
+        : []),
     ],
   },
 ]);

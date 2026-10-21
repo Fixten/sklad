@@ -622,6 +622,9 @@ Flags are applied on both sides of the application.
 - The frontend hides a disabled feature from navigation (header, Home menu) and does not register
   its route. The feature's pages and modules stay in the code, so enabling it again requires only a
   configuration change.
+- A page that depends on several features is shown only when all of them are enabled: the Material
+  page is hidden and its route is not registered if `materialType`, `materialVariant`, or `material`
+  is disabled.
 - A disabled feature is not partial: the whole feature's route is either registered or not. Flags are
   not applied inside a feature, to individual endpoints, or to business logic.
 - Flags are not applied to database schemas, migrations, or services. A disabled feature's data stays

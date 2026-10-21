@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
 
-import { isFeatureEnabled } from "@/config/features";
+import { isFeatureEnabled, isMaterialEnabled } from "@/config/features";
 import pathsRouter from "@/router/paths.router";
 import Header from "@ui/Header";
 
@@ -10,10 +10,9 @@ export const navItems = [
   ...(isFeatureEnabled("settings")
     ? [{ link: pathsRouter.settings, name: "Настройки" }]
     : []),
-  {
-    link: pathsRouter.material,
-    name: "Материалы",
-  },
+  ...(isMaterialEnabled()
+    ? [{ link: pathsRouter.material, name: "Материалы" }]
+    : []),
 ];
 
 export default function AppLayout() {

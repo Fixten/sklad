@@ -19,3 +19,22 @@ export function isFeatureEnabled(
 ): boolean {
   return features[name] !== false;
 }
+
+export function areFeaturesEnabled(
+  names: readonly FeatureName[],
+  features: FeatureFlags = featuresConfig.features,
+): boolean {
+  return names.every((name) => isFeatureEnabled(name, features));
+}
+
+export const MATERIAL_FEATURES = [
+  "materialType",
+  "materialVariant",
+  "material",
+] as const satisfies readonly FeatureName[];
+
+export function isMaterialEnabled(
+  features: FeatureFlags = featuresConfig.features,
+): boolean {
+  return areFeaturesEnabled(MATERIAL_FEATURES, features);
+}
