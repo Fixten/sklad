@@ -6,6 +6,7 @@ import {
   type KeyboardEvent,
 } from "react";
 
+import { useOutsidePress } from "@/lib/useOutsidePress";
 import {
   Command,
   CommandEmpty,
@@ -50,6 +51,8 @@ export default function CommandPalette({
     setQuery("");
   };
 
+  useOutsidePress({ ref: wrapperRef, active: open, onOutside: close });
+
   useEffect(() => {
     const handleShortcut = (event: globalThis.KeyboardEvent) => {
       const isSlash = event.key === "/" || event.code === "Slash";
@@ -75,21 +78,6 @@ export default function CommandPalette({
       ?.setAttribute("aria-expanded", String(open));
   }, [open]);
 
-  useEffect(() => {
-    if (!open) return;
-
-    const handlePointerDown = (event: PointerEvent) => {
-      if (wrapperRef.current?.contains(event.target as Node)) return;
-
-      close();
-    };
-
-    document.addEventListener("pointerdown", handlePointerDown);
-    return () => {
-      document.removeEventListener("pointerdown", handlePointerDown);
-    };
-  }, [open]);
-
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key !== "Escape") return;
 
@@ -104,10 +92,7 @@ export default function CommandPalette({
       className="relative w-full"
       onKeyDown={handleKeyDown}
     >
-      <Command
-        label={heading ?? placeholder}
-        className="overflow-visible shadow-md"
-      >
+      <Command label={heading ?? placeholder} className="overflow-visible">
         <CommandInput
           placeholder={placeholder}
           value={query}
@@ -125,7 +110,7 @@ export default function CommandPalette({
         {open && (
           <CommandList
             label={heading ?? placeholder}
-            className="bg-popover absolute inset-x-0 top-full z-50 shadow-md"
+            className="bg-popover absolute inset-x-0 top-full z-50"
           >
             <CommandEmpty className="text-muted-foreground">
               {emptyMessage}

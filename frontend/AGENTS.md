@@ -25,8 +25,14 @@ mirroring the backend's feature split.
   conflicting Tailwind utilities survive.
 - Use `@ui/Typography` for any text. Base `body` carries `type-body`, so raw `p`/`span`/`div`
   (and reset headings) inherit the body role rather than preflight defaults; `type-*` still wins.
-- Icons come from `lucide-react`.
+- Icons come from `@ui/Icon`, a re-export of `lucide-react`; only `src/components/ui/**` may
+  import `lucide-react` directly (enforced by convention, not lint).
+- React Compiler is enabled (`vite.config.mts`); don't hand-memoize with `useMemo`/`useCallback`
+  — derived values are auto-memoized (only upstream `@base` code keeps its own).
 - Each component should be created in own folder eg /folder/Component/index.tsx
+- **Sheet flows**: `useSheetFlow` (`src/lib/sheetFlow.ts`) owns step, failure, busy and async
+  transitions; the feature's `flow.ts` owns its `Step` union and back target. A reducer, not
+  XState — adopt one only for guards, parallel states or resumable flows.
 
 ## Adding API integration for a feature
 
@@ -58,9 +64,10 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
   committed); a11y via `toMatchAriaInlineSnapshot` on `expect.element(locator)`;
   visual via `toMatchScreenshot` (`__screenshots__` committed, `-chromium-linux`
   suffixed — regenerate with `vrt:update` on the target environment).
-- `vitest.config.mts` duplicates the `tailwindcss()` plugin on purpose: without it
-  the browser/vrt env renders unstyled and screenshots are meaningless. Browser/vrt
-  load `src/test/browser.setup.ts` (imports app CSS, freezes animations).
+- `vitest.config.mts`: the `tailwindcss()` plugin is duplicated on purpose (browser/vrt render
+  unstyled without it), and every dep a test imports belongs in `optimizeDeps.include` — a dep
+  discovered mid-run re-optimizes Vite, duplicating React (invalid hook call) and reloading the
+  page under the test. Browser/vrt load `src/test/browser.setup.ts` (app CSS, frozen animations).
 - `Error` snapshots drop own props (e.g. `ApiError.status`) — snapshot plain fields.
 - If vrt testing fails, do not investigate it. Stop to ask user about what you should do with it.
 

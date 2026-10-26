@@ -51,7 +51,7 @@ function CommandDialogDemo() {
 
 export const Default: Story = {
   render: () => (
-    <Command className="max-w-sm rounded-lg border shadow-md">
+    <Command className="max-w-sm rounded-lg border">
       <CommandInput placeholder="Type a command or search..." />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
@@ -82,7 +82,7 @@ export const Default: Story = {
 
 export const WithShortcuts: Story = {
   render: () => (
-    <Command className="max-w-sm rounded-lg border shadow-md">
+    <Command className="max-w-sm rounded-lg border">
       <CommandInput placeholder="Search actions..." />
       <CommandList>
         <CommandEmpty>No actions found.</CommandEmpty>

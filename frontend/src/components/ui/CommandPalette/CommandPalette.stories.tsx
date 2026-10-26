@@ -26,6 +26,6 @@ export const Open: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    await userEvent.click(canvas.getByPlaceholderText("Поиск"));
+    await userEvent.click(canvas.getByPlaceholderText("Начать работу"));
   },
 };

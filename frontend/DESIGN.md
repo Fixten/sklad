@@ -267,7 +267,7 @@ ordinary one. Every rule below exists to keep that reading honest.
 - Brass has two jobs: hardware at `brass.500` (the CTA), highlight at `brass.300` (accent and focus ring).
 - Borders are decoration (1.40–1.67:1); every control edge owns `--control-border` and clears 3:1.
 - `rounded-none` on every shipped component — sharp sera geometry.
-- Depth by tonal layering plus shadow; surfaces carry no ring (`shadow-card`, `shadow-md`).
+- Depth by tonal layering plus a card shadow (`shadow-card`); surfaces carry no ring.
 - Single-column `max-w-4xl` shell with a 4px spacing rhythm.
 
 ## Colors
@@ -704,14 +704,20 @@ whisper that confirms the lift, never the lift itself.
 
 - **Surface confirmation** (`shadow-card`): a contact plus ambient shadow that
   seats the tier-2 card on the floor. Cards only.
-- **Floating confirmation** (`shadow-md`): tier-3 modals, popovers and the command
-  palette.
+- **Tier-3 floaters carry no shadow.** Furnishing layers (dialog, sheet,
+  palette, select content) sit over surfaces close in tone, so the dark
+  shadow-on-dark renders as nothing — it is removed at the component sources
+  (`DialogContent`, `SelectContent`, the palette panels) and never re-declared
+  downstream. A floating layer is identified by its tonal step, and by the
+  scrim where one exists: a layer that opens over a scrim lets the scrim do the
+  lifting, exactly like the sheet.
 
 ### Named Rules
 
 **The Layer-Before-Shadow Rule.** To lift content, move one step up the ladder
-(950 → 850 → 800). Only then add `shadow-card` / `shadow-md`, and never invent a
-third shadow value. A surface never earns a ring to prove it was lifted.
+(950 → 850 → 800). Only then add `shadow-card` — tier-3 floaters carry no
+shadow at all — and never invent a second shadow value. A surface never earns a
+ring to prove it was lifted.
 
 ## Shapes
 
@@ -744,6 +750,10 @@ step in the same hue.
 
 - **Shape:** square (radius 0); `border border-transparent` so variants swap the
   boundary without changing geometry.
+- **Width:** buttons hug their label — 24px horizontal padding on the default
+  and large sizes, 16px at `sm`; label text is never pinned to a fixed box
+  (a pinned label clips any Russian copy that outgrows it). Icon buttons stay
+  fixed 40×40.
 - **Typography:** `type-label` (uppercase caps) in every variant and size.
 - **Primary (brass):** `--primary` fill + `--primary-foreground` text; hover
   `brass.400`; active nudges down 1px (`translate-y-px`).
@@ -772,6 +782,78 @@ step in the same hue.
 There is no chip or badge component in the shipped system. Status is carried by
 typography and by the surface a value sits in (e.g. a `MaterialTypeLabel` in
 `--muted-foreground`). Add a chip only by adding it to this document first.
+
+### OptionRow
+
+A pick row inside a popover tier-3 surface — the atomic choice of supply sheets
+and supplier lists. Full-width (512px inside the sheet column), fixed 48px tall,
+`px-4 py-3` padding, `flex row align-center` — `space-between` for the two pick
+states; New is `start` with a 12px gap (it carries the `Plus` icon and no
+trailing meta). Square corners, no edge.
+
+- **Default:** transparent fill; `type-body` label in `--foreground`, optional
+  meta at the right edge — a `type-caption` line set `uppercase` (14px, weight
+  400, no tracking) in `--muted-foreground` (`ПИЛОМАТЕРИАЛ · ДУБ`).
+- **Selected:** fills with `--muted` (`forest.850`, #1b2016) — one step _down_
+  from the popover (`forest.800`), the same tonal selection discipline the
+  command palette list uses — plus a 2px brass selection bar (`--primary`,
+  full row height) flush at the row's left edge. The bar is the non-color state
+  cue (the tonal step alone is 1.4:1 in-canvas and cannot carry the state
+  alone); it lives in the `Selected` variant main, token-bound to
+  `color.primary`, so every instance inherits it. Selection never uses brass
+  text or fills — the bar is the only brass element on the row.
+- **New:** the create row — `Icon / Plus` (24×24, `--foreground` strokes) and a
+  `type-body` label ("новый вариант в «Дуб»", "новый поставщик: «Лесоторг»"),
+  laid `start` from the 16px inset, icon first, 12px to the label. The variant
+  main carries the literal "+ Новый вариант"; per-screen copy is a label
+  override, as with the other states.
+
+In Penpot the three states are one `OptionRow` component with a `State` axis
+(`Custom components` section, `OptionRow` container). Instances keep the 512×48
+frame; per-screen copy is a label override, and `meta` is hidden when a state has
+no right-hand caption.
+
+Lists of these rows stack with no gap; the create row leads the list. The list
+surface is the popover itself — no additional shadow. In code the
+family renders through one shared renderer, `@ui/OptionList`; the bar is implemented
+as an inset 2px `--primary` edge on the active row, so it never shifts the layout.
+
+### OptionPicker
+
+The composite pick — a `Field` plus the `OptionRow` list — used wherever a supply
+step asks the user to choose or create a named thing. One `OptionPicker` component
+in Penpot (`Custom components`), assembled from `Field` and `OptionRow` instances:
+no bespoke shapes, no tokens of its own.
+
+- **Anatomy:** `Field` (label + control + description) then the list. The list opens
+  with the create row, then the result rows — order is always `create → results`,
+  never results-first.
+- **Slots:** the main carries three result slots (one `Selected`, two `Default`) plus
+  the create row; a consumer hides the slots it does not use.
+- **Active, not chosen:** the open list keeps an active option for keyboard and
+  pointer traversal, so a row renders as `Selected` (muted band + brass bar) even
+  when nothing has been committed yet. While results exist the first result is
+  active, never the create row — `Enter` picks instead of creating by accident; with
+  no results the create row is the only row and takes the active state.
+- **Idle:** the list is hidden when the field is not focused or has nothing to show.
+  The `Field` is content-sized, so hiding its description collapses the picker from 100
+  to 64.
+- **Placement:** the list always sits in the flow, 24px under the field; it pushes
+  the form and the sheet grows with it. There is no overlay variant.
+- **Open while focused:** the list is open when the field is focused and has an option
+  to show. Typing, focus, a click or `ArrowDown` opens it; an outside click, `Tab`,
+  `Escape` or a pick closes it. `Escape` closes the list first, so a second press is
+  what reaches the sheet.
+- **Not a closed select.** `FieldSelect` shows one committed value behind a chevron;
+  the picker stays a text field with a live list, because typing is what filters and
+  what offers the create row.
+
+In Penpot the list surface is bound to `color.popover`, the sheet's own tone; in the
+flow it is invisible.
+
+In code the composite is `@ui/OptionPicker` — `@ui/InputField` plus `@ui/OptionList`;
+the consumer owns filtering and the create row, the picker owns focus, keyboard
+traversal and when the list shows.
 
 ### Cards / Containers
 
@@ -807,35 +889,61 @@ typography and by the surface a value sits in (e.g. a `MaterialTypeLabel` in
 
 ### Dialog & Popover
 
-Floating layers are tier 3: `--popover` surface (`forest.800`), `shadow-md`,
-`rounded-none`, `gap-6`, 24px padding, `max-w-md` from `sm` up. The backdrop is
+Floating layers are tier 3: `--popover` surface (`forest.800`), `rounded-none`,
+`gap-6`, 24px padding, `max-w-md` from `sm` up. The backdrop is
 `--overlay` at 20% with a small backdrop blur, and open/close transitions are
-`duration-100` fade + zoom. The layer carries no ring: it is identified by its
-tonal step and its shadow, not by its edge.
+`duration-100` fade + zoom. The layer carries no ring and no shadow: it is
+identified by its tonal step and the scrim, not by its edge.
 
 **A dialog carries no corner ✕.** Its dismissal is a footer control, and that
 control is mandatory: `DialogFooter` always renders it — a `DialogClose` on a
 ghost button labelled `Закрыть`, ahead of whatever actions the dialog passes — so
 every dialog has a way out that a touch screen reader can reach. Escape and an
-outside press are bonus paths, never the only ones, and the 16px scrim a dialog
-leaves on a phone is not a dismissal target. The dismissal is ghost rather than
-outline because the dialog's own surface is only 1.10:1 from the card beneath, so
-a boundary there would be a whisper anyway; on a raised surface a control changes
-pattern instead of leaning on a line. Deleting the ✕ is a deliberate deviation
-from upstream shadcn — re-apply it after any `shadcn add`.
+outside press are bonus paths, never the only ones — the scrim dismisses at every
+breakpoint, including the 16px gutter a dialog leaves on a phone. The dismissal
+is ghost rather than outline because the dialog's own surface is only 1.10:1 from
+the card beneath, so a boundary there would be a whisper anyway; on a raised
+surface a control changes pattern instead of leaning on a line. Deleting the ✕ is
+a deliberate deviation from upstream shadcn — re-apply it after any `shadcn add`.
+
+### Sheet
+
+The responsive self between tier-2 pages and the tier-3 popover: the column a
+supply flow slides into over a foreground scrim (`--overlay` 20% + no blur in the
+penpot realisation). A `Sheet` main lives in Penpot (`Custom components`) and is
+instantiated per screen.
+
+- **Geometry:** fixed 560px column, `--popover` fill (`forest.800`), square
+  corners, no ring. Padding and stack gap are `--spacing-6` (24px) throughout —
+  the sheet is a popover at column width, so its padding recipe matches the
+  popover, not the card.
+- **Elevation note:** the sheet is **flat**, on canvas and in code — no drop
+  shadow. It opens over the scrim, so the scrim does the lifting and the
+  surface step does the separating: a slab that already dims the world behind
+  it does not also cast a shadow. It needs no cancel in code: tier-3 layers
+  carry no shadow at all (see Shadow Vocabulary).
+- **Anatomy:** `sheet-header` (title `type-title` set uppercase in
+  `--foreground`, step counter `type-label` in `--foreground` at the right edge)
+  → a 1px `--border-hairline` separator → `content` slot → optional
+  `sheet-footer` (`gap-2` row for actions). Like the dialog, a sheet carries **no
+  corner ✕** — dismissal is the footer's `Отмена`, `Escape`, or a press on the
+  scrim.
+- **Content belt:** the body rows are `OptionRow`s (see below) stacked with no
+  gap unless the flow dictates whitespace; header-title copy and the counter are
+  per-screen overrides, everything else is system.
 
 ### Command Palette (signature)
 
 The command palette is the search entry on Home and Materials, and it is the
 clearest single expression of the world. It rests as one line on the `--popover`
-surface: a `shadow-md` slab with square corners and no outline of its own, holding
+surface: a `--popover` slab with square corners and no outline of its own, holding
 a search icon and a `type-body` placeholder. There is no underline under the field
 and no divider to the list — the slab edge is the boundary, and a brass caret is
 the only state signal. No list, heading, or item renders at rest. Focus, a click,
 or `/` opens it.
 
 The open list is an absolute overlay flush under the line — `top-full`, full width,
-`z-50`, the same `--popover` fill and `shadow-md`, no border and no divider — so the
+`z-50`, the same `--popover` fill, no border and no divider — so the
 palette reads as one continuous panel, and surrounding content never moves.
 Internals are unchanged: `type-label` group headings in `--muted-foreground`,
 `type-body` items at `px-3 py-2` that light up with `data-selected:bg-muted` — a

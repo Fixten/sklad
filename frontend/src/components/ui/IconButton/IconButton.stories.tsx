@@ -1,5 +1,6 @@
-import { PlusIcon, SettingsIcon } from "lucide-react";
 import { fn } from "storybook/test";
+
+import { PlusIcon, SettingsIcon } from "@ui/Icon";
 
 import IconButton from "./index";
 

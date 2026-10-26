@@ -8,6 +8,16 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   envDir: "../",
   plugins: [react(), tailwindcss()],
+  optimizeDeps: {
+    include: [
+      "@base-ui/react/dialog",
+      "@base-ui/react/select",
+      "@tanstack/react-query",
+      "cmdk",
+      "lucide-react",
+      "react-router",
+    ],
+  },
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "./src"),
@@ -47,7 +57,7 @@ export default defineConfig({
             provider: playwright(),
             headless: true,
             instances: [
-              { browser: "chromium", viewport: { width: 1280, height: 720 } },
+              { browser: "chromium", viewport: { width: 1440, height: 900 } },
             ],
             expect: {
               toMatchScreenshot: {

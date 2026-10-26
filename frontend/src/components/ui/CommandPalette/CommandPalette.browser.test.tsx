@@ -22,7 +22,9 @@ test("renders only the one-line trigger by default", async () => {
   const items = buildItems();
   const screen = await render(<CommandPalette heading="Меню" items={items} />);
 
-  await expect.element(screen.getByPlaceholder("Поиск")).toBeInTheDocument();
+  await expect
+    .element(screen.getByPlaceholder("Начать работу"))
+    .toBeInTheDocument();
   await expect.element(screen.getByRole("listbox")).not.toBeInTheDocument();
   expect(document.querySelector("[cmdk-group-heading]")).toBeNull();
 
@@ -33,7 +35,7 @@ test("renders only the one-line trigger by default", async () => {
 
 test("keeps aria-expanded false at rest and true when open", async () => {
   const screen = await render(<CommandPalette items={buildItems()} />);
-  const input = screen.getByPlaceholder("Поиск");
+  const input = screen.getByPlaceholder("Начать работу");
 
   await expect.element(input).toHaveAttribute("aria-expanded", "false");
 
@@ -45,7 +47,7 @@ test("keeps aria-expanded false at rest and true when open", async () => {
 test("opens on focus", async () => {
   const screen = await render(<CommandPalette items={buildItems()} />);
 
-  asInput(screen.getByPlaceholder("Поиск").element()).focus();
+  asInput(screen.getByPlaceholder("Начать работу").element()).focus();
 
   await expect.element(screen.getByRole("listbox")).toBeInTheDocument();
   await expect.element(screen.getByText("Главная")).toBeInTheDocument();
@@ -54,14 +56,14 @@ test("opens on focus", async () => {
 test("opens on click", async () => {
   const screen = await render(<CommandPalette items={buildItems()} />);
 
-  await screen.getByPlaceholder("Поиск").click();
+  await screen.getByPlaceholder("Начать работу").click();
 
   await expect.element(screen.getByRole("listbox")).toBeInTheDocument();
 });
 
 test("opens on the global / shortcut and focuses the input", async () => {
   const screen = await render(<CommandPalette items={buildItems()} />);
-  const input = asInput(screen.getByPlaceholder("Поиск").element());
+  const input = asInput(screen.getByPlaceholder("Начать работу").element());
 
   await userEvent.keyboard("/");
 
@@ -97,7 +99,7 @@ test("renders the panel as an absolute overlay without moving content", async ()
   const below = screen.getByTestId("below").element();
   const topBefore = below.getBoundingClientRect().top;
 
-  await screen.getByPlaceholder("Поиск").click();
+  await screen.getByPlaceholder("Начать работу").click();
 
   const listbox = screen.getByRole("listbox").element();
   const wrapperRect = wrapper.getBoundingClientRect();
@@ -111,7 +113,7 @@ test("renders the panel as an absolute overlay without moving content", async ()
 
 test("closes on Escape and clears the query", async () => {
   const screen = await render(<CommandPalette items={buildItems()} />);
-  const input = screen.getByPlaceholder("Поиск");
+  const input = screen.getByPlaceholder("Начать работу");
 
   await input.click();
   await input.fill("материал");
@@ -133,7 +135,7 @@ test("closes on an outside pointerdown", async () => {
     </div>,
   );
 
-  await screen.getByPlaceholder("Поиск").click();
+  await screen.getByPlaceholder("Начать работу").click();
   await expect.element(screen.getByRole("listbox")).toBeInTheDocument();
 
   await screen.getByText("Снаружи").click();
@@ -143,7 +145,7 @@ test("closes on an outside pointerdown", async () => {
 
 test("reopens when typing after Escape", async () => {
   const screen = await render(<CommandPalette items={buildItems()} />);
-  const input = screen.getByPlaceholder("Поиск");
+  const input = screen.getByPlaceholder("Начать работу");
 
   await input.click();
   await userEvent.keyboard("{Escape}");
@@ -167,7 +169,7 @@ test("navigates items with the keyboard", async () => {
     />,
   );
 
-  await screen.getByPlaceholder("Поиск").click();
+  await screen.getByPlaceholder("Начать работу").click();
   await userEvent.keyboard("{ArrowDown}{Enter}");
 
   expect(onSelectMaterials).toHaveBeenCalledOnce();
@@ -187,7 +189,7 @@ test("selects an item and closes", async () => {
     />,
   );
 
-  await screen.getByPlaceholder("Поиск").click();
+  await screen.getByPlaceholder("Начать работу").click();
   await screen.getByText("Настройки").click();
 
   expect(onSelectSettings).toHaveBeenCalledOnce();
@@ -198,8 +200,8 @@ test("selects an item and closes", async () => {
 test("filters items by the query when open", async () => {
   const screen = await render(<CommandPalette items={buildItems()} />);
 
-  await screen.getByPlaceholder("Поиск").click();
-  await screen.getByPlaceholder("Поиск").fill("материал");
+  await screen.getByPlaceholder("Начать работу").click();
+  await screen.getByPlaceholder("Начать работу").fill("материал");
 
   await expect.element(screen.getByText("Материалы")).toBeInTheDocument();
   await expect.element(screen.getByText("Главная")).not.toBeInTheDocument();
@@ -210,8 +212,8 @@ test("shows the empty message when nothing matches", async () => {
     <CommandPalette items={buildItems()} emptyMessage="Нету" />,
   );
 
-  await screen.getByPlaceholder("Поиск").click();
-  await screen.getByPlaceholder("Поиск").fill("zzz");
+  await screen.getByPlaceholder("Начать работу").click();
+  await screen.getByPlaceholder("Начать работу").fill("zzz");
 
   await expect.element(screen.getByText("Нету")).toBeInTheDocument();
 });
@@ -225,7 +227,7 @@ test("shows the empty message for an empty item list once opened", async () => {
     .element(screen.getByText("Пока нет действий"))
     .not.toBeInTheDocument();
 
-  await screen.getByPlaceholder("Поиск").click();
+  await screen.getByPlaceholder("Начать работу").click();
 
   await expect
     .element(screen.getByText("Пока нет действий"))
@@ -240,7 +242,7 @@ test("exposes an accessible tree when open", async () => {
     />,
   );
 
-  await screen.getByPlaceholder("Поиск").click();
+  await screen.getByPlaceholder("Начать работу").click();
 
   await expect.element(screen.getByRole("listbox")).toMatchAriaInlineSnapshot(`
       - listbox "Меню":
