@@ -4,11 +4,12 @@ import {
   stepLabel,
   supplyBackStep,
   supplyInitialStep,
+  SupplyStepKind,
   type SupplyStep,
 } from "./flow";
 
 const detailsStep: SupplyStep = {
-  kind: "details",
+  kind: SupplyStepKind.Details,
   row: {
     variantId: 100,
     variantName: "Доска 40 мм",
@@ -19,19 +20,22 @@ const detailsStep: SupplyStep = {
 
 describe("supply flow", () => {
   it("starts on the pick step", () => {
-    expect(supplyInitialStep).toEqual({ kind: "pick" });
+    expect(supplyInitialStep).toEqual({ kind: SupplyStepKind.Pick });
   });
 
   it("returns to the pick step from any secondary step", () => {
-    expect(supplyBackStep).toEqual({ kind: "pick" });
+    expect(supplyBackStep).toEqual({ kind: SupplyStepKind.Pick });
   });
 
   it("labels the pick step as the first of two", () => {
     expect(stepLabel(supplyInitialStep)).toBe("01 / 02");
     expect(
-      stepLabel({ kind: "variant", material: detailsStep.row.material }),
+      stepLabel({
+        kind: SupplyStepKind.Variant,
+        material: detailsStep.row.material,
+      }),
     ).toBe("01 / 02");
-    expect(stepLabel({ kind: "material" })).toBe("01 / 02");
+    expect(stepLabel({ kind: SupplyStepKind.Material })).toBe("01 / 02");
   });
 
   it("labels the details step as the second of two", () => {

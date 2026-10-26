@@ -1,6 +1,8 @@
-import { beforeEach } from "vitest";
+import { afterEach, beforeEach, expect, vi } from "vitest";
 
 import "@/styles/index.css";
+
+import { takeUnhandledRequests } from "./apiStub";
 
 const freezeAnimations = () => {
   const style = document.createElement("style");
@@ -21,4 +23,9 @@ const applyDarkTheme = () => {
 beforeEach(() => {
   applyDarkTheme();
   freezeAnimations();
+});
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+  expect(takeUnhandledRequests()).toEqual([]);
 });

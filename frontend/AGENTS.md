@@ -64,10 +64,15 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
   committed); a11y via `toMatchAriaInlineSnapshot` on `expect.element(locator)`;
   visual via `toMatchScreenshot` (`__screenshots__` committed, `-chromium-linux`
   suffixed — regenerate with `vrt:update` on the target environment).
+- API stubs: `stubRoutes` (`src/test/apiStub.ts`) takes `{ "/api/<path>": { get: fn, post: fn } }`,
+  typed from `schema.d.ts`; handlers return data (or a Promise) or `errorResponse(status, msg)`.
+  Unrouted calls fail the test. Each feature's `testHarness.tsx` owns fixtures, routes and UI
+  helpers. Don't `vi.mock` `*.api.ts` (loses request-body assertions and error mapping); MSW
+  deferred (new dep, service worker).
 - `vitest.config.mts`: the `tailwindcss()` plugin is duplicated on purpose (browser/vrt render
   unstyled without it), and every dep a test imports belongs in `optimizeDeps.include` — a dep
   discovered mid-run re-optimizes Vite, duplicating React (invalid hook call) and reloading the
-  page under the test. Browser/vrt load `src/test/browser.setup.ts` (app CSS, frozen animations).
+  page under the test. Browser/vrt load `src/test/browser.setup.ts` (app CSS, frozen animations, unstub after each test).
 - `Error` snapshots drop own props (e.g. `ApiError.status`) — snapshot plain fields.
 - If vrt testing fails, do not investigate it. Stop to ask user about what you should do with it.
 
@@ -79,8 +84,8 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
   carries surfaces, linework and text; hide browns are defined but unbound.
   Two line weights: `--border` is decoration (1.67:1 on the canvas, 1.40:1 on
   `--card`), and anything that must read as a control edge uses `--control-border`
-  (3.96/3.32). Hovers step up the ramp through `--primary-hover` /
-  `--destructive-hover` — never `/opacity` on the fill, which darkens it instead.
+  (3.96/3.32). Hovers step up the ramp through `--primary-hover` / `--destructive-hover`
+  (CSS-only roles; Penpot has states, not these roles) — never `/opacity` on the fill.
   `base-*` patches to re-apply after `shadcn add`: destructive = `bg-destructive` +
   `text-destructive-foreground`; the `FieldError` capsule takes the same fill pair
   (the soft `bg-destructive/10 text-destructive` predates it); surfaces carry no
@@ -101,18 +106,14 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
 
 ## Open threads
 
-- `src/components/ui/base/**` is migrated onto the `type-*` tokens: controls → `type-input`
-  (1rem at every breakpoint — the old `text-base … md:text-sm` pair is gone), labels +
-  Command shortcut/group heading → `type-label`, titles → `type-title`, all
-  copy/descriptions → `type-body`. Raw `tracking-normal`/`normal-case` survive only as
-  `Label` peer overrides (`peer-data-[slot=checkbox|radio-group-item|switch]`), which
-  `type-body` does not reset. `type-caption` has no slot in `base/**` —
-  hints/descriptions are `type-body`.
+- `src/components/ui/base/**` uses `type-*` tokens: controls → `type-input` (1rem at every
+  breakpoint), labels + Command shortcut/group → `type-label`, titles → `type-title`, copy →
+  `type-body`. Raw `tracking-normal`/`normal-case` survive only as `Label` peer overrides
+  (`peer-data-[slot=checkbox|radio-group-item|switch]`), which `type-body` does not reset.
+  No `type-caption` slot in `base/**`: hints are `type-body`.
 - `:root` still documents the pre-ladder light palette; light is unshipped, so it was left
   alone. Rebuild it from the forest ladder if a light theme is ever revived.
-- `--primary-hover` / `--destructive-hover` are CSS-only state roles — Penpot carries the
-  component states, not the roles. They exist so a hover steps up the ramp; don't swap them
-  for `/opacity` on the fill.
 - The 65ch prose measure lives in the prose slots (`CardDescription`, `DialogDescription`,
   `FieldDescription`, `CommandEmpty`), never on `type-body`: the role also covers
   full-width controls, whose measure comes from their container.
+- `stubRoutes` covers collection paths only; add `{id}` matching when a test first needs it.

@@ -1,5 +1,6 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter, Route, Routes } from "react-router";
-import { userEvent, within } from "storybook/test";
+import { screen, userEvent } from "storybook/test";
 
 import AppLayout from "@/layout/App.layout";
 
@@ -7,17 +8,32 @@ import MaterialPage from "./index";
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: false } },
+});
+
+const openPalette = async () => {
+  await userEvent.click(screen.getByPlaceholderText("Начать работу"));
+};
+
+const openSupply = async () => {
+  await openPalette();
+  await userEvent.click(screen.getByText("Сделать поставку"));
+};
+
 const meta = {
   component: MaterialPage,
   decorators: [
     (Story) => (
-      <MemoryRouter initialEntries={["/"]}>
-        <Routes>
-          <Route element={<AppLayout />}>
-            <Route index element={<Story />} />
-          </Route>
-        </Routes>
-      </MemoryRouter>
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter initialEntries={["/material"]}>
+          <Routes>
+            <Route element={<AppLayout />}>
+              <Route path="/material" element={<Story />} />
+            </Route>
+          </Routes>
+        </MemoryRouter>
+      </QueryClientProvider>
     ),
   ],
   parameters: {
@@ -32,9 +48,21 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 
 export const ActionsOpen: Story = {
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+  play: async () => {
+    await openPalette();
+  },
+};
 
-    await userEvent.click(canvas.getByPlaceholderText("Поиск действий"));
+export const SupplySheet: Story = {
+  play: async () => {
+    await openSupply();
+  },
+};
+
+export const NewMaterialPanel: Story = {
+  play: async () => {
+    await openSupply();
+    await userEvent.type(screen.getByLabelText("Материал"), "Клён");
+    await userEvent.click(await screen.findByText("Новый материал: «Клён»"));
   },
 };
