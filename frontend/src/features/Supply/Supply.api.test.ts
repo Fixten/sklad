@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { stubRoutes } from "@/test/apiStub";
+import { stubRoutes } from "@/test/apiStub.vitest";
 
 import SupplyApi from "./Supply.api";
 

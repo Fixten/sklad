@@ -4,7 +4,7 @@ import { expect } from "vitest";
 import { render } from "vitest-browser-react";
 
 import AppLayout from "@/layout/App.layout";
-import { stubRoutes } from "@/test/apiStub";
+import { stubRoutes } from "@/test/apiStub.vitest";
 
 import MaterialPage from "./index";
 

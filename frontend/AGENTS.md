@@ -64,12 +64,12 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
   committed); a11y via `toMatchAriaInlineSnapshot` on `expect.element(locator)`;
   visual via `toMatchScreenshot` (`__screenshots__` committed, `-chromium-linux`
   suffixed — regenerate with `vrt:update` on the target environment).
-- API stubs: `stubRoutes` (`src/test/apiStub.ts`) takes `{ "/api/<path>": { get: fn, post: fn } }`,
-  typed from `schema.d.ts`; exact paths win over `{id}` templates (`/api/x/{id}`, `restore/{id}`,
-  `stock/{id}`). Handlers return data (or a Promise) or `errorResponse(status, msg)`; recorded
-  requests carry `path`, `search`, `method`, `body`. Unrouted calls fail the test. Each feature's
-  `testHarness.tsx` owns fixtures, routes and UI helpers. Don't `vi.mock` `*.api.ts` (loses
-  request-body assertions and error mapping); MSW deferred (new dep, service worker).
+- API stubs: `createApiStub` (`src/test/apiStub.ts`) returns typed `{ fetch, requests }`;
+  Vitest's `stubRoutes` (`src/test/apiStub.vitest.ts`) installs it. Exact paths win over `{id}`
+  templates (`/api/x/{id}`, `restore/{id}`, `stock/{id}`); handlers return data/Promise or
+  `errorResponse(status, msg)`. Request logs include `path`, `search`, `method`, `body`; unrouted
+  calls fail. Keep fixtures shared outside Vitest-only render helpers when Storybook needs them.
+  Don't `vi.mock` `*.api.ts` (loses request-body assertions and error mapping); MSW deferred.
 - `vitest.config.mts`: the `tailwindcss()` plugin is duplicated on purpose (browser/vrt render
   unstyled without it), and every dep a test imports belongs in `optimizeDeps.include` — a dep
   discovered mid-run re-optimizes Vite, duplicating React (invalid hook call) and reloading the

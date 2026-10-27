@@ -1,5 +1,3 @@
-import { vi } from "vitest";
-
 import { getApiUrl } from "@/api/helpers";
 
 import type { paths } from "@/api/schema";
@@ -50,7 +48,7 @@ export const errorResponse = (status: number, message: string) =>
 
 export const takeUnhandledRequests = () => unhandled.splice(0);
 
-export const stubRoutes = (routes: Routes) => {
+export const createApiStub = (routes: Routes) => {
   const requests: RecordedRequest[] = [];
   const operations = Object.entries(routes).flatMap(([path, methods]) =>
     Object.entries(methods).map(([method, handler]) => {
@@ -110,7 +108,5 @@ export const stubRoutes = (routes: Routes) => {
     return reply instanceof Response ? reply : jsonResponse(reply);
   };
 
-  vi.stubGlobal("fetch", vi.fn(fetchMock));
-
-  return requests;
+  return { fetch: fetchMock, requests };
 };
