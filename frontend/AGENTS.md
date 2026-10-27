@@ -65,10 +65,11 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
   visual via `toMatchScreenshot` (`__screenshots__` committed, `-chromium-linux`
   suffixed — regenerate with `vrt:update` on the target environment).
 - API stubs: `stubRoutes` (`src/test/apiStub.ts`) takes `{ "/api/<path>": { get: fn, post: fn } }`,
-  typed from `schema.d.ts`; handlers return data (or a Promise) or `errorResponse(status, msg)`.
-  Unrouted calls fail the test. Each feature's `testHarness.tsx` owns fixtures, routes and UI
-  helpers. Don't `vi.mock` `*.api.ts` (loses request-body assertions and error mapping); MSW
-  deferred (new dep, service worker).
+  typed from `schema.d.ts`; exact paths win over `{id}` templates (`/api/x/{id}`, `restore/{id}`,
+  `stock/{id}`). Handlers return data (or a Promise) or `errorResponse(status, msg)`; recorded
+  requests carry `path`, `search`, `method`, `body`. Unrouted calls fail the test. Each feature's
+  `testHarness.tsx` owns fixtures, routes and UI helpers. Don't `vi.mock` `*.api.ts` (loses
+  request-body assertions and error mapping); MSW deferred (new dep, service worker).
 - `vitest.config.mts`: the `tailwindcss()` plugin is duplicated on purpose (browser/vrt render
   unstyled without it), and every dep a test imports belongs in `optimizeDeps.include` — a dep
   discovered mid-run re-optimizes Vite, duplicating React (invalid hook call) and reloading the
@@ -116,4 +117,3 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
 - The 65ch prose measure lives in the prose slots (`CardDescription`, `DialogDescription`,
   `FieldDescription`, `CommandEmpty`), never on `type-body`: the role also covers
   full-width controls, whose measure comes from their container.
-- `stubRoutes` covers collection paths only; add `{id}` matching when a test first needs it.

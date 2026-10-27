@@ -7,13 +7,12 @@ import type { JsonBody, JsonResponse } from "@/api/schema-helpers";
 
 export interface RecordedRequest {
   path: string;
+  search: string;
   method: string;
   body: unknown;
 }
 
 type Operation = "get" | "post" | "patch" | "delete";
-
-type CollectionPath = Exclude<keyof paths, `${string}{${string}`>;
 
 type Reply<P extends keyof paths, M extends Operation> =
   JsonResponse<P, M> | Response;
@@ -23,10 +22,18 @@ type Handler<P extends keyof paths, M extends Operation> = (request: {
 }) => Reply<P, M> | Promise<Reply<P, M>>;
 
 export type Routes = {
-  [P in CollectionPath]?: {
+  [P in keyof paths]?: {
     [M in Extract<keyof paths[P], Operation>]?: Handler<P, M>;
   };
 };
+
+const toMatcher = (pathname: string) =>
+  new RegExp(
+    `^${pathname
+      .split("/")
+      .map((segment) => (/^\{[^}]+\}$/.test(segment) ? "[^/]+" : segment))
+      .join("/")}$`,
+  );
 
 type AnyHandler = (request: { body: unknown }) => unknown;
 
@@ -46,10 +53,16 @@ export const takeUnhandledRequests = () => unhandled.splice(0);
 export const stubRoutes = (routes: Routes) => {
   const requests: RecordedRequest[] = [];
   const operations = Object.entries(routes).flatMap(([path, methods]) =>
-    Object.entries(methods).map(([method, handler]) => ({
-      key: `${method.toUpperCase()} ${getApiUrl(path).pathname}`,
-      handler: handler as AnyHandler,
-    })),
+    Object.entries(methods).map(([method, handler]) => {
+      const pathname = decodeURIComponent(getApiUrl(path).pathname);
+
+      return {
+        method: method.toUpperCase(),
+        pathname,
+        matcher: toMatcher(pathname),
+        handler: handler as AnyHandler,
+      };
+    }),
   );
 
   const fetchMock = async (
@@ -63,18 +76,31 @@ export const stubRoutes = (routes: Routes) => {
           ? input
           : input.url;
     const url = new URL(href);
+    const pathname = decodeURIComponent(url.pathname);
     const method = (init?.method ?? "GET").toUpperCase();
     const body: unknown = init?.body
       ? JSON.parse(init.body as string)
       : undefined;
-    const key = `${method} ${url.pathname}`;
 
-    requests.push({ path: url.pathname, method, body });
+    requests.push({
+      path: url.pathname,
+      search: url.search,
+      method,
+      body,
+    });
 
-    const operation = operations.find((candidate) => candidate.key === key);
+    const operation =
+      operations.find(
+        (candidate) =>
+          candidate.method === method && candidate.pathname === pathname,
+      ) ??
+      operations.find(
+        (candidate) =>
+          candidate.method === method && candidate.matcher.test(pathname),
+      );
 
     if (!operation) {
-      unhandled.push(key);
+      unhandled.push(`${method} ${url.pathname}`);
 
       return errorResponse(404, "unexpected request");
     }

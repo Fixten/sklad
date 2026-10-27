@@ -146,6 +146,7 @@ test("creates a variant for the matched material", async () => {
   ).toEqual({
     path: "/api/material-variant",
     method: "POST",
+    search: "",
     body: { name: "Брусок 80 × 80", unit: "meters", material_id: 10 },
   });
 });
@@ -196,16 +197,19 @@ test("creates a type, a material and a variant in one pass", async () => {
     {
       path: "/api/material-type",
       method: "POST",
+      search: "",
       body: { name: "Древесина" },
     },
     {
       path: "/api/material",
       method: "POST",
+      search: "",
       body: { name: "Клён", material_type_id: 7 },
     },
     {
       path: "/api/material-variant",
       method: "POST",
+      search: "",
       body: { name: "Доска 40 мм", unit: "meters", material_id: 20 },
     },
   ]);
@@ -234,11 +238,13 @@ test("uses an existing type without creating another one", async () => {
     {
       path: "/api/material",
       method: "POST",
+      search: "",
       body: { name: "Ясень", material_type_id: 1 },
     },
     {
       path: "/api/material-variant",
       method: "POST",
+      search: "",
       body: { name: "Доска 30 мм", unit: "meters", material_id: 20 },
     },
   ]);
@@ -492,6 +498,7 @@ test("saves the supply with an existing supplier", async () => {
     {
       path: "/api/supply",
       method: "POST",
+      search: "",
       body: {
         material_variant_id: 100,
         quantity: 8,
@@ -547,6 +554,7 @@ test("selects the matched supplier when the creation row is present", async () =
     {
       path: "/api/supply",
       method: "POST",
+      search: "",
       body: {
         material_variant_id: 100,
         quantity: 8,
@@ -576,11 +584,13 @@ test("creates the supplier from the creation row when another matches", async ()
     {
       path: "/api/supplier",
       method: "POST",
+      search: "",
       body: { name: "Лес" },
     },
     {
       path: "/api/supply",
       method: "POST",
+      search: "",
       body: {
         material_variant_id: 100,
         quantity: 8,
@@ -611,11 +621,13 @@ test("creates the supplier when the name is new", async () => {
     {
       path: "/api/supplier",
       method: "POST",
+      search: "",
       body: { name: "Новый склад" },
     },
     {
       path: "/api/supply",
       method: "POST",
+      search: "",
       body: {
         material_variant_id: 100,
         quantity: 8,
