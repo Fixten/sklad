@@ -1,6 +1,6 @@
 import { Button } from "@ui/Button";
 
-import { SupplyStepKind, type SupplyStep } from "./flow";
+import { SupplyStepKind, type SupplyStep } from "../supplySteps";
 
 interface Props {
   step: SupplyStep;

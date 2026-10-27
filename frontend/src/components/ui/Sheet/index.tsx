@@ -1,7 +1,6 @@
 import { Dialog, DialogContent, DialogTitle } from "@base/dialog";
 import { Separator } from "@base/separator";
-
-import Typography from "../Typography";
+import Typography from "@ui/Typography";
 
 import type { ReactNode } from "react";
 

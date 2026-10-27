@@ -1,9 +1,8 @@
 import { createBrowserRouter } from "react-router";
 
 import { isFeatureEnabled, isMaterialEnabled } from "@/config/features";
+import AppLayout from "@/layout/App.layout";
 import Home from "@/router/pages/Home";
-
-import AppLayout from "../layout/App.layout";
 
 import MaterialPage from "./pages/MaterialPage";
 import SettingsPage from "./pages/SettingsPage";

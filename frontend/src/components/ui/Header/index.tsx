@@ -1,9 +1,8 @@
 import { cn } from "cn";
 
 import pathsRouter from "@/router/paths.router";
-
-import Link, { NavLink } from "../Link";
-import Typography from "../Typography";
+import Link, { NavLink } from "@ui/Link";
+import Typography from "@ui/Typography";
 
 interface Props {
   className: string;

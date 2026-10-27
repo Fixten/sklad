@@ -1,4 +1,4 @@
-import { ErrorMessages } from "../constants/Errors";
+import { ErrorMessages } from "@/constants/Errors";
 
 export class ApiError extends Error {
   readonly status: number;

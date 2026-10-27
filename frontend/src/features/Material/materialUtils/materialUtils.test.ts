@@ -3,9 +3,9 @@ import { describe, expect, it } from "vitest";
 import {
   materialPath,
   materialTitle,
-  matchRows,
-  resolveCreationTarget,
-} from "./supplySearch";
+  queryMaterialRow,
+  queryMaterialRowWithType,
+} from "./materiaUtils";
 
 import type {
   MaterialCatalogRow,
@@ -45,51 +45,53 @@ const rows: MaterialCatalogRow[] = [
   },
 ];
 
-describe("matchRows", () => {
+describe("queryMaterialRow", () => {
   it("returns nothing without a query", () => {
-    expect(matchRows(rows, "")).toEqual([]);
-    expect(matchRows(rows, "   ")).toEqual([]);
+    expect(queryMaterialRow(rows, "")).toEqual([]);
+    expect(queryMaterialRow(rows, "   ")).toEqual([]);
   });
 
   it("matches every variant of a material by its name", () => {
-    expect(matchRows(rows, "Дуб")).toEqual([rows[0], rows[1]]);
+    expect(queryMaterialRow(rows, "Дуб")).toEqual([rows[0], rows[1]]);
   });
 
   it("matches a single variant by its name", () => {
-    expect(matchRows(rows, "доска")).toEqual([rows[0]]);
+    expect(queryMaterialRow(rows, "доска")).toEqual([rows[0]]);
   });
 
   it("matches by material type", () => {
-    expect(matchRows(rows, "листовой")).toEqual([rows[2]]);
+    expect(queryMaterialRow(rows, "листовой")).toEqual([rows[2]]);
   });
 
   it("ignores surrounding whitespace", () => {
-    expect(matchRows(rows, "  дуб ")).toEqual([rows[0], rows[1]]);
+    expect(queryMaterialRow(rows, "  дуб ")).toEqual([rows[0], rows[1]]);
   });
 
   it("returns nothing for an unknown query", () => {
-    expect(matchRows(rows, "клён")).toEqual([]);
+    expect(queryMaterialRow(rows, "клён")).toEqual([]);
   });
 });
 
-describe("resolveCreationTarget", () => {
+describe("queryMaterialRowWithType", () => {
   it("returns nothing without a query", () => {
-    expect(resolveCreationTarget(rows, " ")).toBeNull();
+    expect(queryMaterialRowWithType(rows, " ")).toBeNull();
   });
 
   it("offers a new material when nothing matches", () => {
-    expect(resolveCreationTarget(rows, "Клён")).toEqual({ kind: "material" });
+    expect(queryMaterialRowWithType(rows, "Клён")).toEqual({
+      kind: "material",
+    });
   });
 
   it("offers a new variant for the matched material", () => {
-    expect(resolveCreationTarget(rows, "доска")).toEqual({
+    expect(queryMaterialRowWithType(rows, "доска")).toEqual({
       kind: "variant",
       material: oak,
     });
   });
 
   it("prefers the material named by the query over a variant match", () => {
-    expect(resolveCreationTarget([...rows].reverse(), "Фанера")).toEqual({
+    expect(queryMaterialRowWithType([...rows].reverse(), "Фанера")).toEqual({
       kind: "variant",
       material: plywood,
     });

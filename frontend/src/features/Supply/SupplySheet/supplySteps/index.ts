@@ -1,7 +1,7 @@
 import type {
   MaterialCatalogRow,
   MaterialTarget,
-} from "../../../Material/useMaterialsCatalog";
+} from "@/features/Material/useMaterialsCatalog";
 
 export enum SupplyStepKind {
   Pick = "pick",

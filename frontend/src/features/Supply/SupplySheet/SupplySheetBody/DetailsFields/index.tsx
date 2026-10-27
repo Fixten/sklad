@@ -1,9 +1,10 @@
+import SupplierPicker, {
+  type SupplierOption,
+} from "@/features/Supply/SupplySheet/SupplySheetBody/DetailsFields/SupplierPicker";
 import { UnitHints } from "@/features/units";
 import { InputField } from "@ui/InputField";
 import { Separator } from "@ui/Separator";
 import Typography from "@ui/Typography";
-
-import SupplierPicker, { type SupplierOption } from "../SupplierPicker";
 
 import { formatUnitCost } from "./detailsForm";
 
@@ -12,7 +13,7 @@ import type {
   DetailsForm,
   UnitCostPreview,
 } from "./detailsForm";
-import type { MaterialCatalogRow } from "../../../Material/useMaterialsCatalog";
+import type { MaterialCatalogRow } from "@/features/Material/useMaterialsCatalog";
 
 interface Props {
   row: MaterialCatalogRow;

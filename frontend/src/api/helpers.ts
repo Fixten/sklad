@@ -1,4 +1,4 @@
-import { ErrorMessages } from "../constants/Errors";
+import { ErrorMessages } from "@/constants/Errors";
 
 import { ApiError, getServerError } from "./api-error";
 

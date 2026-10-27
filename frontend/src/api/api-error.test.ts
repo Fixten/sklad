@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { ErrorMessages } from "../constants/Errors";
+import { ErrorMessages } from "@/constants/Errors";
 
 import { ApiError, getServerError, retryApiError } from "./api-error";
 

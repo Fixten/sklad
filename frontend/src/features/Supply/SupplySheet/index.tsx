@@ -2,9 +2,9 @@ import { Button } from "@ui/Button";
 import Sheet from "@ui/Sheet";
 import Typography from "@ui/Typography";
 
-import { stepLabel, SupplyStepKind } from "./flow";
 import SupplySheetActions from "./SupplySheetActions";
 import SupplySheetBody from "./SupplySheetBody";
+import { stepLabel, SupplyStepKind } from "./supplySteps";
 import { useSupplySheet } from "./useSupplySheet";
 
 interface Props {

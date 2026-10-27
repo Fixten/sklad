@@ -6,7 +6,7 @@ import {
   supplyInitialStep,
   SupplyStepKind,
   type SupplyStep,
-} from "./flow";
+} from "./index";
 
 const detailsStep: SupplyStep = {
   kind: SupplyStepKind.Details,

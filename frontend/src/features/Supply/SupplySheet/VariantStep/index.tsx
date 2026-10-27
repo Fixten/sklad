@@ -1,14 +1,13 @@
 import { useState } from "react";
 
+import { materialTitle } from "@/features/Material/materialUtils/materiaUtils";
 import { UnitOptions, type Unit } from "@/features/units";
 import { Button } from "@ui/Button";
 import { InputField } from "@ui/InputField";
 import Panel from "@ui/Panel";
 import SelectField from "@ui/SelectField";
 
-import { materialTitle } from "../../supplySearch/supplySearch";
-
-import type { MaterialTarget } from "../../../Material/useMaterialsCatalog";
+import type { MaterialTarget } from "@/features/Material/useMaterialsCatalog";
 
 interface Props {
   material: MaterialTarget;

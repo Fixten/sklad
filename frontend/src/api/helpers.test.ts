@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { ErrorMessages } from "../constants/Errors";
+import { ErrorMessages } from "@/constants/Errors";
 
 import { ApiError } from "./api-error";
 import {

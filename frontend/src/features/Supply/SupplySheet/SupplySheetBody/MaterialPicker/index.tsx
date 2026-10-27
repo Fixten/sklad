@@ -1,11 +1,10 @@
-import OptionPicker from "@ui/OptionPicker";
-
 import {
   materialPath,
   type CreationTarget,
-} from "../../supplySearch/supplySearch";
+} from "@/features/Material/materialUtils/materiaUtils";
+import OptionPicker from "@ui/OptionPicker";
 
-import type { MaterialCatalogRow } from "../../../Material/useMaterialsCatalog";
+import type { MaterialCatalogRow } from "@/features/Material/useMaterialsCatalog";
 
 interface Props {
   query: string;
@@ -24,28 +23,25 @@ export default function MaterialPicker({
   onSelect,
   onCreate,
 }: Props) {
-  const hasQuery = query.trim().length > 0;
-
   const creationLabel =
     creation?.kind === "variant"
       ? `Новый вариант в «${creation.material.name}»`
       : `Новый материал: «${query.trim()}»`;
 
-  const createRow = creation
+  const create = creation
     ? {
         createLabel: creationLabel,
         onCreate: () => {
           onCreate(creation);
         },
       }
-    : {};
+    : undefined;
 
   return (
     <OptionPicker
       id="supply-material"
       label="Материал"
       placeholder="Название, тип или вариант"
-      hint={hasQuery ? "Поиск по названию, типу и варианту." : undefined}
       value={query}
       autoFocus
       onValueChange={onQueryChange}
@@ -57,7 +53,7 @@ export default function MaterialPicker({
         label: row.variantName,
         meta: materialPath(row.material),
       }))}
-      {...createRow}
+      create={create}
     />
   );
 }

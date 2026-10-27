@@ -1,13 +1,17 @@
 import { useState } from "react";
 
-import { emptyDetails, parseDetails, unitCostPreview } from "./detailsForm";
+import {
+  emptyDetails,
+  parseDetails,
+  unitCostPreview,
+} from "../../SupplySheetBody/DetailsFields/detailsForm";
 
 import type {
   DetailsErrors,
   DetailsForm,
   DetailsPayload,
   UnitCostPreview,
-} from "./detailsForm";
+} from "../../SupplySheetBody/DetailsFields/detailsForm";
 import type { Unit } from "@/features/units";
 
 interface UseDetailsFormReturn {

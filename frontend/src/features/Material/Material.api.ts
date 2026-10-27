@@ -1,4 +1,4 @@
-import Api from "../../api";
+import Api from "@/api";
 
 import type { MaterialDTO } from "./Material.model";
 

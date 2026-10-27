@@ -1,9 +1,9 @@
-import useMaterialType from "../MaterialType/useMaterialType";
-import useVariant from "../Variant/useVariant";
+import useMaterialType from "@/features/MaterialType/useMaterialType";
+import useVariant from "@/features/Variant/useVariant";
 
 import useMaterial from "./useMaterial";
 
-import type { Unit } from "../units";
+import type { Unit } from "@/features/units";
 
 export interface MaterialTarget {
   id: number;

@@ -20,7 +20,7 @@ export function materialTitle(material: MaterialTarget) {
     : material.name;
 }
 
-export function matchRows(
+export function queryMaterialRow(
   rows: MaterialCatalogRow[],
   query: string,
 ): MaterialCatalogRow[] {
@@ -35,7 +35,7 @@ export function matchRows(
   );
 }
 
-export function resolveCreationTarget(
+export function queryMaterialRowWithType(
   rows: MaterialCatalogRow[],
   query: string,
 ): CreationTarget | null {
@@ -43,7 +43,7 @@ export function resolveCreationTarget(
 
   if (!name) return null;
 
-  const matched = matchRows(rows, query);
+  const matched = queryMaterialRow(rows, query);
   const source =
     matched.find(
       (row) => normalizeName(row.material.name) === normalizeName(name),

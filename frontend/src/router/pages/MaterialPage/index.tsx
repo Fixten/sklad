@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import SupplySheet from "@/features/Supply/components/SupplySheet";
+import SupplySheet from "@/features/Supply/SupplySheet";
 import CommandPalette from "@ui/CommandPalette";
 
 export default function MaterialPage() {

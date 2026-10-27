@@ -12,7 +12,7 @@ import type { MaterialField, MaterialFormErrors } from "./validation";
 import type {
   MaterialDraft,
   MaterialTypeChoice,
-} from "../SupplySheet/materialDraft";
+} from "@/features/Supply/SupplySheet/useSupplySheet/materialDraft";
 import type { SubmitEvent } from "react";
 
 const NewTypeValue = "new-type";

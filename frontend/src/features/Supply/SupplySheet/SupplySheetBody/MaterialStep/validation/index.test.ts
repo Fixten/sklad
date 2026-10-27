@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { validateMaterialForm } from "./validation";
+import { validateMaterialForm } from "./index";
 
 test("requires a type, material and variant, and a name for a new type", () => {
   expect(

@@ -23,39 +23,48 @@ interface OptionPickerBaseProps<T> {
   onSelect: (value: T) => void;
   results: OptionPickerItem<T>[];
   listLabel: string;
+  create?: {
+    createLabel: string;
+    onCreate: () => void;
+  };
 }
 
-type CreateProps =
-  | { createLabel: string; onCreate: () => void }
-  | { createLabel?: undefined; onCreate?: undefined };
+type OptionPickerProps<T> = OptionPickerBaseProps<T>;
 
-type OptionPickerProps<T> = OptionPickerBaseProps<T> & CreateProps;
-
-function OptionPicker<T>({
-  id,
-  label,
-  value,
-  placeholder,
-  hint,
-  error,
-  autoFocus,
-  onValueChange,
-  onSelect,
-  results,
-  createLabel,
-  onCreate,
-  listLabel,
-}: OptionPickerProps<T>) {
+export default function OptionPicker<T>(props: OptionPickerProps<T>) {
+  const {
+    id,
+    label,
+    value,
+    placeholder,
+    hint,
+    error,
+    autoFocus,
+    onValueChange,
+    onSelect,
+    results,
+    create,
+    listLabel,
+  } = props;
   const listId = listDomId(id);
-  const createRow: OptionPickerRow<T> | null = createLabel
-    ? { kind: "create", key: "create", label: createLabel, icon: <PlusIcon /> }
-    : null;
+
   const resultRows: OptionPickerRow<T>[] = results.map((item) => ({
     ...item,
     kind: "result",
     key: `result:${item.key}`,
   }));
-  const rows = createRow ? [createRow, ...resultRows] : resultRows;
+
+  const rows = create
+    ? [
+        {
+          kind: "create",
+          key: "create",
+          label: create.createLabel,
+          icon: <PlusIcon />,
+        } as OptionPickerRow<T>,
+        ...resultRows,
+      ]
+    : resultRows;
 
   const {
     wrapperRef,
@@ -71,7 +80,7 @@ function OptionPicker<T>({
     listId,
     rows,
     onSelect,
-    onCreate,
+    onCreate: create?.onCreate,
   });
 
   return (
@@ -109,7 +118,5 @@ function OptionPicker<T>({
     </div>
   );
 }
-
-export default OptionPicker;
 
 export type { OptionPickerProps };

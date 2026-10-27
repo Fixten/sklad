@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
-import { formatUnitCost, parseDetails, unitCostPreview } from "./detailsForm";
+import { formatUnitCost, parseDetails, unitCostPreview } from "./index";
 
-import type { DetailsForm } from "./detailsForm";
+import type { DetailsForm } from "./index";
 
 const base: DetailsForm = {
   quantity: "8",

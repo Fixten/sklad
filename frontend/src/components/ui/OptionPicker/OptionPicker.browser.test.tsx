@@ -21,6 +21,10 @@ const baseProps = {
   results,
   onSelect: vi.fn(),
   onValueChange: vi.fn(),
+  create: {
+    createLabel: createRowLabel,
+    onCreate: vi.fn(),
+  },
 } satisfies OptionPickerProps<number>;
 
 test("stays a bare field while closed", async () => {
@@ -33,13 +37,7 @@ test("stays a bare field while closed", async () => {
 });
 
 test("wires the field to the list and its active option", async () => {
-  const screen = await render(
-    <OptionPicker
-      {...baseProps}
-      createLabel={createRowLabel}
-      onCreate={vi.fn()}
-    />,
-  );
+  const screen = await render(<OptionPicker {...baseProps} />);
 
   await userEvent.click(screen.getByRole("combobox"));
 
@@ -61,13 +59,7 @@ test("wires the field to the list and its active option", async () => {
 });
 
 test("places the create row first", async () => {
-  const screen = await render(
-    <OptionPicker
-      {...baseProps}
-      createLabel={createRowLabel}
-      onCreate={vi.fn()}
-    />,
-  );
+  const screen = await render(<OptionPicker {...baseProps} />);
 
   await userEvent.click(screen.getByRole("combobox"));
 
@@ -80,14 +72,7 @@ test("places the create row first", async () => {
 });
 
 test("shows only the create row when there are no results", async () => {
-  const screen = await render(
-    <OptionPicker
-      {...baseProps}
-      results={[]}
-      createLabel="Новый материал: «Клён»"
-      onCreate={vi.fn()}
-    />,
-  );
+  const screen = await render(<OptionPicker {...baseProps} results={[]} />);
 
   await userEvent.click(screen.getByRole("combobox"));
 
@@ -100,13 +85,7 @@ test("shows only the create row when there are no results", async () => {
 });
 
 test("moves the active option with the arrow keys and wraps", async () => {
-  const screen = await render(
-    <OptionPicker
-      {...baseProps}
-      createLabel={createRowLabel}
-      onCreate={vi.fn()}
-    />,
-  );
+  const screen = await render(<OptionPicker {...baseProps} />);
 
   await userEvent.click(screen.getByRole("combobox"));
   await expect
@@ -170,8 +149,6 @@ test("keeps a result keyed create independent from the create row", async () => 
     <OptionPicker
       {...baseProps}
       results={[{ key: "create", value: 100, label: "Доска 40 мм" }]}
-      createLabel={createRowLabel}
-      onCreate={onCreate}
       onSelect={onSelect}
     />,
   );
@@ -192,12 +169,7 @@ test("keeps a result keyed create independent from the create row", async () => 
 test("selects the active option on enter", async () => {
   const onSelect = vi.fn();
   const screen = await render(
-    <OptionPicker
-      {...baseProps}
-      createLabel={createRowLabel}
-      onCreate={vi.fn()}
-      onSelect={onSelect}
-    />,
+    <OptionPicker {...baseProps} onSelect={onSelect} />,
   );
 
   await userEvent.click(screen.getByRole("combobox"));
@@ -210,12 +182,7 @@ test("routes the create row to onCreate only", async () => {
   const onSelect = vi.fn();
   const onCreate = vi.fn();
   const screen = await render(
-    <OptionPicker
-      {...baseProps}
-      createLabel={createRowLabel}
-      onCreate={onCreate}
-      onSelect={onSelect}
-    />,
+    <OptionPicker {...baseProps} onSelect={onSelect} />,
   );
 
   await userEvent.click(screen.getByRole("combobox"));

@@ -13,22 +13,22 @@ mirroring the backend's feature split.
   (types derived from `src/api/schema.d.ts`), `use<F>.ts` (react-query hook), plus the
   feature's components. Pages live in `src/router/pages/<Page>/`.
 - **UI component split**: custom, project-authored components live in `src/components/ui/`
-  (alias `@ui/*`); shadcn components live in `src/components/ui/base/` (alias `@base/*`) and
-  are installed via `shadcn add` (`components.json` sets `aliases.ui = "@base"`). Keep
-  upstream code verbatim except for design-driven edits required by `DESIGN.md` (token or
-  recipe changes only — e.g. the destructive variant); re-apply those after any reinstall.
-- **Import UI only via `@ui/*`.** Code outside `src/components/ui/` must never import
-  `@base/*` directly — `@base` is an implementation detail. If `@ui` lacks the piece you
-  need, add a `@ui` entry first, even if it is only a re-export.
-- Aliases (`tsconfig.json`): `@/*` → `src`; `@ui/*` and `@base/*` as defined above.
-- `cn()` from the `cn` package — use it instead of concatenating class strings, or
-  conflicting Tailwind utilities survive.
-- Use `@ui/Typography` for any text. Base `body` carries `type-body`, so raw `p`/`span`/`div`
-  (and reset headings) inherit the body role rather than preflight defaults; `type-*` still wins.
-- Icons come from `@ui/Icon`, a re-export of `lucide-react`; only `src/components/ui/**` may
-  import `lucide-react` directly (enforced by convention, not lint).
-- React Compiler is enabled (`vite.config.mts`); don't hand-memoize with `useMemo`/`useCallback`
-  — derived values are auto-memoized (only upstream `@base` code keeps its own).
+  (alias `@ui/*`); shadcn components live in `src/components/ui/base/` (alias `@base/*`),
+  installed via `shadcn add` (`components.json` sets `aliases.ui = "@base"`). Keep upstream
+  code verbatim except design-driven token/recipe edits from `DESIGN.md` (e.g. the destructive
+  variant); re-apply those after any reinstall.
+- **Import UI only via `@ui/*`.** `@base/*` outside `src/components/ui/` is a lint error —
+  `@base` is an implementation detail. If `@ui` lacks the piece, add a `@ui` entry first,
+  even if it is only a re-export.
+- Aliases (`tsconfig.json`): `@/*` → `src`; `@ui/*`, `@base/*` above. `../` may not leave its
+  module (feature, ui component, lib, page) — crossing needs an alias; `./` is always fine.
+- `cn()` from the `cn` package, never string concatenation — conflicting utilities survive.
+- Use `@ui/Typography` for any text; base `body` carries `type-body`, so raw `p`/`span`/`div`
+  inherit the body role (`type-*` still wins).
+- Icons come from `@ui/Icon`; only `src/components/ui/**` may import `lucide-react` (lint error
+  elsewhere).
+- React Compiler is enabled (`vite.config.mts`) — don't hand-memoize with `useMemo`/`useCallback`
+  (only upstream `@base` code keeps its own).
 - Each component should be created in own folder eg /folder/Component/index.tsx
 - **Sheet flows**: `useSheetFlow` (`src/lib/sheetFlow.ts`) owns step, failure, busy and async
   transitions; the feature's `flow.ts` owns its `Step` union and back target. A reducer, not
@@ -80,7 +80,7 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
 ## Gotchas & decisions
 
 - **Dark theme is active — never style from light values.** The app renders dark
-  (`.dark` in `src/styles/tailwind.css`); `:root` is unused documentation. Style via
+  (`.dark` in `src/styles/tailwind.css`); `:root` documents the unused light palette. Style via
   semantic tokens, never hardcoded or light-derived hex. One hue (forest, H≈131)
   carries surfaces, linework and text; hide browns are defined but unbound.
   Two line weights: `--border` is decoration (1.67:1 on the canvas, 1.40:1 on
@@ -97,6 +97,9 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
   mapping (after `@ui/*`), `aliases.ui` resolves to `frontend/@base` instead of
   `src/components/ui/base` — `shadcn add` writes there silently. Confirm with
   `npx shadcn info`.
+- **Relative imports are module-scoped** by `local/same-module-relative-import`: don't swap it
+  for `import-x/no-relative-parent-imports` (resolves the alias, then reports `@/…`), and keep
+  globs `**/`-prefixed — pre-commit lints from the repo root. `src/config/features.ts` is exempt.
 - **`server.js` is the production host**: Express 5 serving static `dist` plus an SPA catch-all
   `app.get('/{*splat}')` (Express 5 renamed `'*'`), run via `pm2-runtime` on `FRONTEND_PORT`.
 - **In Penpot, a token _value_ edit does not re-resolve existing bindings.** Shapes keep the
@@ -112,8 +115,6 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
   `type-body`. Raw `tracking-normal`/`normal-case` survive only as `Label` peer overrides
   (`peer-data-[slot=checkbox|radio-group-item|switch]`), which `type-body` does not reset.
   No `type-caption` slot in `base/**`: hints are `type-body`.
-- `:root` still documents the pre-ladder light palette; light is unshipped, so it was left
-  alone. Rebuild it from the forest ladder if a light theme is ever revived.
 - The 65ch prose measure lives in the prose slots (`CardDescription`, `DialogDescription`,
   `FieldDescription`, `CommandEmpty`), never on `type-body`: the role also covers
   full-width controls, whose measure comes from their container.

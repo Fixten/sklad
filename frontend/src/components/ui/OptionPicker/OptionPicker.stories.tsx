@@ -26,7 +26,10 @@ const meta = {
     autoFocus: true,
     onSelect: fn(),
     onValueChange: fn(),
-    onCreate: fn(),
+    create: {
+      createLabel: "Новый вариант в «Дуб»",
+      onCreate: fn(),
+    },
     results: [
       {
         key: "1",
@@ -41,7 +44,6 @@ const meta = {
         meta: "Пиломатериал · Дуб",
       },
     ],
-    createLabel: "Новый вариант в «Дуб»",
     listLabel: "Варианты",
   },
   decorators: [(Story) => <div className="w-80 p-6">{Story()}</div>],

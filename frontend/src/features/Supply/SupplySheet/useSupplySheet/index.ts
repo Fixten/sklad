@@ -1,30 +1,34 @@
 import { useState } from "react";
 
-import { sameName } from "@/lib/text/text";
-import { useSheetFlow } from "@/lib/useSheetFlow/useSheetFlow";
-
-import useMaterial from "../../../Material/useMaterial";
+import {
+  queryMaterialRow,
+  queryMaterialRowWithType,
+} from "@/features/Material/materialUtils/materiaUtils";
+import useMaterial from "@/features/Material/useMaterial";
 import useMaterialsCatalog, {
   buildMaterialCatalogRow,
   type MaterialCatalogRow,
   type MaterialTarget,
-} from "../../../Material/useMaterialsCatalog";
-import useMaterialType from "../../../MaterialType/useMaterialType";
-import useSupplier from "../../../Supplier/useSupplier";
-import useVariant from "../../../Variant/useVariant";
-import {
-  matchRows,
-  resolveCreationTarget,
-} from "../../supplySearch/supplySearch";
-import useSupply from "../../useSupply";
+} from "@/features/Material/useMaterialsCatalog";
+import useMaterialType from "@/features/MaterialType/useMaterialType";
+import useSupplier from "@/features/Supplier/useSupplier";
+import useSupply from "@/features/Supply/useSupply";
+import useVariant from "@/features/Variant/useVariant";
+import { sameName } from "@/lib/text/text";
+import { useSheetFlow } from "@/lib/useSheetFlow/useSheetFlow";
 
-import { supplyBackStep, supplyInitialStep, SupplyStepKind } from "./flow";
+import {
+  supplyBackStep,
+  supplyInitialStep,
+  SupplyStepKind,
+} from "../supplySteps";
+
 import { useDetailsForm } from "./useDetailsForm";
 
-import type { SupplierOption } from "../SupplierPicker";
-import type { SupplyStep } from "./flow";
+import type { SupplyStep } from "../supplySteps";
 import type { MaterialDraft } from "./materialDraft";
-import type { CreationTarget } from "../../supplySearch/supplySearch";
+import type { CreationTarget } from "@/features/Material/materialUtils/materiaUtils";
+import type { SupplierOption } from "@/features/Supply/SupplySheet/SupplySheetBody/DetailsFields/SupplierPicker";
 import type { Unit } from "@/features/units";
 
 interface Props {
@@ -53,9 +57,6 @@ export function useSupplySheet({ onOpenChange }: Props) {
       name,
     }),
   );
-
-  const matchedRows = matchRows(catalog.rows, query);
-  const creation = resolveCreationTarget(catalog.rows, query);
 
   const resetSession = () => {
     reset();
@@ -189,8 +190,8 @@ export function useSupplySheet({ onOpenChange }: Props) {
     failure,
     query,
     setQuery,
-    matchedRows,
-    creation,
+    matchedRows: queryMaterialRow(catalog.rows, query),
+    creation: queryMaterialRowWithType(catalog.rows, query),
     supplierOptions,
     types: catalog.types,
     variantPending: variant.addMutation.isPending,

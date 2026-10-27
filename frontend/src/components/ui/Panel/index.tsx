@@ -1,4 +1,4 @@
-import Typography from "../Typography";
+import Typography from "@ui/Typography";
 
 import type { ReactNode } from "react";
 
