@@ -7,15 +7,16 @@ import { InputField } from "@ui/InputField";
 import Panel from "@ui/Panel";
 import SelectField from "@ui/SelectField";
 
+import { useVariantStep } from "./useVariantStep";
+
 import type { MaterialTarget } from "@/features/Material/useMaterialsCatalog";
 
 interface Props {
   material: MaterialTarget;
-  pending: boolean;
-  onCreate: (name: string, unit: Unit) => Promise<void>;
 }
 
-export default function VariantStep({ material, pending, onCreate }: Props) {
+export default function VariantStep({ material }: Props) {
+  const { pending, create } = useVariantStep(material);
   const [name, setName] = useState("");
   const [unit, setUnit] = useState<Unit>("meters");
   const [error, setError] = useState<string>();
@@ -29,7 +30,7 @@ export default function VariantStep({ material, pending, onCreate }: Props) {
     }
 
     setError(undefined);
-    void onCreate(name.trim(), unit);
+    void create(name.trim(), unit);
   };
 
   return (

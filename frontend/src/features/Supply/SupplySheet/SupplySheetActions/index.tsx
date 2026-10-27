@@ -1,28 +1,19 @@
 import { Button } from "@ui/Button";
 
-import { SupplyStepKind, type SupplyStep } from "../supplySteps";
+import { useSupplySheetContext } from "../context";
+import { SupplyStepKind } from "../supplySteps";
 
-interface Props {
-  step: SupplyStep;
-  onCancel: () => void;
-  onBack: () => void;
-  onSubmit: () => void;
-}
+export default function SupplySheetActions() {
+  const { step, close, back, submitDetails } = useSupplySheetContext();
 
-export default function SupplySheetActions({
-  step,
-  onCancel,
-  onBack,
-  onSubmit,
-}: Props) {
   const cancelButton = (
-    <Button variant="ghost" onClick={onCancel}>
+    <Button variant="ghost" onClick={close}>
       Отмена
     </Button>
   );
 
   const backButton = (
-    <Button variant="ghost" onClick={onBack}>
+    <Button variant="ghost" onClick={back}>
       Назад
     </Button>
   );
@@ -32,7 +23,7 @@ export default function SupplySheetActions({
       return (
         <>
           {cancelButton}
-          <Button onClick={onSubmit}>Сохранить поставку</Button>
+          <Button onClick={submitDetails}>Сохранить поставку</Button>
         </>
       );
 

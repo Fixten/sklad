@@ -6,36 +6,26 @@ import { InputField } from "@ui/InputField";
 import Panel from "@ui/Panel";
 import SelectField from "@ui/SelectField";
 
+import { useSupplySheetContext } from "../../context";
+
+import { useMaterialStep } from "./useMaterialStep";
 import { validateMaterialForm } from "./validation";
 
+import type { MaterialTypeChoice } from "./materialDraft";
 import type { MaterialField, MaterialFormErrors } from "./validation";
-import type {
-  MaterialDraft,
-  MaterialTypeChoice,
-} from "@/features/Supply/SupplySheet/useSupplySheet/materialDraft";
 import type { SubmitEvent } from "react";
 
 const NewTypeValue = "new-type";
 
-interface Props {
-  types: { id: number; name: string }[];
-  initialName: string;
-  pending: boolean;
-  onCreate: (draft: MaterialDraft) => Promise<void>;
-}
-
 const isUnit = (value: string): value is Unit =>
   UnitOptions.some((option) => option.value === value);
 
-export default function MaterialStep({
-  types,
-  initialName,
-  pending,
-  onCreate,
-}: Props) {
+export default function MaterialStep() {
+  const { query } = useSupplySheetContext();
+  const { types, pending, create } = useMaterialStep();
   const [selectedTypeId, setSelectedTypeId] = useState<string | null>(null);
   const [typeName, setTypeName] = useState("");
-  const [materialName, setMaterialName] = useState(initialName);
+  const [materialName, setMaterialName] = useState(query.trim());
   const [variantName, setVariantName] = useState("");
   const [unit, setUnit] = useState<Unit>("meters");
   const [errors, setErrors] = useState<MaterialFormErrors>({});
@@ -84,7 +74,7 @@ export default function MaterialStep({
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0 || !type) return;
 
-    void onCreate({
+    void create({
       type,
       materialName: materialName.trim(),
       variantName: variantName.trim(),

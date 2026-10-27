@@ -1,28 +1,18 @@
-import {
-  materialPath,
-  type CreationTarget,
-} from "@/features/Material/materialUtils/materiaUtils";
+import { materialPath } from "@/features/Material/materialUtils/materiaUtils";
 import OptionPicker from "@ui/OptionPicker";
 
-import type { MaterialCatalogRow } from "@/features/Material/useMaterialsCatalog";
+import { usePickStep } from "./usePickStep";
 
-interface Props {
-  query: string;
-  rows: MaterialCatalogRow[];
-  creation: CreationTarget | null;
-  onQueryChange: (query: string) => void;
-  onSelect: (row: MaterialCatalogRow) => void;
-  onCreate: (target: CreationTarget) => void;
-}
+export default function PickStep() {
+  const {
+    query,
+    setQuery,
+    matchedRows,
+    creation,
+    selectVariant,
+    selectCreation,
+  } = usePickStep();
 
-export default function MaterialPicker({
-  query,
-  rows,
-  creation,
-  onQueryChange,
-  onSelect,
-  onCreate,
-}: Props) {
   const creationLabel =
     creation?.kind === "variant"
       ? `Новый вариант в «${creation.material.name}»`
@@ -32,7 +22,7 @@ export default function MaterialPicker({
     ? {
         createLabel: creationLabel,
         onCreate: () => {
-          onCreate(creation);
+          selectCreation(creation);
         },
       }
     : undefined;
@@ -44,10 +34,10 @@ export default function MaterialPicker({
       placeholder="Название, тип или вариант"
       value={query}
       autoFocus
-      onValueChange={onQueryChange}
-      onSelect={onSelect}
+      onValueChange={setQuery}
+      onSelect={selectVariant}
       listLabel="Варианты"
-      results={rows.map((row) => ({
+      results={matchedRows.map((row) => ({
         key: String(row.variantId),
         value: row,
         label: row.variantName,

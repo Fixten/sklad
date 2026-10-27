@@ -81,7 +81,7 @@ test("shows only the create row when there are no results", async () => {
       .getByRole("option")
       .elements()
       .map((element) => element.textContent),
-  ).toEqual(["Новый материал: «Клён»"]);
+  ).toEqual([createRowLabel]);
 });
 
 test("moves the active option with the arrow keys and wraps", async () => {
@@ -150,6 +150,7 @@ test("keeps a result keyed create independent from the create row", async () => 
       {...baseProps}
       results={[{ key: "create", value: 100, label: "Доска 40 мм" }]}
       onSelect={onSelect}
+      create={{ ...baseProps.create, onCreate }}
     />,
   );
 
@@ -182,7 +183,11 @@ test("routes the create row to onCreate only", async () => {
   const onSelect = vi.fn();
   const onCreate = vi.fn();
   const screen = await render(
-    <OptionPicker {...baseProps} onSelect={onSelect} />,
+    <OptionPicker
+      {...baseProps}
+      onSelect={onSelect}
+      create={{ ...baseProps.create, onCreate }}
+    />,
   );
 
   await userEvent.click(screen.getByRole("combobox"));

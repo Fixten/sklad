@@ -1,39 +1,28 @@
-import SupplierPicker, {
-  type SupplierOption,
-} from "@/features/Supply/SupplySheet/SupplySheetBody/DetailsFields/SupplierPicker";
 import { UnitHints } from "@/features/units";
 import { InputField } from "@ui/InputField";
 import { Separator } from "@ui/Separator";
 import Typography from "@ui/Typography";
 
 import { formatUnitCost } from "./detailsForm";
+import SupplierPicker from "./SupplierPicker";
+import { useDetailsStep } from "./useDetailsStep";
 
-import type {
-  DetailsErrors,
-  DetailsForm,
-  UnitCostPreview,
-} from "./detailsForm";
+import type { DetailsForm, DetailsErrors } from "./detailsForm";
 import type { MaterialCatalogRow } from "@/features/Material/useMaterialsCatalog";
 
 interface Props {
   row: MaterialCatalogRow;
-  details: DetailsForm;
-  errors: DetailsErrors;
-  suppliers: SupplierOption[];
-  unitCost: UnitCostPreview | null;
-  onChange: (patch: Partial<DetailsForm>) => void;
-  onClearError: (key: keyof DetailsErrors) => void;
 }
 
-export default function DetailsFields({
-  row,
-  details,
-  errors,
-  suppliers,
-  unitCost,
-  onChange,
-  onClearError,
-}: Props) {
+export default function DetailsStep({ row }: Props) {
+  const { details, errors, suppliers, unitCost, update, clearError } =
+    useDetailsStep(row);
+
+  const change = (patch: Partial<DetailsForm>, key?: keyof DetailsErrors) => {
+    update(patch);
+    if (key) clearError(key);
+  };
+
   return (
     <>
       <div className="bg-card flex flex-col gap-1 px-4 py-3">
@@ -54,8 +43,7 @@ export default function DetailsFields({
           error={errors.quantity}
           hint={UnitHints[row.unit]}
           onChange={(event) => {
-            onChange({ quantity: event.target.value });
-            onClearError("quantity");
+            change({ quantity: event.target.value }, "quantity");
           }}
         />
         <InputField
@@ -67,8 +55,7 @@ export default function DetailsFields({
           error={errors.price}
           hint="₽ за партию"
           onChange={(event) => {
-            onChange({ price: event.target.value });
-            onClearError("price");
+            change({ price: event.target.value }, "price");
           }}
         />
         <div className="col-span-2">
@@ -77,8 +64,10 @@ export default function DetailsFields({
             value={{ id: details.supplierId, name: details.supplierName }}
             error={errors.supplier}
             onChange={(value) => {
-              onChange({ supplierId: value.id, supplierName: value.name });
-              onClearError("supplier");
+              change(
+                { supplierId: value.id, supplierName: value.name },
+                "supplier",
+              );
             }}
           />
         </div>
@@ -88,7 +77,7 @@ export default function DetailsFields({
           placeholder="Например: осенняя партия, сорт А"
           value={details.description}
           onChange={(event) => {
-            onChange({ description: event.target.value });
+            change({ description: event.target.value });
           }}
         />
         <InputField
@@ -97,7 +86,7 @@ export default function DetailsFields({
           placeholder="https://…"
           value={details.url}
           onChange={(event) => {
-            onChange({ url: event.target.value });
+            change({ url: event.target.value });
           }}
         />
         <div className="col-span-2">

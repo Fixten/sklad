@@ -31,14 +31,14 @@ export default function SupplierPicker({
   );
   const withCreation = Boolean(creationName) && !hasExactMatch;
 
-  const createRow = withCreation
+  const create = withCreation
     ? {
         createLabel: `Новый поставщик: «${creationName}»`,
         onCreate: () => {
           onChange({ id: null, name: creationName });
         },
       }
-    : {};
+    : undefined;
 
   return (
     <OptionPicker
@@ -59,7 +59,7 @@ export default function SupplierPicker({
         value: supplier,
         label: supplier.name,
       }))}
-      {...createRow}
+      create={create}
     />
   );
 }
