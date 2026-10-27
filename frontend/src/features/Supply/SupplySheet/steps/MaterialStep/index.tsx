@@ -6,7 +6,7 @@ import { InputField } from "@ui/InputField";
 import Panel from "@ui/Panel";
 import SelectField from "@ui/SelectField";
 
-import { useSupplySheetContext } from "../../context";
+import { supplyWizard } from "../../supplyWizard";
 
 import { useMaterialStep } from "./useMaterialStep";
 import { validateMaterialForm } from "./validation";
@@ -21,11 +21,11 @@ const isUnit = (value: string): value is Unit =>
   UnitOptions.some((option) => option.value === value);
 
 export default function MaterialStep() {
-  const { query } = useSupplySheetContext();
+  const { shared } = supplyWizard.useWizard();
   const { types, pending, create } = useMaterialStep();
   const [selectedTypeId, setSelectedTypeId] = useState<string | null>(null);
   const [typeName, setTypeName] = useState("");
-  const [materialName, setMaterialName] = useState(query.trim());
+  const [materialName, setMaterialName] = useState(shared.query.trim());
   const [variantName, setVariantName] = useState("");
   const [unit, setUnit] = useState<Unit>("meters");
   const [errors, setErrors] = useState<MaterialFormErrors>({});

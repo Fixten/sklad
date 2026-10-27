@@ -1,10 +1,10 @@
 import { Button } from "@ui/Button";
 
-import { useSupplySheetContext } from "../context";
 import { SupplyStepKind } from "../supplySteps";
+import { supplyWizard } from "../supplyWizard";
 
 export default function SupplySheetActions() {
-  const { step, close, back, submitDetails } = useSupplySheetContext();
+  const { step, close, back, submit } = supplyWizard.useWizard();
 
   const cancelButton = (
     <Button variant="ghost" onClick={close}>
@@ -23,7 +23,7 @@ export default function SupplySheetActions() {
       return (
         <>
           {cancelButton}
-          <Button onClick={submitDetails}>Сохранить поставку</Button>
+          <Button onClick={submit}>Сохранить поставку</Button>
         </>
       );
 

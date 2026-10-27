@@ -3,13 +3,13 @@ import { buildMaterialCatalogRow } from "@/features/Material/useMaterialsCatalog
 import useMaterialType from "@/features/MaterialType/useMaterialType";
 import useVariant from "@/features/Variant/useVariant";
 
-import { useSupplySheetContext } from "../../context";
 import { SupplyStepKind } from "../../supplySteps";
+import { supplyWizard } from "../../supplyWizard";
 
 import type { MaterialDraft } from "./materialDraft";
 
 export function useMaterialStep() {
-  const { run } = useSupplySheetContext();
+  const { run } = supplyWizard.useWizard();
   const material = useMaterial();
   const materialType = useMaterialType();
   const variant = useVariant();

@@ -7,15 +7,15 @@ import useMaterialsCatalog, {
   type MaterialCatalogRow,
 } from "@/features/Material/useMaterialsCatalog";
 
-import { useSupplySheetContext } from "../../context";
 import { SupplyStepKind } from "../../supplySteps";
+import { supplyWizard } from "../../supplyWizard";
 
 export function usePickStep() {
-  const { query, setQuery, go } = useSupplySheetContext();
+  const { shared, go } = supplyWizard.useWizard();
   const catalog = useMaterialsCatalog();
 
-  const matchedRows = queryMaterialRow(catalog.rows, query);
-  const creation = queryMaterialRowWithType(catalog.rows, query);
+  const matchedRows = queryMaterialRow(catalog.rows, shared.query);
+  const creation = queryMaterialRowWithType(catalog.rows, shared.query);
 
   const selectVariant = (row: MaterialCatalogRow) => {
     go({ kind: SupplyStepKind.Details, row });
@@ -30,8 +30,8 @@ export function usePickStep() {
   };
 
   return {
-    query,
-    setQuery,
+    query: shared.query,
+    setQuery: shared.setQuery,
     matchedRows,
     creation,
     selectVariant,

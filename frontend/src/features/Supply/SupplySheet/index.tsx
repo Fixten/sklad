@@ -1,14 +1,16 @@
+import { useState } from "react";
+
 import { Button } from "@ui/Button";
 import Sheet from "@ui/Sheet";
 import Typography from "@ui/Typography";
 
-import { SupplySheetProvider, useSupplySheetContext } from "./context";
 import DetailsStep from "./steps/DetailsStep";
 import MaterialStep from "./steps/MaterialStep";
 import PickStep from "./steps/PickStep";
 import VariantStep from "./steps/VariantStep";
 import SupplySheetActions from "./SupplySheetActions";
 import { stepLabel, SupplyStepKind } from "./supplySteps";
+import { supplyWizard } from "./supplyWizard";
 
 interface Props {
   open: boolean;
@@ -16,7 +18,7 @@ interface Props {
 }
 
 function StepRouter() {
-  const { step } = useSupplySheetContext();
+  const { step } = supplyWizard.useWizard();
 
   switch (step.kind) {
     case SupplyStepKind.Pick:
@@ -33,13 +35,14 @@ function StepRouter() {
   }
 }
 
-function SupplySheetContent({ open }: { open: boolean }) {
-  const { step, failure, close, back } = useSupplySheetContext();
+function SupplySheetContent() {
+  const { open, step, failure, handleOpenChange, back } =
+    supplyWizard.useWizard();
 
   return (
     <Sheet
       open={open}
-      onOpenChange={close}
+      onOpenChange={handleOpenChange}
       title="Поставка материала"
       step={stepLabel(step)}
       hint={
@@ -63,9 +66,18 @@ function SupplySheetContent({ open }: { open: boolean }) {
 }
 
 export default function SupplySheet({ open, onOpenChange }: Props) {
+  const [query, setQuery] = useState("");
+
   return (
-    <SupplySheetProvider onOpenChange={onOpenChange}>
-      <SupplySheetContent open={open} />
-    </SupplySheetProvider>
+    <supplyWizard.Provider
+      open={open}
+      onOpenChange={onOpenChange}
+      shared={{ query, setQuery }}
+      onClose={() => {
+        setQuery("");
+      }}
+    >
+      <SupplySheetContent />
+    </supplyWizard.Provider>
   );
 }
