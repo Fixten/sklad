@@ -182,6 +182,7 @@ components:
     rounded: "{rounded.none}"
     padding: "12px 0"
     width: "100%"
+    height: "96px"
   card:
     backgroundColor: "{colors.forest-850}"
     textColor: "{colors.forest-100}"
@@ -267,7 +268,7 @@ ordinary one. Every rule below exists to keep that reading honest.
 - Brass has two jobs: hardware at `brass.500` (the CTA), highlight at `brass.300` (accent and focus ring).
 - Borders are decoration (1.40–1.67:1); every control edge owns `--control-border` and clears 3:1.
 - `rounded-none` on every shipped component — sharp sera geometry.
-- Depth by tonal layering plus a card shadow (`shadow-card`); surfaces carry no ring.
+- Depth by tonal layering only, never a shadow; surfaces carry no ring and no shadow.
 - Single-column `max-w-4xl` shell with a 4px spacing rhythm.
 
 ## Colors
@@ -434,10 +435,11 @@ surface step over a shadow to lift content.
   separators and section outlines at 1.40–1.67:1. `--control-border`
   (`forest.500`) is a control edge: outline buttons, input underlines, icon buttons
   at 3.02–3.96:1. A line that must be _seen_ as an edge is a control border.
-- **Surfaces carry no ring.** Cards, dialogs and the command list are delimited by
-  their tone step and their shadow only; a border on a surface is a maintenance tax
-  that reads as almost nothing at this ladder's contrast. `--border-hairline`
-  survives as the specimen keyline on Colors swatches, never as a surface edge.
+- **Surfaces carry no ring and no shadow.** Cards, dialogs and the command list are
+  delimited by their tone step alone; a border or a shadow on a surface is a
+  maintenance tax that reads as almost nothing at this ladder's contrast.
+  `--border-hairline` survives as the specimen keyline on Colors swatches, never as
+  a surface edge.
 - Interactive borders (focus, active input) use `--ring`; invalid fields swap the
   underline to `--invalid`.
 - Active/interactive fills — toggle states, secondary buttons — use `--secondary`
@@ -673,7 +675,10 @@ margins.
   In Penpot the column width is the `size.shell.column` token (896px), bound to the
   `header` and `main` of the `appLayout` component — the code's `max-w-4xl`.
 - **Rhythm:** 4px base spacing unit (Tailwind dynamic scale). Stacks use `gap-*`:
-  `gap-2` inside controls, `gap-4` / `gap-6` / `gap-8` between blocks.
+  `gap-2` inside controls, `gap-4` / `gap-6` / `gap-8` between blocks. Off-grid
+  steps (2/6/10/14px) exist only inside upstream `@base` primitives (`Select`,
+  `Command`, `Dialog`, `InputGroup`) where their own geometry needs them — never in
+  `@ui` components or feature layouts.
 - **Header:** `flex items-center justify-between px-4 py-4 sm:px-6`; the nav is a
   `gap-4 sm:gap-8` flex list — the tracked caps fit a 375px viewport at `gap-4`, the
   narrowest width the shell promises. Nav links are `--muted-foreground`, shift to
@@ -694,30 +699,24 @@ inherit the shell instead of introducing a second grid.
 
 ## Elevation & Depth
 
-Depth is **tonal**, not shadowed. The system picks a lighter surface before it
-picks a drop shadow: cards sit above the canvas because `forest.850` is a step up
-from `forest.950`, and floating layers sit above cards because they move to
-`forest.800`. Surfaces carry no ring: tone draws the edge, and the shadow is a
-whisper that confirms the lift, never the lift itself.
+Depth is **tonal**, never shadowed. A black shadow on this ladder renders as
+nothing, so the system lifts content only by moving one surface step: cards sit
+above the canvas because `forest.850` is a step up from `forest.950`, and floating
+layers sit above cards because they move to `forest.800`. Surfaces carry no ring
+either: tone draws the edge.
 
 ### Shadow Vocabulary
 
-- **Surface confirmation** (`shadow-card`): a contact plus ambient shadow that
-  seats the tier-2 card on the floor. Cards only.
-- **Tier-3 floaters carry no shadow.** Furnishing layers (dialog, sheet,
-  palette, select content) sit over surfaces close in tone, so the dark
-  shadow-on-dark renders as nothing — it is removed at the component sources
-  (`DialogContent`, `SelectContent`, the palette panels) and never re-declared
-  downstream. A floating layer is identified by its tonal step, and by the
-  scrim where one exists: a layer that opens over a scrim lets the scrim do the
-  lifting, exactly like the sheet.
+There is none. No `shadow-*` value belongs to the token set and no component casts
+one. A layer is identified by its tonal step, and by the scrim where one exists: a
+layer that opens over a scrim lets the scrim do the lifting, exactly like the
+sheet.
 
 ### Named Rules
 
-**The Layer-Before-Shadow Rule.** To lift content, move one step up the ladder
-(950 → 850 → 800). Only then add `shadow-card` — tier-3 floaters carry no
-shadow at all — and never invent a second shadow value. A surface never earns a
-ring to prove it was lifted.
+**The Tone-Only Rule.** To lift content, move one step up the ladder
+(950 → 850 → 800). Never add a shadow, and never a ring, to prove the lift — if a
+surface does not read as raised, its tone step is wrong.
 
 ## Shapes
 
@@ -730,8 +729,8 @@ never restore rounding on its own.
 
 Boundaries are drawn two ways only: a full box border on controls (`Button` carries
 `border border-transparent` plus a variant border), and a bottom-only underline on
-text fields (`border-b-input`). Surfaces draw neither: they separate by tone and
-shadow. Clipping is equally plain — images inside cards are square to the card edge,
+text fields (`border-b-input`). Surfaces draw neither: they separate by tone alone.
+Clipping is equally plain — images inside cards are square to the card edge,
 no rounded masks, no bleed.
 
 ### Named Rules
@@ -859,7 +858,8 @@ traversal and when the list shows.
 
 - **Corner Style:** square (radius 0).
 - **Background:** `--card` (`forest.850`), text `--card-foreground`.
-- **Shadow Strategy:** `shadow-card` only, no ring (see Elevation).
+- **Elevation:** `--card` against the canvas is the only lift — no shadow, no ring
+  (see Elevation).
 - **Internal Padding:** `--card-spacing` = 32px by default, 20px at `size="sm"`,
   applied as vertical padding, inter-block `gap` and horizontal padding on
   `CardHeader` / `CardContent` / `CardFooter`.
@@ -867,6 +867,18 @@ traversal and when the list shows.
   `CardDescription` → `CardContent` → `CardFooter`. `CardTitle` is `type-title`;
   descriptions are `type-body` in `--muted-foreground`. `Separator` (`bg-border`,
   `h-px`) divides, it does not outline.
+
+### Panel
+
+The dense container inside a sheet: a `--card` slab on the `--popover` sheet, one
+tone step **down**, so it reads as inset rather than raised.
+
+- **Recipe:** `bg-card`, `p-4` (16px) padding and `gap-4` (16px) stack — half the
+  `Card` air, because a panel holds controls, not prose.
+- **Header:** a muted `type-label` line, optional right-aligned `type-label` note on
+  the same row.
+- **Rule:** a panel never nests in a panel, and never carries a ring. It exists only
+  where a sheet step groups several fields into one named unit.
 
 ### Inputs / Fields
 
@@ -924,7 +936,7 @@ instantiated per screen.
   carry no shadow at all (see Shadow Vocabulary).
 - **Anatomy:** `sheet-header` (title `type-title` set uppercase in
   `--foreground`, step counter `type-label` in `--foreground` at the right edge)
-  → a 1px `--border-hairline` separator → `content` slot → optional
+  → a 1px `--border` separator → `content` slot → optional
   `sheet-footer` (`gap-2` row for actions). Like the dialog, a sheet carries **no
   corner ✕** — dismissal is the footer's `Отмена`, `Escape`, or a press on the
   scrim.
@@ -994,8 +1006,8 @@ hand-rolled div; it is decoration, so it takes the decorative border. `Spinner` 
 - **Do** put `forest.950` text on brass — `--primary-foreground` every time.
 - **Do** put every boundary that must be seen — control edges, underlines, focus
   edges — on `--control-border`, `--ring` or `--invalid`.
-- **Do** step surfaces up the forest ladder (950 → 850 → 800) before reaching for a
-  shadow.
+- **Do** step surfaces up the forest ladder (950 → 850 → 800); that step is the
+  only lift.
 - **Do** use `gap-*` stacks and the `max-w-4xl` shell for new surfaces.
 - **Do** keep `--muted-foreground` for secondary text and `--foreground` for body.
 - **Do** set all type through `Typography` / the `type-*` tokens.
@@ -1013,8 +1025,8 @@ hand-rolled div; it is decoration, so it takes the decorative border. `Spinner` 
 - **Don't** put `--foreground` (`forest.100`) text on `--primary`; it is 1.62:1.
 - **Don't** introduce a second hue into surfaces, linework or text — Ember is a
   signal, not a surface, and there is no second material family.
-- **Don't** ring a surface (card, dialog, command list) — they separate by tone and
-  shadow; a border there is maintenance that reads as almost nothing.
+- **Don't** ring or shadow a surface (card, dialog, command list) — they separate by
+  tone alone; a border or shadow there is maintenance that reads as almost nothing.
 - **Don't** draw a control edge with `--border`; 1.40–1.67:1 is a whisper, not a
   boundary.
 - **Don't** render error as a coloured ink — the Ember capsule plus `--invalid`
@@ -1022,7 +1034,7 @@ hand-rolled div; it is decoration, so it takes the decorative border. `Spinner` 
 - **Don't** put a corner ✕ on a dialog — dismissal is the footer's ghost `Закрыть`,
   which `DialogFooter` renders for every dialog (upstream shadcn's ✕ is removed on
   purpose).
-- **Don't** add radius, colors, fonts or shadow values outside the token set above.
+- **Don't** add radius, colors, fonts or shadows outside the token set above.
 - **Don't** override a component's colors via `className`.
 - **Don't** introduce serif, mono or additional display faces, and don't use
   `font-mono` in project components.

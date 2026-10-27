@@ -7,7 +7,6 @@ import { stubRoutes } from "@/test/apiStub.vitest";
 import SupplySheetHarness from "./SupplySheetHarness";
 import { fullCatalog, supplySheetRoutes } from "./testFixtures";
 
-
 export { emptyCatalog, fullCatalog } from "./testFixtures";
 export type { StubOptions } from "./testFixtures";
 

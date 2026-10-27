@@ -89,8 +89,8 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
   (CSS-only roles; Penpot has states, not these roles) — never `/opacity` on the fill.
   `base-*` patches to re-apply after `shadcn add`: destructive = `bg-destructive` +
   `text-destructive-foreground`; the `FieldError` capsule takes the same fill pair
-  (the soft `bg-destructive/10 text-destructive` predates it); surfaces carry no
-  ring — Card, Dialog and the command list separate by tone step and shadow. Penpot's `Components`
+  (the soft `bg-destructive/10 text-destructive` predates it); surfaces carry neither
+  ring nor shadow, separating by tone step alone. Penpot's `Components`
   frame (page `Design system`) is the source of truth for values; its token layer
   and type-binding rules live in `DESIGN.md` §Typography ▸ Penpot.
 - **`@base` needs its exact `tsconfig` path entry.** Without the non-wildcard `"@base"`

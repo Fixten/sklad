@@ -281,18 +281,7 @@
         "purpose": "Form controls only, owned by Input and Textarea. 16px, weight 500, line-height 1.5 — one size at every breakpoint; the old md:0.875rem step is gone."
       }
     },
-    "shadows": [
-      {
-        "name": "surface-confirmation",
-        "value": "var(--shadow-card, 0 1px 2px 0 oklch(0% 0 0 / 0.4), 0 10px 24px -14px oklch(0% 0 0 / 0.5))",
-        "purpose": "Tier-2 cards: a contact plus ambient shadow that seats the card on the floor without drawing an edge. The only depth cue beyond the tone step — cards carry no ring."
-      },
-      {
-        "name": "floating-confirmation",
-        "value": "var(--tw-shadow-md, 0 4px 6px -1px oklch(0% 0 0 / 0.1), 0 2px 4px -2px oklch(0% 0 0 / 0.1))",
-        "purpose": "Tier-3 modals, popovers and the command palette. The only edge cue — floating layers carry no ring."
-      }
-    ],
+    "shadows": [],
     "motion": [
       {
         "name": "state-transition",
@@ -409,25 +398,25 @@
       "name": "Card",
       "kind": "card",
       "refersTo": "card",
-      "description": "Tier-2 surface: Forest 850 above the Forest 950 canvas, held by tone and a whisper of shadow, with no ring. Square corners, 32px internal rhythm, action cluster in the header’s right column; descriptions cap at the 65ch prose measure.",
+      "description": "Tier-2 surface: Forest 850 above the Forest 950 canvas, held by tone alone, with no ring and no shadow. Square corners, 32px internal rhythm, action cluster in the header’s right column; descriptions cap at the 65ch prose measure.",
       "html": "<div class=\"ds-card\"><div class=\"ds-card-header\"><div class=\"ds-card-title\">Кожа растительного дубления</div><div class=\"ds-card-action\"><button class=\"ds-card-icon-btn\" aria-label=\"Удалить\">✕</button><button class=\"ds-card-icon-btn\" aria-label=\"Изменить\">✎</button></div></div><div class=\"ds-card-description\">Описание: плотная кожа для ремней и сумок</div><div class=\"ds-card-content\">Тип: Кожа</div></div>",
-      "css": ".ds-card { --card: oklch(0.235 0.020 129.5); --card-foreground: oklch(0.900 0.021 131.5); --muted-foreground: oklch(0.721 0.037 130.6); --border: oklch(0.336 0.028 130.7); --muted: oklch(0.235 0.020 129.5); --ring: oklch(0.870 0.080 88.4); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: flex; flex-direction: column; gap: 32px; padding: 32px; background: var(--card); color: var(--card-foreground); border-radius: 0; box-shadow: 0 1px 2px 0 oklch(0% 0 0 / 0.4), 0 10px 24px -14px oklch(0% 0 0 / 0.5); } .ds-card-header { display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 8px; } .ds-card-title { font-size: 20px; font-weight: 600; line-height: 1.15; letter-spacing: 0.05em; text-transform: uppercase; } .ds-card-action { display: flex; gap: 8px; grid-column: 2; grid-row: 1; justify-self: end; } .ds-card-icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 1px solid var(--border); border-radius: 0; background: transparent; color: var(--card-foreground); cursor: pointer; outline: none; transition: background-color 150ms; } .ds-card-icon-btn:hover { background: var(--muted); } .ds-card-icon-btn:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.870 0.080 88.4 / 30%); } .ds-card-description { color: var(--muted-foreground); font-size: 16px; font-weight: 500; line-height: 24px; max-width: var(--measure-prose, 65ch); } .ds-card-content { font-size: 16px; font-weight: 500; line-height: 24px; }"
+      "css": ".ds-card { --card: oklch(0.235 0.020 129.5); --card-foreground: oklch(0.900 0.021 131.5); --muted-foreground: oklch(0.721 0.037 130.6); --border: oklch(0.336 0.028 130.7); --muted: oklch(0.235 0.020 129.5); --ring: oklch(0.870 0.080 88.4); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: flex; flex-direction: column; gap: 32px; padding: 32px; background: var(--card); color: var(--card-foreground); border-radius: 0; } .ds-card-header { display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 8px; } .ds-card-title { font-size: 20px; font-weight: 600; line-height: 1.15; letter-spacing: 0.05em; text-transform: uppercase; } .ds-card-action { display: flex; gap: 8px; grid-column: 2; grid-row: 1; justify-self: end; } .ds-card-icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 1px solid var(--border); border-radius: 0; background: transparent; color: var(--card-foreground); cursor: pointer; outline: none; transition: background-color 150ms; } .ds-card-icon-btn:hover { background: var(--muted); } .ds-card-icon-btn:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.870 0.080 88.4 / 30%); } .ds-card-description { color: var(--muted-foreground); font-size: 16px; font-weight: 500; line-height: 24px; max-width: var(--measure-prose, 65ch); } .ds-card-content { font-size: 16px; font-weight: 500; line-height: 24px; }"
     },
     {
       "name": "Command Palette",
       "kind": "custom",
       "refersTo": "command-item",
-      "description": "The signature surface: the cmdk palette that rests as one line on the Forest 800 popover — a shadowed slab with no outline and no underline. Focus, click, or `/` opens the absolute overlay flush under that line so content never moves; the panel stays continuous, and selection is a Forest 850 tonal step down, never brass.",
+      "description": "The signature surface: the cmdk palette that rests as one line on the Forest 800 popover — a flat tonal slab with no outline and no underline. Focus, click, or `/` opens the absolute overlay flush under that line so content never moves; the panel stays continuous, and selection is a Forest 850 tonal step down, never brass.",
       "html": "<div class=\"ds-command\"><div class=\"ds-command-search\"><svg class=\"ds-command-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"></circle><path d=\"m16 16 4 4\"></path></svg><input class=\"ds-command-input\" placeholder=\"Поиск\" /></div><div class=\"ds-command-overlay\"><div class=\"ds-command-heading\">Меню</div><div class=\"ds-command-item\" data-selected=\"true\">Материалы</div><div class=\"ds-command-item\">Настройки</div></div></div>",
-      "css": ".ds-command { --popover: oklch(0.267 0.033 131.0); --input: oklch(0.538 0.055 130.8); --border: oklch(0.336 0.028 130.7); --foreground: oklch(0.900 0.021 131.5); --muted: oklch(0.235 0.020 129.5); --muted-foreground: oklch(0.721 0.037 130.6); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; position: relative; width: 100%; background: var(--popover); color: var(--foreground); border-radius: 0; box-shadow: 0 4px 6px -1px oklch(0% 0 0 / 0.1), 0 2px 4px -2px oklch(0% 0 0 / 0.1); } .ds-command-search { position: relative; } .ds-command-icon { position: absolute; left: 16px; top: 50%; width: 14px; height: 14px; transform: translateY(-50%); color: var(--muted-foreground); opacity: 0.5; pointer-events: none; } .ds-command-input { width: 100%; height: 40px; padding: 0 12px 0 32px; border: 0; border-radius: 0; background: transparent; caret-color: oklch(0.870 0.080 88.4); color: var(--foreground); font-family: inherit; font-size: 16px; font-weight: 500; line-height: 1.5; outline: none; } .ds-command-input::placeholder { color: var(--muted-foreground); } .ds-command-overlay { position: absolute; top: 100%; left: 0; right: 0; display: none; padding: 6px; background: var(--popover); border-radius: 0; box-shadow: 0 4px 6px -1px oklch(0% 0 0 / 0.1), 0 2px 4px -2px oklch(0% 0 0 / 0.1); } .ds-command:focus-within .ds-command-overlay { display: block; } .ds-command-heading { padding: 8px 12px; color: var(--muted-foreground); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; } .ds-command-item { display: flex; align-items: center; gap: 8px; padding: 8px 12px; font-size: 16px; font-weight: 500; line-height: 24px; cursor: default; user-select: none; } .ds-command-item[data-selected=\"true\"] { background: var(--muted); color: var(--foreground); }"
+      "css": ".ds-command { --popover: oklch(0.267 0.033 131.0); --input: oklch(0.538 0.055 130.8); --border: oklch(0.336 0.028 130.7); --foreground: oklch(0.900 0.021 131.5); --muted: oklch(0.235 0.020 129.5); --muted-foreground: oklch(0.721 0.037 130.6); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; position: relative; width: 100%; background: var(--popover); color: var(--foreground); border-radius: 0; } .ds-command-search { position: relative; } .ds-command-icon { position: absolute; left: 16px; top: 50%; width: 14px; height: 14px; transform: translateY(-50%); color: var(--muted-foreground); opacity: 0.5; pointer-events: none; } .ds-command-input { width: 100%; height: 40px; padding: 0 12px 0 32px; border: 0; border-radius: 0; background: transparent; caret-color: oklch(0.870 0.080 88.4); color: var(--foreground); font-family: inherit; font-size: 16px; font-weight: 500; line-height: 1.5; outline: none; } .ds-command-input::placeholder { color: var(--muted-foreground); } .ds-command-overlay { position: absolute; top: 100%; left: 0; right: 0; display: none; padding: 6px; background: var(--popover); border-radius: 0; } .ds-command:focus-within .ds-command-overlay { display: block; } .ds-command-heading { padding: 8px 12px; color: var(--muted-foreground); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; } .ds-command-item { display: flex; align-items: center; gap: 8px; padding: 8px 12px; font-size: 16px; font-weight: 500; line-height: 24px; cursor: default; user-select: none; } .ds-command-item[data-selected=\"true\"] { background: var(--muted); color: var(--foreground); }"
     },
     {
       "name": "Dialog",
       "kind": "custom",
       "refersTo": "dialog",
-      "description": "Tier-3 floating layer on the Forest 800 popover surface, held by shadow-md and its tone step, with no ring. Opens at 100ms with a fade and 95% zoom; descriptions cap at the 65ch prose measure. Its dismissal is the footer’s ghost Закрыть — DialogFooter renders it for every dialog, ahead of the actions, and no dialog carries a corner ✕ (upstream shadcn’s default, removed on purpose); Escape and an outside press are bonus paths. The destructive action is Ember, per the destructive rule.",
+      "description": "Tier-3 floating layer on the Forest 800 popover surface, held by its tone step, with no ring and no shadow. Opens at 100ms with a fade and 95% zoom; descriptions cap at the 65ch prose measure. Its dismissal is the footer’s ghost Закрыть — DialogFooter renders it for every dialog, ahead of the actions, and no dialog carries a corner ✕ (upstream shadcn’s default, removed on purpose); Escape and an outside press are bonus paths. The destructive action is Ember, per the destructive rule.",
       "html": "<div class=\"ds-dialog\"><div class=\"ds-dialog-title\">Удалить материал?</div><div class=\"ds-dialog-description\">Приходы и партии, ссылающиеся на него, останутся в истории.</div><div class=\"ds-dialog-footer\"><button class=\"ds-dialog-close\">Закрыть</button><button class=\"ds-dialog-confirm\">Удалить</button></div></div>",
-      "css": ".ds-dialog { --popover: oklch(0.267 0.033 131.0); --popover-foreground: oklch(0.900 0.021 131.5); --muted-foreground: oklch(0.721 0.037 130.6); --border: oklch(0.336 0.028 130.7); --muted: oklch(0.235 0.020 129.5); --destructive: oklch(0.661 0.080 45.4); --destructive-foreground: oklch(0.145 0.012 132.1); --ring: oklch(0.870 0.080 88.4); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: grid; gap: 24px; width: 100%; max-width: 448px; padding: 24px; background: var(--popover); color: var(--popover-foreground); border-radius: 0; box-shadow: 0 4px 6px -1px oklch(0% 0 0 / 0.1), 0 2px 4px -2px oklch(0% 0 0 / 0.1); } .ds-dialog-title { font-size: 20px; font-weight: 600; line-height: 1.15; letter-spacing: 0.05em; text-transform: uppercase; } .ds-dialog-description { color: var(--muted-foreground); font-size: 16px; font-weight: 500; line-height: 24px; max-width: var(--measure-prose, 65ch); } .ds-dialog-footer { display: flex; justify-content: flex-end; gap: 8px; } .ds-dialog-close, .ds-dialog-confirm { display: inline-flex; align-items: center; justify-content: center; height: 40px; padding: 0 24px; border-radius: 0; font-family: inherit; font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; cursor: pointer; outline: none; transition: background-color 150ms, transform 150ms; } .ds-dialog-close { border: 1px solid transparent; background: transparent; color: var(--popover-foreground); } .ds-dialog-close:hover { background: var(--muted); } .ds-dialog-confirm { border: 1px solid transparent; background: var(--destructive); color: var(--destructive-foreground); } .ds-dialog-confirm:hover { background: oklch(0.621 0.076 46.1); } .ds-dialog-close:focus-visible, .ds-dialog-confirm:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.870 0.080 88.4 / 30%); }"
+      "css": ".ds-dialog { --popover: oklch(0.267 0.033 131.0); --popover-foreground: oklch(0.900 0.021 131.5); --muted-foreground: oklch(0.721 0.037 130.6); --border: oklch(0.336 0.028 130.7); --muted: oklch(0.235 0.020 129.5); --destructive: oklch(0.661 0.080 45.4); --destructive-foreground: oklch(0.145 0.012 132.1); --ring: oklch(0.870 0.080 88.4); font-family: \"Manrope Variable\", -apple-system, system-ui, sans-serif; display: grid; gap: 24px; width: 100%; max-width: 448px; padding: 24px; background: var(--popover); color: var(--popover-foreground); border-radius: 0; } .ds-dialog-title { font-size: 20px; font-weight: 600; line-height: 1.15; letter-spacing: 0.05em; text-transform: uppercase; } .ds-dialog-description { color: var(--muted-foreground); font-size: 16px; font-weight: 500; line-height: 24px; max-width: var(--measure-prose, 65ch); } .ds-dialog-footer { display: flex; justify-content: flex-end; gap: 8px; } .ds-dialog-close, .ds-dialog-confirm { display: inline-flex; align-items: center; justify-content: center; height: 40px; padding: 0 24px; border-radius: 0; font-family: inherit; font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.96px; text-transform: uppercase; cursor: pointer; outline: none; transition: background-color 150ms, transform 150ms; } .ds-dialog-close { border: 1px solid transparent; background: transparent; color: var(--popover-foreground); } .ds-dialog-close:hover { background: var(--muted); } .ds-dialog-confirm { border: 1px solid transparent; background: var(--destructive); color: var(--destructive-foreground); } .ds-dialog-confirm:hover { background: oklch(0.621 0.076 46.1); } .ds-dialog-close:focus-visible, .ds-dialog-confirm:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.870 0.080 88.4 / 30%); }"
     },
     {
       "name": "Inline Link",
@@ -456,7 +445,7 @@
       "Brass has two jobs: hardware at `brass.500` (the CTA), highlight at `brass.300` (accent and focus ring).",
       "Borders are decoration (1.40–1.67:1); every control edge owns `--control-border` and clears 3:1.",
       "`rounded-none` on every shipped component — sharp sera geometry.",
-      "Depth by tonal layering plus shadow; surfaces carry no ring (`shadow-card`, `shadow-md`).",
+      "Depth by tonal layering only, never a shadow; surfaces carry no ring and no shadow.",
       "Single-column `max-w-4xl` shell with a 4px spacing rhythm."
     ],
     "rules": [
@@ -521,8 +510,8 @@
         "section": "layout"
       },
       {
-        "name": "The Layer-Before-Shadow Rule",
-        "body": "To lift content, move one step up the ladder (950 → 850 → 800). Only then add `shadow-card` / `shadow-md`, and never invent a third shadow value. A surface never earns a ring to prove it was lifted.",
+        "name": "The Tone-Only Rule",
+        "body": "To lift content, move one step up the ladder (950 → 850 → 800). Never add a shadow, and never a ring, to prove the lift — if a surface does not read as raised, its tone step is wrong.",
         "section": "elevation"
       },
       {
@@ -536,7 +525,7 @@
       "**Do** keep destructive/confirm actions visually distinct with `variant=\"destructive\"` (Ember fill, `forest.950` label), and pair destructive intent with a Dialog confirmation.",
       "**Do** put `forest.950` text on brass — `--primary-foreground` every time.",
       "**Do** put every boundary that must be seen — control edges, underlines, focus edges — on `--control-border`, `--ring` or `--invalid`.",
-      "**Do** step surfaces up the forest ladder (950 → 850 → 800) before reaching for a shadow.",
+      "**Do** step surfaces up the forest ladder (950 → 850 → 800); that step is the only lift.",
       "**Do** use `gap-*` stacks and the `max-w-4xl` shell for new surfaces.",
       "**Do** keep `--muted-foreground` for secondary text and `--foreground` for body.",
       "**Do** set all type through `Typography` / the `type-*` tokens.",
@@ -549,11 +538,11 @@
     "donts": [
       "**Don't** put `--foreground` (`forest.100`) text on `--primary`; it is 1.62:1.",
       "**Don't** introduce a second hue into surfaces, linework or text — Ember is a signal, not a surface, and there is no second material family.",
-      "**Don't** ring a surface (card, dialog, command list) — they separate by tone and shadow; a border there is maintenance that reads as almost nothing.",
+      "**Don't** ring or shadow a surface (card, dialog, command list) — they separate by tone alone; a border or shadow there is maintenance that reads as almost nothing.",
       "**Don't** draw a control edge with `--border`; 1.40–1.67:1 is a whisper, not a boundary.",
       "**Don't** render error as a coloured ink — the Ember capsule plus `--invalid` underline is the only recipe.",
       "**Don't** put a corner ✕ on a dialog — dismissal is the footer's ghost `Закрыть`, which `DialogFooter` renders for every dialog (upstream shadcn's ✕ is removed on purpose).",
-      "**Don't** add radius, colors, fonts or shadow values outside the token set above.",
+      "**Don't** add radius, colors, fonts or shadows outside the token set above.",
       "**Don't** override a component's colors via `className`.",
       "**Don't** introduce serif, mono or additional display faces, and don't use `font-mono` in project components.",
       "**Don't** bypass semantic tokens with raw palette colors (`text-green-600` etc.).",

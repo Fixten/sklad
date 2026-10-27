@@ -35,10 +35,7 @@ export default function Sheet({
       >
         <div className="flex items-start justify-between gap-6">
           <DialogTitle>{title}</DialogTitle>
-          <Typography
-            variant="label"
-            className="text-muted-foreground shrink-0"
-          >
+          <Typography variant="label" className="text-foreground shrink-0">
             {step}
           </Typography>
         </div>
