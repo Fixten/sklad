@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { renderHook } from "vitest-browser-react";
 
-import { useSheetFlow } from "./sheetFlow";
+import { useSheetFlow } from "./useSheetFlow";
 
 type Step = "pick" | "details";
 

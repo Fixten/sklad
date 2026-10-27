@@ -1,27 +1,30 @@
 import { useState } from "react";
 
-import { useSheetFlow } from "@/lib/sheetFlow";
-import { sameName } from "@/lib/text";
+import { sameName } from "@/lib/text/text";
+import { useSheetFlow } from "@/lib/useSheetFlow/useSheetFlow";
 
-import useMaterial from "../../Material/useMaterial";
+import useMaterial from "../../../Material/useMaterial";
 import useMaterialsCatalog, {
   buildMaterialCatalogRow,
   type MaterialCatalogRow,
   type MaterialTarget,
-} from "../../Material/useMaterialsCatalog";
-import useMaterialType from "../../MaterialType/useMaterialType";
-import useSupplier from "../../Supplier/useSupplier";
-import useVariant from "../../Variant/useVariant";
-import { matchRows, resolveCreationTarget } from "../supplySearch";
-import useSupply from "../useSupply";
+} from "../../../Material/useMaterialsCatalog";
+import useMaterialType from "../../../MaterialType/useMaterialType";
+import useSupplier from "../../../Supplier/useSupplier";
+import useVariant from "../../../Variant/useVariant";
+import {
+  matchRows,
+  resolveCreationTarget,
+} from "../../supplySearch/supplySearch";
+import useSupply from "../../useSupply";
 
 import { supplyBackStep, supplyInitialStep, SupplyStepKind } from "./flow";
 import { useDetailsForm } from "./useDetailsForm";
 
 import type { SupplierOption } from "../SupplierPicker";
 import type { SupplyStep } from "./flow";
-import type { CreationTarget } from "../supplySearch";
 import type { MaterialDraft } from "./materialDraft";
+import type { CreationTarget } from "../../supplySearch/supplySearch";
 import type { Unit } from "@/features/units";
 
 interface Props {

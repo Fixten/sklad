@@ -1,4 +1,4 @@
-import { normalizeName } from "@/lib/text";
+import { normalizeName } from "@/lib/text/text";
 
 import type {
   MaterialCatalogRow,

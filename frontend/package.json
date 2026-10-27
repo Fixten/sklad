@@ -21,7 +21,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test:all": "pnpm test && pnpm test:browser && pnpm vrt",
-    "fullcheck": "pnpm lint && pnpm typecheck && pnpm format:check && pnpm test:all",
+    "fullcheck": "pnpm format && pnpm lint:fix && pnpm typecheck && pnpm test:all",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "build": "vite build",

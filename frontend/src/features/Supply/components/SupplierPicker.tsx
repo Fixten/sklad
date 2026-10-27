@@ -1,4 +1,4 @@
-import { normalizeName, sameName } from "@/lib/text";
+import { normalizeName, sameName } from "@/lib/text/text";
 import OptionPicker from "@ui/OptionPicker";
 
 export interface SupplierOption {

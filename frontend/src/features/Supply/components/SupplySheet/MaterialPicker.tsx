@@ -1,8 +1,11 @@
 import OptionPicker from "@ui/OptionPicker";
 
-import { materialPath, type CreationTarget } from "../supplySearch";
+import {
+  materialPath,
+  type CreationTarget,
+} from "../../supplySearch/supplySearch";
 
-import type { MaterialCatalogRow } from "../../Material/useMaterialsCatalog";
+import type { MaterialCatalogRow } from "../../../Material/useMaterialsCatalog";
 
 interface Props {
   query: string;

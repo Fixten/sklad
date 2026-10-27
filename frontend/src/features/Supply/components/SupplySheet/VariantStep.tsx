@@ -6,9 +6,9 @@ import { InputField } from "@ui/InputField";
 import Panel from "@ui/Panel";
 import SelectField from "@ui/SelectField";
 
-import { materialTitle } from "../supplySearch";
+import { materialTitle } from "../../supplySearch/supplySearch";
 
-import type { MaterialTarget } from "../../Material/useMaterialsCatalog";
+import type { MaterialTarget } from "../../../Material/useMaterialsCatalog";
 
 interface Props {
   material: MaterialTarget;

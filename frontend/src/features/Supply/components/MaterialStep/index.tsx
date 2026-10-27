@@ -8,8 +8,11 @@ import SelectField from "@ui/SelectField";
 
 import { validateMaterialForm } from "./validation";
 
-import type { MaterialDraft, MaterialTypeChoice } from "../materialDraft";
 import type { MaterialField, MaterialFormErrors } from "./validation";
+import type {
+  MaterialDraft,
+  MaterialTypeChoice,
+} from "../SupplySheet/materialDraft";
 import type { SubmitEvent } from "react";
 
 const NewTypeValue = "new-type";

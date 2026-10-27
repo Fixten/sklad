@@ -1,21 +1,22 @@
+import MaterialStep from "../MaterialStep";
+
 import DetailsFields from "./DetailsFields";
 import { SupplyStepKind, type SupplyStep } from "./flow";
 import MaterialPicker from "./MaterialPicker";
-import MaterialStep from "./MaterialStep";
 import VariantStep from "./VariantStep";
 
-import type {
-  MaterialCatalogRow,
-  MaterialTarget,
-} from "../../Material/useMaterialsCatalog";
-import type { SupplierOption } from "../SupplierPicker";
-import type { CreationTarget } from "../supplySearch";
 import type {
   DetailsErrors,
   DetailsForm,
   UnitCostPreview,
 } from "./detailsForm";
 import type { MaterialDraft } from "./materialDraft";
+import type {
+  MaterialCatalogRow,
+  MaterialTarget,
+} from "../../../Material/useMaterialsCatalog";
+import type { CreationTarget } from "../../supplySearch/supplySearch";
+import type { SupplierOption } from "../SupplierPicker";
 import type { Unit } from "@/features/units";
 
 interface Props {

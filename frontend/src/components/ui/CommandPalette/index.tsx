@@ -6,7 +6,7 @@ import {
   type KeyboardEvent,
 } from "react";
 
-import { useOutsidePress } from "@/lib/useOutsidePress";
+import { useOutsidePress } from "@/lib/useOutsidePress/useOutsidePress";
 import {
   Command,
   CommandEmpty,

@@ -12,7 +12,7 @@ import type {
   DetailsForm,
   UnitCostPreview,
 } from "./detailsForm";
-import type { MaterialCatalogRow } from "../../Material/useMaterialsCatalog";
+import type { MaterialCatalogRow } from "../../../Material/useMaterialsCatalog";
 
 interface Props {
   row: MaterialCatalogRow;

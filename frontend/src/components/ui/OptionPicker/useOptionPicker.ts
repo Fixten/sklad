@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 
-import { useOutsidePress } from "@/lib/useOutsidePress";
+import { useOutsidePress } from "@/lib/useOutsidePress/useOutsidePress";
 import { optionDomId, type OptionItem } from "@ui/OptionPicker/OptionList";
 
 import type { KeyboardEvent, ReactNode } from "react";
