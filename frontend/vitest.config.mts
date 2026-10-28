@@ -12,10 +12,13 @@ export default defineConfig({
     include: [
       "@base-ui/react/dialog",
       "@base-ui/react/select",
+      "@hookform/resolvers/zod",
       "@tanstack/react-query",
       "cmdk",
       "lucide-react",
+      "react-hook-form",
       "react-router",
+      "zod",
     ],
   },
   resolve: {

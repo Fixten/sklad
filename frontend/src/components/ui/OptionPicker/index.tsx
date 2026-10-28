@@ -7,6 +7,8 @@ import OptionList, {
 
 import { useOptionPicker, type OptionPickerRow } from "./useOptionPicker";
 
+import type { ComponentProps, Ref } from "react";
+
 export interface OptionPickerItem<T> extends OptionItem {
   value: T;
 }
@@ -15,12 +17,15 @@ interface OptionPickerBaseProps<T> {
   id: string;
   label: string;
   value: string;
+  name?: string;
   placeholder?: string;
   hint?: string;
   error?: string;
   autoFocus?: boolean;
+  inputRef?: Ref<HTMLInputElement>;
   onValueChange: (value: string) => void;
   onSelect: (value: T) => void;
+  onBlur?: ComponentProps<"input">["onBlur"];
   results: OptionPickerItem<T>[];
   listLabel: string;
   create?: {
@@ -36,12 +41,15 @@ export default function OptionPicker<T>(props: OptionPickerProps<T>) {
     id,
     label,
     value,
+    name,
     placeholder,
     hint,
     error,
     autoFocus,
+    inputRef,
     onValueChange,
     onSelect,
+    onBlur,
     results,
     create,
     listLabel,
@@ -87,12 +95,15 @@ export default function OptionPicker<T>(props: OptionPickerProps<T>) {
     <div ref={wrapperRef} className="flex flex-col gap-6" onFocus={open}>
       <InputField
         id={id}
+        ref={inputRef}
+        name={name}
         label={label}
         placeholder={placeholder}
         hint={hint}
         error={error}
         autoFocus={autoFocus}
         value={value}
+        onBlur={onBlur}
         role="combobox"
         aria-expanded={expanded}
         aria-controls={expanded ? listId : undefined}

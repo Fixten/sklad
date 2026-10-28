@@ -1,6 +1,10 @@
+import zod from "zod";
+
 import type { components } from "@/api/schema";
 
 export type Unit = components["schemas"]["MaterialVariant"]["unit"];
+
+export const UnitSchema = zod.enum(["meters", "pieces"]);
 
 export const UnitLabels: Record<Unit, string> = {
   meters: "метр",

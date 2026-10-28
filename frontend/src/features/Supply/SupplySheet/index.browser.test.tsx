@@ -215,6 +215,47 @@ test("creates a type, a material and a variant in one pass", async () => {
   ]);
 });
 
+test("keeps the material action enabled and shows progress while saving", async () => {
+  let resolveMaterial!: (response: Response) => void;
+  const materialResponse = new Promise<Response>((resolve) => {
+    resolveMaterial = resolve;
+  });
+  const requests = stubApi(fullCatalog, { materialResponse });
+  const screen = await renderSheet();
+
+  await openSheet(screen);
+  await screen.getByLabelText("Материал").fill("Ясень");
+  await screen.getByText("Новый материал: «Ясень»").click();
+  await screen.getByLabelText("Вариант").fill("Доска 30 мм");
+  await screen.getByRole("button", { name: "Создать и продолжить" }).click();
+
+  const busyButton = screen.getByRole("button", { name: /Создаём/ });
+  await expect.element(busyButton).toBeVisible();
+  await expect.element(busyButton).toBeEnabled();
+  await busyButton.click();
+
+  expect(
+    requests.filter(
+      (request) =>
+        request.method === "POST" && request.path === "/api/material",
+    ),
+  ).toHaveLength(1);
+
+  resolveMaterial(
+    new Response(
+      JSON.stringify({
+        id: 20,
+        name: "Ясень",
+        material_type_id: 1,
+        created_at: "2026-01-01T00:00:00Z",
+      }),
+      { headers: { "Content-Type": "application/json" } },
+    ),
+  );
+
+  await expect.element(screen.getByText("02 / 02")).toBeInTheDocument();
+});
+
 test("uses an existing type without creating another one", async () => {
   const requests = stubApi();
   const screen = await renderSheet();

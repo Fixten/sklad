@@ -1,3 +1,5 @@
+import { FormProvider } from "react-hook-form";
+
 import type { ComponentProps } from "react";
 import type {
   FieldValues,
@@ -5,31 +7,42 @@ import type {
   UseFormReturn,
 } from "react-hook-form";
 
-type Props<TSchema extends FieldValues> = Omit<
-  ComponentProps<"form">,
-  "onSubmit"
-> & {
-  form: UseFormReturn<TSchema>;
-  onSubmit: SubmitHandler<TSchema>;
+type Props<
+  TFieldValues extends FieldValues,
+  TContext,
+  TTransformedValues,
+> = Omit<ComponentProps<"form">, "onSubmit"> & {
+  form: UseFormReturn<TFieldValues, TContext, TTransformedValues>;
+  onSubmit: SubmitHandler<TTransformedValues>;
 };
 
-function Form<TSchema extends FieldValues>({
+function Form<
+  TFieldValues extends FieldValues,
+  TContext = unknown,
+  TTransformedValues = TFieldValues,
+>({
   form,
   onSubmit,
   ...props
-}: Props<TSchema>) {
+}: Props<TFieldValues, TContext, TTransformedValues>) {
   const handleSubmit = form.handleSubmit(onSubmit);
 
   return (
-    <form
-      data-slot="form"
-      noValidate
-      onSubmit={(event) => {
-        void handleSubmit(event);
-      }}
-      {...props}
-    />
+    <FormProvider {...form}>
+      <form
+        {...props}
+        data-slot="form"
+        noValidate
+        onSubmit={(event) => {
+          void handleSubmit(event);
+        }}
+      />
+    </FormProvider>
   );
 }
 
 export { Form };
+export { FormField } from "./FormField";
+export { useZodForm } from "./useZodForm";
+export type { FormFieldProps } from "./FormField";
+export type { UseZodFormProps } from "./useZodForm";

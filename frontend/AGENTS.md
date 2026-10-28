@@ -27,12 +27,14 @@ mirroring the backend's feature split.
   inherit the body role (`type-*` still wins).
 - Icons come from `@ui/Icon`; only `src/components/ui/**` may import `lucide-react` (lint error
   elsewhere).
-- React Compiler is enabled (`vite.config.mts`) — don't hand-memoize with `useMemo`/`useCallback`
-  (only upstream `@base` code keeps its own).
+- React Compiler is enabled (`vite.config.mts`) — no manual `useMemo`/`useCallback` (upstream
+  `@base` excepted).
 - Each component should be created in own folder eg /folder/Component/index.tsx
 - **Sheet flows**: `useSheetFlow` (`src/lib/sheetFlow.ts`) owns step, failure, busy and async
   transitions; the feature's `flow.ts` owns its `Step` union and back target. A reducer, not
   XState — adopt one only for guards, parallel states or resumable flows.
+- **Pending actions stay enabled**: use `@ui/Button pending` on any button; never disable for
+  loading, guard duplicates. See [DESIGN.md §Separator & Loading](DESIGN.md#separator--loading).
 
 ## Adding API integration for a feature
 
@@ -110,11 +112,9 @@ Vitest projects (`vitest.config.mts`): `unit` (`*.test.ts`, node), `browser`
 
 ## Open threads
 
-- `src/components/ui/base/**` uses `type-*` tokens: controls → `type-input` (1rem at every
-  breakpoint), labels + Command shortcut/group → `type-label`, titles → `type-title`, copy →
-  `type-body`. Raw `tracking-normal`/`normal-case` survive only as `Label` peer overrides
-  (`peer-data-[slot=checkbox|radio-group-item|switch]`), which `type-body` does not reset.
-  No `type-caption` slot in `base/**`: hints are `type-body`.
+- `base/**` uses `type-*`: controls → `type-input`, labels/shortcuts → `type-label`, titles →
+  `type-title`, copy/hints → `type-body`; no `type-caption`. `tracking-normal`/`normal-case`
+  survive only as Label peer overrides for checkbox/radio/switch.
 - The 65ch prose measure lives in the prose slots (`CardDescription`, `DialogDescription`,
   `FieldDescription`, `CommandEmpty`), never on `type-body`: the role also covers
   full-width controls, whose measure comes from their container.

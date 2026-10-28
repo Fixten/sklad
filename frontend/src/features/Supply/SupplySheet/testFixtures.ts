@@ -20,6 +20,7 @@ export interface StubOptions {
   suppliers?: Schemas["Supplier"][];
   supplyFailure?: { status: number; message: string };
   typesResponse?: Promise<Response>;
+  materialResponse?: Promise<Response>;
 }
 
 const createdAt = "2026-01-01T00:00:00Z";
@@ -129,12 +130,13 @@ export const supplySheetRoutes = (
     },
     "/api/material": {
       get: () => catalog.materials,
-      post: ({ body }) => ({
-        id: 20,
-        name: body.name,
-        material_type_id: body.material_type_id,
-        created_at: createdAt,
-      }),
+      post: ({ body }) =>
+        options.materialResponse ?? {
+          id: 20,
+          name: body.name,
+          material_type_id: body.material_type_id,
+          created_at: createdAt,
+        },
     },
     "/api/material-variant": {
       get: () => catalog.variants,

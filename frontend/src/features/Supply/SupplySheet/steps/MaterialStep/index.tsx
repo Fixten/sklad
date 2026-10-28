@@ -1,38 +1,38 @@
-import { useState } from "react";
+import { useWatch } from "react-hook-form";
 
-import { UnitOptions, type Unit } from "@/features/units";
+import { UnitOptions } from "@/features/units";
 import { Button } from "@ui/Button";
-import { InputField } from "@ui/InputField";
+import { Form, FormField, useZodForm } from "@ui/Form";
+import { FormInputField } from "@ui/InputField";
 import Panel from "@ui/Panel";
-import SelectField from "@ui/SelectField";
+import SelectField, { FormSelectField } from "@ui/SelectField";
 
 import { supplyWizard } from "../../supplyWizard";
 
+import {
+  createMaterialFormSchema,
+  materialFormDefaults,
+  NewTypeValue,
+} from "./materialForm";
 import { useMaterialStep } from "./useMaterialStep";
-import { validateMaterialForm } from "./validation";
 
-import type { MaterialTypeChoice } from "./materialDraft";
-import type { MaterialField, MaterialFormErrors } from "./validation";
-import type { SubmitEvent } from "react";
-
-const NewTypeValue = "new-type";
-
-const isUnit = (value: string): value is Unit =>
-  UnitOptions.some((option) => option.value === value);
+import type { MaterialDraft } from "./materialDraft";
 
 export default function MaterialStep() {
   const { shared } = supplyWizard.useWizard();
   const { types, pending, create } = useMaterialStep();
-  const [selectedTypeId, setSelectedTypeId] = useState<string | null>(null);
-  const [typeName, setTypeName] = useState("");
-  const [materialName, setMaterialName] = useState(shared.query.trim());
-  const [variantName, setVariantName] = useState("");
-  const [unit, setUnit] = useState<Unit>("meters");
-  const [errors, setErrors] = useState<MaterialFormErrors>({});
+  const schema = createMaterialFormSchema(types);
+  const form = useZodForm({
+    schema,
+    defaultValues: materialFormDefaults(shared.query),
+  });
+  const typeId = useWatch({ control: form.control, name: "typeId" });
+  const { isSubmitting } = form.formState;
+  const busy = pending || isSubmitting;
 
-  const typeId =
-    selectedTypeId ?? (types[0] ? String(types[0].id) : NewTypeValue);
-  const isNewType = typeId === NewTypeValue;
+  const fallbackTypeId = types[0] ? String(types[0].id) : NewTypeValue;
+  const resolvedTypeId = typeId ?? fallbackTypeId;
+  const isNewType = resolvedTypeId === NewTypeValue;
   const typeOptions = [
     ...types.map((type) => ({
       value: String(type.id),
@@ -41,110 +41,71 @@ export default function MaterialStep() {
     { value: NewTypeValue, label: "+ Новый тип" },
   ];
 
-  const clearError = (field: MaterialField) => {
-    setErrors((current) => {
-      if (!current[field]) return current;
+  const submit = async (draft: MaterialDraft) => {
+    if (busy) return;
 
-      return { ...current, [field]: undefined };
-    });
-  };
-
-  const submit = (event: SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (pending) return;
-
-    const selectedType = types.find((type) => String(type.id) === typeId);
-    const type: MaterialTypeChoice | null = isNewType
-      ? { kind: "new", name: typeName.trim() }
-      : selectedType
-        ? {
-            kind: "existing",
-            id: selectedType.id,
-            name: selectedType.name,
-          }
-        : null;
-    const nextErrors = validateMaterialForm(
-      { typeId, typeName, materialName, variantName },
-      {
-        isNewType,
-        hasSelectedType: type !== null,
-      },
-    );
-
-    setErrors(nextErrors);
-    if (Object.keys(nextErrors).length > 0 || !type) return;
-
-    void create({
-      type,
-      materialName: materialName.trim(),
-      variantName: variantName.trim(),
-      unit,
-    });
+    await create(draft);
   };
 
   return (
     <Panel label="Новый материал">
-      <form onSubmit={submit} aria-busy={pending || undefined}>
+      <Form form={form} onSubmit={submit} aria-busy={busy || undefined}>
         <div className="grid grid-cols-2 gap-4">
-          <SelectField
-            label="Тип"
-            options={typeOptions}
-            value={typeId}
-            error={errors.typeId}
-            onValueChange={(next) => {
-              setSelectedTypeId(next);
-              clearError("typeId");
-              clearError("typeName");
-            }}
+          <FormField
+            control={form.control}
+            name="typeId"
+            render={({ field, fieldState }) => (
+              <SelectField
+                label="Тип"
+                options={typeOptions}
+                value={field.value ?? fallbackTypeId}
+                name={field.name}
+                ref={field.ref}
+                error={fieldState.error?.message}
+                onValueChange={field.onChange}
+                onBlur={field.onBlur}
+              />
+            )}
           />
           {isNewType ? (
-            <InputField
+            <FormInputField
+              control={form.control}
+              name="typeName"
               label="Название типа"
-              value={typeName}
-              error={errors.typeName}
               autoFocus
-              onChange={(event) => {
-                setTypeName(event.target.value);
-                setSelectedTypeId(NewTypeValue);
-                clearError("typeName");
+              onChange={() => {
+                if (form.getValues("typeId") !== NewTypeValue) {
+                  form.setValue("typeId", NewTypeValue, { shouldDirty: true });
+                }
               }}
             />
           ) : null}
-          <InputField
+          <FormInputField
+            control={form.control}
+            name="materialName"
             label="Материал"
-            value={materialName}
-            error={errors.materialName}
-            onChange={(event) => {
-              setMaterialName(event.target.value);
-              clearError("materialName");
-            }}
           />
-          <InputField
+          <FormInputField
+            control={form.control}
+            name="variantName"
             label="Вариант"
-            value={variantName}
-            error={errors.variantName}
-            onChange={(event) => {
-              setVariantName(event.target.value);
-              clearError("variantName");
-            }}
           />
-          <SelectField
+          <FormSelectField
+            control={form.control}
+            name="unit"
             label="Единица"
             options={UnitOptions}
-            value={unit}
-            onValueChange={(next) => {
-              if (isUnit(next)) setUnit(next);
-            }}
           />
           <Button
             type="submit"
-            disabled={pending}
+            pending={busy}
+            pendingLabel="Создаём…"
             className="col-start-2 justify-self-end"
           >
             Создать и продолжить
           </Button>
         </div>
-      </form>
+      </Form>
     </Panel>
   );
 }

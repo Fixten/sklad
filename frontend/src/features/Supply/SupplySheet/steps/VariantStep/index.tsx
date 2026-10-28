@@ -53,7 +53,12 @@ export default function VariantStep({ material }: Props) {
             setUnit(next as Unit);
           }}
         />
-        <Button className="col-start-2 justify-self-end" onClick={submit}>
+        <Button
+          pending={pending}
+          pendingLabel="Создаём…"
+          className="col-start-2 justify-self-end"
+          onClick={submit}
+        >
           Создать и продолжить
         </Button>
       </div>

@@ -772,7 +772,10 @@ step in the same hue.
 - **Focus / invalid:** `focus-visible:border-ring` plus a 2px `ring/30` ring
   (`brass.30`); `aria-invalid` swaps both to `--invalid` — the full-strength edge
   (6.21:1 on the floor) plus an `ember.10` ring.
-- **Disabled:** `opacity: 50%`, pointer events off.
+- **Disabled:** `opacity: 50%`, pointer events off — never use this state for pending work.
+- **Pending:** `Button pending` works with any type and variant; it keeps the action enabled,
+  adds a hidden-decorative `Spinner` and swaps to `pendingLabel` when supplied. Guard repeat
+  activation in the handler.
 - **Icon:** `IconButton` = `variant="outline"` + `size="icon"` (`size-10`), edge on
   `--control-border`, hover on `forest.60`.
 
@@ -1003,6 +1006,12 @@ which now sit on the same forest ladder.
 hand-rolled div; it is decoration, so it takes the decorative border. `Spinner` is
 `Loader2Icon` at `size-4` with `animate-spin`, `role="status"`.
 
+**Async actions stay enabled.** Never disable a control because work is pending.
+Disabled controls leave the focus order and hide why the action stopped working. Keep
+the action available, guard its handler so repeated activation does nothing, and show a
+visible status — a `Spinner` with a verb such as «Создаём…» — when the wait is
+noticeable. A quiet no-op is acceptable for imperceptible waits.
+
 ## Do's and Don'ts
 
 ### Do:
@@ -1022,6 +1031,8 @@ hand-rolled div; it is decoration, so it takes the decorative border. `Spinner` 
 - **Do** set all type through `Typography` / the `type-*` tokens.
 - **Do** keep `rounded-none` on shipped components.
 - **Do** use tabular figures (`type-data`) for any column of numbers.
+- **Do** keep a pending action enabled, guard duplicate activation and show a `Spinner`
+  with status text.
 - **Do** chart with the main color palette: `--chart-1` for a single series, deeper
   steps in order for up to three, and direct labels past that.
 - **Do** re-run the rebind pass (`literal → apply token`) after editing a token
@@ -1052,6 +1063,7 @@ hand-rolled div; it is decoration, so it takes the decorative border. `Spinner` 
   tonal ladder of one hue; label the series or vary the line dash.
 - **Don't** communicate status or error by color alone — pair it with a message or
   icon.
+- **Don't** disable a control to communicate that its action is loading.
 - **Don't** style Penpot text with a typography asset or an off-scale face — bind a
   `typography.*` token.
 - **Don't** maintain or introduce a light theme unless the product requirements
