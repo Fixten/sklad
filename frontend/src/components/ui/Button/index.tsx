@@ -1,21 +1,14 @@
-import { cn } from "cn";
-
-import { Button as ButtonPrimitive, buttonVariants } from "@base/button";
+import { Button as BaseButton } from "@base/button";
 import { Spinner } from "@ui/Spinner";
 
-import type { VariantProps } from "class-variance-authority";
 import type { ComponentProps } from "react";
 
-type Props = ComponentProps<typeof ButtonPrimitive> &
-  VariantProps<typeof buttonVariants> & {
-    pending?: boolean;
-    pendingLabel?: string;
-  };
+type Props = ComponentProps<typeof BaseButton> & {
+  pending?: boolean;
+  pendingLabel?: string;
+};
 
 function Button({
-  className,
-  variant = "default",
-  size = "default",
   type = "button",
   pending = false,
   pendingLabel,
@@ -23,18 +16,13 @@ function Button({
   ...props
 }: Props) {
   return (
-    <ButtonPrimitive
-      data-slot="button"
-      type={type}
-      aria-busy={pending ? true : undefined}
-      className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
-    >
+    <BaseButton {...props} type={type} aria-busy={pending ? true : undefined}>
       {pending ? <Spinner aria-hidden="true" data-icon="inline-start" /> : null}
       {pending ? (pendingLabel ?? children) : children}
-    </ButtonPrimitive>
+    </BaseButton>
   );
 }
 
-export { Button, buttonVariants };
+export { Button };
+export { buttonVariants } from "@base/button";
 export type { Props as ButtonProps };

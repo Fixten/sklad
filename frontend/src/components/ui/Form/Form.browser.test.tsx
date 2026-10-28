@@ -3,10 +3,10 @@ import { render } from "vitest-browser-react";
 import zod from "zod";
 
 import { Button } from "@ui/Button";
-import { FormInputField } from "@ui/InputField";
+import { FormInputField, InputField } from "@ui/InputField";
 import { FormSelectField } from "@ui/SelectField";
 
-import { Form, useZodForm } from "./index";
+import { Form, FormField, useZodForm } from "./index";
 
 const validator = zod.object({
   name: zod.string().trim().min(2, "Укажите хотя бы два символа"),
@@ -54,8 +54,69 @@ test("blocks an invalid submit, renders field errors and focuses the first one",
     .element(screen.getByText("Укажите хотя бы два символа"))
     .toBeVisible();
   await expect.element(screen.getByText("Выберите единицу")).toBeVisible();
-  await expect.element(screen.getByLabelText("Имя")).toHaveFocus();
+
+  const input = screen.getByLabelText("Имя");
+  await expect.element(input).toHaveAttribute("aria-invalid", "true");
+  await expect.element(input).toHaveFocus();
+  expect(
+    input
+      .element()
+      .closest('[data-slot="field"]')
+      ?.getAttribute("data-invalid"),
+  ).toBe("true");
+
+  const errorId = input.element().getAttribute("aria-describedby");
+  expect(errorId).not.toBeNull();
+  expect(document.getElementById(errorId ?? "")?.textContent).toContain(
+    "Укажите хотя бы два символа",
+  );
   expect(onSubmit).not.toHaveBeenCalled();
+});
+
+const contactValidator = zod.object({
+  contact: zod.string(),
+});
+
+function CompositeTestForm() {
+  const form = useZodForm({
+    schema: contactValidator,
+    defaultValues: { contact: "" },
+  });
+
+  return (
+    <Form form={form} onSubmit={vi.fn()}>
+      <FormField
+        control={form.control}
+        name="contact"
+        render={({ field, fieldState }) => (
+          <>
+            <InputField
+              name={field.name}
+              ref={field.ref}
+              label="Контакт"
+              value={field.value}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+            />
+            <span>{fieldState.isTouched ? "touched" : "untouched"}</span>
+          </>
+        )}
+      />
+    </Form>
+  );
+}
+
+test("tracks a controlled value and touched state through FormField", async () => {
+  const screen = await render(<CompositeTestForm />);
+  const input = screen.getByLabelText("Контакт");
+
+  await input.fill("Анна");
+  await expect.element(input).toHaveValue("Анна");
+  await expect.element(screen.getByText("untouched")).toBeVisible();
+
+  input.element().blur();
+
+  await expect.element(screen.getByText("touched")).toBeVisible();
 });
 
 const selectValidator = zod.object({

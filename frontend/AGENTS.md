@@ -33,8 +33,8 @@ mirroring the backend's feature split.
 - **Sheet flows**: `useSheetFlow` (`src/lib/sheetFlow.ts`) owns step, failure, busy and async
   transitions; the feature's `flow.ts` owns its `Step` union and back target. A reducer, not
   XState — adopt one only for guards, parallel states or resumable flows.
-- **Pending actions stay enabled**: use `@ui/Button pending` on any button; never disable for
-  loading, guard duplicates. See [DESIGN.md §Separator & Loading](DESIGN.md#separator--loading).
+- **Forms & pending actions**: follow [form conventions](docs/form_conventions.md); pending
+  `@ui/Button` stays enabled — see [DESIGN.md §Separator & Loading](DESIGN.md#separator--loading).
 
 ## Adding API integration for a feature
 

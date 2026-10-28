@@ -21,6 +21,8 @@ export interface StubOptions {
   supplyFailure?: { status: number; message: string };
   typesResponse?: Promise<Response>;
   materialResponse?: Promise<Response>;
+  variantResponse?: Promise<Response>;
+  supplyResponse?: Promise<Response>;
 }
 
 const createdAt = "2026-01-01T00:00:00Z";
@@ -122,7 +124,7 @@ export const supplySheetRoutes = (
               options.supplyFailure.status,
               options.supplyFailure.message,
             )
-          : createdSupply(body, catalog.variants),
+          : (options.supplyResponse ?? createdSupply(body, catalog.variants)),
     },
     "/api/material-type": {
       get: () => options.typesResponse ?? catalog.types,
@@ -140,13 +142,14 @@ export const supplySheetRoutes = (
     },
     "/api/material-variant": {
       get: () => catalog.variants,
-      post: ({ body }) => ({
-        id: 200,
-        name: body.name,
-        unit: body.unit,
-        material_id: body.material_id,
-        created_at: createdAt,
-      }),
+      post: ({ body }) =>
+        options.variantResponse ?? {
+          id: 200,
+          name: body.name,
+          unit: body.unit,
+          material_id: body.material_id,
+          created_at: createdAt,
+        },
     },
   }) satisfies Routes;
 

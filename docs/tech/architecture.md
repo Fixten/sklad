@@ -537,6 +537,8 @@ The frontend should not be treated as the source of truth for business rules.
 
 Client-side validation improves usability, but all important business rules must be validated and enforced by the backend.
 
+Form state, client validation, submission, and workflow failure handling have separate owners with one explicit path from field input to submission. Forms are built from reusable controls that also work outside a form, while client-side validation remains a usability layer rather than a business-rule source of truth.
+
 ---
 
 ## 16. Configuration

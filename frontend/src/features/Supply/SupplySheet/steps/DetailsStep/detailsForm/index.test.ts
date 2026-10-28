@@ -74,11 +74,33 @@ describe("createDetailsFormSchema", () => {
     ]);
   });
 
+  it("rejects a non-numeric quantity", () => {
+    expect(errorsOf(parse({ quantity: "abc" })).quantity).toEqual([
+      "Укажите количество",
+    ]);
+  });
+
   it("accepts a free lot", () => {
     const result = parse({ price: "0" });
 
     expect(errorsOf(result)).toEqual({});
     expect(result.data?.purchasePrice).toBe(0);
+  });
+
+  it("rejects empty, non-numeric and negative prices", () => {
+    expect(errorsOf(parse({ price: "" })).price).toEqual([
+      "Укажите цену закупки",
+    ]);
+    expect(errorsOf(parse({ price: "abc" })).price).toEqual([
+      "Укажите цену закупки",
+    ]);
+    expect(errorsOf(parse({ price: "-1" })).price).toEqual([
+      "Укажите цену закупки",
+    ]);
+  });
+
+  it("accepts monetary input with more than two decimal places", () => {
+    expect(parse({ price: "10.125" }).data?.purchasePrice).toBe(10.125);
   });
 
   it("accepts a decimal quantity written with a comma", () => {
@@ -93,10 +115,12 @@ describe("createDetailsFormSchema", () => {
   });
 
   it("limits meters to three decimal places", () => {
+    expect(parse({ quantity: "2.1" }).data?.quantity).toBe(2.1);
+    expect(parse({ quantity: "2.12" }).data?.quantity).toBe(2.12);
+    expect(parse({ quantity: "2.123" }).data?.quantity).toBe(2.123);
     expect(errorsOf(parse({ quantity: "2.1234" })).quantity).toEqual([
       "Не больше трёх знаков после запятой",
     ]);
-    expect(parse({ quantity: "2.123" }).data?.quantity).toBe(2.123);
   });
 });
 

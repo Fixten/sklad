@@ -151,6 +151,48 @@ test("creates a variant for the matched material", async () => {
   });
 });
 
+test("does not duplicate a pending variant submission", async () => {
+  let resolveVariant!: (response: Response) => void;
+  const variantResponse = new Promise<Response>((resolve) => {
+    resolveVariant = resolve;
+  });
+  const requests = stubApi(fullCatalog, { variantResponse });
+  const screen = await renderSheet();
+
+  await openSheet(screen);
+  await screen.getByLabelText("Материал").fill("Дуб");
+  await screen.getByText("Новый вариант в «Дуб»").click();
+  await screen.getByLabelText("Вариант").fill("Брусок 80 × 80");
+  await screen.getByRole("button", { name: "Создать и продолжить" }).click();
+
+  const busyButton = screen.getByRole("button", { name: /Создаём/ });
+  await expect.element(busyButton).toBeVisible();
+  await expect.element(busyButton).toBeEnabled();
+  await busyButton.click();
+
+  expect(
+    requests.filter(
+      (request) =>
+        request.method === "POST" && request.path === "/api/material-variant",
+    ),
+  ).toHaveLength(1);
+
+  resolveVariant(
+    new Response(
+      JSON.stringify({
+        id: 200,
+        name: "Брусок 80 × 80",
+        unit: "meters",
+        material_id: 10,
+        created_at: "2026-01-01T00:00:00Z",
+      }),
+      { headers: { "Content-Type": "application/json" } },
+    ),
+  );
+
+  await expect.element(screen.getByText("02 / 02")).toBeInTheDocument();
+});
+
 test("reports a missing variant name before saving", async () => {
   const requests = stubApi();
   const screen = await renderSheet();
@@ -350,7 +392,7 @@ test("keeps a newly entered type selected while types load", async () => {
 });
 
 test("reports every missing name in the material panel", async () => {
-  stubApi(emptyCatalog);
+  const requests = stubApi(emptyCatalog);
   const screen = await renderSheet();
 
   await openSheet(screen);
@@ -367,6 +409,7 @@ test("reports every missing name in the material panel", async () => {
   await expect
     .element(screen.getByText("Укажите название материала"))
     .not.toBeInTheDocument();
+  expect(requests.some((request) => request.method === "POST")).toBe(false);
 
   await screen.getByLabelText("Название типа").fill("Древесина");
   await screen.getByLabelText("Вариант").fill("Доска 40 мм");
@@ -483,6 +526,47 @@ test("closes the supplier list on an outside click", async () => {
     .not.toBeInTheDocument();
 });
 
+test("selects a supplier with Enter without submitting the form", async () => {
+  const requests = stubApi();
+  const screen = await renderSheet();
+
+  await openDetails(screen);
+  await screen.getByLabelText("Количество").fill("8");
+  await screen.getByLabelText("Цена закупки, всего").fill("24000");
+  await screen.getByLabelText("Поставщик").fill("Лес");
+
+  await expect
+    .element(screen.getByRole("option", { name: /Лесоторг/ }))
+    .toBeInTheDocument();
+  await userEvent.keyboard("{Enter}");
+
+  await expect
+    .element(screen.getByLabelText("Поставщик"))
+    .toHaveValue("Лесоторг");
+  await expect.element(screen.getByRole("dialog")).toBeInTheDocument();
+  expect(
+    requests.some(
+      (request) =>
+        request.method === "POST" && request.path.endsWith("/supply"),
+    ),
+  ).toBe(false);
+});
+
+test("focuses the supplier when it is the first invalid field", async () => {
+  stubApi();
+  const screen = await renderSheet();
+
+  await openDetails(screen);
+  await screen.getByLabelText("Количество").fill("8");
+  await screen.getByLabelText("Цена закупки, всего").fill("24000");
+  await screen.getByText("Сохранить поставку").click();
+
+  await expect
+    .element(screen.getByText("Укажите поставщика"))
+    .toBeInTheDocument();
+  await expect.element(screen.getByLabelText("Поставщик")).toHaveFocus();
+});
+
 test("derives the unit cost from the lot price", async () => {
   stubApi();
   const screen = await renderSheet();
@@ -549,6 +633,105 @@ test("saves the supply with an existing supplier", async () => {
       },
     },
   ]);
+});
+
+test("rejects excessive meter precision before saving", async () => {
+  const requests = stubApi();
+  const screen = await renderSheet();
+
+  await openDetails(screen);
+  await screen.getByLabelText("Количество").fill("1.2345");
+  await screen.getByLabelText("Цена закупки, всего").fill("100");
+  await selectSupplier(screen, "Столярный двор");
+  await screen.getByText("Сохранить поставку").click();
+
+  await expect
+    .element(screen.getByText("Не больше трёх знаков после запятой"))
+    .toBeInTheDocument();
+  expect(
+    requests.some(
+      (request) =>
+        request.method === "POST" && request.path.endsWith("/supply"),
+    ),
+  ).toBe(false);
+
+  await screen.getByLabelText("Количество").fill("1.234");
+  await screen.getByText("Сохранить поставку").click();
+
+  await expect.element(screen.getByRole("dialog")).not.toBeInTheDocument();
+  expect(
+    requests.find(
+      (request) =>
+        request.method === "POST" && request.path.endsWith("/supply"),
+    )?.body,
+  ).toMatchObject({ quantity: 1.234 });
+});
+
+test("rejects fractional pieces before saving", async () => {
+  const requests = stubApi();
+  const screen = await renderSheet();
+
+  await openSheet(screen);
+  await screen.getByLabelText("Материал").fill("Рейка");
+  await screen.getByRole("option", { name: /Рейка 20 × 40/ }).click();
+  await screen.getByLabelText("Количество").fill("2.5");
+  await screen.getByLabelText("Цена закупки, всего").fill("100");
+  await selectSupplier(screen, "Столярный двор");
+  await screen.getByText("Сохранить поставку").click();
+
+  await expect
+    .element(screen.getByText("Количество в штуках должно быть целым"))
+    .toBeInTheDocument();
+  expect(
+    requests.some(
+      (request) =>
+        request.method === "POST" && request.path.endsWith("/supply"),
+    ),
+  ).toBe(false);
+});
+
+test("does not duplicate a pending supply submission", async () => {
+  let resolveSupply!: (response: Response) => void;
+  const supplyResponse = new Promise<Response>((resolve) => {
+    resolveSupply = resolve;
+  });
+  const requests = stubApi(fullCatalog, { supplyResponse });
+  const screen = await renderSheet();
+
+  await openDetails(screen);
+  await fillDetails(screen);
+  await screen.getByText("Сохранить поставку").click();
+
+  const busyButton = screen.getByRole("button", { name: /Сохраняем/ });
+  await expect.element(busyButton).toBeVisible();
+  await expect.element(busyButton).toBeEnabled();
+  await busyButton.click();
+
+  expect(
+    requests.filter(
+      (request) =>
+        request.method === "POST" && request.path.endsWith("/supply"),
+    ),
+  ).toHaveLength(1);
+
+  resolveSupply(
+    new Response(
+      JSON.stringify({
+        id: 30,
+        purchase_price: 24000,
+        quantity: 8,
+        unit: "meters",
+        remaining_quantity: 8,
+        unit_purchase_cost: 3000,
+        material_variant_id: 100,
+        supplier_id: 5,
+        created_at: "2026-01-01T00:00:00Z",
+      }),
+      { headers: { "Content-Type": "application/json" } },
+    ),
+  );
+
+  await expect.element(screen.getByRole("dialog")).not.toBeInTheDocument();
 });
 
 test("submits the supply with Enter inside the details form", async () => {
