@@ -43,13 +43,12 @@ export default function Sheet({
         <div className="flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto">
           {children}
         </div>
-        <Separator />
         <div className="flex flex-col gap-4">
           {error ? (
             <Typography
               variant="body"
               role="alert"
-              className="bg-destructive text-destructive-foreground w-fit max-w-full px-2 py-1"
+              className="bg-destructive text-destructive-foreground w-fit max-w-full self-end px-2 py-1"
             >
               {error}
             </Typography>

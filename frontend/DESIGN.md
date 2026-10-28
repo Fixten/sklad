@@ -921,9 +921,8 @@ a deliberate deviation from upstream shadcn — re-apply it after any `shadcn ad
 ### Sheet
 
 The responsive self between tier-2 pages and the tier-3 popover: the column a
-supply flow slides into over a foreground scrim (`--overlay` 20% + no blur in the
-penpot realisation). A `Sheet` main lives in Penpot (`Custom components`) and is
-instantiated per screen.
+supply flow slides into. A `Sheet` main lives in Penpot (`Custom components`) and
+is instantiated per screen.
 
 - **Geometry:** fixed 560px column, `--popover` fill (`forest.800`), square
   corners, no ring. Padding and stack gap are `--spacing-6` (24px) throughout —
@@ -940,6 +939,16 @@ instantiated per screen.
   `sheet-footer` (`gap-2` row for actions). Like the dialog, a sheet carries **no
   corner ✕** — dismissal is the footer's `Отмена`, `Escape`, or a press on the
   scrim.
+- **One rule per sheet.** The header divider is the only line a sheet draws. The
+  footer is separated by the sheet's own 24px gap and the surface between them,
+  never by a second rule — under a field it would double up with that field's
+  underline. A body that scrolls clips against the gap, so content never touches
+  the actions.
+- **A failure lands on the commit edge.** A shell-level error — a save the server
+  refused — sits inside the footer, aligned with the action cluster on the right
+  and 16px clear of it. The footer's left side is navigation (back, hints), so a
+  message parked there would attach itself to `Назад`. Field-level errors stay in
+  the field's own Ember capsule.
 - **Content belt:** the body rows are `OptionRow`s (see below) stacked with no
   gap unless the flow dictates whitespace; header-title copy and the counter are
   per-screen overrides, everything else is system.

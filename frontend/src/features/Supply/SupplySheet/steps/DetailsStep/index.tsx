@@ -1,6 +1,5 @@
 import { UnitHints } from "@/features/units";
 import { InputField } from "@ui/InputField";
-import { Separator } from "@ui/Separator";
 import Typography from "@ui/Typography";
 
 import { formatUnitCost } from "./detailsForm";
@@ -24,7 +23,7 @@ export default function DetailsStep({ row }: Props) {
   };
 
   return (
-    <>
+    <div className="flex flex-col gap-6">
       <div className="bg-card flex flex-col gap-1 px-4 py-3">
         <Typography variant="label" className="text-muted-foreground">
           Материал
@@ -105,9 +104,8 @@ export default function DetailsStep({ row }: Props) {
               </Typography>
             </div>
           </div>
-          <Separator />
         </div>
       </div>
-    </>
+    </div>
   );
 }

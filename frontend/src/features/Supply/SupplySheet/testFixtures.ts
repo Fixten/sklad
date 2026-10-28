@@ -1,7 +1,11 @@
-import { errorResponse } from "@/test/apiStub";
+import { createApiStub, errorResponse } from "@/test/apiStub";
 
 import type { components } from "@/api/schema";
 import type { JsonBody } from "@/api/schema-helpers";
+import type {
+  MaterialCatalogRow,
+  MaterialTarget,
+} from "@/features/Material/useMaterialsCatalog";
 import type { Routes } from "@/test/apiStub";
 
 type Schemas = components["schemas"];
@@ -63,6 +67,19 @@ export const fullSuppliers: Schemas["Supplier"][] = [
   { id: 5, name: "Столярный двор", created_at: createdAt },
   { id: 6, name: "Лесоторг", created_at: createdAt },
 ];
+
+export const dubMaterial: MaterialTarget = {
+  id: 10,
+  name: "Дуб",
+  materialTypeName: "Пиломатериал",
+};
+
+export const dubRow: MaterialCatalogRow = {
+  variantId: 100,
+  variantName: "Доска 40 мм",
+  unit: "meters",
+  material: dubMaterial,
+};
 
 const createdSupply = (
   body: JsonBody<"/api/supply", "post">,
@@ -130,3 +147,16 @@ export const supplySheetRoutes = (
       }),
     },
   }) satisfies Routes;
+
+export const stubSupplyApi = (
+  catalog: Catalog = fullCatalog,
+  options: StubOptions = {},
+) => {
+  const originalFetch = window.fetch.bind(window);
+  const { fetch } = createApiStub(supplySheetRoutes(catalog, options));
+  window.fetch = fetch;
+
+  return () => {
+    window.fetch = originalFetch;
+  };
+};
