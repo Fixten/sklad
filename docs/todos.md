@@ -6,3 +6,4 @@
 - [x] add hard delete to supply
 - [x] use native upsert
 - [x] make async functions sync in be
+- [] frontend/src/features/Supply/SupplySheet/steps/VariantStep/useVariantStep.ts - run is a code smell

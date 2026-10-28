@@ -138,7 +138,7 @@ test("creates a variant for the matched material", async () => {
     .toBeInTheDocument();
 
   await screen.getByLabelText("Вариант").fill("Брусок 80 × 80");
-  await screen.getByText("Создать и продолжить").click();
+  await userEvent.keyboard("{Enter}");
 
   await expect.element(screen.getByText("02 / 02")).toBeInTheDocument();
   expect(

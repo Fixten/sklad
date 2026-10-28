@@ -1,13 +1,12 @@
-import { useState } from "react";
-
 import { materialTitle } from "@/features/Material/materialUtils/materiaUtils";
-import { UnitOptions, type Unit } from "@/features/units";
+import { UnitOptions } from "@/features/units";
 import { Button } from "@ui/Button";
-import { InputField } from "@ui/InputField";
+import { Form } from "@ui/Form";
+import { FormInputField } from "@ui/InputField";
 import Panel from "@ui/Panel";
-import SelectField from "@ui/SelectField";
+import { FormSelectField } from "@ui/SelectField";
 
-import { useVariantStep } from "./useVariantStep";
+import { useVariantForm } from "./useVariantForm";
 
 import type { MaterialTarget } from "@/features/Material/useMaterialsCatalog";
 
@@ -16,52 +15,34 @@ interface Props {
 }
 
 export default function VariantStep({ material }: Props) {
-  const { pending, create } = useVariantStep(material);
-  const [name, setName] = useState("");
-  const [unit, setUnit] = useState<Unit>("meters");
-  const [error, setError] = useState<string>();
-
-  const submit = () => {
-    if (pending) return;
-
-    if (!name.trim()) {
-      setError("Укажите название варианта");
-      return;
-    }
-
-    setError(undefined);
-    void create(name.trim(), unit);
-  };
+  const { form, busy, submit } = useVariantForm(material);
 
   return (
     <Panel label="Новый вариант" note={materialTitle(material)}>
-      <div className="grid grid-cols-2 gap-4">
-        <InputField
-          label="Вариант"
-          value={name}
-          error={error}
-          autoFocus
-          onChange={(event) => {
-            setName(event.target.value);
-          }}
-        />
-        <SelectField
-          label="Единица"
-          options={UnitOptions}
-          value={unit}
-          onValueChange={(next) => {
-            setUnit(next as Unit);
-          }}
-        />
-        <Button
-          pending={pending}
-          pendingLabel="Создаём…"
-          className="col-start-2 justify-self-end"
-          onClick={submit}
-        >
-          Создать и продолжить
-        </Button>
-      </div>
+      <Form form={form} onSubmit={submit} aria-busy={busy}>
+        <div className="grid grid-cols-2 gap-4">
+          <FormInputField
+            control={form.control}
+            name="name"
+            label="Вариант"
+            autoFocus
+          />
+          <FormSelectField
+            control={form.control}
+            name="unit"
+            label="Единица"
+            options={UnitOptions}
+          />
+          <Button
+            type="submit"
+            pending={busy}
+            pendingLabel="Создаём…"
+            className="col-start-2 justify-self-end"
+          >
+            Создать и продолжить
+          </Button>
+        </div>
+      </Form>
     </Panel>
   );
 }
