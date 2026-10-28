@@ -551,6 +551,24 @@ test("saves the supply with an existing supplier", async () => {
   ]);
 });
 
+test("submits the supply with Enter inside the details form", async () => {
+  const requests = stubApi();
+  const screen = await renderSheet();
+
+  await openDetails(screen);
+  await fillDetails(screen);
+  await screen.getByLabelText("Цена закупки, всего").click();
+  await userEvent.keyboard("{Enter}");
+
+  await expect.element(screen.getByRole("dialog")).not.toBeInTheDocument();
+  expect(
+    requests.filter(
+      (request) =>
+        request.method === "POST" && request.path.endsWith("/supply"),
+    ),
+  ).toHaveLength(1);
+});
+
 test("accepts a free lot with a zero price", async () => {
   const requests = stubApi();
   const screen = await renderSheet();

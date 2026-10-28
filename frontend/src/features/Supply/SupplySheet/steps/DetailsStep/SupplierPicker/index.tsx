@@ -1,6 +1,9 @@
 import { normalizeName, sameName } from "@/lib/text/text";
 import OptionPicker from "@ui/OptionPicker";
 
+import type { SupplierValue } from "../detailsForm";
+import type { ComponentProps, Ref } from "react";
+
 export interface SupplierOption {
   id: number;
   name: string;
@@ -8,16 +11,22 @@ export interface SupplierOption {
 
 interface Props {
   suppliers: SupplierOption[];
-  value: { id: number | null; name: string };
+  value: SupplierValue;
+  name?: string;
+  inputRef?: Ref<HTMLInputElement>;
   error?: string;
-  onChange: (value: { id: number | null; name: string }) => void;
+  onChange: (value: SupplierValue) => void;
+  onBlur?: ComponentProps<"input">["onBlur"];
 }
 
 export default function SupplierPicker({
   suppliers,
   value,
+  name,
+  inputRef,
   error,
   onChange,
+  onBlur,
 }: Props) {
   const needle = normalizeName(value.name);
   const matched = needle
@@ -43,10 +52,13 @@ export default function SupplierPicker({
   return (
     <OptionPicker
       id="supply-supplier"
+      name={name}
+      inputRef={inputRef}
       label="Поставщик"
       placeholder="Например, Столярный двор"
       value={value.name}
       error={error}
+      onBlur={onBlur}
       onValueChange={(next) => {
         onChange({ id: null, name: next });
       }}

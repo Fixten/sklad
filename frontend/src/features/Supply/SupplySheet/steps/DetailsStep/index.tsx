@@ -1,12 +1,14 @@
 import { UnitHints } from "@/features/units";
-import { InputField } from "@ui/InputField";
+import { Form, FormField } from "@ui/Form";
+import { FormInputField } from "@ui/InputField";
 import Typography from "@ui/Typography";
+
+import { supplyDetailsFormId } from "../../supplySteps";
 
 import { formatUnitCost } from "./detailsForm";
 import SupplierPicker from "./SupplierPicker";
-import { useDetailsStep } from "./useDetailsStep";
+import { useDetailsForm } from "./useDetailsForm";
 
-import type { DetailsForm, DetailsErrors } from "./detailsForm";
 import type { MaterialCatalogRow } from "@/features/Material/useMaterialsCatalog";
 
 interface Props {
@@ -14,16 +16,16 @@ interface Props {
 }
 
 export default function DetailsStep({ row }: Props) {
-  const { details, errors, suppliers, unitCost, update, clearError } =
-    useDetailsStep(row);
-
-  const change = (patch: Partial<DetailsForm>, key?: keyof DetailsErrors) => {
-    update(patch);
-    if (key) clearError(key);
-  };
+  const { form, busy, suppliers, unitCost, submit } = useDetailsForm(row);
 
   return (
-    <div className="flex flex-col gap-6">
+    <Form
+      id={supplyDetailsFormId}
+      form={form}
+      onSubmit={submit}
+      aria-busy={busy || undefined}
+      className="flex flex-col gap-6"
+    >
       <div className="bg-card flex flex-col gap-1 px-4 py-3">
         <Typography variant="label" className="text-muted-foreground">
           Материал
@@ -33,60 +35,54 @@ export default function DetailsStep({ row }: Props) {
         </Typography>
       </div>
       <div className="grid grid-cols-2 gap-4">
-        <InputField
+        <FormInputField
+          control={form.control}
+          name="quantity"
           label="Количество"
           type="number"
-          min="0"
-          step="any"
-          value={details.quantity}
-          error={errors.quantity}
+          min={row.unit === "pieces" ? "1" : "0.001"}
+          step={row.unit === "pieces" ? "1" : "0.001"}
           hint={UnitHints[row.unit]}
-          onChange={(event) => {
-            change({ quantity: event.target.value }, "quantity");
-          }}
         />
-        <InputField
+        <FormInputField
+          control={form.control}
+          name="price"
           label="Цена закупки, всего"
           type="number"
           min="0"
           step="any"
-          value={details.price}
-          error={errors.price}
           hint="₽ за партию"
-          onChange={(event) => {
-            change({ price: event.target.value }, "price");
-          }}
         />
         <div className="col-span-2">
-          <SupplierPicker
-            suppliers={suppliers}
-            value={{ id: details.supplierId, name: details.supplierName }}
-            error={errors.supplier}
-            onChange={(value) => {
-              change(
-                { supplierId: value.id, supplierName: value.name },
-                "supplier",
-              );
-            }}
+          <FormField
+            control={form.control}
+            name="supplier"
+            render={({ field, fieldState }) => (
+              <SupplierPicker
+                suppliers={suppliers}
+                value={field.value}
+                name={field.name}
+                inputRef={field.ref}
+                error={fieldState.error?.message}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+              />
+            )}
           />
         </div>
-        <InputField
-          className="col-span-2"
+        <FormInputField
+          control={form.control}
+          name="description"
           label="Описание"
           placeholder="Например: осенняя партия, сорт А"
-          value={details.description}
-          onChange={(event) => {
-            change({ description: event.target.value });
-          }}
-        />
-        <InputField
           className="col-span-2"
+        />
+        <FormInputField
+          control={form.control}
+          name="url"
           label="Ссылка"
           placeholder="https://…"
-          value={details.url}
-          onChange={(event) => {
-            change({ url: event.target.value });
-          }}
+          className="col-span-2"
         />
         <div className="col-span-2">
           <div className="flex items-start justify-between gap-6 py-3">
@@ -106,6 +102,6 @@ export default function DetailsStep({ row }: Props) {
           </div>
         </div>
       </div>
-    </div>
+    </Form>
   );
 }

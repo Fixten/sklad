@@ -96,43 +96,6 @@ test("opening does not reset the flow", async () => {
   expect(onOpenChange).toHaveBeenCalledWith(true);
 });
 
-test("submits through the latest registered handler", async () => {
-  const screen = await mount();
-  const first = vi.fn();
-  const second = vi.fn();
-
-  await screen.act(() => {
-    screen.result.current.registerSubmit(first);
-  });
-
-  await screen.act(() => {
-    screen.result.current.submit();
-  });
-
-  expect(first).toHaveBeenCalledTimes(1);
-
-  await screen.act(() => {
-    screen.result.current.registerSubmit(second);
-  });
-
-  await screen.act(() => {
-    screen.result.current.submit();
-  });
-
-  expect(first).toHaveBeenCalledTimes(1);
-  expect(second).toHaveBeenCalledTimes(1);
-
-  await screen.act(() => {
-    screen.result.current.registerSubmit(undefined);
-  });
-
-  await screen.act(() => {
-    screen.result.current.submit();
-  });
-
-  expect(second).toHaveBeenCalledTimes(1);
-});
-
 test("runs async transitions and reports failures", async () => {
   const screen = await mount();
 

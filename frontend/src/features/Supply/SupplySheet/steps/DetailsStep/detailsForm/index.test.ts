@@ -1,84 +1,102 @@
 import { describe, expect, it } from "vitest";
+import zod from "zod";
 
-import { formatUnitCost, parseDetails, unitCostPreview } from ".";
+import { createDetailsFormSchema, formatUnitCost, unitCostPreview } from ".";
 
-import type { DetailsForm } from ".";
+import type { DetailsFormValues } from ".";
+import type { Unit } from "@/features/units";
 
-const base: DetailsForm = {
+const base: DetailsFormValues = {
   quantity: "8",
   price: "24000",
-  supplierId: 5,
-  supplierName: "Столярный двор",
+  supplier: { id: 5, name: "Столярный двор" },
   description: "",
   url: "",
 };
 
-describe("parseDetails", () => {
+const parse = (patch: Partial<DetailsFormValues> = {}, unit: Unit = "meters") =>
+  createDetailsFormSchema(unit).safeParse({
+    ...base,
+    ...patch,
+  });
+
+const errorsOf = (
+  result: ReturnType<typeof parse>,
+): Record<string, string[]> =>
+  result.success ? {} : zod.flattenError(result.error).fieldErrors;
+
+describe("createDetailsFormSchema", () => {
   it("returns the payload for a filled form", () => {
-    expect(parseDetails(base)).toEqual({
-      errors: {},
-      payload: {
-        quantity: 8,
-        purchasePrice: 24000,
-        supplierName: "Столярный двор",
-        supplierId: 5,
-        description: undefined,
-        url: undefined,
-      },
+    expect(parse().data).toEqual({
+      quantity: 8,
+      purchasePrice: 24000,
+      supplierName: "Столярный двор",
+      supplierId: 5,
+      description: undefined,
+      url: undefined,
     });
   });
 
-  it("trims the optional fields and keeps them when filled", () => {
-    const { payload } = parseDetails({
-      ...base,
+  it("trims the supplier and optional fields", () => {
+    const result = parse({
+      supplier: { id: null, name: " Столярный двор " },
       description: " осенняя партия ",
       url: " https://example.com ",
     });
 
-    expect(payload).toMatchObject({
+    expect(result.data).toMatchObject({
+      supplierName: "Столярный двор",
       description: "осенняя партия",
       url: "https://example.com",
     });
   });
 
   it("reports every missing value at once", () => {
-    const { errors, payload } = parseDetails({
+    const result = parse({
       quantity: "",
       price: "",
-      supplierId: null,
-      supplierName: "   ",
-      description: "",
-      url: "",
+      supplier: { id: null, name: "   " },
     });
 
-    expect(payload).toBeNull();
-    expect(errors).toEqual({
-      quantity: "Укажите количество",
-      price: "Укажите цену закупки",
-      supplier: "Укажите поставщика",
+    expect(errorsOf(result)).toEqual({
+      quantity: ["Укажите количество"],
+      price: ["Укажите цену закупки"],
+      supplier: ["Укажите поставщика"],
     });
   });
 
   it("rejects a zero or negative quantity", () => {
-    expect(parseDetails({ ...base, quantity: "0" }).errors.quantity).toBe(
+    expect(errorsOf(parse({ quantity: "0" })).quantity).toEqual([
       "Укажите количество",
-    );
-    expect(parseDetails({ ...base, quantity: "-3" }).errors.quantity).toBe(
+    ]);
+    expect(errorsOf(parse({ quantity: "-3" })).quantity).toEqual([
       "Укажите количество",
-    );
+    ]);
   });
 
   it("accepts a free lot", () => {
-    const { errors, payload } = parseDetails({ ...base, price: "0" });
+    const result = parse({ price: "0" });
 
-    expect(errors).toEqual({});
-    expect(payload?.purchasePrice).toBe(0);
+    expect(errorsOf(result)).toEqual({});
+    expect(result.data?.purchasePrice).toBe(0);
   });
 
   it("accepts a decimal quantity written with a comma", () => {
-    const { payload } = parseDetails({ ...base, quantity: "2,5" });
+    expect(parse({ quantity: "2,5" }).data?.quantity).toBe(2.5);
+  });
 
-    expect(payload?.quantity).toBe(2.5);
+  it("requires whole pieces", () => {
+    expect(errorsOf(parse({ quantity: "2.5" }, "pieces")).quantity).toEqual([
+      "Количество в штуках должно быть целым",
+    ]);
+    expect(parse({ quantity: "2" }, "pieces").data?.quantity).toBe(2);
+  });
+
+  it("limits meters to three decimal places", () => {
+    expect(errorsOf(parse({ quantity: "2.1234" })).quantity).toEqual([
+      "Не больше трёх знаков после запятой",
+    ]);
+    expect(parse({ quantity: "2.123" }).data?.quantity).toBe(2.123);
   });
 });
 

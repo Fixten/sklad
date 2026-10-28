@@ -1,10 +1,10 @@
 import { Button } from "@ui/Button";
 
-import { SupplyStepKind } from "../supplySteps";
+import { SupplyStepKind, supplyDetailsFormId } from "../supplySteps";
 import { supplyWizard } from "../supplyWizard";
 
 export default function SupplySheetActions() {
-  const { step, close, back, submit, busy } = supplyWizard.useWizard();
+  const { step, close, back, busy } = supplyWizard.useWizard();
 
   const cancelButton = (
     <Button variant="ghost" onClick={close}>
@@ -23,7 +23,12 @@ export default function SupplySheetActions() {
       return (
         <>
           {cancelButton}
-          <Button pending={busy} pendingLabel="Сохраняем…" onClick={submit}>
+          <Button
+            type="submit"
+            form={supplyDetailsFormId}
+            pending={busy}
+            pendingLabel="Сохраняем…"
+          >
             Сохранить поставку
           </Button>
         </>

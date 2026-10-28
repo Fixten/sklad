@@ -10,6 +10,8 @@ export enum SupplyStepKind {
   Details = "details",
 }
 
+export const supplyDetailsFormId = "supply-details-form";
+
 export type SupplyStep =
   | { kind: SupplyStepKind.Pick }
   | { kind: SupplyStepKind.Variant; material: MaterialTarget }

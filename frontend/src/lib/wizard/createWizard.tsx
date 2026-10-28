@@ -1,10 +1,8 @@
-import { createContext, useContext, useRef } from "react";
+import { createContext, useContext } from "react";
 
 import { useSheetFlow, type FlowTask } from "@/lib/useSheetFlow/useSheetFlow";
 
 import type { ReactNode } from "react";
-
-export type WizardSubmit = () => void | Promise<void>;
 
 export interface WizardContextValue<Step, Shared> {
   open: boolean;
@@ -17,8 +15,6 @@ export interface WizardContextValue<Step, Shared> {
   close: () => void;
   handleOpenChange: (open: boolean) => void;
   run: (task: FlowTask<Step>) => Promise<void>;
-  submit: () => void;
-  registerSubmit: (submit: WizardSubmit | undefined) => void;
 }
 
 export interface WizardConfig<Step> {
@@ -49,7 +45,6 @@ export function createWizard<Step, Shared>(config: WizardConfig<Step>) {
     const { step, failure, busy, go, reset, run } = useSheetFlow(
       config.initialStep,
     );
-    const submitRef = useRef<WizardSubmit | undefined>(undefined);
 
     const handleOpenChange = (next: boolean) => {
       if (!next) {
@@ -70,14 +65,6 @@ export function createWizard<Step, Shared>(config: WizardConfig<Step>) {
       if (target) go(target);
     };
 
-    const submit = () => {
-      void submitRef.current?.();
-    };
-
-    const registerSubmit = (handler: WizardSubmit | undefined) => {
-      submitRef.current = handler;
-    };
-
     return (
       <WizardContext.Provider
         value={{
@@ -91,8 +78,6 @@ export function createWizard<Step, Shared>(config: WizardConfig<Step>) {
           close,
           handleOpenChange,
           run,
-          submit,
-          registerSubmit,
         }}
       >
         {children}
