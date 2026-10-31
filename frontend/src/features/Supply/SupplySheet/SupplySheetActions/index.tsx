@@ -4,17 +4,11 @@ import { SupplyStepKind, supplyDetailsFormId } from "../supplySteps";
 import { supplyWizard } from "../supplyWizard";
 
 export default function SupplySheetActions() {
-  const { step, close, back, busy } = supplyWizard.useWizard();
+  const { step, close, pending } = supplyWizard.useWizard();
 
   const cancelButton = (
     <Button variant="ghost" onClick={close}>
       Отмена
-    </Button>
-  );
-
-  const backButton = (
-    <Button variant="ghost" onClick={back}>
-      Назад
     </Button>
   );
 
@@ -26,7 +20,7 @@ export default function SupplySheetActions() {
           <Button
             type="submit"
             form={supplyDetailsFormId}
-            pending={busy}
+            pending={pending}
             pendingLabel="Сохраняем…"
           >
             Сохранить поставку
@@ -34,15 +28,7 @@ export default function SupplySheetActions() {
         </>
       );
 
-    case SupplyStepKind.Pick:
-      return cancelButton;
-
     default:
-      return (
-        <>
-          {backButton}
-          {cancelButton}
-        </>
-      );
+      return cancelButton;
   }
 }

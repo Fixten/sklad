@@ -6,7 +6,7 @@ import {
   supplyInitialStep,
   SupplyStepKind,
   type SupplyStep,
-} from "./index";
+} from "./supplySteps";
 
 const detailsStep: SupplyStep = {
   kind: SupplyStepKind.Details,
@@ -24,7 +24,14 @@ describe("supply flow", () => {
   });
 
   it("returns to the pick step from any secondary step", () => {
-    expect(supplyBackStep).toEqual({ kind: SupplyStepKind.Pick });
+    expect(supplyBackStep(detailsStep)).toEqual(supplyInitialStep);
+    expect(
+      supplyBackStep({
+        kind: SupplyStepKind.Variant,
+        material: detailsStep.row.material,
+      }),
+    ).toEqual(supplyInitialStep);
+    expect(supplyBackStep(supplyInitialStep)).toBeNull();
   });
 
   it("labels the pick step as the first of two", () => {

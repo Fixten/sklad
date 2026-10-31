@@ -8,11 +8,12 @@ import {
   fetchApi,
   getApiUrl,
   pickCorrectBase,
+  REQUEST_TIMEOUT_MS,
 } from "./helpers";
 
 const TEST_ORIGIN = "http://test.local";
 
-const fetchMock = vi.fn();
+const fetchMock = vi.fn<(url: URL, init: RequestInit) => Promise<unknown>>();
 
 const mockFetchJson = (
   data: unknown,
@@ -45,6 +46,7 @@ afterEach(() => {
   fetchMock.mockReset();
   vi.unstubAllGlobals();
   vi.unstubAllEnvs();
+  vi.useRealTimers();
 });
 
 describe("pickCorrectBase", () => {
@@ -134,11 +136,17 @@ describe("fetchApi", () => {
 
     await expect(fetchApi(url, "POST", '{"a":1}')).resolves.toEqual(data);
 
-    expect(fetchMock).toHaveBeenCalledWith(url, {
+    const call = fetchMock.mock.calls[0];
+    const calledUrl = call?.[0];
+    const init = call?.[1];
+
+    expect(calledUrl).toBe(url);
+    expect(init).toMatchObject({
       method: "POST",
       body: '{"a":1}',
       headers: { "Content-Type": "application/json" },
     });
+    expect(init?.signal).toBeInstanceOf(AbortSignal);
   });
 
   it("sends no body for a GET", async () => {
@@ -146,11 +154,14 @@ describe("fetchApi", () => {
 
     await fetchApi(url, "GET");
 
-    expect(fetchMock).toHaveBeenCalledWith(url, {
+    const init = fetchMock.mock.calls[0]?.[1];
+
+    expect(init).toMatchObject({
       method: "GET",
       body: undefined,
       headers: { "Content-Type": "application/json" },
     });
+    expect(init?.signal).toBeInstanceOf(AbortSignal);
   });
 
   it("throws FAILED_REQUEST with status 0 when fetch rejects", async () => {
@@ -160,6 +171,54 @@ describe("fetchApi", () => {
       name: "ApiError",
       message: ErrorMessages.FAILED_REQUEST,
       status: 0,
+    });
+  });
+
+  it("aborts the request and throws REQUEST_TIMEOUT when it takes too long", async () => {
+    vi.useFakeTimers();
+    fetchMock.mockImplementation(
+      (_url: URL, init: RequestInit) =>
+        new Promise((_resolve, reject) => {
+          init.signal?.addEventListener("abort", () => {
+            reject(new DOMException("Aborted", "AbortError"));
+          });
+        }),
+    );
+
+    const outcome = fetchApi(url, "GET").catch((failure: unknown) => failure);
+
+    await vi.advanceTimersByTimeAsync(REQUEST_TIMEOUT_MS + 1);
+
+    await expect(outcome).resolves.toMatchObject({
+      name: "ApiError",
+      message: ErrorMessages.REQUEST_TIMEOUT,
+      status: 408,
+    });
+  });
+
+  it("throws REQUEST_TIMEOUT when the body is slow", async () => {
+    vi.useFakeTimers();
+    fetchMock.mockImplementation((_url: URL, init: RequestInit) =>
+      Promise.resolve({
+        ok: true,
+        status: 200,
+        json: () =>
+          new Promise((_resolve, reject) => {
+            init.signal?.addEventListener("abort", () => {
+              reject(new DOMException("Aborted", "AbortError"));
+            });
+          }),
+      }),
+    );
+
+    const outcome = fetchApi(url, "GET").catch((failure: unknown) => failure);
+
+    await vi.advanceTimersByTimeAsync(REQUEST_TIMEOUT_MS + 1);
+
+    await expect(outcome).resolves.toMatchObject({
+      name: "ApiError",
+      message: ErrorMessages.REQUEST_TIMEOUT,
+      status: 408,
     });
   });
 

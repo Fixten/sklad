@@ -7,8 +7,6 @@ import { FormInputField } from "@ui/InputField";
 import Panel from "@ui/Panel";
 import SelectField, { FormSelectField } from "@ui/SelectField";
 
-import { supplyWizard } from "../../supplyWizard";
-
 import {
   createMaterialFormSchema,
   materialFormDefaults,
@@ -16,15 +14,12 @@ import {
 } from "./materialForm";
 import { useMaterialStep } from "./useMaterialStep";
 
-import type { MaterialDraft } from "./materialDraft";
-
 export default function MaterialStep() {
-  const { shared } = supplyWizard.useWizard();
-  const { types, pending, create } = useMaterialStep();
+  const { types, query, create, pending } = useMaterialStep();
   const schema = createMaterialFormSchema(types);
   const form = useZodForm({
     schema,
-    defaultValues: materialFormDefaults(shared.query),
+    defaultValues: materialFormDefaults(query),
   });
   const typeId = useWatch({ control: form.control, name: "typeId" });
   const { isSubmitting } = form.formState;
@@ -41,15 +36,9 @@ export default function MaterialStep() {
     { value: NewTypeValue, label: "+ Новый тип" },
   ];
 
-  const submit = async (draft: MaterialDraft) => {
-    if (busy) return;
-
-    await create(draft);
-  };
-
   return (
     <Panel label="Новый материал">
-      <Form form={form} onSubmit={submit} aria-busy={busy || undefined}>
+      <Form form={form} onSubmit={create} aria-busy={busy || undefined}>
         <div className="grid grid-cols-2 gap-4">
           <FormField
             control={form.control}

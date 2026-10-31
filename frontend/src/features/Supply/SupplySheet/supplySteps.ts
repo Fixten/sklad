@@ -20,12 +20,14 @@ export type SupplyStep =
 
 export const supplyInitialStep: SupplyStep = { kind: SupplyStepKind.Pick };
 
-export const supplyBackStep: SupplyStep = { kind: SupplyStepKind.Pick };
+export const supplyBackStep = (step: SupplyStep): SupplyStep | null =>
+  step.kind === SupplyStepKind.Pick ? null : supplyInitialStep;
 
-const isDetailsStep = (
-  step: SupplyStep,
-): step is Extract<SupplyStep, { kind: SupplyStepKind.Details }> =>
-  step.kind === SupplyStepKind.Details;
+const stepNumbers: Record<SupplyStep["kind"], string> = {
+  [SupplyStepKind.Pick]: "01 / 02",
+  [SupplyStepKind.Variant]: "01 / 02",
+  [SupplyStepKind.Material]: "01 / 02",
+  [SupplyStepKind.Details]: "02 / 02",
+};
 
-export const stepLabel = (step: SupplyStep) =>
-  isDetailsStep(step) ? "02 / 02" : "01 / 02";
+export const stepLabel = (step: SupplyStep) => stepNumbers[step.kind];

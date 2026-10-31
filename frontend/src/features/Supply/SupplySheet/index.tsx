@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { Button } from "@ui/Button";
 import Sheet from "@ui/Sheet";
 import Typography from "@ui/Typography";
@@ -35,14 +33,15 @@ function StepRouter() {
   }
 }
 
-function SupplySheetContent() {
-  const { open, step, failure, handleOpenChange, back } =
-    supplyWizard.useWizard();
+function SupplySheetContent({ open }: { open: boolean }) {
+  const { step, error, canGoBack, back, close } = supplyWizard.useWizard();
 
   return (
     <Sheet
       open={open}
-      onOpenChange={handleOpenChange}
+      onOpenChange={(next) => {
+        if (!next) close();
+      }}
       title="Поставка материала"
       step={stepLabel(step)}
       hint={
@@ -50,10 +49,10 @@ function SupplySheetContent() {
           ↑↓ Выбрать · Enter
         </Typography>
       }
-      error={failure}
+      error={error}
       actions={<SupplySheetActions />}
       back={
-        step.kind === SupplyStepKind.Details ? (
+        canGoBack ? (
           <Button variant="ghost" onClick={back}>
             Назад
           </Button>
@@ -66,18 +65,13 @@ function SupplySheetContent() {
 }
 
 export default function SupplySheet({ open, onOpenChange }: Props) {
-  const [query, setQuery] = useState("");
-
   return (
     <supplyWizard.Provider
-      open={open}
-      onOpenChange={onOpenChange}
-      shared={{ query, setQuery }}
       onClose={() => {
-        setQuery("");
+        onOpenChange(false);
       }}
     >
-      <SupplySheetContent />
+      <SupplySheetContent open={open} />
     </supplyWizard.Provider>
   );
 }

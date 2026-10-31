@@ -7,18 +7,18 @@ import type { VariantDraft } from "./useVariantForm";
 import type { MaterialTarget } from "@/features/Material/useMaterialsCatalog";
 
 export function useVariantStep(material: MaterialTarget) {
-  const { run } = supplyWizard.useWizard();
+  const wizard = supplyWizard.useWizard();
   const variant = useVariant();
 
   const create = async (draft: VariantDraft) => {
-    await run(async () => {
-      const created = await variant.addMutation.mutateAsync({
-        name: draft.name,
-        unit: draft.unit,
-        material_id: material.id,
-      });
-
-      return {
+    await wizard.advance(
+      () =>
+        variant.addMutation.mutateAsync({
+          name: draft.name,
+          unit: draft.unit,
+          material_id: material.id,
+        }),
+      (created) => ({
         kind: SupplyStepKind.Details,
         row: {
           variantId: created.id,
@@ -26,12 +26,9 @@ export function useVariantStep(material: MaterialTarget) {
           unit: created.unit,
           material,
         },
-      };
-    });
+      }),
+    );
   };
 
-  return {
-    pending: variant.addMutation.isPending,
-    create,
-  };
+  return { create, pending: wizard.pending };
 }

@@ -25,15 +25,9 @@ export function useVariantForm(material: MaterialTarget) {
     schema: variantFormSchema,
     defaultValues: variantFormDefaults,
   });
-  const { pending, create } = useVariantStep(material);
+  const { create, pending } = useVariantStep(material);
   const { isSubmitting } = form.formState;
   const busy = pending || isSubmitting;
 
-  const submit = async (draft: VariantDraft) => {
-    if (busy) return;
-
-    await create(draft);
-  };
-
-  return { form, busy, submit };
+  return { form, busy, submit: create };
 }

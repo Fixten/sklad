@@ -14,12 +14,10 @@ mirroring the backend's feature split.
   feature's components. Pages live in `src/router/pages/<Page>/`.
 - **UI component split**: custom, project-authored components live in `src/components/ui/`
   (alias `@ui/*`); shadcn components live in `src/components/ui/base/` (alias `@base/*`),
-  installed via `shadcn add` (`components.json` sets `aliases.ui = "@base"`). Keep upstream
-  code verbatim except design-driven token/recipe edits from `DESIGN.md` (e.g. the destructive
-  variant); re-apply those after any reinstall.
-- **Import UI only via `@ui/*`.** `@base/*` outside `src/components/ui/` is a lint error —
-  `@base` is an implementation detail. If `@ui` lacks the piece, add a `@ui` entry first,
-  even if it is only a re-export.
+  installed via `shadcn add` (`components.json` sets `aliases.ui = "@base"`). Keep upstream code
+  verbatim except design-driven token/recipe edits from `DESIGN.md` (e.g. the destructive variant).
+- **Import UI only via `@ui/*`.** `@base/*` outside `src/components/ui/` is a lint error — add a
+  `@ui` entry first if the piece is missing, even if it is only a re-export.
 - Aliases (`tsconfig.json`): `@/*` → `src`; `@ui/*`, `@base/*` above. `../` may not leave its
   module (feature, ui component, lib, page) — crossing needs an alias; `./` is always fine.
 - `cn()` from the `cn` package, never string concatenation — conflicting utilities survive.
@@ -30,11 +28,7 @@ mirroring the backend's feature split.
 - React Compiler is enabled (`vite.config.mts`) — no manual `useMemo`/`useCallback` (upstream
   `@base` excepted).
 - Each component should be created in own folder eg /folder/Component/index.tsx
-- **Sheet flows**: `useSheetFlow` (`src/lib/sheetFlow.ts`) owns step, failure, busy and async
-  transitions; the feature's `flow.ts` owns its `Step` union and back target. A reducer, not
-  XState — adopt one only for guards, parallel states or resumable flows.
 - **Forms & pending actions**: follow [form conventions](docs/form_conventions.md); pending
-  `@ui/Button` stays enabled — see [DESIGN.md §Separator & Loading](DESIGN.md#separator--loading).
 
 ## Adding API integration for a feature
 
@@ -45,9 +39,8 @@ mirroring the backend's feature split.
    - `<F>.model.ts` — derive from the schema, never hand-write: `components["schemas"]["X"]`
      for the entity, `JsonBody<"/api/<path>", "post">` for the create DTO
      (`src/api/schema-helpers.ts`).
-   - `<F>.api.ts` — `private api = new Api("/api/<path>")` (path must be a `paths` key);
-     arrow methods delegate to `getAll/get/post/patch/remove`, all typed from the spec.
-     Updates are `patch(value, id)` — ids are integers.
+   - `<F>.api.ts` — `private api = new Api("/api/<path>")` (path must be a `paths` key); arrow
+     methods delegate to `getAll/get/post/patch/remove`, typed from the spec. `patch(value, id)`.
    - `use<F>.ts` — module-level api instance; `useQuery({queryKey, queryFn: api.getAll})`
      plus one `useMutation` per write op, `onSuccess: () => query.refetch()`. For
      cross-feature changes use `queryClient.invalidateQueries({queryKey: [...]})` and

@@ -9,7 +9,6 @@ import {
 } from "./detailsForm";
 import { useDetailsStep } from "./useDetailsStep";
 
-import type { DetailsDraft } from "./detailsForm";
 import type { MaterialCatalogRow } from "@/features/Material/useMaterialsCatalog";
 
 export function useDetailsForm(row: MaterialCatalogRow) {
@@ -17,22 +16,17 @@ export function useDetailsForm(row: MaterialCatalogRow) {
     schema: createDetailsFormSchema(row.unit),
     defaultValues: detailsFormDefaults,
   });
-  const { suppliers, save } = useDetailsStep(row);
+  const { suppliers, save, pending } = useDetailsStep(row);
   const quantity = useWatch({ control: form.control, name: "quantity" });
   const price = useWatch({ control: form.control, name: "price" });
   const { isSubmitting } = form.formState;
-
-  const submit = async (draft: DetailsDraft) => {
-    if (isSubmitting) return;
-
-    await save(draft);
-  };
+  const busy = pending || isSubmitting;
 
   return {
     form,
-    busy: isSubmitting,
+    busy,
     suppliers,
     unitCost: unitCostPreview({ quantity, price }, row.unit),
-    submit,
+    submit: save,
   };
 }

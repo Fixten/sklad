@@ -22,7 +22,7 @@ General project rules only. Feature schemas, fields, and tests define feature-sp
 
 ## Form modules
 
-- `use<Step>Form` owns form creation, schema selection, busy state, and guarded submission. It may
+- `use<Step>Form` owns form creation, schema selection, busy state. It may
   call `use<Step>Step`.
 - `use<Step>Step` owns mutations, entity resolution, and step navigation.
 - The step component is rendering only: layout, labels, copy, and field placement.

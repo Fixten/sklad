@@ -46,7 +46,7 @@ describe("getServerError", () => {
 });
 
 describe("retryApiError", () => {
-  it.each([0, 500, 503])(
+  it.each([0, 408, 500, 503])(
     "retries status %i under the attempt limit",
     (status) => {
       expect(retryApiError(0, new ApiError("x", status))).toBe(true);

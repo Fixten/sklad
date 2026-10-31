@@ -9,7 +9,7 @@ import { supplyWizard } from "../../supplyWizard";
 import type { MaterialDraft } from "./materialDraft";
 
 export function useMaterialStep() {
-  const { run } = supplyWizard.useWizard();
+  const wizard = supplyWizard.useWizard();
   const material = useMaterial();
   const materialType = useMaterialType();
   const variant = useVariant();
@@ -18,41 +18,37 @@ export function useMaterialStep() {
     (row) => !row.deleted_at,
   );
 
-  const pending =
-    material.addMutation.isPending ||
-    materialType.addMutation.isPending ||
-    variant.addMutation.isPending;
-
   const create = async (draft: MaterialDraft) => {
-    await run(async () => {
-      const typeId =
-        draft.type.kind === "new"
-          ? (await materialType.addMutation.mutateAsync(draft.type.name)).id
-          : draft.type.id;
-      const createdMaterial = await material.addMutation.mutateAsync({
-        name: draft.materialName,
-        material_type_id: typeId,
-      });
-      const createdVariant = await variant.addMutation.mutateAsync({
-        name: draft.variantName,
-        unit: draft.unit,
-        material_id: createdMaterial.id,
-      });
+    await wizard.advance(
+      async () => {
+        const typeId =
+          draft.type.kind === "new"
+            ? (await materialType.addMutation.mutateAsync(draft.type.name)).id
+            : draft.type.id;
+        const createdMaterial = await material.addMutation.mutateAsync({
+          name: draft.materialName,
+          material_type_id: typeId,
+        });
+        const createdVariant = await variant.addMutation.mutateAsync({
+          name: draft.variantName,
+          unit: draft.unit,
+          material_id: createdMaterial.id,
+        });
 
-      return {
-        kind: SupplyStepKind.Details,
-        row: buildMaterialCatalogRow(
+        return buildMaterialCatalogRow(
           createdVariant,
           createdMaterial,
           draft.type.name,
-        ),
-      };
-    });
+        );
+      },
+      (row) => ({ kind: SupplyStepKind.Details, row }),
+    );
   };
 
   return {
     types,
-    pending,
+    query: wizard.shared.query,
     create,
+    pending: wizard.pending,
   };
 }

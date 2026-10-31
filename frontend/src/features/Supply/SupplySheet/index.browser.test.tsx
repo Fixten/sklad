@@ -915,6 +915,47 @@ test("returns to the pick step from the details", async () => {
   await expect.element(screen.getByLabelText("Материал")).toHaveValue("Дуб");
 });
 
+test("keeps the save in place when the user navigates back mid-flight", async () => {
+  let resolveSupply!: (response: Response) => void;
+  const supplyResponse = new Promise<Response>((resolve) => {
+    resolveSupply = resolve;
+  });
+  const requests = stubApi(fullCatalog, { supplyResponse });
+  const screen = await renderSheet();
+
+  await openDetails(screen);
+  await fillDetails(screen);
+  await screen.getByText("Сохранить поставку").click();
+
+  await screen.getByText("Назад").click();
+
+  await expect.element(screen.getByText("02 / 02")).toBeInTheDocument();
+
+  resolveSupply(
+    new Response(
+      JSON.stringify({
+        id: 30,
+        description: null,
+        purchase_price: 24000,
+        quantity: 8,
+        unit: "meters",
+        remaining_quantity: 8,
+        unit_purchase_cost: 3000,
+        url: null,
+        material_variant_id: 100,
+        supplier_id: 5,
+        created_at: "2026-01-01T00:00:00Z",
+      }),
+      { headers: { "Content-Type": "application/json" } },
+    ),
+  );
+
+  await expect.element(screen.getByRole("dialog")).not.toBeInTheDocument();
+  expect(requests.filter((request) => request.method === "POST")).toHaveLength(
+    1,
+  );
+});
+
 test("forgets the details form after creating a variant", async () => {
   stubApi();
   const screen = await renderSheet();

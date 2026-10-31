@@ -6,4 +6,6 @@
 - [x] add hard delete to supply
 - [x] use native upsert
 - [x] make async functions sync in be
-- [] frontend/src/features/Supply/SupplySheet/steps/VariantStep/useVariantStep.ts - run is a code smell
+- [x] frontend/src/features/Supply/SupplySheet/steps/VariantStep/useVariantStep.ts - run is a code smell
+- [] remove arrow hit from supply flow
+- [ ] Toast for a landed write. The supply flow should close with a toast (docs/product/ux/materials/workflow.md:87). There is no toast primitive yet, so a save that lands after the sheet closed stays invisible — the user may save the same supply twice.

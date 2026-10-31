@@ -19,7 +19,7 @@ declare module "@tanstack/react-query" {
 
 /**Ignores deterministic failures of 4xx */
 export const retryApiError = (failureCount: number, error: ApiError) =>
-  failureCount < 3 && (error.status === 0 || error.status >= 500);
+  failureCount < 3 && ([0, 408].includes(error.status) || error.status >= 500);
 
 export const getServerError = (status: number, body: unknown) => {
   if (typeof body === "object" && body !== null && "message" in body) {

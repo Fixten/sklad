@@ -25,22 +25,55 @@ export const applySearchParams = (
   }
 };
 
+export const REQUEST_TIMEOUT_MS = 10_000;
+
 export const fetchApi = async <R>(
   url: URL,
   method: Method,
   body?: string,
 ): Promise<R> => {
-  const response = await fetch(url, { method, body, headers }).catch(() => {
-    throw new ApiError(ErrorMessages.FAILED_REQUEST, 0);
-  });
+  const controller = new AbortController();
+  const timer = setTimeout(() => {
+    controller.abort();
+  }, REQUEST_TIMEOUT_MS);
 
-  const throwInvalidJson = () => {
-    throw new ApiError(ErrorMessages.INVALID_JSON_RESPONSE, response.status);
+  const isAbort = (error: unknown) =>
+    (error instanceof DOMException && error.name === "AbortError") ||
+    controller.signal.aborted;
+
+  const throwTimeout = () => {
+    throw new ApiError(ErrorMessages.REQUEST_TIMEOUT, 408);
   };
 
-  const data: unknown = await response.json().catch(throwInvalidJson);
-  if (data === null) throwInvalidJson();
-  if (!response.ok) throw getServerError(response.status, data);
+  const throwInvalidJson = (status: number) => {
+    throw new ApiError(ErrorMessages.INVALID_JSON_RESPONSE, status);
+  };
 
-  return data as R;
+  try {
+    const response = await fetch(url, {
+      method,
+      body,
+      headers,
+      signal: controller.signal,
+    });
+
+    let data: unknown;
+    try {
+      data = await response.json();
+    } catch (jsonError) {
+      if (isAbort(jsonError)) throwTimeout();
+      throwInvalidJson(response.status);
+    }
+
+    if (data === null) throwInvalidJson(response.status);
+    if (!response.ok) throw getServerError(response.status, data);
+
+    return data as R;
+  } catch (error) {
+    if (error instanceof ApiError) throw error;
+    if (isAbort(error)) throwTimeout();
+    throw new ApiError(ErrorMessages.FAILED_REQUEST, 0);
+  } finally {
+    clearTimeout(timer);
+  }
 };

@@ -11,18 +11,23 @@ import { SupplyStepKind } from "../../supplySteps";
 import { supplyWizard } from "../../supplyWizard";
 
 export function usePickStep() {
-  const { shared, go } = supplyWizard.useWizard();
+  const wizard = supplyWizard.useWizard();
   const catalog = useMaterialsCatalog();
 
-  const matchedRows = queryMaterialRow(catalog.rows, shared.query);
-  const creation = queryMaterialRowWithType(catalog.rows, shared.query);
+  const query = wizard.shared.query;
+  const setQuery = (next: string) => {
+    wizard.setShared({ query: next });
+  };
+
+  const matchedRows = queryMaterialRow(catalog.rows, query);
+  const creation = queryMaterialRowWithType(catalog.rows, query);
 
   const selectVariant = (row: MaterialCatalogRow) => {
-    go({ kind: SupplyStepKind.Details, row });
+    wizard.go({ kind: SupplyStepKind.Details, row });
   };
 
   const selectCreation = (target: CreationTarget) => {
-    go(
+    wizard.go(
       target.kind === "variant"
         ? { kind: SupplyStepKind.Variant, material: target.material }
         : { kind: SupplyStepKind.Material },
@@ -30,8 +35,8 @@ export function usePickStep() {
   };
 
   return {
-    query: shared.query,
-    setQuery: shared.setQuery,
+    query,
+    setQuery,
     matchedRows,
     creation,
     selectVariant,

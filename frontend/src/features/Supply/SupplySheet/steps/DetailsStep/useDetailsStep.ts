@@ -9,7 +9,7 @@ import type { SupplierOption } from "./SupplierPicker";
 import type { MaterialCatalogRow } from "@/features/Material/useMaterialsCatalog";
 
 export function useDetailsStep(row: MaterialCatalogRow) {
-  const { close, run } = supplyWizard.useWizard();
+  const wizard = supplyWizard.useWizard();
   const supply = useSupply();
   const supplier = useSupplier();
 
@@ -40,7 +40,7 @@ export function useDetailsStep(row: MaterialCatalogRow) {
   };
 
   const save = async (draft: DetailsDraft) => {
-    await run(async (isCurrent) => {
+    await wizard.complete(async () => {
       const supplierId = await resolveSupplierId(
         draft.supplierName,
         draft.supplierId,
@@ -54,10 +54,8 @@ export function useDetailsStep(row: MaterialCatalogRow) {
         description: draft.description,
         url: draft.url,
       });
-
-      if (isCurrent()) close();
     });
   };
 
-  return { suppliers, save };
+  return { suppliers, save, pending: wizard.pending };
 }
