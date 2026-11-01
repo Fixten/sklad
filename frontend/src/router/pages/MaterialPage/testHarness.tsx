@@ -4,8 +4,9 @@ import { expect } from "vitest";
 import { render } from "vitest-browser-react";
 
 import AppLayout from "@/layout/App.layout";
-import SupplyPage from "@/router/pages/SupplyPage";
 import { stubRoutes } from "@/test/apiStub.vitest";
+
+import SupplyPage from "./SupplyPage";
 
 import MaterialPage from "./index";
 

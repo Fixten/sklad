@@ -47,7 +47,8 @@ variant and its missing type/material, on one flat page.
    capped scrollable list. Each row: variant, type · material, stock, unit.
 3. Selecting a result keeps the variant in the field. There is no path, stock or unit hint beneath
    it; editing the field starts a new search, and there is no «Изменить» button.
-4. No match: «Ничего не нашлось» and «Создать вариант «X»».
+4. The result list always starts with «Создать», even before typing and alongside matches. Selecting
+   it opens the creation mode; the query seeds the variant name.
 
 ### Creating a missing variant
 
@@ -83,10 +84,12 @@ what is missing:
 
 ## States
 
-- Catalog loading: a quiet status in the target field.
+- Catalog loading: a spinner at the end of the target field.
 - No materials: the creation mode can start with empty type/material.
 - No types: the creation mode starts at a new type.
-- No search results: the create action is the only result.
+- No search results: the create row is the only result; there is no empty hint.
+- The create row is always present while the picker is open, including before typing and alongside
+  matches.
 - Saving: the primary action shows its pending verb and stays available.
 - API failure: message above the actions, inputs preserved.
 - Empty optional fields: no empty rows, no invented values.
@@ -113,13 +116,15 @@ Each layer ends with a runnable prototype and stops for review. Later layers do 
 
 ## Project prototype
 
-Project stage 1 is implemented in `frontend/src/router/pages/SupplyPage/` and
+Project stage 1 is implemented in `frontend/src/router/pages/MaterialPage/SupplyPage/` and
 `frontend/src/features/Supply/SupplyCreate/`.
 
 - Route `/material/supply`; the Materials palette action navigates there.
-- The material field is the first control and uses the shared `OptionPicker` for inline results.
+- The material field is the first control and uses the shared `OptionPicker` for inline results;
+  catalog loading is a spinner at the end of the field, and the create row is always present.
 - Quantity, price, supplier, description and URL are one form, validated with the reusable
   quantity/price rules.
 - Submit stops at a stage status; it does not create a Supply yet.
 - The old `SupplySheet` and wizard are unreachable from the app but remain until the final purge.
+- The create row is always visible; its creation mode is the next project stage.
 - Missing variant/type/material creation and the real save are the next project stages.

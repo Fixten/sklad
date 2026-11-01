@@ -97,6 +97,16 @@ test("keeps the hint as the description while the field is valid", async () => {
   expect(screen.getByRole("alert").query()).toBeNull();
 });
 
+test("shows a loading status in the input group", async () => {
+  const screen = await render(
+    <InputField label="Материал" loading loadingLabel="Загружаем материалы" />,
+  );
+
+  await expect
+    .element(screen.getByRole("status", { name: "Загружаем материалы" }))
+    .toBeInTheDocument();
+});
+
 test("keeps a disabled field uneditable", async () => {
   const screen = await render(
     <InputField

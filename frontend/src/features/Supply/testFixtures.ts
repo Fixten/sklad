@@ -60,3 +60,19 @@ export const stubSupplyPageApi = () => {
     window.fetch = originalFetch;
   };
 };
+
+const pending = () => new Promise<never>(() => undefined);
+
+export const stubPendingSupplyPageApi = () => {
+  const originalFetch = window.fetch.bind(window);
+  const { fetch } = createApiStub({
+    "/api/material-type": { get: pending },
+    "/api/material": { get: pending },
+    "/api/material-variant": { get: pending },
+  });
+  window.fetch = fetch;
+
+  return () => {
+    window.fetch = originalFetch;
+  };
+};

@@ -1,4 +1,5 @@
 import { expect, test } from "vitest";
+import { userEvent } from "vitest/browser";
 
 import { renderPage, stubPageApi } from "./testHarness";
 
@@ -18,6 +19,15 @@ test("renders the flat supply page without a dialog", async () => {
   await expect.element(screen.getByRole("dialog")).not.toBeInTheDocument();
 });
 
+test("offers create immediately", async () => {
+  stubPageApi();
+  const screen = await renderPage();
+
+  await expect
+    .element(screen.getByRole("option", { name: "Создать" }))
+    .toBeInTheDocument();
+});
+
 test("searches variants inline and selects one", async () => {
   stubPageApi();
   const screen = await renderPage();
@@ -26,6 +36,9 @@ test("searches variants inline and selects one", async () => {
 
   await expect
     .element(screen.getByRole("listbox", { name: "Варианты" }))
+    .toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("option", { name: "Создать" }))
     .toBeInTheDocument();
   await expect
     .element(screen.getByRole("option", { name: /Доска 40 мм/ }))
@@ -93,30 +106,32 @@ test("reports missing values on submit", async () => {
     .toBeInTheDocument();
 });
 
-test("accepts a valid draft and stops at the stage status", async () => {
+test("submits the form on enter once the list is closed", async () => {
   stubPageApi();
   const screen = await renderPage();
 
-  await selectDoska(screen);
-  await screen.getByLabelText("Количество").fill("8");
-  await screen.getByLabelText("Цена закупки, всего").fill("24000");
-  await screen.getByLabelText("Поставщик").fill("Столярный двор");
-  await screen.getByRole("button", { name: "Записать поставку" }).click();
+  await screen.getByLabelText("Материал").fill("Дуб");
+  await userEvent.keyboard("{Enter}");
 
-  const status = screen.getByRole("status");
-  await expect.element(status).toBeInTheDocument();
-  expect(status.element().textContent).toContain("Форма проверена");
-  expect(status.element().textContent).toContain("8 м");
-  expect(status.element().textContent).toContain("Столярный двор");
+  await expect
+    .element(screen.getByLabelText("Материал"))
+    .toHaveValue("Доска 40 мм");
+  await expect.element(screen.getByRole("listbox")).not.toBeInTheDocument();
+
+  await userEvent.keyboard("{Enter}");
+
+  await expect
+    .element(screen.getByText("Укажите количество"))
+    .toBeInTheDocument();
 });
 
-test("shows an empty result when nothing matches", async () => {
+test("keeps create available when nothing matches", async () => {
   stubPageApi();
   const screen = await renderPage();
 
   await screen.getByLabelText("Материал").fill("Клён");
 
   await expect
-    .element(screen.getByText("Ничего не нашлось"))
+    .element(screen.getByRole("option", { name: "Создать" }))
     .toBeInTheDocument();
 });

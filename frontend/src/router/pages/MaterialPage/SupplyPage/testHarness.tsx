@@ -2,10 +2,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter, Route, Routes } from "react-router";
 import { render } from "vitest-browser-react";
 
+import { supplyPageRoutes } from "@/features/Supply/testFixtures";
 import AppLayout from "@/layout/App.layout";
 import { stubRoutes } from "@/test/apiStub.vitest";
-
-import { supplyPageRoutes } from "./testFixtures";
 
 import SupplyPage from "./index";
 

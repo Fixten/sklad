@@ -21,6 +21,7 @@ interface OptionPickerBaseProps<T> {
   placeholder?: string;
   hint?: string;
   error?: string;
+  loading?: boolean;
   autoFocus?: boolean;
   inputRef?: Ref<HTMLInputElement>;
   onValueChange: (value: string) => void;
@@ -45,6 +46,7 @@ export default function OptionPicker<T>(props: OptionPickerProps<T>) {
     placeholder,
     hint,
     error,
+    loading,
     autoFocus,
     inputRef,
     onValueChange,
@@ -101,6 +103,7 @@ export default function OptionPicker<T>(props: OptionPickerProps<T>) {
         placeholder={placeholder}
         hint={hint}
         error={error}
+        loading={loading}
         autoFocus={autoFocus}
         value={value}
         onBlur={onBlur}

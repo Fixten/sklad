@@ -15,6 +15,7 @@ import {
   InputGroupText,
 } from "@base/input-group";
 import { FormField } from "@ui/Form";
+import { Spinner } from "@ui/Spinner";
 
 import type { ComponentProps } from "react";
 import type { Control, FieldPath, FieldValues } from "react-hook-form";
@@ -30,6 +31,8 @@ type InputFieldProps = Omit<ComponentProps<"input">, "id"> & {
   hint?: string;
   error?: string;
   unit?: string;
+  loading?: boolean;
+  loadingLabel?: string;
   inputClassName?: string;
 };
 
@@ -39,6 +42,8 @@ function InputField({
   hint,
   error,
   unit,
+  loading = false,
+  loadingLabel = "Загрузка",
   inputClassName,
   className,
   type,
@@ -83,9 +88,10 @@ function InputField({
           )}
           {...props}
         />
-        {unit ? (
+        {unit || loading ? (
           <InputGroupAddon align="inline-end">
-            <InputGroupText id={unitId}>{unit}</InputGroupText>
+            {unit ? <InputGroupText id={unitId}>{unit}</InputGroupText> : null}
+            {loading ? <Spinner aria-label={loadingLabel} /> : null}
           </InputGroupAddon>
         ) : null}
       </InputGroup>

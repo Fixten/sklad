@@ -18,6 +18,8 @@ General project rules only. Feature schemas, fields, and tests define feature-sp
 - A connected control maps `value`, `onChange`, `onBlur`, `name`, and `ref`, composes caller
   handlers, and forwards field errors.
 - Composite values that cannot use a native input contract use `FormField`.
+- A labelled group of fields uses `@ui/InputFieldGroup`; it composes `FieldSet`, `FieldLegend` and
+  `FieldGroup`. Unlabelled stacking can use `FieldGroup` directly.
 - A new control without a connected form version is incomplete.
 
 ## Form modules

@@ -26,6 +26,17 @@ export const WithUnit: Story = {
   args: { label: "Количество", unit: "кг", placeholder: "0,00" },
 };
 
+export const Loading: Story = {
+  args: { label: "Load", loading: true, loadingLabel: "load" },
+};
+
+export const UnitAndLoading: Story = {
+  args: {
+    ...WithUnit.args,
+    ...Loading.args,
+  },
+};
+
 export const Numeric: Story = {
   args: {
     label: "Цена закупки",

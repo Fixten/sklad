@@ -9,6 +9,8 @@ mirroring the backend's feature split.
 
 ## Conventions
 
+- **Read [code style](docs/code_style.md) before writing code.** It defines judgment rules lint
+  cannot check. Standing rule: absence is `undefined`, never `null`, outside API/DOM/`@base`.
 - Feature dir: `<f>.api.ts` (thin wrapper over the `Api` class in `src/api`), `<f>.model.ts`
   (types derived from `src/api/schema.d.ts`), `use<F>.ts` (react-query hook), plus the
   feature's components. Pages live in `src/router/pages/<Page>/`.
@@ -20,15 +22,13 @@ mirroring the backend's feature split.
   `@ui` entry first if the piece is missing, even if it is only a re-export.
 - Aliases (`tsconfig.json`): `@/*` → `src`; `@ui/*`, `@base/*` above. `../` may not leave its
   module (feature, ui component, lib, page) — crossing needs an alias; `./` is always fine.
-- `cn()` from the `cn` package, never string concatenation — conflicting utilities survive.
-- Use `@ui/Typography` for any text; base `body` carries `type-body`, so raw `p`/`span`/`div`
-  inherit the body role (`type-*` still wins).
 - Icons come from `@ui/Icon`; only `src/components/ui/**` may import `lucide-react` (lint error
   elsewhere).
 - React Compiler is enabled (`vite.config.mts`) — no manual `useMemo`/`useCallback` (upstream
   `@base` excepted).
-- Each component should be created in own folder eg /folder/Component/index.tsx
-- **Forms & pending actions**: follow [form conventions](docs/form_conventions.md); pending
+- **Forms & pending actions**: follow [form conventions](docs/form_conventions.md); busy actions
+  use `@ui/Button pending`, never `disabled`. Recipe:
+  [DESIGN.md §Separator & Loading](DESIGN.md#separator--loading).
 
 ## Adding API integration for a feature
 

@@ -1,12 +1,12 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { MemoryRouter, Route, Routes } from "react-router";
 import { screen, userEvent } from "storybook/test";
 
-import AppLayout from "@/layout/App.layout";
+import {
+  stubPendingSupplyPageApi,
+  stubSupplyPageApi,
+} from "@/features/Supply/testFixtures";
 
-import { stubSupplyPageApi } from "./testFixtures";
-
-import SupplyPage from "./index";
+import SupplyCreate from ".";
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
@@ -29,18 +29,13 @@ const fillDetails = async () => {
 };
 
 const meta = {
-  component: SupplyPage,
+  component: SupplyCreate,
   decorators: [
     (Story) => (
       <QueryClientProvider client={queryClient}>
-        <MemoryRouter initialEntries={["/material/supply"]}>
-          <Routes>
-            <Route element={<AppLayout />}>
-              <Route path="/material" element={<div>Материалы</div>} />
-              <Route path="/material/supply" element={<Story />} />
-            </Route>
-          </Routes>
-        </MemoryRouter>
+        <div className="mx-auto w-full max-w-2xl p-6">
+          <Story />
+        </div>
       </QueryClientProvider>
     ),
   ],
@@ -48,13 +43,20 @@ const meta = {
   parameters: {
     layout: "fullscreen",
   },
-} satisfies Meta<typeof SupplyPage>;
+} satisfies Meta<typeof SupplyCreate>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+
+export const Loading: Story = {
+  beforeEach: () => stubPendingSupplyPageApi(),
+  play: async () => {
+    await userEvent.type(await screen.findByLabelText("Материал"), "Дуб");
+  },
+};
 
 export const Search: Story = {
   play: async () => {

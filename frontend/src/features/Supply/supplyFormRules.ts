@@ -50,11 +50,11 @@ export const quantityField = (unit: Unit) =>
 export function unitCostPreview(
   values: UnitCostValues,
   unit: Unit,
-): UnitCostPreview | null {
+): UnitCostPreview | undefined {
   const quantity = parseAmount(values.quantity);
   const price = parseAmount(values.price);
 
-  if (price === null || quantity === null || quantity <= 0) return null;
+  if (price === null || quantity === null || quantity <= 0) return undefined;
 
   return {
     value: price / quantity,

@@ -5,8 +5,8 @@ import AppLayout from "@/layout/App.layout";
 import Home from "@/router/pages/Home";
 
 import MaterialPage from "./pages/MaterialPage";
+import SupplyPage from "./pages/MaterialPage/SupplyPage";
 import SettingsPage from "./pages/SettingsPage";
-import SupplyPage from "./pages/SupplyPage";
 import pathsRouter from "./paths.router";
 
 const router = createBrowserRouter([

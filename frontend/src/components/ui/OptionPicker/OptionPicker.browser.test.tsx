@@ -36,6 +36,12 @@ test("stays a bare field while closed", async () => {
   expect(screen.getByRole("listbox").query()).toBeNull();
 });
 
+test("forwards the loading state to the field", async () => {
+  const screen = await render(<OptionPicker {...baseProps} loading />);
+
+  await expect.element(screen.getByRole("status")).toBeInTheDocument();
+});
+
 test("wires the field to the list and its active option", async () => {
   const screen = await render(<OptionPicker {...baseProps} />);
 
