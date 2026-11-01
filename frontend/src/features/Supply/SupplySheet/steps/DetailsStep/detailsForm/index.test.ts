@@ -133,9 +133,13 @@ describe("unitCostPreview", () => {
   });
 
   it("stays hidden until both values are present", () => {
-    expect(unitCostPreview({ ...base, price: "" }, "meters")).toBeNull();
-    expect(unitCostPreview({ ...base, quantity: "" }, "meters")).toBeNull();
-    expect(unitCostPreview({ ...base, quantity: "0" }, "meters")).toBeNull();
+    expect(unitCostPreview({ ...base, price: "" }, "meters")).toBeUndefined();
+    expect(
+      unitCostPreview({ ...base, quantity: "" }, "meters"),
+    ).toBeUndefined();
+    expect(
+      unitCostPreview({ ...base, quantity: "0" }, "meters"),
+    ).toBeUndefined();
   });
 
   it("uses the short label of the variant unit", () => {
