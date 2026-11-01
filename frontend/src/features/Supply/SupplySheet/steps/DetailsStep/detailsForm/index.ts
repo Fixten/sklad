@@ -1,7 +1,14 @@
 import zod from "zod";
 
-import { UnitShortLabels, type Unit } from "@/features/units";
-import { formatAmount, parseAmount } from "@/lib/amount";
+import { amountField, quantityField } from "@/features/Supply/supplyFormRules";
+
+import type { Unit } from "@/features/units";
+
+export {
+  formatUnitCost,
+  unitCostPreview,
+} from "@/features/Supply/supplyFormRules";
+export type { UnitCostPreview } from "@/features/Supply/supplyFormRules";
 
 export interface SupplierValue {
   id: number | null;
@@ -25,11 +32,6 @@ export interface DetailsDraft {
   url?: string;
 }
 
-export interface UnitCostPreview {
-  value: number;
-  formula: string;
-}
-
 export const detailsFormDefaults = {
   quantity: "",
   price: "",
@@ -37,40 +39,6 @@ export const detailsFormDefaults = {
   description: "",
   url: "",
 } satisfies DetailsFormValues;
-
-const amountField = (message: string) =>
-  zod.string().transform((raw, context) => {
-    const value = parseAmount(raw);
-
-    if (value === null) {
-      context.addIssue({ code: "custom", message });
-
-      return zod.NEVER;
-    }
-
-    return value;
-  });
-
-const decimalPlaces = (value: number) => {
-  const [coefficient = "", exponentText] = String(value)
-    .toLowerCase()
-    .split("e");
-  const fractionLength = coefficient.split(".")[1]?.length ?? 0;
-  const exponent = exponentText === undefined ? 0 : Number(exponentText);
-
-  return Math.max(0, fractionLength - exponent);
-};
-
-const quantityField = (unit: Unit) =>
-  amountField("Укажите количество")
-    .refine((value) => value > 0, "Укажите количество")
-    .refine(
-      (value) =>
-        unit === "pieces" ? Number.isInteger(value) : decimalPlaces(value) <= 3,
-      unit === "pieces"
-        ? "Количество в штуках должно быть целым"
-        : "Не больше трёх знаков после запятой",
-    );
 
 export const createDetailsFormSchema = (unit: Unit) =>
   zod
@@ -106,21 +74,3 @@ export const createDetailsFormSchema = (unit: Unit) =>
     }));
 
 export type DetailsFormSchema = ReturnType<typeof createDetailsFormSchema>;
-
-export function unitCostPreview(
-  values: Pick<DetailsFormValues, "quantity" | "price">,
-  unit: Unit,
-): UnitCostPreview | null {
-  const quantity = parseAmount(values.quantity);
-  const price = parseAmount(values.price);
-
-  if (price === null || quantity === null || quantity <= 0) return null;
-
-  return {
-    value: price / quantity,
-    formula: `${formatAmount(price)} ₽ ÷ ${formatAmount(quantity)} ${UnitShortLabels[unit]}`,
-  };
-}
-
-export const formatUnitCost = (value: number, unit: Unit) =>
-  `${formatAmount(value)} ₽ / ${UnitShortLabels[unit]}`;

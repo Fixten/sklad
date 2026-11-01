@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { openSheet, renderPage, stubPageApi } from "./testHarness";
+import { openSupplyPage, renderPage, stubPageApi } from "./testHarness";
 
 test("renders only the palette line at rest", async () => {
   stubPageApi();
@@ -27,13 +27,11 @@ test("opens the actions palette with the supply action", async () => {
     .toBeInTheDocument();
 });
 
-test("opens the supply sheet from the supply action", async () => {
+test("opens the supply page from the supply action", async () => {
   stubPageApi();
   const screen = await renderPage();
 
-  await openSheet(screen);
+  await openSupplyPage(screen);
 
-  await expect
-    .element(screen.getByRole("heading", { name: "Поставка материала" }))
-    .toBeInTheDocument();
+  await expect.element(screen.getByRole("dialog")).not.toBeInTheDocument();
 });

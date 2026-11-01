@@ -3,6 +3,8 @@ import { MemoryRouter, Route, Routes } from "react-router";
 import { screen, userEvent } from "storybook/test";
 
 import AppLayout from "@/layout/App.layout";
+import SupplyPageComponent from "@/router/pages/SupplyPage";
+import { stubSupplyPageApi } from "@/router/pages/SupplyPage/testFixtures";
 
 import MaterialPage from "./index";
 
@@ -19,6 +21,7 @@ const openPalette = async () => {
 const openSupply = async () => {
   await openPalette();
   await userEvent.click(screen.getByText("Сделать поставку"));
+  await screen.findByRole("heading", { name: "Поставка" });
 };
 
 const meta = {
@@ -30,12 +33,17 @@ const meta = {
           <Routes>
             <Route element={<AppLayout />}>
               <Route path="/material" element={<Story />} />
+              <Route
+                path="/material/supply"
+                element={<SupplyPageComponent />}
+              />
             </Route>
           </Routes>
         </MemoryRouter>
       </QueryClientProvider>
     ),
   ],
+  beforeEach: () => stubSupplyPageApi(),
   parameters: {
     layout: "fullscreen",
   },
@@ -53,16 +61,8 @@ export const ActionsOpen: Story = {
   },
 };
 
-export const SupplySheet: Story = {
+export const SupplyPage: Story = {
   play: async () => {
     await openSupply();
-  },
-};
-
-export const NewMaterialPanel: Story = {
-  play: async () => {
-    await openSupply();
-    await userEvent.type(screen.getByLabelText("Материал"), "Клён");
-    await userEvent.click(await screen.findByText("Новый материал: «Клён»"));
   },
 };

@@ -1,27 +1,29 @@
-import { useState } from "react";
+import { useNavigate } from "react-router";
 
-import SupplySheet from "@/features/Supply/SupplySheet";
+import { isFeatureEnabled } from "@/config/features";
+import pathsRouter from "@/router/paths.router";
 import CommandPalette from "@ui/CommandPalette";
 
 export default function MaterialPage() {
-  const [isSupplyOpen, setSupplyOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
-    <>
-      <CommandPalette
-        heading="Действия"
-        emptyMessage="Ничего не нашлось"
-        items={[
-          {
-            key: "supply",
-            label: "Сделать поставку",
-            onSelect: () => {
-              setSupplyOpen(true);
-            },
-          },
-        ]}
-      />
-      <SupplySheet open={isSupplyOpen} onOpenChange={setSupplyOpen} />
-    </>
+    <CommandPalette
+      heading="Действия"
+      emptyMessage="Ничего не нашлось"
+      items={
+        isFeatureEnabled("supply")
+          ? [
+              {
+                key: "supply",
+                label: "Сделать поставку",
+                onSelect: () => {
+                  void navigate(pathsRouter.supply);
+                },
+              },
+            ]
+          : []
+      }
+    />
   );
 }

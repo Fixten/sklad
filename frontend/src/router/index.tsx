@@ -6,6 +6,7 @@ import Home from "@/router/pages/Home";
 
 import MaterialPage from "./pages/MaterialPage";
 import SettingsPage from "./pages/SettingsPage";
+import SupplyPage from "./pages/SupplyPage";
 import pathsRouter from "./paths.router";
 
 const router = createBrowserRouter([
@@ -29,6 +30,14 @@ const router = createBrowserRouter([
             {
               path: pathsRouter.material,
               Component: MaterialPage,
+            },
+          ]
+        : []),
+      ...(isMaterialEnabled() && isFeatureEnabled("supply")
+        ? [
+            {
+              path: pathsRouter.supply,
+              Component: SupplyPage,
             },
           ]
         : []),

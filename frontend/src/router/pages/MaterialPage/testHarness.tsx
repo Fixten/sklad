@@ -4,6 +4,7 @@ import { expect } from "vitest";
 import { render } from "vitest-browser-react";
 
 import AppLayout from "@/layout/App.layout";
+import SupplyPage from "@/router/pages/SupplyPage";
 import { stubRoutes } from "@/test/apiStub.vitest";
 
 import MaterialPage from "./index";
@@ -28,6 +29,7 @@ export const renderPage = async () => {
         <Routes>
           <Route element={<AppLayout />}>
             <Route path="/material" element={<MaterialPage />} />
+            <Route path="/material/supply" element={<SupplyPage />} />
           </Route>
         </Routes>
       </MemoryRouter>
@@ -37,12 +39,12 @@ export const renderPage = async () => {
 
 export type Page = Awaited<ReturnType<typeof renderPage>>;
 
-export const openSheet = async (screen: Page) => {
+export const openSupplyPage = async (screen: Page) => {
   await screen.getByPlaceholder("Начать работу").click();
   await screen.getByText("Сделать поставку").click();
 
-  const dialog = screen.getByRole("dialog");
-  await expect.element(dialog).toBeInTheDocument();
+  const heading = screen.getByRole("heading", { name: "Поставка" });
+  await expect.element(heading).toBeInTheDocument();
 
-  return dialog;
+  return heading;
 };

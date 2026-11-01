@@ -70,5 +70,9 @@ export default function useMaterialsCatalog() {
   return {
     rows,
     types,
+    isLoading:
+      material.query.isLoading ||
+      variant.query.isLoading ||
+      materialType.query.isLoading,
   };
 }
