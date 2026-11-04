@@ -40,8 +40,11 @@ export default function useVariant() {
     mutationFn: api.restore,
     onSuccess: invalidate,
   });
+  const variants = (query.data ?? []).filter((row) => !row.deleted_at);
+
   return {
     query,
+    variants,
     addMutation,
     removeMutation,
     updateMutation,

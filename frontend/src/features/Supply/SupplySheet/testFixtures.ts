@@ -75,6 +75,7 @@ export const dubMaterial: MaterialTarget = {
   id: 10,
   name: "Дуб",
   materialTypeName: "Пиломатериал",
+  materialTypeId: 1,
 };
 
 export const dubRow: MaterialCatalogRow = {

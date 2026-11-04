@@ -7,12 +7,22 @@ import type { SupplyFormValues } from "./supplyForm";
 
 const base: SupplyFormValues = {
   variantId: 100,
+  typeId: 1,
+  typeName: "Пиломатериал",
+  materialId: 10,
+  materialName: "Дуб",
+  variantName: "Доска 40 мм",
   unit: "meters",
   quantity: "8",
   price: "24000",
   supplierName: "Столярный двор",
   description: "",
   url: "",
+};
+
+const manualChain: Partial<SupplyFormValues> = {
+  variantId: null,
+  unit: null,
 };
 
 const parse = (patch: Partial<SupplyFormValues> = {}) =>
@@ -27,44 +37,125 @@ const errorsOf = (
   result.success ? {} : zod.flattenError(result.error).fieldErrors;
 
 describe("createSupplyFormSchema", () => {
-  it("returns the draft for a filled form", () => {
-    expect(parse().data).toEqual({
-      variantId: 100,
+  it("accepts an existing variant draft", () => {
+    const result = parse({
+      typeId: null,
+      typeName: "",
+      materialId: null,
+      materialName: "",
+      variantName: "",
+    });
+
+    expect(result.data?.target).toEqual({ kind: "existing", variantId: 100 });
+    expect(result.data?.purchasePrice).toBe(24000);
+    expect(result.data?.description).toBeUndefined();
+  });
+
+  it("accepts a manual chain draft", () => {
+    const result = parse({
+      ...manualChain,
+      typeId: null,
+      typeName: "Пиломатериал",
+      materialId: null,
+      materialName: "Ясень",
+      variantName: "Доска 40 мм",
       unit: "meters",
-      quantity: 8,
-      purchasePrice: 24000,
-      supplierName: "Столярный двор",
-      description: undefined,
-      url: undefined,
+    });
+
+    expect(result.data?.target).toEqual({
+      kind: "new",
+      typeId: undefined,
+      typeName: "Пиломатериал",
+      materialId: undefined,
+      materialName: "Ясень",
+      variantName: "Доска 40 мм",
+      unit: "meters",
     });
   });
 
-  it("trims the supplier and optional fields", () => {
+  it("keeps existing ids when the query picked type and material", () => {
     const result = parse({
-      supplierName: " Столярный двор ",
-      description: " осенняя партия ",
-      url: " https://example.com ",
+      ...manualChain,
+      variantName: "Доска 50 мм",
+      unit: "pieces",
     });
 
-    expect(result.data).toMatchObject({
-      supplierName: "Столярный двор",
-      description: "осенняя партия",
-      url: "https://example.com",
+    expect(result.data?.target).toMatchObject({
+      kind: "new",
+      typeId: 1,
+      materialId: 10,
+      unit: "pieces",
     });
   });
 
-  it("reports every missing value at once", () => {
+  it("reports the chain as one question when everything is empty", () => {
     const result = parse({
-      variantId: null,
-      unit: null,
+      ...manualChain,
+      typeName: "",
+      materialName: "",
+      variantName: "",
+    });
+
+    const errors = errorsOf(result);
+    expect(errors.variantId).toEqual(["Выберите материал"]);
+    expect(errors.typeName).toBeUndefined();
+    expect(errors.materialName).toBeUndefined();
+    expect(errors.variantName).toBeUndefined();
+    expect(errors.unit).toBeUndefined();
+  });
+
+  it("reports missing chain parts per field", () => {
+    const result = parse({
+      ...manualChain,
+      typeId: null,
+      typeName: "",
+      materialId: null,
+      materialName: "",
+      variantName: "Доска 40 мм",
+    });
+
+    const errors = errorsOf(result);
+    expect(errors.variantId).toEqual(["Выберите материал"]);
+    expect(errors.typeName).toEqual(["Укажите тип"]);
+    expect(errors.materialName).toEqual(["Укажите материал"]);
+    expect(errors.variantName).toBeUndefined();
+    expect(errors.unit).toEqual(["Укажите единицу"]);
+  });
+
+  it("treats typed names as new entities", () => {
+    const result = parse({
+      ...manualChain,
+      typeId: null,
+      typeName: "Дуб",
+      materialId: null,
+      materialName: "Ясень",
+      variantName: "Доска",
+      unit: "meters",
+    });
+
+    expect(result.data?.target).toMatchObject({
+      kind: "new",
+      typeId: undefined,
+      typeName: "Дуб",
+      materialId: undefined,
+      materialName: "Ясень",
+    });
+    expect(result.data?.target).toHaveProperty("variantName", "Доска");
+  });
+
+  it("reports every missing detail value at once", () => {
+    const result = parse({
+      ...manualChain,
+      typeName: "Пиломатериал",
+      materialName: "Ясень",
+      variantName: "Доска 40 мм",
+      unit: "meters",
       quantity: "",
       price: "",
       supplierName: "   ",
     });
 
     expect(errorsOf(result)).toEqual({
-      variantId: ["Выберите материал"],
-      unit: ["Выберите материал"],
       quantity: ["Укажите количество"],
       price: ["Укажите цену закупки"],
       supplierName: ["Укажите поставщика"],

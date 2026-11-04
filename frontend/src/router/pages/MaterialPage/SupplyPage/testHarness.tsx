@@ -8,6 +8,8 @@ import { stubRoutes } from "@/test/apiStub.vitest";
 
 import SupplyPage from "./index";
 
+export { stubEmptySupplyPageApi } from "@/features/Supply/testFixtures";
+
 export const stubPageApi = () => stubRoutes(supplyPageRoutes);
 
 export const renderPage = async () => {

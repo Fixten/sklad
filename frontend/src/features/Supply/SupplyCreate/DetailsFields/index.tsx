@@ -3,7 +3,8 @@ import {
   type UnitCostPreview,
 } from "@/features/Supply/supplyFormRules";
 import { UnitShortLabels, type Unit } from "@/features/units";
-import { FieldGroup, FormInputField } from "@ui/InputField";
+import { FormInputField } from "@ui/InputField";
+import { FieldGroup } from "@ui/InputFieldGroup";
 import Typography from "@ui/Typography";
 
 import type { SupplyDraft, SupplyFormValues } from "../supplyForm";

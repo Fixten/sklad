@@ -1,7 +1,9 @@
 import { expect, test } from "vitest";
 import { render } from "vitest-browser-react";
 
-import { InputField, FieldGroup } from "./index";
+import { FieldGroup } from "@ui/InputFieldGroup";
+
+import { InputField } from "./index";
 
 import type { ReactElement } from "react";
 

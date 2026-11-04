@@ -1,4 +1,6 @@
-import { InputField, FieldGroup } from "./index";
+import { FieldGroup } from "@ui/InputFieldGroup";
+
+import { InputField } from "./index";
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 

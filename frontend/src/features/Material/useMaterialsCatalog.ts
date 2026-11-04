@@ -9,6 +9,7 @@ export interface MaterialTarget {
   id: number;
   name: string;
   materialTypeName: string;
+  materialTypeId: number;
 }
 
 export interface MaterialCatalogRow {
@@ -31,22 +32,15 @@ export function buildMaterialCatalogRow(
       id: material.id,
       name: material.name,
       materialTypeName: typeName,
+      materialTypeId: material.material_type_id,
     },
   };
 }
 
 export default function useMaterialsCatalog() {
-  const material = useMaterial();
-  const variant = useVariant();
-  const materialType = useMaterialType();
-
-  const types = (materialType.query.data ?? []).filter(
-    (row) => !row.deleted_at,
-  );
-  const materials = (material.query.data ?? []).filter(
-    (row) => !row.deleted_at,
-  );
-  const variants = (variant.query.data ?? []).filter((row) => !row.deleted_at);
+  const { materials, query: materialQuery } = useMaterial();
+  const { variants, query: variantQuery } = useVariant();
+  const { types, query: typeQuery } = useMaterialType();
 
   const typeNames = new Map(types.map((type) => [type.id, type.name]));
   const materialById = new Map(
@@ -69,10 +63,7 @@ export default function useMaterialsCatalog() {
 
   return {
     rows,
-    types,
     isLoading:
-      material.query.isLoading ||
-      variant.query.isLoading ||
-      materialType.query.isLoading,
+      materialQuery.isLoading || variantQuery.isLoading || typeQuery.isLoading,
   };
 }

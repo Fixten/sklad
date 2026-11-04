@@ -32,8 +32,11 @@ export default function useMaterial() {
     mutationFn: api.restore,
     onSuccess: () => query.refetch(),
   });
+  const materials = (query.data ?? []).filter((row) => !row.deleted_at);
+
   return {
     query,
+    materials,
     addMutation,
     updateMutation,
     removeMutation,

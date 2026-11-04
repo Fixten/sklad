@@ -51,9 +51,31 @@ export const supplyPageRoutes = {
   },
 } satisfies Routes;
 
+export const supplyPageEmptyRoutes = {
+  "/api/material-type": {
+    get: () => [],
+  },
+  "/api/material": {
+    get: () => [],
+  },
+  "/api/material-variant": {
+    get: () => [],
+  },
+} satisfies Routes;
+
 export const stubSupplyPageApi = () => {
   const originalFetch = window.fetch.bind(window);
   const { fetch } = createApiStub(supplyPageRoutes);
+  window.fetch = fetch;
+
+  return () => {
+    window.fetch = originalFetch;
+  };
+};
+
+export const stubEmptySupplyPageApi = () => {
+  const originalFetch = window.fetch.bind(window);
+  const { fetch } = createApiStub(supplyPageEmptyRoutes);
   window.fetch = fetch;
 
   return () => {

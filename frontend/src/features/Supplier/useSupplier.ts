@@ -33,8 +33,11 @@ export default function useSupplier() {
     mutationFn: api.restore,
     onSuccess: () => query.refetch(),
   });
+  const suppliers = (query.data ?? []).filter((row) => !row.deleted_at);
+
   return {
     query,
+    suppliers,
     addMutation,
     updateMutation,
     removeMutation,

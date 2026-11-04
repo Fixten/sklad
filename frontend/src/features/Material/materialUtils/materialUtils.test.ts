@@ -16,12 +16,14 @@ const oak: MaterialTarget = {
   id: 10,
   name: "Дуб",
   materialTypeName: "Пиломатериал",
+  materialTypeId: 1,
 };
 
 const plywood: MaterialTarget = {
   id: 11,
   name: "Фанера",
   materialTypeName: "Листовой",
+  materialTypeId: 2,
 };
 
 const rows: MaterialCatalogRow[] = [
@@ -105,7 +107,12 @@ describe("material labels", () => {
   });
 
   it("falls back to the material name when the type is unknown", () => {
-    const material = { id: 12, name: "Клён", materialTypeName: "" };
+    const material = {
+      id: 12,
+      name: "Клён",
+      materialTypeName: "",
+      materialTypeId: 0,
+    };
 
     expect(materialPath(material)).toBe("Клён");
     expect(materialTitle(material)).toBe("Клён");

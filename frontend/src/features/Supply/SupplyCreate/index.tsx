@@ -1,27 +1,28 @@
 import { materialPath } from "@/features/Material/materialUtils/materiaUtils";
+import useMaterial from "@/features/Material/useMaterial";
+import useMaterialType from "@/features/MaterialType/useMaterialType";
 import { unitCostPreview } from "@/features/Supply/supplyFormRules";
 import { Button } from "@ui/Button";
 import { Form, FormField } from "@ui/Form";
 import OptionPicker from "@ui/OptionPicker";
 
 import DetailsFields from "./DetailsFields";
+import TargetPickers from "./TargetPickers";
 import { useMaterialSearch } from "./useMaterialSearch";
 import { useSupplyForm } from "./useSupplyForm";
 
 import type { MaterialCatalogRow } from "@/features/Material/useMaterialsCatalog";
 
-const createTarget = {
-  createLabel: "Создать",
-  onCreate: () => undefined,
-};
-
 export default function SupplyCreate() {
   const material = useMaterialSearch();
-  const { form, quantity, price, submit, setTarget, clearTarget } =
+  const { materials } = useMaterial();
+  const { types } = useMaterialType();
+  const { form, quantity, price, unit, submit, setTarget, clearQueryTarget } =
     useSupplyForm();
   const { control } = form;
-  const unit = material.selected?.unit;
-  const unitCost = unit && unitCostPreview({ quantity, price }, unit);
+  const unitCost = unit
+    ? unitCostPreview({ quantity, price }, unit)
+    : undefined;
   const hasQuery = material.query.trim().length > 0;
   const materialLoading = hasQuery && !material.selected && material.isLoading;
   const materialOptions = material.results.map((row) => ({
@@ -33,13 +34,13 @@ export default function SupplyCreate() {
 
   const handleQueryChange = (value: string) => {
     if (material.selected) {
-      clearTarget();
+      clearQueryTarget();
     }
     material.changeQuery(value);
   };
 
   const handleSelect = (row: MaterialCatalogRow) => {
-    setTarget({ variantId: row.variantId, unit: row.unit });
+    setTarget(row);
     material.select(row);
   };
 
@@ -53,7 +54,7 @@ export default function SupplyCreate() {
             id="supply-material"
             name={field.name}
             inputRef={field.ref}
-            label="Материал"
+            label="Поиск"
             placeholder="Название, тип или вариант"
             value={material.query}
             autoFocus
@@ -64,15 +65,20 @@ export default function SupplyCreate() {
             onValueChange={handleQueryChange}
             onSelect={handleSelect}
             onBlur={field.onBlur}
-            create={createTarget}
           />
         )}
       />
 
-      <DetailsFields control={control} unit={unit} unitCost={unitCost} />
+      <TargetPickers types={types} materials={materials} />
+
+      <DetailsFields
+        control={control}
+        unit={unit ?? undefined}
+        unitCost={unitCost}
+      />
 
       <Button type="submit" className="self-end">
-        Записать поставку
+        Сохранить
       </Button>
     </Form>
   );

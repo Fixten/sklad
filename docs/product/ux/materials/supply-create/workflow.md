@@ -21,10 +21,16 @@ variant and its missing type/material, on one flat page.
   variants: variant name, `type · material`, current stock. A selected variant stays in the editable
   field, with no hint line beneath it. There is no summary card and no «Изменить» reveal.
 - **One form, one submit.** No wizard, sheet, dialog, step counter or nested form.
-- **Creation is a mode of the target field**, not a separate form. Existing type/material inferred
-  from the query are shown as context; only missing levels are editable.
-- **One submit creates only the missing chain**, then the Supply. If the Supply save fails after the
-  chain was created, the new variant stays selected and the save can be retried.
+- **Search OR chain — one unified target.** The query field finds an existing variant and is not
+  part of the form. Four target pickers are part of the form and always editable: type (existing
+  or new), material (per chosen existing type, or new), variant (free text), unit. No creation
+  mode, no seeding from the query, no disabling, no labels that change per state.
+- **One target at a time.** Selecting a variant in the query fills the pickers; editing any
+  picker clears the query selection and starts a manual chain — and the reverse. Inputs are
+  never disabled; exclusivity lives in state.
+- **One submit creates only the missing chain**, then the Supply. If the Supply save fails after
+  the chain was created, the new variant stays and the save can be retried.
+- **The submit is always «Сохранить».**
 - **Supplier stays a plain text input** with suggestions. No custom supplier picker.
 - **No hint lines.** The target, quantity, price and supplier fields carry no description under
   them. Units sit at the end of the quantity and price fields.
@@ -40,32 +46,32 @@ variant and its missing type/material, on one flat page.
 
 ### Target field
 
-1. The field is the first thing on the page and is always editable. When nothing is selected it
-   shows the placeholder «Название, тип или вариант»; when something is selected it holds the
-   variant name.
+1. The field is the first thing on the page and is always editable. The quiet label is «Поиск»;
+   when nothing is selected the field shows the placeholder «Название, тип или вариант»; when
+   something is selected it holds the variant name.
 2. Typing filters variants by variant, material and type. Results are inline under the field, in a
    capped scrollable list. Each row: variant, type · material, stock, unit.
 3. Selecting a result keeps the variant in the field. There is no path, stock or unit hint beneath
    it; editing the field starts a new search, and there is no «Изменить» button.
-4. The result list always starts with «Создать», even before typing and alongside matches. Selecting
-   it opens the creation mode; the query seeds the variant name.
+4. There is no create row. Creating a missing variant goes through the target pickers below.
 
-### Creating a missing variant
+### Target pickers (part of the form)
 
-The creation mode is part of the same supply form. It shows the path as context and asks only for
-what is missing:
+Always present, never disabled, one group under the query field:
 
-| Case                            | Shown as context | Editable            |
-| ------------------------------- | ---------------- | ------------------- |
-| Type and material exist         | type · material  | variant, unit       |
-| Type exists, material missing   | type             | material, variant, unit |
-| Nothing exists                  | —                | type, material, variant, unit |
+| Field    | Control                                                |
+| -------- | ------------------------------------------------------ |
+| Тип      | existing types as options, or a new name typed inline  |
+| Материал | options = materials of an existing chosen type; a create row adds a new material under it; new type or no type yet → free text |
+| Вариант  | free text                                              |
+| Единица  | pieces / meters select                                 |
 
-- The query seeds the variant name; matching type/material names seed the context.
-- Context is shown as a read-only path segment the user can change; changing it clears the levels
-  below it.
-- «Отмена» returns to search without losing quantity, price, supplier or optional fields.
-- The primary action becomes «Создать и записать».
+- Nothing is pre-filled: entering the page the fields are empty; the user states the chain.
+- Selecting an existing variant in the query fills the four pickers with its chain; editing any
+  picker there clears the query selection and the manual values replace it.
+- The supply details' unit follows the target: the picked variant's unit, or the unit chosen for a
+  new variant.
+- All fields carry no descriptions; validation reports at the field level on submit.
 
 ### Details
 
@@ -76,8 +82,9 @@ what is missing:
 
 ### Save
 
-- Existing variant: creates the Supply.
-- New variant chain: creates only the missing type/material/variant, then the Supply.
+- Existing variant (from the query): creates the Supply.
+- Manual chain: creates only the missing type/material/variant, then the Supply.
+- The submit is always labeled «Сохранить».
 - Success returns to Materials, the stock updates, and a short confirmation appears.
 - A failure keeps every field and shows one message next to the actions; field errors stay under
   their fields.
@@ -85,11 +92,10 @@ what is missing:
 ## States
 
 - Catalog loading: a spinner at the end of the target field.
-- No materials: the creation mode can start with empty type/material.
-- No types: the creation mode starts at a new type.
-- No search results: the create row is the only result; there is no empty hint.
-- The create row is always present while the picker is open, including before typing and alongside
-  matches.
+- No materials: the target pickers start empty; material stays free text until a type exists.
+- No types: the type field is free text from the start.
+- No search results: the result list is empty with no hint; the target pickers are the creation
+  path.
 - Saving: the primary action shows its pending verb and stays available.
 - API failure: message above the actions, inputs preserved.
 - Empty optional fields: no empty rows, no invented values.
@@ -120,11 +126,13 @@ Project stage 1 is implemented in `frontend/src/router/pages/MaterialPage/Supply
 `frontend/src/features/Supply/SupplyCreate/`.
 
 - Route `/material/supply`; the Materials palette action navigates there.
-- The material field is the first control and uses the shared `OptionPicker` for inline results;
-  catalog loading is a spinner at the end of the field, and the create row is always present.
+- The search field is the first control and uses the shared `OptionPicker` for inline results;
+  catalog loading is a spinner at the end of the field.
 - Quantity, price, supplier, description and URL are one form, validated with the reusable
   quantity/price rules.
-- Submit stops at a stage status; it does not create a Supply yet.
+- Submit stops at a stage status; it does not create a Supply yet (stage 3).
 - The old `SupplySheet` and wizard are unreachable from the app but remain until the final purge.
-- The create row is always visible; its creation mode is the next project stage.
-- Missing variant/type/material creation and the real save are the next project stages.
+- Stage 2 is the unified target: the query keeps searching existing variants without a create row,
+  and the four target pickers (type, material, variant, unit) join the form — always editable,
+  mutually exclusive with the query selection by state, never disabled. The submit label becomes
+  «Сохранить». Missing-chain creation services and the real save are the next project stages.

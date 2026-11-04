@@ -8,14 +8,23 @@ import {
   type SupplyStep,
 } from "./supplySteps";
 
+import type { MaterialCatalogRow } from "@/features/Material/useMaterialsCatalog";
+
+const detailsRow: MaterialCatalogRow = {
+  variantId: 100,
+  variantName: "Доска 40 мм",
+  unit: "meters",
+  material: {
+    id: 10,
+    name: "Дуб",
+    materialTypeName: "Пиломатериал",
+    materialTypeId: 1,
+  },
+};
+
 const detailsStep: SupplyStep = {
   kind: SupplyStepKind.Details,
-  row: {
-    variantId: 100,
-    variantName: "Доска 40 мм",
-    unit: "meters",
-    material: { id: 10, name: "Дуб", materialTypeName: "Пиломатериал" },
-  },
+  row: detailsRow,
 };
 
 describe("supply flow", () => {
@@ -28,7 +37,7 @@ describe("supply flow", () => {
     expect(
       supplyBackStep({
         kind: SupplyStepKind.Variant,
-        material: detailsStep.row.material,
+        material: detailsRow.material,
       }),
     ).toEqual(supplyInitialStep);
     expect(supplyBackStep(supplyInitialStep)).toBeNull();
@@ -39,7 +48,7 @@ describe("supply flow", () => {
     expect(
       stepLabel({
         kind: SupplyStepKind.Variant,
-        material: detailsStep.row.material,
+        material: detailsRow.material,
       }),
     ).toBe("01 / 02");
     expect(stepLabel({ kind: SupplyStepKind.Material })).toBe("01 / 02");

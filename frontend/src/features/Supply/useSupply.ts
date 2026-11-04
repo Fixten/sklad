@@ -44,8 +44,11 @@ export default function useSupply() {
     mutationFn: api.restore,
     onSuccess: invalidateStock,
   });
+  const supplies = (query.data ?? []).filter((row) => !row.deleted_at);
+
   return {
     query,
+    supplies,
     addMutation,
     updateMutation,
     removeMutation,

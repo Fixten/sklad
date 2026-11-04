@@ -11,19 +11,15 @@ import type { MaterialDraft } from "./materialDraft";
 export function useMaterialStep() {
   const wizard = supplyWizard.useWizard();
   const material = useMaterial();
-  const materialType = useMaterialType();
+  const { types, addMutation: addTypeMutation } = useMaterialType();
   const variant = useVariant();
-
-  const types = (materialType.query.data ?? []).filter(
-    (row) => !row.deleted_at,
-  );
 
   const create = async (draft: MaterialDraft) => {
     await wizard.advance(
       async () => {
         const typeId =
           draft.type.kind === "new"
-            ? (await materialType.addMutation.mutateAsync(draft.type.name)).id
+            ? (await addTypeMutation.mutateAsync(draft.type.name)).id
             : draft.type.id;
         const createdMaterial = await material.addMutation.mutateAsync({
           name: draft.materialName,

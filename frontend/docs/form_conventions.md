@@ -15,11 +15,17 @@ General project rules only. Feature schemas, fields, and tests define feature-sp
 
 - Standalone controls stay usable without RHF. Export their connected counterpart beside them.
 - Connected controls accept an explicit `control={form.control}` so field names stay type-safe.
+- Composite form sections read the form through RHF context
+  (`useFormContext<Values, Context, Draft>()`) instead of receiving the full `form` instance as a
+  prop; only isolated, reusable controls keep taking `control`.
 - A connected control maps `value`, `onChange`, `onBlur`, `name`, and `ref`, composes caller
   handlers, and forwards field errors.
 - Composite values that cannot use a native input contract use `FormField`.
+- Group fields with the Field wrappers, never with bare layout `<div>`s: a labelled group uses
+  `@ui/InputFieldGroup`, an unlabelled group uses `FieldGroup` from `@ui/InputFieldGroup` — the
+  layout (grid/columns) belongs in its `className`, which `cn()` resolves against the wrapper
+  defaults.
 - A labelled group of fields uses `@ui/InputFieldGroup`; it composes `FieldSet`, `FieldLegend` and
-  `FieldGroup`. Unlabelled stacking can use `FieldGroup` directly.
 - A new control without a connected form version is incomplete.
 
 ## Form modules

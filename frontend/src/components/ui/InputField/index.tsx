@@ -5,7 +5,6 @@ import {
   Field as BaseField,
   FieldDescription,
   FieldError,
-  FieldGroup,
   FieldLabel,
 } from "@base/field";
 import {
@@ -167,5 +166,5 @@ function FormInputField<
 }
 
 export default InputField;
-export { FieldGroup, FormInputField, InputField };
+export { FormInputField, InputField };
 export type { FormInputFieldProps, InputFieldProps };

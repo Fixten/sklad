@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { screen, userEvent } from "storybook/test";
 
 import {
+  stubEmptySupplyPageApi,
   stubPendingSupplyPageApi,
   stubSupplyPageApi,
 } from "@/features/Supply/testFixtures";
@@ -15,17 +16,10 @@ const queryClient = new QueryClient({
 });
 
 const selectDoska = async () => {
-  await userEvent.type(await screen.findByLabelText("Материал"), "Дуб");
+  await userEvent.type(await screen.findByLabelText("Поиск"), "Дуб");
   await userEvent.click(
     await screen.findByRole("option", { name: /Доска 40 мм/ }),
   );
-};
-
-const fillDetails = async () => {
-  await selectDoska();
-  await userEvent.type(screen.getByLabelText("Количество"), "8");
-  await userEvent.type(screen.getByLabelText("Цена закупки, всего"), "24000");
-  await userEvent.type(screen.getByLabelText("Поставщик"), "Столярный двор");
 };
 
 const meta = {
@@ -51,16 +45,26 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
+export const ManualDraft: Story = {
+  play: async () => {
+    await userEvent.type(await screen.findByLabelText("Тип"), "Ясень");
+    await userEvent.type(screen.getByLabelText("Материал"), "Ясень 40");
+    await userEvent.type(screen.getByLabelText("Вариант"), "Доска 40 мм");
+    await userEvent.click(screen.getByRole("combobox", { name: "Единица" }));
+    await userEvent.click(await screen.findByRole("option", { name: "штука" }));
+  },
+};
+
 export const Loading: Story = {
   beforeEach: () => stubPendingSupplyPageApi(),
   play: async () => {
-    await userEvent.type(await screen.findByLabelText("Материал"), "Дуб");
+    await userEvent.type(await screen.findByLabelText("Поиск"), "Дуб");
   },
 };
 
 export const Search: Story = {
   play: async () => {
-    await userEvent.type(await screen.findByLabelText("Материал"), "Дуб");
+    await userEvent.type(await screen.findByLabelText("Поиск"), "Дуб");
   },
 };
 
@@ -70,22 +74,18 @@ export const Selected: Story = {
   },
 };
 
-export const Filled: Story = {
-  play: async () => {
-    await fillDetails();
-  },
-};
-
 export const Validation: Story = {
   play: async () => {
-    await userEvent.click(
-      screen.getByRole("button", { name: "Записать поставку" }),
-    );
+    await userEvent.click(screen.getByRole("button", { name: "Сохранить" }));
   },
 };
 
 export const NoResults: Story = {
   play: async () => {
-    await userEvent.type(await screen.findByLabelText("Материал"), "Клён");
+    await userEvent.type(await screen.findByLabelText("Поиск"), "Клён");
   },
+};
+
+export const Empty: Story = {
+  beforeEach: () => stubEmptySupplyPageApi(),
 };

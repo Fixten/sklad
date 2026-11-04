@@ -1,10 +1,10 @@
 import { expect, test } from "vitest";
 import { userEvent } from "vitest/browser";
 
-import { renderPage, stubPageApi } from "./testHarness";
+import { stubEmptySupplyPageApi, stubPageApi, renderPage } from "./testHarness";
 
 const selectDoska = async (screen: Awaited<ReturnType<typeof renderPage>>) => {
-  await screen.getByLabelText("Материал").fill("Дуб");
+  await screen.getByLabelText("Поиск").fill("Дуб");
   await screen.getByRole("option", { name: /Доска 40 мм/ }).click();
 };
 
@@ -15,30 +15,18 @@ test("renders the flat supply page without a dialog", async () => {
   await expect
     .element(screen.getByRole("heading", { name: "Поставка" }))
     .toBeInTheDocument();
-  await expect.element(screen.getByLabelText("Материал")).toBeInTheDocument();
+  await expect.element(screen.getByLabelText("Поиск")).toBeInTheDocument();
   await expect.element(screen.getByRole("dialog")).not.toBeInTheDocument();
-});
-
-test("offers create immediately", async () => {
-  stubPageApi();
-  const screen = await renderPage();
-
-  await expect
-    .element(screen.getByRole("option", { name: "Создать" }))
-    .toBeInTheDocument();
 });
 
 test("searches variants inline and selects one", async () => {
   stubPageApi();
   const screen = await renderPage();
 
-  await screen.getByLabelText("Материал").fill("Дуб");
+  await screen.getByLabelText("Поиск").fill("Дуб");
 
   await expect
     .element(screen.getByRole("listbox", { name: "Варианты" }))
-    .toBeInTheDocument();
-  await expect
-    .element(screen.getByRole("option", { name: "Создать" }))
     .toBeInTheDocument();
   await expect
     .element(screen.getByRole("option", { name: /Доска 40 мм/ }))
@@ -53,7 +41,7 @@ test("searches variants inline and selects one", async () => {
   await screen.getByRole("option", { name: /Доска 40 мм/ }).click();
 
   await expect
-    .element(screen.getByLabelText("Материал"))
+    .element(screen.getByLabelText("Поиск"))
     .toHaveValue("Доска 40 мм");
   await expect.element(screen.getByRole("listbox")).not.toBeInTheDocument();
 });
@@ -63,7 +51,7 @@ test("starts a new search when the selected field is edited", async () => {
   const screen = await renderPage();
 
   await selectDoska(screen);
-  await screen.getByLabelText("Материал").fill("Брусок");
+  await screen.getByLabelText("Поиск").fill("Брусок");
 
   await expect
     .element(screen.getByRole("listbox", { name: "Варианты" }))
@@ -85,16 +73,100 @@ test("shows the unit cost for the selected variant", async () => {
   await expect.element(screen.getByText("625 ₽ / м")).toBeInTheDocument();
 });
 
+test("fills the target pickers from the search selection", async () => {
+  stubPageApi();
+  const screen = await renderPage();
+
+  await selectDoska(screen);
+
+  await expect
+    .element(screen.getByLabelText("Тип"))
+    .toHaveValue("Пиломатериал");
+  await expect.element(screen.getByLabelText("Материал")).toHaveValue("Дуб");
+  await expect
+    .element(screen.getByLabelText("Вариант"))
+    .toHaveValue("Доска 40 мм");
+  await expect.element(screen.getByText("метр")).toBeInTheDocument();
+});
+
+test("shows the linked material in the manual picker after a selection", async () => {
+  stubPageApi();
+  const screen = await renderPage();
+
+  await selectDoska(screen);
+  await screen.getByLabelText("Материал").click();
+
+  await expect
+    .element(screen.getByRole("option", { name: /Дуб/ }))
+    .toBeInTheDocument();
+});
+
+test("keeps the query selection only while the query holds it", async () => {
+  stubPageApi();
+  const screen = await renderPage();
+
+  await selectDoska(screen);
+  await screen.getByLabelText("Поиск").fill("");
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  await expect
+    .element(screen.getByText("Выберите материал"))
+    .not.toBeInTheDocument();
+  await expect
+    .element(screen.getByLabelText("Тип"))
+    .toHaveValue("Пиломатериал");
+  await expect.element(screen.getByLabelText("Материал")).toHaveValue("Дуб");
+});
+
+test("starts a manual chain when a picker is edited after a selection", async () => {
+  stubPageApi();
+  const screen = await renderPage();
+
+  await selectDoska(screen);
+  await screen.getByLabelText("Вариант").fill("Доска 50 мм");
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  await expect
+    .element(screen.getByText("Выберите материал"))
+    .not.toBeInTheDocument();
+  await expect
+    .element(screen.getByLabelText("Тип"))
+    .toHaveValue("Пиломатериал");
+  await expect.element(screen.getByLabelText("Материал")).toHaveValue("Дуб");
+});
+
+test("keeps the unit as the manual chain's unit after the selection is cleared", async () => {
+  stubPageApi();
+  const screen = await renderPage();
+
+  await selectDoska(screen);
+  await screen.getByLabelText("Вариант").fill("Доска 50 мм");
+
+  await expect.element(screen.getByText("метр")).toBeInTheDocument();
+  await expect.element(screen.getByText("м")).toBeInTheDocument();
+});
+
+test("keeps the target pickers usable with an empty catalog", async () => {
+  stubEmptySupplyPageApi();
+  const screen = await renderPage();
+
+  await screen.getByLabelText("Тип").fill("Ясень");
+  await screen.getByLabelText("Материал").fill("Ясень 40");
+
+  await expect.element(screen.getByLabelText("Тип")).toHaveValue("Ясень");
+  await expect
+    .element(screen.getByLabelText("Материал"))
+    .not.toHaveAttribute("role", "combobox");
+});
+
 test("reports missing values on submit", async () => {
   stubPageApi();
   const screen = await renderPage();
 
-  await screen.getByRole("button", { name: "Записать поставку" }).click();
+  await screen.getByRole("button", { name: "Сохранить" }).click();
 
-  await expect
-    .element(screen.getByText("Выберите материал"))
-    .toBeInTheDocument();
-  await expect.element(screen.getByLabelText("Материал")).toHaveFocus();
+  const variantError = screen.getByText("Выберите материал");
+  await expect.element(variantError).toBeInTheDocument();
   await expect
     .element(screen.getByText("Укажите количество"))
     .toBeInTheDocument();
@@ -104,17 +176,20 @@ test("reports missing values on submit", async () => {
   await expect
     .element(screen.getByText("Укажите поставщика"))
     .toBeInTheDocument();
+  await expect
+    .element(screen.getByText("Укажите единицу"))
+    .not.toBeInTheDocument();
 });
 
 test("submits the form on enter once the list is closed", async () => {
   stubPageApi();
   const screen = await renderPage();
 
-  await screen.getByLabelText("Материал").fill("Дуб");
+  await screen.getByLabelText("Поиск").fill("Дуб");
   await userEvent.keyboard("{Enter}");
 
   await expect
-    .element(screen.getByLabelText("Материал"))
+    .element(screen.getByLabelText("Поиск"))
     .toHaveValue("Доска 40 мм");
   await expect.element(screen.getByRole("listbox")).not.toBeInTheDocument();
 
@@ -122,16 +197,5 @@ test("submits the form on enter once the list is closed", async () => {
 
   await expect
     .element(screen.getByText("Укажите количество"))
-    .toBeInTheDocument();
-});
-
-test("keeps create available when nothing matches", async () => {
-  stubPageApi();
-  const screen = await renderPage();
-
-  await screen.getByLabelText("Материал").fill("Клён");
-
-  await expect
-    .element(screen.getByRole("option", { name: "Создать" }))
     .toBeInTheDocument();
 });
