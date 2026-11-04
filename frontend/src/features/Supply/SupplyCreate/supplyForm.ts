@@ -5,11 +5,14 @@ import { UnitSchema, type Unit } from "@/features/units";
 import { parseAmount } from "@/lib/amount";
 
 export interface SupplyFormValues {
-  variantId: number | null;
+  typeQuery: string;
   typeId: number | null;
   typeName: string;
+  materialQuery: string;
   materialId: number | null;
   materialName: string;
+  variantQuery: string;
+  variantId: number | null;
   variantName: string;
   unit: Unit | null;
   quantity: string;
@@ -26,7 +29,7 @@ export type TargetDraft =
       typeId: number | undefined;
       typeName: string | undefined;
       materialId: number | undefined;
-      materialName: string;
+      materialName: string | undefined;
       variantName: string;
       unit: Unit;
     };
@@ -41,11 +44,14 @@ export interface SupplyDraft {
 }
 
 export const supplyFormDefaults = {
-  variantId: null,
+  typeQuery: "",
   typeId: null,
   typeName: "",
+  materialQuery: "",
   materialId: null,
   materialName: "",
+  variantQuery: "",
+  variantId: null,
   variantName: "",
   unit: null,
   quantity: "",
@@ -65,14 +71,20 @@ const draftUnit = (unit: Unit | null): Unit => {
   return unit;
 };
 
+const isCommitted = (id: number | null, name: string) =>
+  id !== null || name.trim().length > 0;
+
 export const createSupplyFormSchema = () =>
   zod
     .object({
-      variantId: zod.number().int().nullable(),
+      typeQuery: zod.string(),
       typeId: zod.number().int().nullable(),
       typeName: zod.string().trim(),
+      materialQuery: zod.string(),
       materialId: zod.number().int().nullable(),
       materialName: zod.string().trim(),
+      variantQuery: zod.string(),
+      variantId: zod.number().int().nullable(),
       variantName: zod.string().trim(),
       unit: UnitSchema.nullable(),
       quantity: zod
@@ -88,75 +100,33 @@ export const createSupplyFormSchema = () =>
       url: zod.string().trim(),
     })
     .superRefine((values, context) => {
-      if (values.variantId !== null) {
-        if (values.unit === null) {
-          context.addIssue({
-            code: "custom",
-            path: ["unit"],
-            message: "Выберите материал",
-          });
-        }
-      } else {
-        const chainEmpty =
-          !values.typeName.trim() &&
-          !values.materialName.trim() &&
-          !values.variantName.trim() &&
-          values.unit === null;
-
-        if (chainEmpty) {
-          context.addIssue({
-            code: "custom",
-            path: ["variantId"],
-            message: "Выберите материал",
-          });
-        } else {
-          const missingType = values.typeId === null && !values.typeName.trim();
-          const missingMaterial =
-            values.materialId === null && !values.materialName.trim();
-          const missingVariantName = !values.variantName.trim();
-          const missingUnit = values.unit === null;
-
-          if (
-            missingType ||
-            missingMaterial ||
-            missingVariantName ||
-            missingUnit
-          ) {
-            context.addIssue({
-              code: "custom",
-              path: ["variantId"],
-              message: "Выберите материал",
-            });
-          }
-          if (missingType) {
-            context.addIssue({
-              code: "custom",
-              path: ["typeName"],
-              message: "Укажите тип",
-            });
-          }
-          if (missingMaterial) {
-            context.addIssue({
-              code: "custom",
-              path: ["materialName"],
-              message: "Укажите материал",
-            });
-          }
-          if (missingVariantName) {
-            context.addIssue({
-              code: "custom",
-              path: ["variantName"],
-              message: "Укажите вариант",
-            });
-          }
-          if (missingUnit) {
-            context.addIssue({
-              code: "custom",
-              path: ["unit"],
-              message: "Укажите единицу",
-            });
-          }
-        }
+      if (!isCommitted(values.typeId, values.typeName)) {
+        context.addIssue({
+          code: "custom",
+          path: ["typeName"],
+          message: "Выберите или создайте тип",
+        });
+      }
+      if (!isCommitted(values.materialId, values.materialName)) {
+        context.addIssue({
+          code: "custom",
+          path: ["materialName"],
+          message: "Выберите или создайте материал",
+        });
+      }
+      if (!isCommitted(values.variantId, values.variantName)) {
+        context.addIssue({
+          code: "custom",
+          path: ["variantName"],
+          message: "Выберите или создайте вариант",
+        });
+      }
+      if (values.unit === null) {
+        context.addIssue({
+          code: "custom",
+          path: ["unit"],
+          message: "Выберите единицу",
+        });
       }
 
       if (
@@ -188,7 +158,7 @@ export const createSupplyFormSchema = () =>
               typeId: values.typeId ?? undefined,
               typeName: values.typeName || undefined,
               materialId: values.materialId ?? undefined,
-              materialName: values.materialName,
+              materialName: values.materialName || undefined,
               variantName: values.variantName,
               unit: draftUnit(values.unit),
             },

@@ -111,7 +111,7 @@ test("keeps the linked material when the type is re-picked", async () => {
   await screen.getByRole("button", { name: "Сохранить" }).click();
 
   await expect
-    .element(screen.getByText("Укажите материал"))
+    .element(screen.getByText("Выберите или создайте материал"))
     .not.toBeInTheDocument();
 });
 
@@ -122,12 +122,16 @@ test("revalidates picker fields after a failed submit", async () => {
   });
 
   await screen.getByRole("button", { name: "Сохранить" }).click();
-  await expect.element(screen.getByText("Укажите тип")).toBeInTheDocument();
+  await expect
+    .element(screen.getByText("Выберите или создайте тип"))
+    .toBeInTheDocument();
 
   await screen.getByLabelText("Тип").click();
   await screen.getByRole("option", { name: "Пиломатериал" }).click();
 
-  await expect.element(screen.getByText("Укажите тип")).not.toBeInTheDocument();
+  await expect
+    .element(screen.getByText("Выберите или создайте тип"))
+    .not.toBeInTheDocument();
 });
 
 test("keeps material free text when the type is new", async () => {
@@ -149,9 +153,11 @@ test("reports missing parts on validation", async () => {
   await screen.getByRole("option", { name: "штука" }).click();
   await screen.getByRole("button", { name: "Сохранить" }).click();
 
-  await expect.element(screen.getByText("Укажите тип")).toBeInTheDocument();
   await expect
-    .element(screen.getByText("Укажите материал"))
+    .element(screen.getByText("Выберите или создайте тип"))
+    .toBeInTheDocument();
+  await expect
+    .element(screen.getByText("Выберите или создайте материал"))
     .toBeInTheDocument();
 });
 
@@ -170,6 +176,6 @@ test("clears the query selection when a picker changes", async () => {
   await screen.getByRole("button", { name: "Сохранить" }).click();
 
   await expect
-    .element(screen.getByText("Выберите материал"))
+    .element(screen.getByText(/Выберите или создайте/))
     .not.toBeInTheDocument();
 });

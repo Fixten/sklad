@@ -165,7 +165,7 @@ test("reports missing values on submit", async () => {
 
   await screen.getByRole("button", { name: "Сохранить" }).click();
 
-  const variantError = screen.getByText("Выберите материал");
+  const variantError = screen.getByText("Выберите или создайте вариант");
   await expect.element(variantError).toBeInTheDocument();
   await expect
     .element(screen.getByText("Укажите количество"))
@@ -177,8 +177,8 @@ test("reports missing values on submit", async () => {
     .element(screen.getByText("Укажите поставщика"))
     .toBeInTheDocument();
   await expect
-    .element(screen.getByText("Укажите единицу"))
-    .not.toBeInTheDocument();
+    .element(screen.getByText("Выберите единицу"))
+    .toBeInTheDocument();
 });
 
 test("submits the form on enter once the list is closed", async () => {
