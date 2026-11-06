@@ -1,7 +1,6 @@
 import { vi } from "vitest";
 
 import { createApiStub } from "./apiStub";
-
 import type { Routes } from "./apiStub";
 
 export { errorResponse, takeUnhandledRequests } from "./apiStub";

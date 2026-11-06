@@ -32,14 +32,13 @@ export default function PickStep() {
       id="supply-material"
       label="Материал"
       placeholder="Название, тип или вариант"
-      value={query}
+      query={query}
       autoFocus
-      onValueChange={setQuery}
+      onQueryChange={setQuery}
       onSelect={selectVariant}
       listLabel="Варианты"
-      results={matchedRows.map((row) => ({
-        key: String(row.variantId),
-        value: row,
+      options={matchedRows.map((row) => ({
+        value: row.variantId,
         label: row.variantName,
         meta: materialPath(row.material),
       }))}

@@ -1,3 +1,4 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
 
 import { Button } from "@ui/Button";
@@ -6,8 +7,6 @@ import SelectField from "@ui/SelectField";
 import Typography from "@ui/Typography";
 
 import Panel from "./index";
-
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   component: Panel,

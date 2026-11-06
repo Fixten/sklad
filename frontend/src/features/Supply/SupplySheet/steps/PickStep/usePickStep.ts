@@ -3,9 +3,7 @@ import {
   queryMaterialRowWithType,
   type CreationTarget,
 } from "@/features/Material/materialUtils/materiaUtils";
-import useMaterialsCatalog, {
-  type MaterialCatalogRow,
-} from "@/features/Material/useMaterialsCatalog";
+import useMaterialsCatalog from "@/features/Material/useMaterialsCatalog";
 
 import { SupplyStepKind } from "../../supplySteps";
 import { supplyWizard } from "../../supplyWizard";
@@ -22,7 +20,13 @@ export function usePickStep() {
   const matchedRows = queryMaterialRow(catalog.rows, query);
   const creation = queryMaterialRowWithType(catalog.rows, query);
 
-  const selectVariant = (row: MaterialCatalogRow) => {
+  const selectVariant = (variantId: number) => {
+    const row = matchedRows.find(
+      (candidate) => candidate.variantId === variantId,
+    );
+
+    if (!row) return;
+
     wizard.go({ kind: SupplyStepKind.Details, row });
   };
 

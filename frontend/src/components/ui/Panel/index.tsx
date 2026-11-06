@@ -1,6 +1,6 @@
-import Typography from "@ui/Typography";
-
 import type { ReactNode } from "react";
+
+import Typography from "@ui/Typography";
 
 interface Props {
   label: string;

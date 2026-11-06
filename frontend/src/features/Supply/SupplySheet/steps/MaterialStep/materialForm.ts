@@ -1,9 +1,9 @@
 import zod from "zod";
 
+import type { MaterialTypeModel } from "@/features/MaterialType/MaterialType.model";
 import { UnitSchema, type Unit } from "@/features/units";
 
 import type { MaterialDraft, MaterialTypeChoice } from "./materialDraft";
-import type { MaterialTypeModel } from "@/features/MaterialType/MaterialType.model";
 
 const NewTypeValue = "new-type";
 

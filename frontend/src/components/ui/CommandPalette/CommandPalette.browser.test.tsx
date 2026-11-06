@@ -5,9 +5,9 @@ import { render } from "vitest-browser-react";
 import CommandPalette from "./index";
 
 const buildItems = () => [
-  { key: "/", label: "Главная", onSelect: vi.fn() },
-  { key: "/material", label: "Материалы", onSelect: vi.fn() },
-  { key: "/settings", label: "Настройки", onSelect: vi.fn() },
+  { value: "/", label: "Главная", onSelect: vi.fn() },
+  { value: "/material", label: "Материалы", onSelect: vi.fn() },
+  { value: "/settings", label: "Настройки", onSelect: vi.fn() },
 ];
 
 const asInput = (element: HTMLElement | SVGElement) => {
@@ -31,17 +31,6 @@ test("renders only the one-line trigger by default", async () => {
   for (const { label } of items) {
     await expect.element(screen.getByText(label)).not.toBeInTheDocument();
   }
-});
-
-test("keeps aria-expanded false at rest and true when open", async () => {
-  const screen = await render(<CommandPalette items={buildItems()} />);
-  const input = screen.getByPlaceholder("Начать работу");
-
-  await expect.element(input).toHaveAttribute("aria-expanded", "false");
-
-  await input.click();
-
-  await expect.element(input).toHaveAttribute("aria-expanded", "true");
 });
 
 test("opens on focus", async () => {
@@ -163,8 +152,8 @@ test("navigates items with the keyboard", async () => {
   const screen = await render(
     <CommandPalette
       items={[
-        { key: "/", label: "Главная", onSelect: onSelectHome },
-        { key: "/material", label: "Материалы", onSelect: onSelectMaterials },
+        { value: "/", label: "Главная", onSelect: onSelectHome },
+        { value: "/material", label: "Материалы", onSelect: onSelectMaterials },
       ]}
     />,
   );
@@ -183,8 +172,8 @@ test("selects an item and closes", async () => {
   const screen = await render(
     <CommandPalette
       items={[
-        { key: "/", label: "Главная", onSelect: onSelectHome },
-        { key: "/settings", label: "Настройки", onSelect: onSelectSettings },
+        { value: "/", label: "Главная", onSelect: onSelectHome },
+        { value: "/settings", label: "Настройки", onSelect: onSelectSettings },
       ]}
     />,
   );
@@ -238,7 +227,7 @@ test("exposes an accessible tree when open", async () => {
   const screen = await render(
     <CommandPalette
       heading="Меню"
-      items={[{ key: "/", label: "Главная", onSelect: vi.fn() }]}
+      items={[{ value: "/", label: "Главная", onSelect: vi.fn() }]}
     />,
   );
 

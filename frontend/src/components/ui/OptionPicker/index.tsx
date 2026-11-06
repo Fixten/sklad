@@ -1,22 +1,27 @@
+import {
+  useState,
+  type ChangeEvent,
+  type ComponentProps,
+  type KeyboardEvent,
+  type Ref,
+} from "react";
+
+import { Command, CommandItem, CommandList } from "@base/command";
+import { useCommandMenu } from "@ui/CommandMenu";
 import { PlusIcon } from "@ui/Icon";
 import { InputField } from "@ui/InputField";
-import OptionList, {
-  listDomId,
-  type OptionItem,
-} from "@ui/OptionPicker/OptionList";
+import Typography from "@ui/Typography";
 
-import { useOptionPicker, type OptionPickerRow } from "./useOptionPicker";
-
-import type { ComponentProps, Ref } from "react";
-
-export interface OptionPickerItem<T> extends OptionItem {
+export interface OptionItem<T extends string | number> {
   value: T;
+  label: string;
+  meta?: string;
 }
 
-interface OptionPickerBaseProps<T> {
+interface Props<T extends string | number> {
   id: string;
   label: string;
-  value: string;
+  query: string;
   name?: string;
   placeholder?: string;
   hint?: string;
@@ -24,10 +29,10 @@ interface OptionPickerBaseProps<T> {
   loading?: boolean;
   autoFocus?: boolean;
   inputRef?: Ref<HTMLInputElement>;
-  onValueChange: (value: string) => void;
+  onQueryChange: (value: string) => void;
   onSelect: (value: T) => void;
   onBlur?: ComponentProps<"input">["onBlur"];
-  results: OptionPickerItem<T>[];
+  options: OptionItem<T>[];
   listLabel: string;
   create?: {
     createLabel: string;
@@ -35,13 +40,16 @@ interface OptionPickerBaseProps<T> {
   };
 }
 
-type OptionPickerProps<T> = OptionPickerBaseProps<T>;
+const rowClassName =
+  "h-12 cursor-pointer gap-3 px-4 data-selected:bg-muted data-selected:shadow-[inset_2px_0_0_0_var(--primary)] [&>svg:last-child]:hidden";
 
-export default function OptionPicker<T>(props: OptionPickerProps<T>) {
+export default function OptionPicker<T extends string | number>(
+  props: Props<T>,
+) {
   const {
     id,
     label,
-    value,
+    query,
     name,
     placeholder,
     hint,
@@ -49,88 +57,132 @@ export default function OptionPicker<T>(props: OptionPickerProps<T>) {
     loading,
     autoFocus,
     inputRef,
-    onValueChange,
+    onQueryChange,
     onSelect,
     onBlur,
-    results,
+    options,
     create,
     listLabel,
   } = props;
-  const listId = listDomId(id);
-
-  const resultRows: OptionPickerRow<T>[] = results.map((item) => ({
-    ...item,
-    kind: "result",
-    key: `result:${item.key}`,
-  }));
-
-  const rows = create
-    ? [
-        {
-          kind: "create",
-          key: "create",
-          label: create.createLabel,
-          icon: <PlusIcon />,
-        } as OptionPickerRow<T>,
-        ...resultRows,
-      ]
-    : resultRows;
-
-  const {
-    wrapperRef,
-    expanded,
-    activeKey,
-    activeDescendantId,
-    open,
-    activate,
-    select,
-    handleKeyDown,
-  } = useOptionPicker({
-    inputValue: value,
-    listId,
-    rows,
-    onSelect,
-    onCreate: create?.onCreate,
+  const { open, openList, close, wrapperRef, handleKeyDown } = useCommandMenu({
+    closeOnOutside: "click",
   });
+  const expanded = open && (options.length > 0 || Boolean(create));
+
+  const [firstOption] = options;
+  const [inputRow, setInputRow] = useState("");
+  const [appliedQuery, setAppliedQuery] = useState(query);
+  if (query !== appliedQuery) {
+    setAppliedQuery(query);
+    setInputRow("");
+  }
+  const rowValues = new Set(options.map((option) => String(option.value)));
+  if (create) rowValues.add("create");
+  const defaultRow =
+    firstOption !== undefined
+      ? String(firstOption.value)
+      : create
+        ? "create"
+        : "";
+  const activeRow = rowValues.has(inputRow) ? inputRow : defaultRow;
+
+  const handleWrapperKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (!open && (event.key === "ArrowDown" || event.key === "ArrowUp")) {
+      event.preventDefault();
+      openList();
+    }
+    if (expanded) handleKeyDown(event);
+  };
+
+  const handleFieldKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Tab") close();
+    if (event.key === "Enter" && !expanded) event.stopPropagation();
+  };
+
+  const handleQueryChange = (event: ChangeEvent<HTMLInputElement>) => {
+    openList();
+    onQueryChange(event.currentTarget.value);
+  };
 
   return (
-    <div ref={wrapperRef} className="flex flex-col gap-6" onFocus={open}>
-      <InputField
-        id={id}
-        ref={inputRef}
-        name={name}
-        label={label}
-        placeholder={placeholder}
-        hint={hint}
-        error={error}
-        loading={loading}
-        autoFocus={autoFocus}
-        value={value}
-        onBlur={onBlur}
-        role="combobox"
-        aria-expanded={expanded}
-        aria-controls={expanded ? listId : undefined}
-        aria-autocomplete="list"
-        aria-activedescendant={activeDescendantId}
-        onChange={(event) => {
-          open();
-          onValueChange(event.currentTarget.value);
-        }}
-        onClick={open}
-        onKeyDown={handleKeyDown}
-      />
-      {expanded ? (
-        <OptionList
-          id={listId}
-          ariaLabel={listLabel}
-          options={rows}
-          activeKey={activeKey}
-          onActivate={activate}
-          onSelect={select}
+    <div
+      ref={wrapperRef}
+      className="flex flex-col gap-6"
+      onFocus={openList}
+      onKeyDown={handleWrapperKeyDown}
+    >
+      <Command
+        shouldFilter={false}
+        loop
+        value={activeRow}
+        onValueChange={setInputRow}
+        className="bg-transparent"
+      >
+        <InputField
+          id={id}
+          ref={inputRef}
+          name={name}
+          label={label}
+          placeholder={placeholder}
+          hint={hint}
+          error={error}
+          loading={loading}
+          autoFocus={autoFocus}
+          value={query}
+          onBlur={onBlur}
+          role="combobox"
+          aria-expanded={expanded}
+          aria-autocomplete="list"
+          onChange={handleQueryChange}
+          onClick={openList}
+          onKeyDown={handleFieldKeyDown}
         />
-      ) : null}
+        {expanded ? (
+          <CommandList label={listLabel} className="list-none">
+            {options.map((option) => (
+              <CommandItem
+                key={String(option.value)}
+                value={String(option.value)}
+                className={rowClassName}
+                onSelect={() => {
+                  close();
+                  onSelect(option.value);
+                }}
+              >
+                <Typography variant="body" className="min-w-0 truncate">
+                  {option.label}
+                </Typography>
+                {option.meta ? (
+                  <Typography
+                    variant="caption"
+                    className="text-muted-foreground ml-auto shrink-0 uppercase"
+                  >
+                    {option.meta}
+                  </Typography>
+                ) : undefined}
+              </CommandItem>
+            ))}
+            {create ? (
+              <CommandItem
+                key="create"
+                value="create"
+                className={rowClassName}
+                onSelect={() => {
+                  close();
+                  create.onCreate();
+                }}
+              >
+                <PlusIcon className="shrink-0" />
+                <Typography variant="body" className="min-w-0 truncate">
+                  {create.createLabel}
+                </Typography>
+              </CommandItem>
+            ) : null}
+          </CommandList>
+        ) : null}
+      </Command>
     </div>
   );
 }
 
-export type { OptionPickerProps };
+export type { Props as OptionPickerProps };

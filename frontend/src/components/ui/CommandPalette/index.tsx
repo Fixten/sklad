@@ -1,12 +1,5 @@
-import {
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-  type KeyboardEvent,
-} from "react";
+import { useState } from "react";
 
-import { useOutsidePress } from "@/lib/useOutsidePress/useOutsidePress";
 import {
   Command,
   CommandEmpty,
@@ -15,9 +8,12 @@ import {
   CommandItem,
   CommandList,
 } from "@base/command";
+import { useCommandMenu } from "@ui/CommandMenu";
+
+import useSlash from "./useSlash";
 
 interface CommandPaletteItem {
-  key: string;
+  value: string;
   label: string;
   onSelect: () => void;
 }
@@ -29,61 +25,26 @@ interface Props {
   emptyMessage?: string;
 }
 
-const isTypingTarget = (target: EventTarget | null) => {
-  if (!(target instanceof HTMLElement)) return false;
-  if (target.isContentEditable) return true;
-
-  return ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName);
-};
-
 export default function CommandPalette({
   items,
   heading,
   placeholder = "Начать работу",
   emptyMessage = "Нету",
 }: Props) {
-  const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const { open, openList, close, wrapperRef, handleKeyDown } = useCommandMenu({
+    onClose: () => setQuery(""),
+  });
 
-  const close = () => {
-    setOpen(false);
+  const onSelect = () => {
+    close();
     setQuery("");
   };
 
-  useOutsidePress({ ref: wrapperRef, active: open, onOutside: close });
-
-  useEffect(() => {
-    const handleShortcut = (event: globalThis.KeyboardEvent) => {
-      const isSlash = event.key === "/" || event.code === "Slash";
-      if (!isSlash || event.metaKey || event.ctrlKey || event.altKey) {
-        return;
-      }
-      if (isTypingTarget(event.target)) return;
-
-      event.preventDefault();
-      setOpen(true);
-      wrapperRef.current?.querySelector("input")?.focus();
-    };
-
-    document.addEventListener("keydown", handleShortcut);
-    return () => {
-      document.removeEventListener("keydown", handleShortcut);
-    };
-  }, []);
-
-  useLayoutEffect(() => {
-    wrapperRef.current
-      ?.querySelector("input")
-      ?.setAttribute("aria-expanded", String(open));
-  }, [open]);
-
-  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key !== "Escape") return;
-
-    event.preventDefault();
-    close();
-  };
+  useSlash({
+    focusInput: () => wrapperRef.current?.querySelector("input")?.focus(),
+    onOpen: openList,
+  });
 
   return (
     <div
@@ -98,14 +59,10 @@ export default function CommandPalette({
           value={query}
           onValueChange={(value) => {
             setQuery(value);
-            setOpen(true);
+            openList();
           }}
-          onFocus={() => {
-            setOpen(true);
-          }}
-          onClick={() => {
-            setOpen(true);
-          }}
+          onFocus={openList}
+          onClick={openList}
         />
         {open && (
           <CommandList
@@ -116,12 +73,14 @@ export default function CommandPalette({
               {emptyMessage}
             </CommandEmpty>
             <CommandGroup heading={heading}>
-              {items.map(({ key, label, onSelect }) => (
+              {items.map(({ value, label, onSelect: onSelectItem }) => (
                 <CommandItem
-                  key={key}
+                  key={value}
+                  value={value}
+                  keywords={[label, value]}
                   onSelect={() => {
+                    onSelectItem();
                     onSelect();
-                    close();
                   }}
                 >
                   {label}

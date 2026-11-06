@@ -1,10 +1,9 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { MemoryRouter, Route, Routes } from "react-router";
 
 import AppLayout from "@/layout/App.layout";
 
 import Home from "./index";
-
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   component: Home,

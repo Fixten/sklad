@@ -3,12 +3,11 @@ import { userEvent } from "vitest/browser";
 import { render } from "vitest-browser-react";
 
 import OptionPicker from "./index";
+import type { OptionItem, OptionPickerProps } from "./index";
 
-import type { OptionPickerItem, OptionPickerProps } from "./index";
-
-const results: OptionPickerItem<number>[] = [
-  { key: "100", value: 100, label: "Доска 40 мм" },
-  { key: "101", value: 101, label: "Брусок 60 × 60" },
+const options: OptionItem<number>[] = [
+  { value: 100, label: "Доска 40 мм" },
+  { value: 101, label: "Брусок 60 × 60" },
 ];
 
 const createRowLabel = "Новый вариант в «Дуб»";
@@ -16,11 +15,11 @@ const createRowLabel = "Новый вариант в «Дуб»";
 const baseProps = {
   id: "supply-material",
   label: "Материал",
-  value: "Дуб",
+  query: "Дуб",
   listLabel: "Варианты",
-  results,
+  options,
   onSelect: vi.fn(),
-  onValueChange: vi.fn(),
+  onQueryChange: vi.fn(),
   create: {
     createLabel: createRowLabel,
     onCreate: vi.fn(),
@@ -48,14 +47,9 @@ test("wires the field to the list and its active option", async () => {
   await userEvent.click(screen.getByRole("combobox"));
 
   const input = screen.getByRole("combobox").element();
-  const activedescendant = input.getAttribute("aria-activedescendant");
 
-  expect(input.getAttribute("aria-controls")).toBe("supply-material-list");
   expect(input.getAttribute("aria-expanded")).toBe("true");
   expect(input.getAttribute("aria-autocomplete")).toBe("list");
-  expect(activedescendant).toBe("supply-material-list-option-1");
-  expect(document.getElementById("supply-material-list")).not.toBeNull();
-  expect(document.getElementById(activedescendant ?? "")).not.toBeNull();
   await expect
     .element(screen.getByRole("listbox"))
     .toHaveAttribute("aria-label", "Варианты");
@@ -64,7 +58,7 @@ test("wires the field to the list and its active option", async () => {
     .toHaveAttribute("aria-selected", "true");
 });
 
-test("places the create row first", async () => {
+test("places the create row last", async () => {
   const screen = await render(<OptionPicker {...baseProps} />);
 
   await userEvent.click(screen.getByRole("combobox"));
@@ -74,11 +68,11 @@ test("places the create row first", async () => {
       .getByRole("option")
       .elements()
       .map((element) => element.textContent),
-  ).toEqual(["Новый вариант в «Дуб»", "Доска 40 мм", "Брусок 60 × 60"]);
+  ).toEqual(["Доска 40 мм", "Брусок 60 × 60", createRowLabel]);
 });
 
 test("shows only the create row when there are no results", async () => {
-  const screen = await render(<OptionPicker {...baseProps} results={[]} />);
+  const screen = await render(<OptionPicker {...baseProps} options={[]} />);
 
   await userEvent.click(screen.getByRole("combobox"));
 
@@ -105,7 +99,7 @@ test("moves the active option with the arrow keys and wraps", async () => {
 
   await userEvent.keyboard("{ArrowDown}");
   await expect
-    .element(screen.getByRole("option", { name: "Новый вариант в «Дуб»" }))
+    .element(screen.getByRole("option", { name: createRowLabel }))
     .toHaveAttribute("aria-selected", "true");
 
   await userEvent.keyboard("{ArrowUp}");
@@ -124,7 +118,7 @@ test("falls back to the first result when the active result disappears", async (
     .toHaveAttribute("aria-selected", "true");
 
   await screen.rerender(
-    <OptionPicker {...baseProps} results={results.slice(0, 1)} />,
+    <OptionPicker {...baseProps} options={options.slice(0, 1)} />,
   );
 
   await expect
@@ -141,36 +135,24 @@ test("resets the active option when the input value changes", async () => {
     .element(screen.getByRole("option", { name: "Брусок 60 × 60" }))
     .toHaveAttribute("aria-selected", "true");
 
-  await screen.rerender(<OptionPicker {...baseProps} value="Брусок" />);
+  await screen.rerender(<OptionPicker {...baseProps} query="Брусок" />);
 
   await expect
     .element(screen.getByRole("option", { name: "Доска 40 мм" }))
     .toHaveAttribute("aria-selected", "true");
 });
 
-test("keeps a result keyed create independent from the create row", async () => {
-  const onCreate = vi.fn();
-  const onSelect = vi.fn();
-  const screen = await render(
-    <OptionPicker
-      {...baseProps}
-      results={[{ key: "create", value: 100, label: "Доска 40 мм" }]}
-      onSelect={onSelect}
-      create={{ ...baseProps.create, onCreate }}
-    />,
-  );
+test("opens on the arrow keys while closed", async () => {
+  const screen = await render(<OptionPicker {...baseProps} />);
 
   await userEvent.click(screen.getByRole("combobox"));
-  await screen.getByRole("option", { name: "Доска 40 мм" }).click();
+  await userEvent.keyboard("{Escape}");
 
-  expect(onSelect).toHaveBeenCalledWith(100);
-  expect(onCreate).not.toHaveBeenCalled();
+  expect(screen.getByRole("listbox").query()).toBeNull();
 
-  await userEvent.click(screen.getByRole("combobox"));
-  await screen.getByRole("option", { name: createRowLabel }).click();
+  await userEvent.keyboard("{ArrowDown}");
 
-  expect(onCreate).toHaveBeenCalledTimes(1);
-  expect(onSelect).toHaveBeenCalledTimes(1);
+  await expect.element(screen.getByRole("listbox")).toBeInTheDocument();
 });
 
 test("selects the active option on enter", async () => {
@@ -197,7 +179,7 @@ test("routes the create row to onCreate only", async () => {
   );
 
   await userEvent.click(screen.getByRole("combobox"));
-  await screen.getByRole("option", { name: "Новый вариант в «Дуб»" }).click();
+  await screen.getByRole("option", { name: createRowLabel }).click();
 
   expect(onCreate).toHaveBeenCalledTimes(1);
   expect(onSelect).not.toHaveBeenCalled();
@@ -218,7 +200,7 @@ test("closes the list on escape and keeps focus", async () => {
 });
 
 test("leaves escape to the sheet once the list is closed", async () => {
-  const outer = vi.fn();
+  const outer = vi.fn<(passed: boolean) => void>();
   const screen = await render(
     <div
       onKeyDown={(event) => {

@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 
 import { createWizardMachine } from ".";
-
 import type { WizardEvent, WizardState } from ".";
 
 type Step = "pick" | "details";

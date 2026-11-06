@@ -15,7 +15,7 @@ export default function MaterialPage() {
         isFeatureEnabled("supply")
           ? [
               {
-                key: "supply",
+                value: "supply",
                 label: "Сделать поставку",
                 onSelect: () => {
                   void navigate(pathsRouter.supply);

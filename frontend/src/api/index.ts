@@ -1,5 +1,4 @@
 import { applySearchParams, fetchApi, getApiUrl } from "./helpers";
-
 import type { paths } from "./schema";
 import type { JsonBody, JsonQuery, JsonResponse } from "./schema-helpers";
 

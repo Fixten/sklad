@@ -1,7 +1,7 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+
 import { Input } from "./input";
 import { Label } from "./label";
-
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   component: Label,

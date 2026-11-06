@@ -1,7 +1,5 @@
 <!-- agent-md-sync: max-lines=120 -->
 
-Important. Currently project is in outdated state. This is expected. This is not live right now and expects further development.
-
 # frontend
 
 React 19 + Vite SPA, shadcn/ui on Tailwind v4 (CSS-variable theming). Feature-oriented,
@@ -29,6 +27,8 @@ mirroring the backend's feature split.
 - **Forms & pending actions**: follow [form conventions](docs/form_conventions.md); busy actions
   use `@ui/Button pending`, never `disabled`. Recipe:
   [DESIGN.md §Separator & Loading](DESIGN.md#separator--loading).
+- **Accessibility scope**: keyboard navigation and focus are required; screen-reader support is
+  not. Don't add AT-specific machinery for it.
 
 ## Adding API integration for a feature
 

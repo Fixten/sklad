@@ -1,8 +1,7 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { MemoryRouter, Routes, Route } from "react-router";
 
 import Link, { NavLink } from "./index";
-
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const decorator = (Story: React.FC) => (
   <MemoryRouter initialEntries={["/"]}>

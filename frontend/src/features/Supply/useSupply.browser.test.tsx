@@ -2,11 +2,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { expect, test } from "vitest";
 import { render } from "vitest-browser-react";
 
+import type { Routes } from "@/test/apiStub";
 import { stubRoutes } from "@/test/apiStub.vitest";
 
 import useSupply from "./useSupply";
-
-import type { Routes } from "@/test/apiStub";
 
 const baseSupply = { unit: "meters" as const };
 

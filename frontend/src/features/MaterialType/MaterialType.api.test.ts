@@ -3,7 +3,6 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { stubRoutes } from "@/test/apiStub.vitest";
 
 import MaterialTypeApi from "./MaterialType.api";
-
 import type {
   MaterialTypeDTO,
   MaterialTypeModel,

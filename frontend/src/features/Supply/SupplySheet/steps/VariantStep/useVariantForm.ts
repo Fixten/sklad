@@ -1,11 +1,10 @@
 import zod from "zod";
 
+import type { MaterialTarget } from "@/features/Material/useMaterialsCatalog";
 import { UnitSchema } from "@/features/units";
 import { useZodForm } from "@ui/Form";
 
 import { useVariantStep } from "./useVariantStep";
-
-import type { MaterialTarget } from "@/features/Material/useMaterialsCatalog";
 
 export const variantFormSchema = zod.object({
   name: zod.string().trim().min(1, "Укажите название варианта"),

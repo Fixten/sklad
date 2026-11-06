@@ -1,3 +1,4 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter, Route, Routes } from "react-router";
 import { screen, userEvent } from "storybook/test";
@@ -5,8 +6,6 @@ import { screen, userEvent } from "storybook/test";
 import AppLayout from "@/layout/App.layout";
 
 import MaterialPage from "./index";
-
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: false } },

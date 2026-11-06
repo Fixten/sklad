@@ -1,9 +1,9 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+
 import SupplyStepHarness from "../../SupplyStepHarness";
 import { dubMaterial, stubSupplyApi } from "../../testFixtures";
 
 import VariantStep from ".";
-
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   component: VariantStep,

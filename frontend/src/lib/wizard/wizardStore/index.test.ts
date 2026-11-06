@@ -1,7 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
 import { createWizardStore } from ".";
-
 import type { WizardConfig } from ".";
 
 type Step = "pick" | "details";

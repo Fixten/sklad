@@ -1,8 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import type { ReactNode } from "react";
 
 import { supplyWizard } from "../supplyWizard";
-
-import type { ReactNode } from "react";
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: false } },

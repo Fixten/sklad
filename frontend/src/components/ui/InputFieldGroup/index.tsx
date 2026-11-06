@@ -1,11 +1,11 @@
+import type { ComponentProps, ReactNode } from "react";
+
 import {
   FieldDescription,
   FieldGroup,
   FieldLegend,
   FieldSet,
 } from "@base/field";
-
-import type { ComponentProps, ReactNode } from "react";
 
 interface InputFieldGroupProps extends Omit<
   ComponentProps<"fieldset">,

@@ -1,6 +1,5 @@
-import { createApiStub } from "@/test/apiStub";
-
 import type { components } from "@/api/schema";
+import { createApiStub } from "@/test/apiStub";
 import type { Routes } from "@/test/apiStub";
 
 type Schemas = components["schemas"];

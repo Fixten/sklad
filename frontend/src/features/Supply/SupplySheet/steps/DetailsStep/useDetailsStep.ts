@@ -1,3 +1,4 @@
+import type { MaterialCatalogRow } from "@/features/Material/useMaterialsCatalog";
 import useSupplier from "@/features/Supplier/useSupplier";
 import useSupply from "@/features/Supply/useSupply";
 import { sameName } from "@/lib/text/text";
@@ -6,7 +7,6 @@ import { supplyWizard } from "../../supplyWizard";
 
 import type { DetailsDraft } from "./detailsForm";
 import type { SupplierOption } from "./SupplierPicker";
-import type { MaterialCatalogRow } from "@/features/Material/useMaterialsCatalog";
 
 export function useDetailsStep(row: MaterialCatalogRow) {
   const wizard = supplyWizard.useWizard();

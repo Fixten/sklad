@@ -1,5 +1,4 @@
 import { useEffect, useEffectEvent, useRef } from "react";
-
 import type { RefObject } from "react";
 
 type CloseOn = "pointerdown" | "click";

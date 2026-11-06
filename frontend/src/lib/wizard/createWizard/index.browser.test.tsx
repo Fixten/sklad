@@ -1,9 +1,8 @@
+import type { ReactNode } from "react";
 import { expect, test, vi } from "vitest";
 import { renderHook } from "vitest-browser-react";
 
 import { createWizard } from ".";
-
-import type { ReactNode } from "react";
 
 type Step = "pick" | "details";
 

@@ -1,9 +1,8 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
 
 import { Field, FieldError } from "./field";
 import { Input } from "./input";
-
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   component: Input,

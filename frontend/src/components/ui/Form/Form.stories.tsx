@@ -1,3 +1,5 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { FieldValues, UseFormReturn } from "react-hook-form";
 import { fn, screen, userEvent } from "storybook/test";
 import zod from "zod";
 
@@ -5,9 +7,6 @@ import { Button } from "@ui/Button";
 import { FormInputField } from "@ui/InputField";
 
 import { Form, useZodForm } from "./index";
-
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import type { FieldValues, UseFormReturn } from "react-hook-form";
 
 const validator = zod.object({
   name: zod.string().trim().min(2, "At least 2 characters"),

@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 import zod from "zod";
 
-import { createDetailsFormSchema, formatUnitCost, unitCostPreview } from ".";
-
-import type { DetailsFormValues } from ".";
 import type { Unit } from "@/features/units";
+
+import { createDetailsFormSchema, formatUnitCost, unitCostPreview } from ".";
+import type { DetailsFormValues } from ".";
 
 const base: DetailsFormValues = {
   quantity: "8",

@@ -1,3 +1,4 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { screen, userEvent } from "storybook/test";
 
@@ -8,8 +9,6 @@ import {
 } from "@/features/Supply/testFixtures";
 
 import SupplyCreate from ".";
-
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: false, gcTime: 0 } },

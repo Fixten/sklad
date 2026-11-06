@@ -1,5 +1,4 @@
 import { getApiUrl } from "@/api/helpers";
-
 import type { paths } from "@/api/schema";
 import type { JsonBody, JsonResponse } from "@/api/schema-helpers";
 

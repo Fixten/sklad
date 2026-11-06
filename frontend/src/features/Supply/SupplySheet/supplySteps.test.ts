@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 
+import type { MaterialCatalogRow } from "@/features/Material/useMaterialsCatalog";
+
 import {
   stepLabel,
   supplyBackStep,
@@ -7,8 +9,6 @@ import {
   SupplyStepKind,
   type SupplyStep,
 } from "./supplySteps";
-
-import type { MaterialCatalogRow } from "@/features/Material/useMaterialsCatalog";
 
 const detailsRow: MaterialCatalogRow = {
   variantId: 100,

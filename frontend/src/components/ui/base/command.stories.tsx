@@ -1,3 +1,4 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 
 import { Button } from "./button";
@@ -12,8 +13,6 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "./command";
-
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   component: Command,

@@ -49,8 +49,8 @@ test("lists every variant of the matched material", async () => {
     .element(screen.getByText("Новый вариант в «Дуб»"))
     .toBeInTheDocument();
   await expect
-    .element(screen.getByLabelText("Материал"))
-    .toHaveAttribute("aria-activedescendant", "supply-material-list-option-1");
+    .element(screen.getByRole("option", variantOption("Доска 40 мм")))
+    .toHaveAttribute("aria-selected", "true");
 });
 
 test("matches variants by material type", async () => {

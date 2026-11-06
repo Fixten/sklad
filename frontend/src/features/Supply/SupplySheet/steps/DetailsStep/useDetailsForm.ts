@@ -1,5 +1,6 @@
 import { useWatch } from "react-hook-form";
 
+import type { MaterialCatalogRow } from "@/features/Material/useMaterialsCatalog";
 import { useZodForm } from "@ui/Form";
 
 import {
@@ -8,8 +9,6 @@ import {
   unitCostPreview,
 } from "./detailsForm";
 import { useDetailsStep } from "./useDetailsStep";
-
-import type { MaterialCatalogRow } from "@/features/Material/useMaterialsCatalog";
 
 export function useDetailsForm(row: MaterialCatalogRow) {
   const form = useZodForm({

@@ -1,10 +1,10 @@
+import type { MaterialTarget } from "@/features/Material/useMaterialsCatalog";
 import useVariant from "@/features/Variant/useVariant";
 
 import { SupplyStepKind } from "../../supplySteps";
 import { supplyWizard } from "../../supplyWizard";
 
 import type { VariantDraft } from "./useVariantForm";
-import type { MaterialTarget } from "@/features/Material/useMaterialsCatalog";
 
 export function useVariantStep(material: MaterialTarget) {
   const wizard = supplyWizard.useWizard();

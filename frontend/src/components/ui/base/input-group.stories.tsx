@@ -1,3 +1,4 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SearchIcon } from "lucide-react";
 
 import { Button } from "./button";
@@ -9,8 +10,6 @@ import {
   InputGroupTextarea,
   InputGroupText,
 } from "./input-group";
-
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   component: InputGroup,

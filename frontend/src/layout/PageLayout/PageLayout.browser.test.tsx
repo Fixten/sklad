@@ -1,10 +1,9 @@
+import type { ComponentProps } from "react";
 import { MemoryRouter } from "react-router";
 import { expect, test } from "vitest";
 import { render } from "vitest-browser-react";
 
 import PageLayout from ".";
-
-import type { ComponentProps } from "react";
 
 const backlinkClasses = [
   "type-label",

@@ -1,12 +1,11 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
+import type { ComponentProps } from "react";
 import { fn, screen, userEvent } from "storybook/test";
 
 import { fullSuppliers } from "../../../testFixtures";
 
 import SupplierPicker from ".";
-
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import type { ComponentProps } from "react";
 
 const ControlledSupplierPicker = (
   props: ComponentProps<typeof SupplierPicker>,

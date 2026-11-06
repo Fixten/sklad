@@ -1,4 +1,5 @@
 import { materialTitle } from "@/features/Material/materialUtils/materiaUtils";
+import type { MaterialTarget } from "@/features/Material/useMaterialsCatalog";
 import { UnitOptions } from "@/features/units";
 import { Button } from "@ui/Button";
 import { Form } from "@ui/Form";
@@ -7,8 +8,6 @@ import Panel from "@ui/Panel";
 import { FormSelectField } from "@ui/SelectField";
 
 import { useVariantForm } from "./useVariantForm";
-
-import type { MaterialTarget } from "@/features/Material/useMaterialsCatalog";
 
 interface Props {
   material: MaterialTarget;

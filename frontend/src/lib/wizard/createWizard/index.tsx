@@ -4,11 +4,10 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
+import type { ReactNode } from "react";
 
 import { createWizardStore } from "../wizardStore";
-
 import type { WizardConfig, WizardStore } from "../wizardStore";
-import type { ReactNode } from "react";
 
 export type { WizardConfig } from "../wizardStore";
 

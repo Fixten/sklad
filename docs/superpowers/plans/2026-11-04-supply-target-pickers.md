@@ -257,7 +257,7 @@ create={query.trim() && !hasExact(rows, query)
 - `useMaterialSearch`: add `const clear = () => { setQuery(""); setSelected(null); };` and return it.
 - `useSupplyForm.setTarget`: also set `typeQuery` / `materialQuery` / `variantQuery` to the row names and each `*Name` to `""`; keep unit and error clearing.
 - `useSupplyForm.clearQueryTarget`: only `setValue("variantId", null)`.
-- `SupplyCreate`: add `const { variants } = useVariant();`; render `<TargetPickers types={types} materials={materials} variants={variants} onChainEdit={material.clear} />`; bind the search picker's `FormField` to `name="variantQuery"` (no error binding); keep `handleQueryChange` releasing the target only when `material.selected` is set.
+- `SupplyCreate`: add `const { variants } = useVariant();`; render `<TargetPickers types={types} materials={materials} variants={variants} onChainEdit={material.clear} />`; render the search picker directly (no `FormField`: its text is page state, not a form value — the form's `variantQuery` is owned by the pickers); keep `handleQueryChange` releasing the target only when `material.selected` is set.
 
 - [ ] **Step 5: Run the picker suite and the page suite**
 

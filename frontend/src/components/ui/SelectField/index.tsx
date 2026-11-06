@@ -1,4 +1,7 @@
 import { useId } from "react";
+import type { ComponentProps, Ref } from "react";
+import { Controller } from "react-hook-form";
+import type { Control, FieldPath, FieldValues } from "react-hook-form";
 
 import { Field, FieldError, FieldLabel } from "@base/field";
 import {
@@ -9,10 +12,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@base/select";
-import { FormField } from "@ui/Form";
-
-import type { ComponentProps, Ref } from "react";
-import type { Control, FieldPath, FieldValues } from "react-hook-form";
 
 interface Option {
   value: string;
@@ -126,7 +125,7 @@ function FormSelectField<
   ...props
 }: FormSelectFieldProps<TFieldValues, TName, TContext, TTransformedValues>) {
   return (
-    <FormField
+    <Controller
       control={control}
       name={name}
       render={({ field, fieldState }) => (

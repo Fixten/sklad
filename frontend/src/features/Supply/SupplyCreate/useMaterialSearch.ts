@@ -1,22 +1,22 @@
 import { useState } from "react";
 
-import { queryMaterialRow } from "@/features/Material/materialUtils/materiaUtils";
-import useMaterialsCatalog, {
-  type MaterialCatalogRow,
-} from "@/features/Material/useMaterialsCatalog";
+import type { MaterialCatalogRow } from "@/features/Material/useMaterialsCatalog";
 
-export function useMaterialSearch() {
-  const catalog = useMaterialsCatalog();
+export interface MaterialSearch {
+  query: string;
+  selected: MaterialCatalogRow | undefined;
+  changeQuery: (value: string) => void;
+  select: (row: MaterialCatalogRow) => void;
+  clear: () => void;
+}
+
+export function useMaterialSearch(): MaterialSearch {
   const [query, setQuery] = useState("");
-  const [selected, setSelected] = useState<MaterialCatalogRow | null>(null);
-  const results = selected ? [] : queryMaterialRow(catalog.rows, query);
+  const [selected, setSelected] = useState<MaterialCatalogRow>();
 
   const changeQuery = (value: string) => {
     setQuery(value);
-
-    if (selected) {
-      setSelected(null);
-    }
+    setSelected(undefined);
   };
 
   const select = (row: MaterialCatalogRow) => {
@@ -24,12 +24,10 @@ export function useMaterialSearch() {
     setQuery(row.variantName);
   };
 
-  return {
-    query,
-    selected,
-    results,
-    isLoading: catalog.isLoading,
-    changeQuery,
-    select,
+  const clear = () => {
+    setQuery("");
+    setSelected(undefined);
   };
+
+  return { query, selected, changeQuery, select, clear };
 }

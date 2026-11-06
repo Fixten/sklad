@@ -3,7 +3,6 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { retryApiError } from "@/api/api-error";
 
 import SupplierApi from "./Supplier.api";
-
 import type { SupplierPatchDTO } from "./Supplier.model";
 
 const api = new SupplierApi();

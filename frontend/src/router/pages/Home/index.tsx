@@ -7,7 +7,7 @@ export default function Home() {
   const nav = useNavigate();
 
   const items = navItems.map(({ link, name }) => ({
-    key: link,
+    value: link,
     label: name,
     onSelect: () => {
       void nav(link);

@@ -1,9 +1,8 @@
-import { normalizeName } from "@/lib/text/text";
-
 import type {
   MaterialCatalogRow,
   MaterialTarget,
 } from "@/features/Material/useMaterialsCatalog";
+import { normalizeName } from "@/lib/text/text";
 
 export type CreationTarget =
   { kind: "variant"; material: MaterialTarget } | { kind: "material" };

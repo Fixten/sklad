@@ -1,8 +1,9 @@
+import type { ComponentProps, Ref } from "react";
+
 import { normalizeName, sameName } from "@/lib/text/text";
 import OptionPicker from "@ui/OptionPicker";
 
 import type { SupplierValue } from "../detailsForm";
-import type { ComponentProps, Ref } from "react";
 
 export interface SupplierOption {
   id: number;
@@ -56,19 +57,24 @@ export default function SupplierPicker({
       inputRef={inputRef}
       label="Поставщик"
       placeholder="Например, Столярный двор"
-      value={value.name}
+      query={value.name}
       error={error}
       onBlur={onBlur}
-      onValueChange={(next) => {
+      onQueryChange={(next) => {
         onChange({ id: null, name: next });
       }}
-      onSelect={(supplier) => {
+      onSelect={(supplierId) => {
+        const supplier = matched.find(
+          (candidate) => candidate.id === supplierId,
+        );
+
+        if (!supplier) return;
+
         onChange({ id: supplier.id, name: supplier.name });
       }}
       listLabel="Поставщики"
-      results={matched.map((supplier) => ({
-        key: String(supplier.id),
-        value: supplier,
+      options={matched.map((supplier) => ({
+        value: supplier.id,
         label: supplier.name,
       }))}
       create={create}

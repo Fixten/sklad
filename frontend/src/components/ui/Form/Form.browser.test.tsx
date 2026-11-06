@@ -1,3 +1,4 @@
+import { Controller } from "react-hook-form";
 import { expect, test, vi } from "vitest";
 import { render } from "vitest-browser-react";
 import zod from "zod";
@@ -6,7 +7,7 @@ import { Button } from "@ui/Button";
 import { FormInputField, InputField } from "@ui/InputField";
 import { FormSelectField } from "@ui/SelectField";
 
-import { Form, FormField, useZodForm } from "./index";
+import { Form, useZodForm } from "./index";
 
 const validator = zod.object({
   name: zod.string().trim().min(2, "Укажите хотя бы два символа"),
@@ -85,7 +86,7 @@ function CompositeTestForm() {
 
   return (
     <Form form={form} onSubmit={vi.fn()}>
-      <FormField
+      <Controller
         control={form.control}
         name="contact"
         render={({ field, fieldState }) => (
@@ -106,7 +107,7 @@ function CompositeTestForm() {
   );
 }
 
-test("tracks a controlled value and touched state through FormField", async () => {
+test("tracks a controlled value and touched state through Controller", async () => {
   const screen = await render(<CompositeTestForm />);
   const input = screen.getByLabelText("Контакт");
 

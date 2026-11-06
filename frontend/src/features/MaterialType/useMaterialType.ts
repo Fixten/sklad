@@ -3,7 +3,6 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { retryApiError } from "@/api/api-error";
 
 import MaterialTypeApi from "./MaterialType.api";
-
 import type { MaterialTypePatchDTO } from "./MaterialType.model";
 
 const api = new MaterialTypeApi();

@@ -1,11 +1,10 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { screen, userEvent } from "storybook/test";
 
 import SupplyStepHarness from "../../SupplyStepHarness";
 import { stubSupplyApi } from "../../testFixtures";
 
 import MaterialStep from ".";
-
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   component: MaterialStep,

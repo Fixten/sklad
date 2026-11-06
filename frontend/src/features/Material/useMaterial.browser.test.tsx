@@ -2,11 +2,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { expect, test } from "vitest";
 import { render } from "vitest-browser-react";
 
+import type { Routes } from "@/test/apiStub";
 import { stubRoutes } from "@/test/apiStub.vitest";
 
 import useMaterial from "./useMaterial";
-
-import type { Routes } from "@/test/apiStub";
 
 const routes = {
   "/api/material": {

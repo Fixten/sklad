@@ -1,6 +1,6 @@
-import { Spinner } from "./spinner";
-
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
+import { Spinner } from "./spinner";
 
 const meta = {
   component: Spinner,

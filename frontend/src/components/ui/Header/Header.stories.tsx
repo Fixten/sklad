@@ -1,8 +1,7 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { MemoryRouter } from "react-router";
 
 import Header from "./index";
-
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const navItems = [
   { link: "/", name: "Home" },

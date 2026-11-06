@@ -1,6 +1,5 @@
-import { FormProvider } from "react-hook-form";
-
 import type { ComponentProps } from "react";
+import { FormProvider } from "react-hook-form";
 import type {
   FieldValues,
   SubmitHandler,
@@ -42,7 +41,5 @@ function Form<
 }
 
 export { Form };
-export { FormField } from "./FormField";
 export { useZodForm } from "./useZodForm";
-export type { FormFieldProps } from "./FormField";
 export type { UseZodFormProps } from "./useZodForm";

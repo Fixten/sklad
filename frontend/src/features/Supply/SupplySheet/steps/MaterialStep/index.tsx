@@ -1,8 +1,8 @@
-import { useWatch } from "react-hook-form";
+import { Controller, useWatch } from "react-hook-form";
 
 import { UnitOptions } from "@/features/units";
 import { Button } from "@ui/Button";
-import { Form, FormField, useZodForm } from "@ui/Form";
+import { Form, useZodForm } from "@ui/Form";
 import { FormInputField } from "@ui/InputField";
 import Panel from "@ui/Panel";
 import SelectField, { FormSelectField } from "@ui/SelectField";
@@ -40,7 +40,7 @@ export default function MaterialStep() {
     <Panel label="Новый материал">
       <Form form={form} onSubmit={create} aria-busy={busy || undefined}>
         <div className="grid grid-cols-2 gap-4">
-          <FormField
+          <Controller
             control={form.control}
             name="typeId"
             render={({ field, fieldState }) => (

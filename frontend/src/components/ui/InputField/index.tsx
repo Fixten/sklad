@@ -1,5 +1,8 @@
 import { cn } from "cn";
 import { useId } from "react";
+import type { ComponentProps } from "react";
+import { Controller } from "react-hook-form";
+import type { Control, FieldPath, FieldValues } from "react-hook-form";
 
 import {
   Field as BaseField,
@@ -13,11 +16,7 @@ import {
   InputGroupInput,
   InputGroupText,
 } from "@base/input-group";
-import { FormField } from "@ui/Form";
 import { Spinner } from "@ui/Spinner";
-
-import type { ComponentProps } from "react";
-import type { Control, FieldPath, FieldValues } from "react-hook-form";
 
 const caretClassName = "caret-ring";
 
@@ -140,7 +139,7 @@ function FormInputField<
   ...props
 }: FormInputFieldProps<TFieldValues, TName, TContext, TTransformedValues>) {
   return (
-    <FormField
+    <Controller
       control={control}
       name={name}
       render={({ field, fieldState }) => (

@@ -1,5 +1,8 @@
+import { Controller } from "react-hook-form";
+
+import type { MaterialCatalogRow } from "@/features/Material/useMaterialsCatalog";
 import { UnitHints } from "@/features/units";
-import { Form, FormField } from "@ui/Form";
+import { Form } from "@ui/Form";
 import { FormInputField } from "@ui/InputField";
 import Typography from "@ui/Typography";
 
@@ -8,8 +11,6 @@ import { supplyDetailsFormId } from "../../supplySteps";
 import { formatUnitCost } from "./detailsForm";
 import SupplierPicker from "./SupplierPicker";
 import { useDetailsForm } from "./useDetailsForm";
-
-import type { MaterialCatalogRow } from "@/features/Material/useMaterialsCatalog";
 
 interface Props {
   row: MaterialCatalogRow;
@@ -54,7 +55,7 @@ export default function DetailsStep({ row }: Props) {
           hint="₽ за партию"
         />
         <div className="col-span-2">
-          <FormField
+          <Controller
             control={form.control}
             name="supplier"
             render={({ field, fieldState }) => (

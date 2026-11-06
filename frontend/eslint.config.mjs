@@ -112,6 +112,7 @@ export default defineConfig(
       sourceType: "module",
     },
     rules: {
+      "@typescript-eslint/no-confusing-void-expression": "off",
       "import-x/order": [
         "error",
         {
@@ -122,7 +123,6 @@ export default defineConfig(
             "parent",
             "sibling",
             "index",
-            "type",
           ],
           "newlines-between": "always",
           alphabetize: {

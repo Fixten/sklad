@@ -3,7 +3,6 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { stubRoutes } from "@/test/apiStub.vitest";
 
 import SupplierApi from "./Supplier.api";
-
 import type {
   SupplierDTO,
   SupplierModel,

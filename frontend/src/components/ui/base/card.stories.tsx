@@ -1,3 +1,5 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+
 import {
   Card,
   CardAction,
@@ -7,8 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "./card";
-
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   component: Card,

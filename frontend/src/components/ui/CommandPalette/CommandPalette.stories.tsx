@@ -1,17 +1,16 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn, userEvent, within } from "storybook/test";
 
 import CommandPalette from "./index";
-
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   component: CommandPalette,
   args: {
     heading: "Меню",
     items: [
-      { key: "/", label: "Главная", onSelect: fn() },
-      { key: "/settings", label: "Настройки", onSelect: fn() },
-      { key: "/material", label: "Материалы", onSelect: fn() },
+      { value: "/", label: "Главная", onSelect: fn() },
+      { value: "/settings", label: "Настройки", onSelect: fn() },
+      { value: "/material", label: "Материалы", onSelect: fn() },
     ],
   },
 } satisfies Meta<typeof CommandPalette>;

@@ -5,7 +5,6 @@ import { MaterialQueryKey } from "@/features/Material/useMaterial";
 import { VariantQueryKey } from "@/features/Variant/useVariant";
 
 import SupplyApi from "./Supply.api";
-
 import type { SupplyListQuery, SupplyPatchDTO } from "./Supply.model";
 
 const api = new SupplyApi();

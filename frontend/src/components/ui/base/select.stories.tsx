@@ -1,3 +1,4 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 
 import { Field, FieldError } from "./field";
@@ -11,8 +12,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./select";
-
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   component: Select,

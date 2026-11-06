@@ -1,7 +1,7 @@
+import type { ComponentProps } from "react";
+
 import { Button as BaseButton } from "@base/button";
 import { Spinner } from "@ui/Spinner";
-
-import type { ComponentProps } from "react";
 
 type Props = ComponentProps<typeof BaseButton> & {
   pending?: boolean;

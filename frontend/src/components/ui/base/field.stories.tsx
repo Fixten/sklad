@@ -1,3 +1,5 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+
 import {
   Field,
   FieldDescription,
@@ -9,8 +11,6 @@ import {
   FieldSet,
 } from "./field";
 import { Input } from "./input";
-
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   component: Field,

@@ -1,16 +1,16 @@
 import { describe, expect, it } from "vitest";
 
+import type {
+  MaterialCatalogRow,
+  MaterialTarget,
+} from "@/features/Material/useMaterialsCatalog";
+
 import {
   materialPath,
   materialTitle,
   queryMaterialRow,
   queryMaterialRowWithType,
 } from "./materiaUtils";
-
-import type {
-  MaterialCatalogRow,
-  MaterialTarget,
-} from "@/features/Material/useMaterialsCatalog";
 
 const oak: MaterialTarget = {
   id: 10,

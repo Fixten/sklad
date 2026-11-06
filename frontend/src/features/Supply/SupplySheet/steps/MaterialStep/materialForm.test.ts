@@ -1,10 +1,10 @@
 import { expect, test } from "vitest";
 import zod from "zod";
 
-import { createMaterialFormSchema, NewTypeValue } from "./materialForm";
-
-import type { MaterialFormValues } from "./materialForm";
 import type { MaterialTypeModel } from "@/features/MaterialType/MaterialType.model";
+
+import { createMaterialFormSchema, NewTypeValue } from "./materialForm";
+import type { MaterialFormValues } from "./materialForm";
 
 const types: Pick<MaterialTypeModel, "id" | "name">[] = [
   { id: 1, name: "Пиломатериал" },

@@ -1,11 +1,10 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
+import type { ComponentProps } from "react";
 import { fn } from "storybook/test";
 
 import SelectField from "./index";
-
 import type { SelectFieldOption } from "./index";
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import type { ComponentProps } from "react";
 
 const unitOptions: SelectFieldOption[] = [
   { value: "m3", label: "м³" },

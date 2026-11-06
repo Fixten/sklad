@@ -1,8 +1,7 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ArrowDownToLineIcon, PlusIcon, SettingsIcon } from "lucide-react";
 
 import { Button } from "./button";
-
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const variants = [
   "default",

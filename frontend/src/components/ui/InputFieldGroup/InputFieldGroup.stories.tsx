@@ -1,8 +1,8 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+
 import { InputField } from "@ui/InputField";
 
 import InputFieldGroup from ".";
-
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   component: InputFieldGroup,

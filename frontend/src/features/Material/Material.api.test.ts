@@ -3,7 +3,6 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { stubRoutes } from "@/test/apiStub.vitest";
 
 import MaterialApi from "./Material.api";
-
 import type { MaterialDTO, MaterialModel } from "./Material.model";
 
 const createdAt = "2026-01-01T00:00:00Z";

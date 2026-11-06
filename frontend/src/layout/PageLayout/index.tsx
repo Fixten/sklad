@@ -1,9 +1,8 @@
 import { cn } from "cn";
+import type { ReactNode } from "react";
 
 import Link from "@ui/Link";
 import Typography from "@ui/Typography";
-
-import type { ReactNode } from "react";
 
 interface PageLayoutProps {
   back?: { to: string; label: string };

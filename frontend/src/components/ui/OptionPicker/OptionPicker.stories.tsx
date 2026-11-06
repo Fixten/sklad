@@ -1,18 +1,17 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
+import type { ComponentType } from "react";
 import { fn } from "storybook/test";
 
 import OptionPicker from "./index";
-
 import type { OptionPickerProps } from "./index";
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import type { ComponentType } from "react";
 
 const Preview: ComponentType<OptionPickerProps<string>> = OptionPicker;
 
 const Controlled = (props: OptionPickerProps<string>) => {
-  const [value, setValue] = useState(props.value);
+  const [query, setQuery] = useState(props.query);
 
-  return <OptionPicker {...props} value={value} onValueChange={setValue} />;
+  return <OptionPicker {...props} query={query} onQueryChange={setQuery} />;
 };
 
 const meta = {
@@ -21,24 +20,22 @@ const meta = {
     id: "option-picker",
     label: "Материал",
     placeholder: "Название, тип или вариант",
-    value: "Дуб",
+    query: "Дуб",
     hint: "Поиск по названию, типу и варианту.",
     autoFocus: true,
     onSelect: fn(),
-    onValueChange: fn(),
+    onQueryChange: fn(),
     create: {
       createLabel: "Новый вариант в «Дуб»",
       onCreate: fn(),
     },
-    results: [
+    options: [
       {
-        key: "1",
         value: "1",
         label: "Доска 40 мм",
         meta: "Пиломатериал · Дуб",
       },
       {
-        key: "2",
         value: "2",
         label: "Брусок 60 × 60",
         meta: "Пиломатериал · Дуб",
@@ -67,6 +64,6 @@ export const Idle: Story = {
 };
 
 export const CreateOnly: Story = {
-  args: { results: [] },
+  args: { options: [] },
   render: renderControlled,
 };
