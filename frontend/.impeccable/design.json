@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-20T17:11:31.877Z",
+  "generatedAt": "2026-11-07T12:07:46.446Z",
   "title": "Design System: Sklad",
   "extensions": {
     "colorMeta": {
@@ -531,6 +531,7 @@
       "**Do** set all type through `Typography` / the `type-*` tokens.",
       "**Do** keep `rounded-none` on shipped components.",
       "**Do** use tabular figures (`type-data`) for any column of numbers.",
+      "**Do** keep a pending action enabled, guard duplicate activation and show a `Spinner` with status text.",
       "**Do** chart with the main color palette: `--chart-1` for a single series, deeper steps in order for up to three, and direct labels past that.",
       "**Do** re-run the rebind pass (`literal → apply token`) after editing a token value, in Penpot and in CSS.",
       "**Do** verify the `--muted-foreground` pairing stays ≥ 4.5:1 when the forest ladder changes."
@@ -548,6 +549,7 @@
       "**Don't** bypass semantic tokens with raw palette colors (`text-green-600` etc.).",
       "**Don't** separate chart series with a second hue or with Ember — the palette is a tonal ladder of one hue; label the series or vary the line dash.",
       "**Don't** communicate status or error by color alone — pair it with a message or icon.",
+      "**Don't** disable a control to communicate that its action is loading.",
       "**Don't** style Penpot text with a typography asset or an off-scale face — bind a `typography.*` token.",
       "**Don't** maintain or introduce a light theme unless the product requirements explicitly change."
     ]

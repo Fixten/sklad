@@ -43,6 +43,8 @@ interface Props<T extends string | number> {
 const rowClassName =
   "h-12 cursor-pointer gap-3 px-4 data-selected:bg-muted data-selected:shadow-[inset_2px_0_0_0_var(--primary)] [&>svg:last-child]:hidden";
 
+const createRowClassName = `${rowClassName} order-first`;
+
 export default function OptionPicker<T extends string | number>(
   props: Props<T>,
 ) {
@@ -107,7 +109,7 @@ export default function OptionPicker<T extends string | number>(
   return (
     <div
       ref={wrapperRef}
-      className="flex flex-col gap-6"
+      className="flex flex-col"
       onFocus={openList}
       onKeyDown={handleWrapperKeyDown}
     >
@@ -116,7 +118,7 @@ export default function OptionPicker<T extends string | number>(
         loop
         value={activeRow}
         onValueChange={setInputRow}
-        className="bg-transparent"
+        className="gap-6 bg-transparent"
       >
         <InputField
           id={id}
@@ -138,7 +140,10 @@ export default function OptionPicker<T extends string | number>(
           onKeyDown={handleFieldKeyDown}
         />
         {expanded ? (
-          <CommandList label={listLabel} className="list-none">
+          <CommandList
+            label={listLabel}
+            className="max-h-none **:[[cmdk-list-sizer]]:flex **:[[cmdk-list-sizer]]:flex-col"
+          >
             {options.map((option) => (
               <CommandItem
                 key={String(option.value)}
@@ -166,7 +171,7 @@ export default function OptionPicker<T extends string | number>(
               <CommandItem
                 key="create"
                 value="create"
-                className={rowClassName}
+                className={createRowClassName}
                 onSelect={() => {
                   close();
                   create.onCreate();

@@ -58,17 +58,41 @@ test("wires the field to the list and its active option", async () => {
     .toHaveAttribute("aria-selected", "true");
 });
 
-test("places the create row last", async () => {
+test("places the create row first, then the results", async () => {
   const screen = await render(<OptionPicker {...baseProps} />);
 
   await userEvent.click(screen.getByRole("combobox"));
 
+  const createTop = screen
+    .getByRole("option", { name: createRowLabel })
+    .element()
+    .getBoundingClientRect().top;
+  const boardTop = screen
+    .getByRole("option", { name: "Доска 40 мм" })
+    .element()
+    .getBoundingClientRect().top;
+  const barTop = screen
+    .getByRole("option", { name: "Брусок 60 × 60" })
+    .element()
+    .getBoundingClientRect().top;
+
+  expect(boardTop).toBeGreaterThan(createTop);
+  expect(barTop).toBeGreaterThan(boardTop);
+});
+
+test("keeps the list 24px under the field", async () => {
+  const screen = await render(<OptionPicker {...baseProps} />);
+
+  await userEvent.click(screen.getByRole("combobox"));
+
+  const input = screen.getByRole("combobox").element();
+  const list = screen.getByRole("listbox").element();
+
   expect(
-    screen
-      .getByRole("option")
-      .elements()
-      .map((element) => element.textContent),
-  ).toEqual(["Доска 40 мм", "Брусок 60 × 60", createRowLabel]);
+    Math.round(
+      list.getBoundingClientRect().top - input.getBoundingClientRect().bottom,
+    ),
+  ).toBe(24);
 });
 
 test("shows only the create row when there are no results", async () => {
