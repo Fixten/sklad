@@ -7,7 +7,7 @@ import OptionPicker from "@ui/OptionPicker";
 
 import type { SupplyFormValues } from "../../supplyForm";
 
-const writeOptions = { shouldDirty: true } as const;
+const writeOptions = { shouldDirty: true, shouldValidate: true } as const;
 
 export default function SearchField() {
   const catalog = useMaterialsCatalog();
@@ -34,6 +34,7 @@ export default function SearchField() {
   return (
     <OptionPicker
       label="Поиск"
+      listLabel="Варианты"
       placeholder="Название, тип или вариант"
       loading={catalog.isLoading}
       options={options}

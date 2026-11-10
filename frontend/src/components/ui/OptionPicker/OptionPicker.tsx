@@ -25,6 +25,7 @@ export interface OptionPickerOption {
 
 export interface OptionPickerProps {
   label: string;
+  listLabel?: string;
   value?: string;
   onSelect: (v: string) => void;
   options: OptionPickerOption[];
@@ -49,6 +50,11 @@ function getOptionsWithNewItem(options: OptionPickerOption[], query: string) {
         ...options,
       ]
     : options;
+}
+
+function getSelectedOption(options: OptionPickerOption[], value?: string) {
+  if (typeof value === "undefined") return undefined;
+  else return options.find((v) => v.value === value) ?? null;
 }
 
 export default function OptionPicker(props: OptionPickerProps) {
@@ -79,8 +85,7 @@ export default function OptionPicker(props: OptionPickerProps) {
     );
   }
 
-  const selectedOption =
-    optionsWithNewItem.find((v) => v.value === props.value) ?? null;
+  const selectedOption = getSelectedOption(optionsWithNewItem, props.value);
 
   const hint = selectedOption?.newItemLabel ? "Создать" : undefined;
 
@@ -112,7 +117,7 @@ export default function OptionPicker(props: OptionPickerProps) {
           )}
         </ComboboxInput>
         <ComboboxContent>
-          <ComboboxList>
+          <ComboboxList aria-label={props.listLabel}>
             {(option: OptionPickerOption) => (
               <ComboboxItem key={option.value} value={option}>
                 {option.label}
