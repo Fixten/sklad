@@ -12,6 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@base/dialog";
+import { Spinner } from "@base/spinner";
 
 function Command({
   className,
@@ -58,8 +59,11 @@ function CommandDialog({
 
 function CommandInput({
   className,
+  loading,
   ...props
-}: React.ComponentProps<typeof CommandPrimitive.Input>) {
+}: React.ComponentProps<typeof CommandPrimitive.Input> & {
+  loading?: boolean;
+}) {
   return (
     <div
       data-slot="command-input-wrapper"
@@ -74,6 +78,7 @@ function CommandInput({
         )}
         {...props}
       />
+      {loading ? <Spinner className="ml-2 shrink-0 opacity-50" /> : null}
     </div>
   );
 }

@@ -5,15 +5,9 @@ import { UnitSchema, type Unit } from "@/features/units";
 import { parseAmount } from "@/lib/amount";
 
 export interface SupplyFormValues {
-  typeQuery: string;
-  typeId: number | null;
-  typeName: string;
-  materialQuery: string;
-  materialId: number | null;
-  materialName: string;
-  variantQuery: string;
-  variantId: number | null;
-  variantName: string;
+  type: string;
+  material: string;
+  variant: string;
   unit: Unit | null;
   quantity: string;
   price: string;
@@ -44,15 +38,9 @@ export interface SupplyDraft {
 }
 
 export const supplyFormDefaults = {
-  typeQuery: "",
-  typeId: null,
-  typeName: "",
-  materialQuery: "",
-  materialId: null,
-  materialName: "",
-  variantQuery: "",
-  variantId: null,
-  variantName: "",
+  type: "",
+  material: "",
+  variant: "",
   unit: null,
   quantity: "",
   price: "",
@@ -71,21 +59,12 @@ const draftUnit = (unit: Unit | null): Unit => {
   return unit;
 };
 
-const isCommitted = (id: number | null, name: string) =>
-  id !== null || name.trim().length > 0;
-
 export const createSupplyFormSchema = () =>
   zod
     .object({
-      typeQuery: zod.string(),
-      typeId: zod.number().int().nullable(),
-      typeName: zod.string().trim(),
-      materialQuery: zod.string(),
-      materialId: zod.number().int().nullable(),
-      materialName: zod.string().trim(),
-      variantQuery: zod.string(),
-      variantId: zod.number().int().nullable(),
-      variantName: zod.string().trim(),
+      type: zod.string(),
+      material: zod.string(),
+      variant: zod.string(),
       unit: UnitSchema.nullable(),
       quantity: zod
         .string()
@@ -100,24 +79,24 @@ export const createSupplyFormSchema = () =>
       url: zod.string().trim(),
     })
     .superRefine((values, context) => {
-      if (!isCommitted(values.typeId, values.typeName)) {
+      if (values.type.trim() === "") {
         context.addIssue({
           code: "custom",
-          path: ["typeName"],
+          path: ["type"],
           message: "Выберите или создайте тип",
         });
       }
-      if (!isCommitted(values.materialId, values.materialName)) {
+      if (values.material.trim() === "") {
         context.addIssue({
           code: "custom",
-          path: ["materialName"],
+          path: ["material"],
           message: "Выберите или создайте материал",
         });
       }
-      if (!isCommitted(values.variantId, values.variantName)) {
+      if (values.variant.trim() === "") {
         context.addIssue({
           code: "custom",
-          path: ["variantName"],
+          path: ["variant"],
           message: "Выберите или создайте вариант",
         });
       }
@@ -150,18 +129,15 @@ export const createSupplyFormSchema = () =>
       }
     })
     .transform((values): SupplyDraft => ({
-      target:
-        values.variantId !== null
-          ? { kind: "existing", variantId: values.variantId }
-          : {
-              kind: "new",
-              typeId: values.typeId ?? undefined,
-              typeName: values.typeName || undefined,
-              materialId: values.materialId ?? undefined,
-              materialName: values.materialName || undefined,
-              variantName: values.variantName,
-              unit: draftUnit(values.unit),
-            },
+      target: {
+        kind: "new",
+        typeId: undefined,
+        typeName: values.type || undefined,
+        materialId: undefined,
+        materialName: values.material || undefined,
+        variantName: values.variant,
+        unit: draftUnit(values.unit),
+      },
       quantity: amount(values.quantity),
       purchasePrice: parseAmount(values.price) ?? 0,
       supplierName: values.supplierName,

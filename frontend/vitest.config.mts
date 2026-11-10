@@ -42,6 +42,7 @@ export default defineConfig({
           name: "browser",
           include: ["src/**/*.browser.{test,spec}.tsx"],
           setupFiles: ["./src/test/browser.setup.ts"],
+          testTimeout: 5000,
           browser: {
             enabled: true,
             provider: playwright(),

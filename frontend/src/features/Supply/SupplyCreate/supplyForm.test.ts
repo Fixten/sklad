@@ -10,25 +10,17 @@ const base = {
   price: "24000",
   supplierName: "Столярный двор",
 };
-const existing = {
+const committed = {
   ...base,
-  typeQuery: "Пиломатериал",
-  typeId: 1,
-  materialQuery: "Дуб",
-  materialId: 10,
-  variantQuery: "Доска 40 мм",
-  variantId: 100,
+  type: "Пиломатериал",
+  material: "Дуб",
+  variant: "Доска 40 мм",
   unit: "meters",
 } satisfies SupplyFormValues;
 const created = {
-  ...base,
-  typeQuery: "Пиломатериал",
-  typeName: "Пиломатериал",
-  materialQuery: "Ясень",
-  materialName: "Ясень",
-  variantQuery: "Доска 40 мм",
-  variantName: "Доска 40 мм",
-  unit: "meters",
+  ...committed,
+  material: "Ясень",
+  variant: "Доска 45 мм",
 } satisfies SupplyFormValues;
 
 const parse = (patch: Partial<SupplyFormValues> = {}) =>
@@ -43,10 +35,18 @@ const errorsOf = (
   result.success ? {} : zod.flattenError(result.error).fieldErrors;
 
 describe("createSupplyFormSchema", () => {
-  it("accepts an existing variant draft", () => {
-    const result = parse(existing);
+  it("maps a committed target into a new draft", () => {
+    const result = parse(committed);
 
-    expect(result.data?.target).toEqual({ kind: "existing", variantId: 100 });
+    expect(result.data?.target).toEqual({
+      kind: "new",
+      typeId: undefined,
+      typeName: "Пиломатериал",
+      materialId: undefined,
+      materialName: "Дуб",
+      variantName: "Доска 40 мм",
+      unit: "meters",
+    });
     expect(result.data?.purchasePrice).toBe(24000);
     expect(result.data?.description).toBeUndefined();
   });
@@ -60,56 +60,28 @@ describe("createSupplyFormSchema", () => {
       typeName: "Пиломатериал",
       materialId: undefined,
       materialName: "Ясень",
-      variantName: "Доска 40 мм",
-      unit: "meters",
-    });
-  });
-
-  it("keeps existing levels while creating the variant", () => {
-    const result = parse({
-      ...created,
-      typeId: 1,
-      typeName: "",
-      materialId: 10,
-      materialName: "",
-      variantName: "Доска 45 мм",
-    });
-
-    expect(result.data?.target).toEqual({
-      kind: "new",
-      typeId: 1,
-      typeName: undefined,
-      materialId: 10,
-      materialName: undefined,
       variantName: "Доска 45 мм",
       unit: "meters",
     });
   });
 
-  it("rejects query text without a commit", () => {
-    const result = parse({
-      ...base,
-      typeQuery: "Пиломатериал",
-      materialQuery: "Ясень",
-      variantQuery: "Доска 40 мм",
-      unit: "meters",
-    });
+  it("reports missing target levels", () => {
+    const result = parse({ ...base, unit: "meters" });
 
     const errors = errorsOf(result);
-    expect(errors.typeName).toEqual(["Выберите или создайте тип"]);
-    expect(errors.materialName).toEqual(["Выберите или создайте материал"]);
-    expect(errors.variantName).toEqual(["Выберите или создайте вариант"]);
+    expect(errors.type).toEqual(["Выберите или создайте тип"]);
+    expect(errors.material).toEqual(["Выберите или создайте материал"]);
+    expect(errors.variant).toEqual(["Выберите или создайте вариант"]);
   });
 
   it("reports each missing level separately", () => {
     const result = parse({
-      ...existing,
-      materialId: null,
-      materialQuery: "Ясень",
+      ...committed,
+      material: "",
     });
 
     expect(errorsOf(result)).toEqual({
-      materialName: ["Выберите или создайте материал"],
+      material: ["Выберите или создайте материал"],
     });
   });
 
@@ -122,25 +94,17 @@ describe("createSupplyFormSchema", () => {
     expect(errorsOf(result)).toEqual({ unit: ["Выберите единицу"] });
   });
 
-  it("never puts query text into the draft", () => {
-    const withQueries = parse({
-      ...existing,
-      typeQuery: "zzz",
-      materialQuery: "zzz",
-      variantQuery: "zzz",
-    });
-    const withoutQueries = parse(existing);
-
-    expect(withQueries.data).toEqual(withoutQueries.data);
-  });
-
-  it("trims committed names", () => {
+  it("trims optional details", () => {
     const result = parse({
       ...created,
-      materialName: "  Ясень  ",
+      supplierName: "  Склад  ",
+      description: "  Партия  ",
+      url: "  https://example.com  ",
     });
 
-    expect(result.data?.target).toHaveProperty("materialName", "Ясень");
+    expect(result.data?.supplierName).toBe("Склад");
+    expect(result.data?.description).toBe("Партия");
+    expect(result.data?.url).toBe("https://example.com");
   });
 
   it("reports every missing detail value at once", () => {
@@ -159,46 +123,46 @@ describe("createSupplyFormSchema", () => {
   });
 
   it("rejects a zero or negative quantity", () => {
-    expect(errorsOf(parse({ ...existing, quantity: "0" })).quantity).toEqual([
+    expect(errorsOf(parse({ ...committed, quantity: "0" })).quantity).toEqual([
       "Укажите количество",
     ]);
-    expect(errorsOf(parse({ ...existing, quantity: "-3" })).quantity).toEqual([
+    expect(errorsOf(parse({ ...committed, quantity: "-3" })).quantity).toEqual([
       "Укажите количество",
     ]);
   });
 
   it("requires whole pieces", () => {
     expect(
-      errorsOf(parse({ ...existing, unit: "pieces", quantity: "2.5" }))
+      errorsOf(parse({ ...committed, unit: "pieces", quantity: "2.5" }))
         .quantity,
     ).toEqual(["Количество в штуках должно быть целым"]);
     expect(
-      parse({ ...existing, unit: "pieces", quantity: "2" }).data?.quantity,
+      parse({ ...committed, unit: "pieces", quantity: "2" }).data?.quantity,
     ).toBe(2);
   });
 
   it("limits meters to three decimal places", () => {
-    expect(parse({ ...existing, quantity: "2.123" }).data?.quantity).toBe(
+    expect(parse({ ...committed, quantity: "2.123" }).data?.quantity).toBe(
       2.123,
     );
     expect(
-      errorsOf(parse({ ...existing, quantity: "2.1234" })).quantity,
+      errorsOf(parse({ ...committed, quantity: "2.1234" })).quantity,
     ).toEqual(["Не больше трёх знаков после запятой"]);
   });
 
   it("accepts a free lot and comma decimals", () => {
-    expect(parse({ ...existing, price: "0" }).data?.purchasePrice).toBe(0);
-    expect(parse({ ...existing, quantity: "2,5" }).data?.quantity).toBe(2.5);
+    expect(parse({ ...committed, price: "0" }).data?.purchasePrice).toBe(0);
+    expect(parse({ ...committed, quantity: "2,5" }).data?.quantity).toBe(2.5);
   });
 
   it("rejects empty, non-numeric and negative prices", () => {
-    expect(errorsOf(parse({ ...existing, price: "" })).price).toEqual([
+    expect(errorsOf(parse({ ...committed, price: "" })).price).toEqual([
       "Укажите цену закупки",
     ]);
-    expect(errorsOf(parse({ ...existing, price: "abc" })).price).toEqual([
+    expect(errorsOf(parse({ ...committed, price: "abc" })).price).toEqual([
       "Укажите цену закупки",
     ]);
-    expect(errorsOf(parse({ ...existing, price: "-1" })).price).toEqual([
+    expect(errorsOf(parse({ ...committed, price: "-1" })).price).toEqual([
       "Укажите цену закупки",
     ]);
   });

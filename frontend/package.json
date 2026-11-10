@@ -6,6 +6,8 @@
     "dev": "vite --host",
     "server:e2e": "vite --mode e2e --port 5273 --strictPort",
     "preview": "vite preview",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "lint": "eslint src/",
     "lint:fix": "eslint --fix src/",
     "typecheck": "tsc --noEmit",
@@ -22,8 +24,6 @@
     "build-storybook": "storybook build",
     "test:all": "pnpm test && pnpm test:browser && pnpm vrt",
     "fullcheck": "pnpm format && pnpm lint:fix && pnpm typecheck && pnpm test:all",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
     "build": "vite build",
     "prod": "pm2-runtime server.js"
   },

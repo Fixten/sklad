@@ -1,10 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useState } from "react";
 
-import { Button } from "./button";
 import {
   Command,
-  CommandDialog,
   CommandEmpty,
   CommandGroup,
   CommandInput,
@@ -21,32 +18,6 @@ const meta = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
-
-function CommandDialogDemo() {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="flex flex-col gap-4">
-      <Button
-        onClick={() => {
-          setOpen(true);
-        }}
-      >
-        Open Command Dialog
-      </Button>
-      <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Type a command or search..." />
-        <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup heading="Suggestions">
-            <CommandItem>Calendar</CommandItem>
-            <CommandItem>Search Emoji</CommandItem>
-            <CommandItem>Calculator</CommandItem>
-          </CommandGroup>
-        </CommandList>
-      </CommandDialog>
-    </div>
-  );
-}
 
 export const Default: Story = {
   render: () => (
@@ -102,9 +73,4 @@ export const WithShortcuts: Story = {
       </CommandList>
     </Command>
   ),
-};
-
-export const CommandDialogStory: Story = {
-  name: "CommandDialog",
-  render: () => <CommandDialogDemo />,
 };

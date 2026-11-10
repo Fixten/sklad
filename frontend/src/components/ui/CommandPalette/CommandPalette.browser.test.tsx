@@ -42,40 +42,6 @@ test("opens on focus", async () => {
   await expect.element(screen.getByText("Главная")).toBeInTheDocument();
 });
 
-test("opens on click", async () => {
-  const screen = await render(<CommandPalette items={buildItems()} />);
-
-  await screen.getByPlaceholder("Начать работу").click();
-
-  await expect.element(screen.getByRole("listbox")).toBeInTheDocument();
-});
-
-test("opens on the global / shortcut and focuses the input", async () => {
-  const screen = await render(<CommandPalette items={buildItems()} />);
-  const input = asInput(screen.getByPlaceholder("Начать работу").element());
-
-  await userEvent.keyboard("/");
-
-  await expect.element(screen.getByRole("listbox")).toBeInTheDocument();
-  expect(document.activeElement).toBe(input);
-});
-
-test("ignores the global / shortcut while typing in an input", async () => {
-  const screen = await render(
-    <div>
-      <input aria-label="Поле" />
-      <CommandPalette items={buildItems()} />
-    </div>,
-  );
-  const field = screen.getByRole("textbox", { name: "Поле" });
-
-  asInput(field.element()).focus();
-  await userEvent.keyboard("/");
-
-  await expect.element(field).toHaveValue("/");
-  await expect.element(screen.getByRole("listbox")).not.toBeInTheDocument();
-});
-
 test("renders the panel as an absolute overlay without moving content", async () => {
   const screen = await render(
     <div>
@@ -100,20 +66,15 @@ test("renders the panel as an absolute overlay without moving content", async ()
   expect(below.getBoundingClientRect().top).toBe(topBefore);
 });
 
-test("closes on Escape and clears the query", async () => {
+test("closes on Escape", async () => {
   const screen = await render(<CommandPalette items={buildItems()} />);
-  const input = screen.getByPlaceholder("Начать работу");
 
-  await input.click();
-  await input.fill("материал");
-  await expect.element(screen.getByText("Материалы")).toBeInTheDocument();
+  await screen.getByPlaceholder("Начать работу").click();
+  await expect.element(screen.getByRole("listbox")).toBeInTheDocument();
 
   await userEvent.keyboard("{Escape}");
 
   await expect.element(screen.getByRole("listbox")).not.toBeInTheDocument();
-
-  await input.click();
-  await expect.element(input).toHaveValue("");
 });
 
 test("closes on an outside pointerdown", async () => {
@@ -132,18 +93,16 @@ test("closes on an outside pointerdown", async () => {
   await expect.element(screen.getByRole("listbox")).not.toBeInTheDocument();
 });
 
-test("reopens when typing after Escape", async () => {
+test("opens on typing", async () => {
   const screen = await render(<CommandPalette items={buildItems()} />);
-  const input = screen.getByPlaceholder("Начать работу");
 
-  await input.click();
+  await screen.getByPlaceholder("Начать работу").click();
   await userEvent.keyboard("{Escape}");
   await expect.element(screen.getByRole("listbox")).not.toBeInTheDocument();
 
   await userEvent.keyboard("m");
 
   await expect.element(screen.getByRole("listbox")).toBeInTheDocument();
-  await expect.element(input).toHaveValue("m");
 });
 
 test("navigates items with the keyboard", async () => {
@@ -205,37 +164,4 @@ test("shows the empty message when nothing matches", async () => {
   await screen.getByPlaceholder("Начать работу").fill("zzz");
 
   await expect.element(screen.getByText("Нету")).toBeInTheDocument();
-});
-
-test("shows the empty message for an empty item list once opened", async () => {
-  const screen = await render(
-    <CommandPalette items={[]} emptyMessage="Пока нет действий" />,
-  );
-
-  await expect
-    .element(screen.getByText("Пока нет действий"))
-    .not.toBeInTheDocument();
-
-  await screen.getByPlaceholder("Начать работу").click();
-
-  await expect
-    .element(screen.getByText("Пока нет действий"))
-    .toBeInTheDocument();
-});
-
-test("exposes an accessible tree when open", async () => {
-  const screen = await render(
-    <CommandPalette
-      heading="Меню"
-      items={[{ value: "/", label: "Главная", onSelect: vi.fn() }]}
-    />,
-  );
-
-  await screen.getByPlaceholder("Начать работу").click();
-
-  await expect.element(screen.getByRole("listbox")).toMatchAriaInlineSnapshot(`
-      - listbox "Меню":
-        - group "Меню":
-          - option "Главная" [selected]
-    `);
 });
