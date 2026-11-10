@@ -3,6 +3,8 @@ import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router";
 
+import Toaster from "@ui/Toast";
+
 import router from "./router";
 
 import "./styles/index.css";
@@ -16,6 +18,7 @@ if (root)
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
+        <Toaster />
       </QueryClientProvider>
     </React.StrictMode>,
   );
