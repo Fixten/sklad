@@ -283,15 +283,20 @@ test("creates the type, material, and variant chain on save", async () => {
   await screen.getByLabelText("Цена закупки, всего").fill("900");
   await screen.getByRole("button", { name: "Сохранить" }).click();
 
-  const posts = screen.requests.filter((row) => row.method === "POST");
-
   await expect.element(screen.getByText("Материалы")).toBeInTheDocument();
-  expect(posts.map((row) => row.path)).toEqual([
-    "/api/material-type",
-    "/api/material",
-    "/api/material-variant",
-    "/api/supply",
-  ]);
+  await expect
+    .poll(() =>
+      screen.requests
+        .filter((row) => row.method === "POST")
+        .map((row) => row.path),
+    )
+    .toEqual([
+      "/api/material-type",
+      "/api/material",
+      "/api/material-variant",
+      "/api/supply",
+    ]);
+  const posts = screen.requests.filter((row) => row.method === "POST");
   expect(posts[0]?.body).toEqual({ name: "Химия" });
   expect(posts[1]?.body).toEqual({
     name: "Краситель",
