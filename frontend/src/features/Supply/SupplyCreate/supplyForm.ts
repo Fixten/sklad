@@ -16,17 +16,12 @@ export interface SupplyFormValues {
   url: string;
 }
 
-export type TargetDraft =
-  | { kind: "existing"; variantId: number }
-  | {
-      kind: "new";
-      typeId: number | undefined;
-      typeName: string | undefined;
-      materialId: number | undefined;
-      materialName: string | undefined;
-      variantName: string;
-      unit: Unit;
-    };
+export interface TargetDraft {
+  typeName: string;
+  materialName: string;
+  variantName: string;
+  unit: Unit;
+}
 
 export interface SupplyDraft {
   target: TargetDraft;
@@ -130,11 +125,8 @@ export const createSupplyFormSchema = () =>
     })
     .transform((values): SupplyDraft => ({
       target: {
-        kind: "new",
-        typeId: undefined,
-        typeName: values.type || undefined,
-        materialId: undefined,
-        materialName: values.material || undefined,
+        typeName: values.type,
+        materialName: values.material,
         variantName: values.variant,
         unit: draftUnit(values.unit),
       },

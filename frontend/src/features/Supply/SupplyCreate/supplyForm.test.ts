@@ -35,14 +35,11 @@ const errorsOf = (
   result.success ? {} : zod.flattenError(result.error).fieldErrors;
 
 describe("createSupplyFormSchema", () => {
-  it("maps a committed target into a new draft", () => {
+  it("maps a committed target into a draft", () => {
     const result = parse(committed);
 
     expect(result.data?.target).toEqual({
-      kind: "new",
-      typeId: undefined,
       typeName: "Пиломатериал",
-      materialId: undefined,
       materialName: "Дуб",
       variantName: "Доска 40 мм",
       unit: "meters",
@@ -55,10 +52,7 @@ describe("createSupplyFormSchema", () => {
     const result = parse(created);
 
     expect(result.data?.target).toEqual({
-      kind: "new",
-      typeId: undefined,
       typeName: "Пиломатериал",
-      materialId: undefined,
       materialName: "Ясень",
       variantName: "Доска 45 мм",
       unit: "meters",

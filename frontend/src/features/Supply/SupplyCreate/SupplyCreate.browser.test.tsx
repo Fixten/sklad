@@ -41,7 +41,7 @@ test("submits the form on enter once the list is closed", async () => {
   const screen = await renderSupply(<SupplyCreate />, { form: false });
 
   await screen.getByLabelText("Поиск").fill("Дуб");
-  await userEvent.keyboard("{Enter}");
+  await userEvent.keyboard("{ArrowDown}{Enter}");
 
   await expect
     .element(screen.getByLabelText("Поиск"))
