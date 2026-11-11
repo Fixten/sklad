@@ -1,4 +1,4 @@
-<!-- agent-md-sync: max-lines=30 -->
+<!-- agent-md-sync: max-lines=45 -->
 
 # Project overview
 
@@ -27,3 +27,15 @@ docs and dictate changes.
 # Skills
 
 - When running impeccable always work in frontend package.
+
+### Issue tracker
+
+Issues live as markdown files under `.scratch/<feature>/`. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The five default triage roles, recorded as `Status:` values. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context layout: root `GLOSSARY.md` + `docs/adr/`. See `docs/agents/domain.md`.
