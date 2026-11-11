@@ -36,6 +36,7 @@ export default function MaterialPicker() {
       name="material"
       label="Материал"
       options={options}
+      canCreate
       onSelect={onSelect}
     />
   );

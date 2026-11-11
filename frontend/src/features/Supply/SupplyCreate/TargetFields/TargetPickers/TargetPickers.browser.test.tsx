@@ -2,7 +2,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useWatch } from "react-hook-form";
 import type { Control, FieldPath } from "react-hook-form";
 import { expect, test } from "vitest";
-import { userEvent } from "vitest/browser";
 import { render } from "vitest-browser-react";
 
 import type { Routes } from "@/test/apiStub";
@@ -144,32 +143,39 @@ const changeMaterial = async (screen: Screen, name: string) => {
   await screen.getByRole("option", { name }).click();
 };
 
-test("does not commit typed text", async () => {
+test("commits typed text as a new value via the create row", async () => {
   const screen = await renderPickers();
 
-  await screen.getByLabelText("Тип").fill("Пиломатериал");
-  await screen.getByLabelText("Материал").fill("Дуб");
-  await screen.getByLabelText("Вариант").fill("Доска 40 мм");
-  await userEvent.keyboard("{Escape}");
+  const type = screen.getByLabelText("Тип");
+  await type.click();
+  await type.fill("Новый тип");
+  await screen.getByRole("option", { name: "Создать Новый тип" }).click();
 
-  for (const testId of ["type", "material", "variant", "unit"]) {
-    await expect.element(screen.getByTestId(testId)).toHaveValue("");
-  }
+  await expect.element(type).toHaveValue("Новый тип");
+  await expect.element(screen.getByTestId("type")).toHaveValue("Новый тип");
 
-  await screen.getByRole("button", { name: "Сохранить" }).click();
+  const material = screen.getByLabelText("Материал");
+  await material.click();
+  await material.fill("Новый материал");
+  await screen.getByRole("option", { name: "Создать Новый материал" }).click();
 
   await expect
-    .element(screen.getByText("Выберите или создайте тип"))
-    .toBeInTheDocument();
+    .element(screen.getByTestId("material"))
+    .toHaveValue("Новый материал");
+
+  const variant = screen.getByLabelText("Вариант");
+  await variant.click();
+  await variant.fill("Новый вариант");
+  await screen.getByRole("option", { name: "Создать Новый вариант" }).click();
+
   await expect
-    .element(screen.getByText("Выберите или создайте материал"))
-    .toBeInTheDocument();
+    .element(screen.getByTestId("variant"))
+    .toHaveValue("Новый вариант");
+
+  await expect.element(screen.getByTestId("unit")).toHaveValue("");
   await expect
-    .element(screen.getByText("Выберите или создайте вариант"))
-    .toBeInTheDocument();
-  await expect
-    .element(screen.getByText("Выберите единицу"))
-    .toBeInTheDocument();
+    .element(screen.getByRole("combobox", { name: /Единица/ }))
+    .toBeEnabled();
 });
 
 test("commits a picked result and drops it on edit", async () => {

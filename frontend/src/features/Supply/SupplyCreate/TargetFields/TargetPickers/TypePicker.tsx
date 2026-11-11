@@ -31,6 +31,7 @@ export default function TypePicker() {
       name="type"
       label="Тип"
       options={options}
+      canCreate
       onSelect={onSelect}
     />
   );

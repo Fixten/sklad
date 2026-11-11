@@ -37,6 +37,7 @@ export default function VariantPicker() {
       name="variant"
       label="Вариант"
       options={options}
+      canCreate
       onSelect={onSelect}
     />
   );
