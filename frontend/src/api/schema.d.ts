@@ -23,14 +23,18 @@ export interface paths {
       responses: {
         /** @description Active material types */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["MaterialType"][];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -39,7 +43,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -48,7 +54,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -57,7 +65,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -86,14 +96,18 @@ export interface paths {
       responses: {
         /** @description The created material type */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["MaterialType"];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -102,7 +116,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -111,7 +127,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -120,7 +138,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -156,14 +176,18 @@ export interface paths {
       responses: {
         /** @description The material type */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["MaterialType"];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -172,7 +196,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -181,7 +207,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -190,7 +218,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -215,7 +245,9 @@ export interface paths {
       responses: {
         /** @description Delete confirmation */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -224,7 +256,9 @@ export interface paths {
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -233,7 +267,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -242,7 +278,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -251,7 +289,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -283,14 +323,18 @@ export interface paths {
       responses: {
         /** @description The updated material type */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["MaterialType"];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -299,7 +343,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -308,7 +354,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -317,7 +365,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -351,14 +401,18 @@ export interface paths {
       responses: {
         /** @description The restored material type */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["MaterialType"];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -367,7 +421,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -376,7 +432,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -385,7 +443,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -419,14 +479,18 @@ export interface paths {
       responses: {
         /** @description Active materials */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["Material"][];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -435,7 +499,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -444,7 +510,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -453,7 +521,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -483,14 +553,18 @@ export interface paths {
       responses: {
         /** @description The created material */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["Material"];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -499,7 +573,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -508,7 +584,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -517,7 +595,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -553,14 +633,18 @@ export interface paths {
       responses: {
         /** @description The material */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["Material"];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -569,7 +653,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -578,7 +664,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -587,7 +675,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -612,7 +702,9 @@ export interface paths {
       responses: {
         /** @description Delete confirmation */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -621,7 +713,9 @@ export interface paths {
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -630,7 +724,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -639,7 +735,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -648,7 +746,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -681,14 +781,18 @@ export interface paths {
       responses: {
         /** @description The updated material */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["Material"];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -697,7 +801,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -706,7 +812,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -715,7 +823,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -749,14 +859,18 @@ export interface paths {
       responses: {
         /** @description The restored material */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["Material"];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -765,7 +879,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -774,7 +890,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -783,7 +901,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -817,14 +937,18 @@ export interface paths {
       responses: {
         /** @description Active material variants */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["MaterialVariant"][];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -833,7 +957,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -842,7 +968,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -851,7 +979,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -882,14 +1012,18 @@ export interface paths {
       responses: {
         /** @description The created material variant */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["MaterialVariant"];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -898,7 +1032,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -907,7 +1043,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -916,7 +1054,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -952,14 +1092,18 @@ export interface paths {
       responses: {
         /** @description The material variant */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["MaterialVariant"];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -968,7 +1112,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -977,7 +1123,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -986,7 +1134,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1011,7 +1161,9 @@ export interface paths {
       responses: {
         /** @description Delete confirmation */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1020,7 +1172,9 @@ export interface paths {
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1029,7 +1183,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1038,7 +1194,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1047,7 +1205,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1081,14 +1241,18 @@ export interface paths {
       responses: {
         /** @description The updated material variant */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["MaterialVariant"];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1097,7 +1261,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1106,7 +1272,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1115,7 +1283,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1149,14 +1319,18 @@ export interface paths {
       responses: {
         /** @description The restored material variant */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["MaterialVariant"];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1165,7 +1339,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1174,7 +1350,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1183,7 +1361,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1220,14 +1400,18 @@ export interface paths {
       responses: {
         /** @description Supplies */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["Supply"][];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1236,7 +1420,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1245,7 +1431,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1254,7 +1442,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1287,14 +1477,18 @@ export interface paths {
       responses: {
         /** @description The created supply */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["Supply"];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1303,7 +1497,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1312,7 +1508,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1321,7 +1519,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1357,14 +1557,18 @@ export interface paths {
       responses: {
         /** @description The supply */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["Supply"];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1373,7 +1577,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1382,7 +1588,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1391,7 +1599,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1416,7 +1626,9 @@ export interface paths {
       responses: {
         /** @description Delete confirmation */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1425,7 +1637,9 @@ export interface paths {
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1434,7 +1648,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1443,7 +1659,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1452,7 +1670,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1488,14 +1708,18 @@ export interface paths {
       responses: {
         /** @description The updated supply */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["Supply"];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1504,7 +1728,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1513,7 +1739,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1522,7 +1750,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1557,14 +1787,18 @@ export interface paths {
       responses: {
         /** @description Remaining stock of the material variant */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["SupplyStock"];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1573,7 +1807,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1582,7 +1818,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1591,7 +1829,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1631,14 +1871,18 @@ export interface paths {
       responses: {
         /** @description The restored supply */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["Supply"];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1647,7 +1891,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1656,7 +1902,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1665,7 +1913,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1699,14 +1949,18 @@ export interface paths {
       responses: {
         /** @description Active suppliers */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["Supplier"][];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1715,7 +1969,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1724,7 +1980,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1733,7 +1991,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1764,14 +2024,18 @@ export interface paths {
       responses: {
         /** @description The created supplier */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["Supplier"];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1780,7 +2044,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1789,7 +2055,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1798,7 +2066,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1834,14 +2104,18 @@ export interface paths {
       responses: {
         /** @description The supplier */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["Supplier"];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1850,7 +2124,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1859,7 +2135,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1868,7 +2146,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1893,7 +2173,9 @@ export interface paths {
       responses: {
         /** @description Delete confirmation */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1902,7 +2184,9 @@ export interface paths {
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1911,7 +2195,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1920,7 +2206,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1929,7 +2217,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1963,14 +2253,18 @@ export interface paths {
       responses: {
         /** @description The updated supplier */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["Supplier"];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1979,7 +2273,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1988,7 +2284,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -1997,7 +2295,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -2031,14 +2331,18 @@ export interface paths {
       responses: {
         /** @description The restored supplier */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["Supplier"];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -2047,7 +2351,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -2056,7 +2362,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -2065,7 +2373,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -2099,7 +2409,9 @@ export interface paths {
       responses: {
         /** @description The settings row or its default */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json":
               | {
@@ -2119,7 +2431,9 @@ export interface paths {
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -2128,7 +2442,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -2137,7 +2453,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -2146,7 +2464,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -2174,14 +2494,18 @@ export interface paths {
       responses: {
         /** @description The stored settings row */
         200: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": components["schemas"]["Settings"];
           };
         };
         /** @description Invalid request */
         400: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -2190,7 +2514,9 @@ export interface paths {
         };
         /** @description Resource not found */
         404: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -2199,7 +2525,9 @@ export interface paths {
         };
         /** @description Conflict with existing data */
         409: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -2208,7 +2536,9 @@ export interface paths {
         };
         /** @description Internal server error */
         500: {
-          headers: Record<string, unknown>;
+          headers: {
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               message: string;
@@ -2217,6 +2547,54 @@ export interface paths {
         };
       };
     };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/health": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Report service health including database reachability */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description The service and its database are reachable */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              /** @enum {string} */
+              status: "ok";
+            };
+          };
+        };
+        /** @description The database is unreachable */
+        503: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["HealthError"];
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
@@ -2313,6 +2691,14 @@ export interface components {
       updated_at?: string | null;
       /** Format: date-time */
       deleted_at?: string | null;
+    };
+    HealthOk: {
+      /** @enum {string} */
+      status: "ok";
+    };
+    HealthError: {
+      /** @enum {string} */
+      status: "error";
     };
   };
   responses: never;

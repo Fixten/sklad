@@ -3,6 +3,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router";
 
+import BackendProbe from "@/features/Health/BackendProbe";
 import Toaster from "@ui/Toast";
 
 import router from "./router";
@@ -17,6 +18,7 @@ if (root)
   ReactDOM.createRoot(root).render(
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
+        <BackendProbe />
         <RouterProvider router={router} />
         <Toaster />
       </QueryClientProvider>
