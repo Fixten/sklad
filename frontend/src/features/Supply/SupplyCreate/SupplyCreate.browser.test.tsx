@@ -2,11 +2,41 @@ import { expect, test } from "vitest";
 import { userEvent } from "vitest/browser";
 
 import { supplyPageRoutes } from "@/features/Supply/testFixtures";
+import type { Routes } from "@/test/apiStub";
 import { errorResponse } from "@/test/apiStub.vitest";
 
 import { renderSupply, selectDoska } from "./testHarness";
 
 import SupplyCreate from ".";
+
+const createdAt = "2026-01-01T00:00:00Z";
+
+const createChainRoutes = {
+  ...supplyPageRoutes,
+  "/api/material-type": {
+    get: supplyPageRoutes["/api/material-type"].get,
+    post: ({ body }) => ({ id: 2, name: body.name, created_at: createdAt }),
+  },
+  "/api/material": {
+    get: supplyPageRoutes["/api/material"].get,
+    post: ({ body }) => ({
+      id: 20,
+      name: body.name,
+      material_type_id: body.material_type_id,
+      created_at: createdAt,
+    }),
+  },
+  "/api/material-variant": {
+    get: supplyPageRoutes["/api/material-variant"].get,
+    post: ({ body }) => ({
+      id: 300,
+      name: body.name,
+      unit: body.unit,
+      material_id: body.material_id,
+      created_at: createdAt,
+    }),
+  },
+} satisfies Routes;
 
 test("reports missing values on submit", async () => {
   const screen = await renderSupply(<SupplyCreate />, { form: false });
@@ -151,4 +181,130 @@ test("shows the api error inline when the supplier cannot be created", async () 
   await expect
     .element(screen.getByRole("button", { name: "Сохранить" }))
     .toBeInTheDocument();
+});
+
+type Screen = Awaited<ReturnType<typeof renderSupply>>;
+
+const commitExisting = async (screen: Screen, label: string, name: string) => {
+  await screen.getByLabelText(label).click();
+  await screen.getByRole("option", { name }).click();
+};
+
+const commitNew = async (screen: Screen, label: string, name: string) => {
+  const field = screen.getByLabelText(label);
+  await field.click();
+  await field.fill(name);
+  await screen.getByRole("option", { name: `Создать ${name}` }).click();
+};
+
+const pickUnit = async (screen: Screen, name: string) => {
+  await screen.getByRole("combobox", { name: /Единица/ }).click();
+  await screen.getByRole("option", { name }).click();
+};
+
+test("saves an existing variant picked through the fields", async () => {
+  const screen = await renderSupply(<SupplyCreate />, { form: false });
+
+  await commitExisting(screen, "Тип", "Пиломатериал");
+  await commitExisting(screen, "Материал", "Дуб");
+  await commitExisting(screen, "Вариант", "Доска 40 мм");
+
+  await expect
+    .element(screen.getByRole("combobox", { name: /Единица/ }))
+    .toBeDisabled();
+  await expect.element(screen.getByText("метр")).toBeInTheDocument();
+
+  await screen.getByLabelText("Количество").fill("2");
+  await screen.getByLabelText("Цена закупки, всего").fill("500");
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  const request = screen.requests.find(
+    (row) => row.method === "POST" && row.path === "/api/supply",
+  );
+
+  await expect.element(screen.getByText("Материалы")).toBeInTheDocument();
+  expect(request?.body).toEqual({
+    material_variant_id: 100,
+    quantity: 2,
+    purchase_price: 500,
+  });
+});
+
+test("creates a new variant under an existing material on save", async () => {
+  const screen = await renderSupply(<SupplyCreate />, {
+    form: false,
+    routes: createChainRoutes,
+  });
+
+  await commitExisting(screen, "Тип", "Пиломатериал");
+  await commitExisting(screen, "Материал", "Дуб");
+  await commitNew(screen, "Вариант", "Доска 50 мм");
+  await pickUnit(screen, "метр");
+
+  await expect
+    .element(screen.getByRole("combobox", { name: /Единица/ }))
+    .toBeEnabled();
+
+  await screen.getByLabelText("Количество").fill("2");
+  await screen.getByLabelText("Цена закупки, всего").fill("500");
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  const posts = screen.requests.filter((row) => row.method === "POST");
+
+  await expect.element(screen.getByText("Материалы")).toBeInTheDocument();
+  expect(posts.map((row) => row.path)).toEqual([
+    "/api/material-variant",
+    "/api/supply",
+  ]);
+  expect(posts[0]?.body).toEqual({
+    name: "Доска 50 мм",
+    unit: "meters",
+    material_id: 10,
+  });
+  expect(posts[1]?.body).toEqual({
+    material_variant_id: 300,
+    quantity: 2,
+    purchase_price: 500,
+  });
+});
+
+test("creates the type, material, and variant chain on save", async () => {
+  const screen = await renderSupply(<SupplyCreate />, {
+    form: false,
+    routes: createChainRoutes,
+  });
+
+  await commitNew(screen, "Тип", "Химия");
+  await commitNew(screen, "Материал", "Краситель");
+  await commitNew(screen, "Вариант", "Раствор 1 л");
+  await pickUnit(screen, "штука");
+
+  await screen.getByLabelText("Количество").fill("3");
+  await screen.getByLabelText("Цена закупки, всего").fill("900");
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  const posts = screen.requests.filter((row) => row.method === "POST");
+
+  await expect.element(screen.getByText("Материалы")).toBeInTheDocument();
+  expect(posts.map((row) => row.path)).toEqual([
+    "/api/material-type",
+    "/api/material",
+    "/api/material-variant",
+    "/api/supply",
+  ]);
+  expect(posts[0]?.body).toEqual({ name: "Химия" });
+  expect(posts[1]?.body).toEqual({
+    name: "Краситель",
+    material_type_id: 2,
+  });
+  expect(posts[2]?.body).toEqual({
+    name: "Раствор 1 л",
+    unit: "pieces",
+    material_id: 20,
+  });
+  expect(posts[3]?.body).toEqual({
+    material_variant_id: 300,
+    quantity: 3,
+    purchase_price: 900,
+  });
 });
