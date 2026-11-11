@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 
 import { Dialog, DialogContent, DialogTitle } from "@base/dialog";
 import { Separator } from "@base/separator";
+import InlineError from "@ui/InlineError";
 import Typography from "@ui/Typography";
 
 interface Props {
@@ -44,15 +45,7 @@ export default function Sheet({
           {children}
         </div>
         <div className="flex flex-col gap-4">
-          {error ? (
-            <Typography
-              variant="body"
-              role="alert"
-              className="bg-destructive text-destructive-foreground w-fit max-w-full self-end px-2 py-1"
-            >
-              {error}
-            </Typography>
-          ) : null}
+          <InlineError message={error} />
           <div className="flex min-h-10 flex-wrap items-center justify-between gap-4">
             <div className="flex min-w-0 items-center gap-4">
               {back}

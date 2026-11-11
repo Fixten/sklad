@@ -1,8 +1,10 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
+import { MemoryRouter, Route, Routes } from "react-router";
 import { render } from "vitest-browser-react";
 
 import { supplyPageRoutes } from "@/features/Supply/testFixtures";
+import type { RecordedRequest, Routes as StubRoutes } from "@/test/apiStub";
 import { stubRoutes } from "@/test/apiStub.vitest";
 import { Form, useZodForm } from "@ui/Form";
 
@@ -39,10 +41,16 @@ interface RenderOptions {
   defaults?: Partial<SupplyFormValues>;
   form?: boolean;
   submit?: boolean;
+  routes?: StubRoutes;
 }
 
-export function renderSupply(children: ReactNode, options: RenderOptions = {}) {
-  stubRoutes(supplyPageRoutes);
+export async function renderSupply(
+  children: ReactNode,
+  options: RenderOptions = {},
+) {
+  const requests: RecordedRequest[] = stubRoutes(
+    options.routes ?? supplyPageRoutes,
+  );
 
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false, gcTime: 0 } },
@@ -57,9 +65,18 @@ export function renderSupply(children: ReactNode, options: RenderOptions = {}) {
       </Harness>
     );
 
-  return render(
-    <QueryClientProvider client={queryClient}>{content}</QueryClientProvider>,
+  const screen = await render(
+    <QueryClientProvider client={queryClient}>
+      <MemoryRouter initialEntries={["/material/supply"]}>
+        <Routes>
+          <Route path="/material/supply" element={content} />
+          <Route path="/material" element={<div>Материалы</div>} />
+        </Routes>
+      </MemoryRouter>
+    </QueryClientProvider>,
   );
+
+  return Object.assign(screen, { requests });
 }
 
 export type Screen = Awaited<ReturnType<typeof renderSupply>>;

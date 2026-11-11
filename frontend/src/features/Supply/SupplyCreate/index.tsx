@@ -1,27 +1,25 @@
 import { Button } from "@ui/Button";
-import { Form, useZodForm } from "@ui/Form";
+import { Form } from "@ui/Form";
+import InlineError from "@ui/InlineError";
 
 import DetailsFields from "./DetailsFields";
-import { createSupplyFormSchema, supplyFormDefaults } from "./supplyForm";
 import TargetFields from "./TargetFields";
-
-const supplyFormSchema = createSupplyFormSchema();
+import useSupplyCreateForm from "./useSupplyCreateForm";
 
 export default function SupplyCreate() {
-  const form = useZodForm({
-    schema: supplyFormSchema,
-    defaultValues: supplyFormDefaults,
-  });
+  const { form, onSubmit, error } = useSupplyCreateForm();
 
   return (
-    <Form
-      form={form}
-      onSubmit={() => undefined}
-      className="flex flex-col gap-8"
-    >
+    <Form form={form} onSubmit={onSubmit} className="flex flex-col gap-8">
       <TargetFields />
       <DetailsFields />
-      <Button type="submit" className="self-end">
+      <InlineError message={error} />
+      <Button
+        type="submit"
+        pending={form.formState.isSubmitting}
+        pendingLabel="Сохраняем…"
+        className="self-end"
+      >
         Сохранить
       </Button>
     </Form>

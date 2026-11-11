@@ -56,6 +56,23 @@ export const supplyPageRoutes = {
   "/api/supplier": {
     get: () => suppliers,
   },
+  "/api/supply": {
+    get: () => [],
+    post: ({ body }) =>
+      ({
+        id: 1,
+        quantity: Number(body.quantity),
+        purchase_price: Number(body.purchase_price),
+        unit: "meters",
+        remaining_quantity: Number(body.quantity),
+        unit_purchase_cost: 0,
+        material_variant_id: body.material_variant_id,
+        supplier_id: body.supplier_id,
+        description: body.description,
+        url: body.url,
+        created_at: createdAt,
+      }) satisfies Schemas["Supply"],
+  },
 } satisfies Routes;
 
 export const supplyPageEmptyRoutes = {

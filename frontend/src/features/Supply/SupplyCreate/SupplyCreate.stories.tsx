@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { MemoryRouter } from "react-router";
 import { screen, userEvent } from "storybook/test";
 
 import {
@@ -7,6 +8,7 @@ import {
   stubPendingSupplyPageApi,
   stubSupplyPageApi,
 } from "@/features/Supply/testFixtures";
+import pathsRouter from "@/router/paths.router";
 
 import SupplyCreate from ".";
 
@@ -26,9 +28,11 @@ const meta = {
   decorators: [
     (Story) => (
       <QueryClientProvider client={queryClient}>
-        <div className="mx-auto w-full max-w-2xl p-6">
-          <Story />
-        </div>
+        <MemoryRouter initialEntries={[pathsRouter.supply]}>
+          <div className="mx-auto w-full max-w-2xl p-6">
+            <Story />
+          </div>
+        </MemoryRouter>
       </QueryClientProvider>
     ),
   ],

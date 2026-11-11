@@ -1,13 +1,18 @@
+import { useNavigate } from "react-router";
+
 import useMaterial from "@/features/Material/useMaterial";
 import useMaterialType from "@/features/MaterialType/useMaterialType";
 import useSupplier from "@/features/Supplier/useSupplier";
 import useSupply from "@/features/Supply/useSupply";
 import useVariant from "@/features/Variant/useVariant";
+import pathsRouter from "@/router/paths.router";
+import { toastSuccess } from "@ui/Toast";
 
 import type { SupplyDraft } from "./supplyForm";
 import { resolveSupplyDto } from "./supplyResolution";
 
 export default function useSupplyCreateStep() {
+  const navigate = useNavigate();
   const { types, addMutation: addType } = useMaterialType();
   const { materials, addMutation: addMaterial } = useMaterial();
   const { variants, addMutation: addVariant } = useVariant();
@@ -37,6 +42,8 @@ export default function useSupplyCreateStep() {
     );
 
     await addSupply.mutateAsync(value);
+    toastSuccess("Поставка создана");
+    void navigate(pathsRouter.material);
   };
 
   return { submit };
