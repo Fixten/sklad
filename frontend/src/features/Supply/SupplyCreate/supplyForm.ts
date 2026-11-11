@@ -69,7 +69,7 @@ export const createSupplyFormSchema = () =>
 
         return parsed !== null && parsed >= 0;
       }, "Укажите цену закупки"),
-      supplierName: zod.string().trim().min(1, "Укажите поставщика"),
+      supplierName: zod.string().trim(),
       description: zod.string().trim(),
       url: zod.string().trim(),
     })

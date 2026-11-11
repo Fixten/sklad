@@ -38,6 +38,11 @@ const variants: Schemas["MaterialVariant"][] = [
   },
 ];
 
+const suppliers: Schemas["Supplier"][] = [
+  { id: 5, name: "Столярный двор", created_at: createdAt },
+  { id: 6, name: "Лесная база", created_at: createdAt },
+];
+
 export const supplyPageRoutes = {
   "/api/material-type": {
     get: () => types,
@@ -47,6 +52,9 @@ export const supplyPageRoutes = {
   },
   "/api/material-variant": {
     get: () => variants,
+  },
+  "/api/supplier": {
+    get: () => suppliers,
   },
 } satisfies Routes;
 
@@ -58,6 +66,9 @@ export const supplyPageEmptyRoutes = {
     get: () => [],
   },
   "/api/material-variant": {
+    get: () => [],
+  },
+  "/api/supplier": {
     get: () => [],
   },
 } satisfies Routes;
@@ -90,6 +101,7 @@ export const stubPendingSupplyPageApi = () => {
     "/api/material-type": { get: pending },
     "/api/material": { get: pending },
     "/api/material-variant": { get: pending },
+    "/api/supplier": { get: pending },
   });
   window.fetch = fetch;
 

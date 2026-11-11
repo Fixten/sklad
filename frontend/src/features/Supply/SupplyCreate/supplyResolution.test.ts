@@ -158,6 +158,18 @@ describe("resolveSupplyDto", () => {
     expect(dto.url).toBeUndefined();
   });
 
+  it("skips supplier resolution for a blank name", async () => {
+    const deps = makeDeps();
+    const dto = await resolveSupplyDto(deps, {
+      ...draft,
+      supplierName: "   ",
+    });
+
+    expect(dto.supplier_id).toBeUndefined();
+    expect(deps.createSupplier).not.toHaveBeenCalled();
+    expect(deps.listFreshSuppliers).not.toHaveBeenCalled();
+  });
+
   it("creates a missing supplier", async () => {
     const deps = makeDeps({ suppliers: [] });
     const dto = await resolveSupplyDto(deps, draft);

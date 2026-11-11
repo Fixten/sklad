@@ -243,6 +243,9 @@ test("type change clears material and variant", async () => {
   await expect.element(screen.getByLabelText("Материал")).toHaveValue("");
   await expect.element(screen.getByLabelText("Вариант")).toHaveValue("");
   await expect.element(screen.getByTestId("unit")).toHaveValue("meters");
+  await expect
+    .element(screen.getByRole("combobox", { name: /Единица/ }))
+    .toBeEnabled();
 });
 
 test("material change clears the variant only", async () => {
@@ -257,15 +260,14 @@ test("material change clears the variant only", async () => {
   await expect.element(screen.getByLabelText("Вариант")).toHaveValue("");
 });
 
-test("unit change releases an existing variant", async () => {
+test("locks the unit for a committed existing variant", async () => {
   const screen = await renderPickers();
   await commitChain(screen);
 
-  await screen.getByRole("combobox", { name: /Единица/ }).click();
-  await screen.getByRole("option", { name: "штука" }).click();
-
-  await expect.element(screen.getByTestId("variant")).toHaveValue("");
-  await expect.element(screen.getByLabelText("Вариант")).toHaveValue("");
+  await expect.element(screen.getByTestId("unit")).toHaveValue("meters");
+  await expect
+    .element(screen.getByRole("combobox", { name: /Единица/ }))
+    .toBeDisabled();
 });
 
 test("revalidates after a failed submit", async () => {

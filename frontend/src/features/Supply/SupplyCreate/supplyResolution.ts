@@ -109,7 +109,11 @@ export const resolveSupplyDto = async (
 
   const materialVariantId =
     variant?.id ?? (await createVariantId(deps, target, type, material));
-  const supplierId = await resolveSupplierId(deps, draft.supplierName.trim());
+  const supplierName = draft.supplierName.trim();
+  const supplierId =
+    supplierName === ""
+      ? undefined
+      : await resolveSupplierId(deps, supplierName);
 
   return {
     material_variant_id: materialVariantId,

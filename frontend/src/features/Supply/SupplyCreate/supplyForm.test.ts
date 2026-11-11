@@ -106,14 +106,18 @@ describe("createSupplyFormSchema", () => {
       ...created,
       quantity: "",
       price: "",
-      supplierName: "   ",
     });
 
     expect(errorsOf(result)).toEqual({
       quantity: ["Укажите количество"],
       price: ["Укажите цену закупки"],
-      supplierName: ["Укажите поставщика"],
     });
+  });
+
+  it("accepts a blank supplier", () => {
+    const result = parse({ ...created, supplierName: "   " });
+
+    expect(result.data?.supplierName).toBe("");
   });
 
   it("rejects a zero or negative quantity", () => {

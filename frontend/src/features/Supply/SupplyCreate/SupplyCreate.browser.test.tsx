@@ -20,9 +20,6 @@ test("reports missing values on submit", async () => {
     .element(screen.getByText("Укажите цену закупки"))
     .toBeInTheDocument();
   await expect
-    .element(screen.getByText("Укажите поставщика"))
-    .toBeInTheDocument();
-  await expect
     .element(screen.getByText("Выберите единицу"))
     .toBeInTheDocument();
 });

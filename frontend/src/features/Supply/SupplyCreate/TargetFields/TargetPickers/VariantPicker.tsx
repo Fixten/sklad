@@ -24,7 +24,9 @@ export default function VariantPicker() {
     }));
 
   function onSelect(value: string) {
-    const unit = variants.find((item) => item.name === value)?.unit;
+    const unit = variants.find(
+      (item) => item.material_id === chosenMaterialId && item.name === value,
+    )?.unit;
 
     if (unit) setValue("unit", unit, writeOptions);
   }
