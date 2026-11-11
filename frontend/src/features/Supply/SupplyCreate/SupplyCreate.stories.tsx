@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { MemoryRouter } from "react-router";
+import { createMemoryRouter, RouterProvider } from "react-router";
 import { screen, userEvent } from "storybook/test";
 
 import {
@@ -26,15 +26,31 @@ const selectDoska = async () => {
 const meta = {
   component: SupplyCreate,
   decorators: [
-    (Story) => (
-      <QueryClientProvider client={queryClient}>
-        <MemoryRouter initialEntries={[pathsRouter.supply]}>
-          <div className="mx-auto w-full max-w-2xl p-6">
-            <Story />
-          </div>
-        </MemoryRouter>
-      </QueryClientProvider>
-    ),
+    (Story) => {
+      const router = createMemoryRouter(
+        [
+          {
+            children: [
+              {
+                path: pathsRouter.supply,
+                element: (
+                  <div className="mx-auto w-full max-w-2xl p-6">
+                    <Story />
+                  </div>
+                ),
+              },
+            ],
+          },
+        ],
+        { initialEntries: [pathsRouter.supply] },
+      );
+
+      return (
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      );
+    },
   ],
   beforeEach: () => stubSupplyPageApi(),
   parameters: {

@@ -37,9 +37,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "message"
-        ],
+        "required": ["message"],
         "additionalProperties": false
       },
       "MaterialType": {
@@ -70,11 +68,7 @@
             "format": "date-time"
           }
         },
-        "required": [
-          "id",
-          "name",
-          "created_at"
-        ],
+        "required": ["id", "name", "created_at"],
         "additionalProperties": false
       },
       "Material": {
@@ -108,12 +102,7 @@
             "format": "date-time"
           }
         },
-        "required": [
-          "id",
-          "name",
-          "material_type_id",
-          "created_at"
-        ],
+        "required": ["id", "name", "material_type_id", "created_at"],
         "additionalProperties": false
       },
       "MaterialVariant": {
@@ -127,10 +116,7 @@
           },
           "unit": {
             "type": "string",
-            "enum": [
-              "pieces",
-              "meters"
-            ]
+            "enum": ["pieces", "meters"]
           },
           "material_id": {
             "type": "integer"
@@ -150,13 +136,7 @@
             "format": "date-time"
           }
         },
-        "required": [
-          "id",
-          "name",
-          "unit",
-          "material_id",
-          "created_at"
-        ],
+        "required": ["id", "name", "unit", "material_id", "created_at"],
         "additionalProperties": false
       },
       "Supply": {
@@ -177,10 +157,7 @@
           },
           "unit": {
             "type": "string",
-            "enum": [
-              "pieces",
-              "meters"
-            ]
+            "enum": ["pieces", "meters"]
           },
           "remaining_quantity": {
             "type": "number"
@@ -234,20 +211,13 @@
           },
           "unit": {
             "type": "string",
-            "enum": [
-              "pieces",
-              "meters"
-            ]
+            "enum": ["pieces", "meters"]
           },
           "quantity": {
             "type": "number"
           }
         },
-        "required": [
-          "material_variant_id",
-          "unit",
-          "quantity"
-        ],
+        "required": ["material_variant_id", "unit", "quantity"],
         "additionalProperties": false
       },
       "Supplier": {
@@ -286,11 +256,7 @@
             "format": "date-time"
           }
         },
-        "required": [
-          "id",
-          "name",
-          "created_at"
-        ],
+        "required": ["id", "name", "created_at"],
         "additionalProperties": false
       },
       "Settings": {
@@ -317,11 +283,7 @@
             "format": "date-time"
           }
         },
-        "required": [
-          "id",
-          "work_hour_cost",
-          "created_at"
-        ],
+        "required": ["id", "work_hour_cost", "created_at"],
         "additionalProperties": false
       },
       "HealthOk": {
@@ -329,14 +291,10 @@
         "properties": {
           "status": {
             "type": "string",
-            "enum": [
-              "ok"
-            ]
+            "enum": ["ok"]
           }
         },
-        "required": [
-          "status"
-        ],
+        "required": ["status"],
         "additionalProperties": false
       },
       "HealthError": {
@@ -344,14 +302,10 @@
         "properties": {
           "status": {
             "type": "string",
-            "enum": [
-              "error"
-            ]
+            "enum": ["error"]
           }
         },
-        "required": [
-          "status"
-        ],
+        "required": ["status"],
         "additionalProperties": false
       }
     },
@@ -360,9 +314,7 @@
   "paths": {
     "/api/material-type": {
       "get": {
-        "tags": [
-          "Material Type"
-        ],
+        "tags": ["Material Type"],
         "summary": "List active material types",
         "responses": {
           "200": {
@@ -389,9 +341,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -408,9 +358,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -427,9 +375,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -446,9 +392,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -457,9 +401,7 @@
         }
       },
       "post": {
-        "tags": [
-          "Material Type"
-        ],
+        "tags": ["Material Type"],
         "summary": "Create a material type",
         "requestBody": {
           "required": true,
@@ -477,9 +419,7 @@
                     "nullable": true
                   }
                 },
-                "required": [
-                  "name"
-                ],
+                "required": ["name"],
                 "additionalProperties": false
               }
             }
@@ -507,9 +447,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -526,9 +464,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -545,9 +481,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -564,9 +498,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -577,9 +509,7 @@
     },
     "/api/material-type/{id}": {
       "get": {
-        "tags": [
-          "Material Type"
-        ],
+        "tags": ["Material Type"],
         "summary": "Get a material type by id",
         "parameters": [
           {
@@ -614,9 +544,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -633,9 +561,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -652,9 +578,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -671,9 +595,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -682,9 +604,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "Material Type"
-        ],
+        "tags": ["Material Type"],
         "summary": "Update a material type",
         "parameters": [
           {
@@ -740,9 +660,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -759,9 +677,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -778,9 +694,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -797,9 +711,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -808,9 +720,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Material Type"
-        ],
+        "tags": ["Material Type"],
         "summary": "Delete a material type",
         "parameters": [
           {
@@ -835,9 +745,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -854,9 +762,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -873,9 +779,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -892,9 +796,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -911,9 +813,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -924,9 +824,7 @@
     },
     "/api/material-type/restore/{id}": {
       "post": {
-        "tags": [
-          "Material Type"
-        ],
+        "tags": ["Material Type"],
         "summary": "Restore a soft-deleted material type",
         "parameters": [
           {
@@ -961,9 +859,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -980,9 +876,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -999,9 +893,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1018,9 +910,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1031,9 +921,7 @@
     },
     "/api/material": {
       "get": {
-        "tags": [
-          "Material"
-        ],
+        "tags": ["Material"],
         "summary": "List active materials",
         "responses": {
           "200": {
@@ -1060,9 +948,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1079,9 +965,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1098,9 +982,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1117,9 +999,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1128,9 +1008,7 @@
         }
       },
       "post": {
-        "tags": [
-          "Material"
-        ],
+        "tags": ["Material"],
         "summary": "Create a material",
         "requestBody": {
           "required": true,
@@ -1151,10 +1029,7 @@
                     "type": "integer"
                   }
                 },
-                "required": [
-                  "name",
-                  "material_type_id"
-                ],
+                "required": ["name", "material_type_id"],
                 "additionalProperties": false
               }
             }
@@ -1182,9 +1057,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1201,9 +1074,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1220,9 +1091,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1239,9 +1108,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1252,9 +1119,7 @@
     },
     "/api/material/{id}": {
       "get": {
-        "tags": [
-          "Material"
-        ],
+        "tags": ["Material"],
         "summary": "Get a material by id",
         "parameters": [
           {
@@ -1289,9 +1154,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1308,9 +1171,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1327,9 +1188,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1346,9 +1205,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1357,9 +1214,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "Material"
-        ],
+        "tags": ["Material"],
         "summary": "Update a material",
         "parameters": [
           {
@@ -1418,9 +1273,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1437,9 +1290,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1456,9 +1307,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1475,9 +1324,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1486,9 +1333,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Material"
-        ],
+        "tags": ["Material"],
         "summary": "Delete a material",
         "parameters": [
           {
@@ -1513,9 +1358,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1532,9 +1375,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1551,9 +1392,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1570,9 +1409,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1589,9 +1426,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1602,9 +1437,7 @@
     },
     "/api/material/restore/{id}": {
       "post": {
-        "tags": [
-          "Material"
-        ],
+        "tags": ["Material"],
         "summary": "Restore a soft-deleted material",
         "parameters": [
           {
@@ -1639,9 +1472,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1658,9 +1489,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1677,9 +1506,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1696,9 +1523,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1709,9 +1534,7 @@
     },
     "/api/material-variant": {
       "get": {
-        "tags": [
-          "Material Variant"
-        ],
+        "tags": ["Material Variant"],
         "summary": "List active material variants",
         "responses": {
           "200": {
@@ -1738,9 +1561,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1757,9 +1578,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1776,9 +1595,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1795,9 +1612,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1806,9 +1621,7 @@
         }
       },
       "post": {
-        "tags": [
-          "Material Variant"
-        ],
+        "tags": ["Material Variant"],
         "summary": "Create a material variant",
         "requestBody": {
           "required": true,
@@ -1823,20 +1636,13 @@
                   },
                   "unit": {
                     "type": "string",
-                    "enum": [
-                      "pieces",
-                      "meters"
-                    ]
+                    "enum": ["pieces", "meters"]
                   },
                   "material_id": {
                     "type": "integer"
                   }
                 },
-                "required": [
-                  "name",
-                  "unit",
-                  "material_id"
-                ],
+                "required": ["name", "unit", "material_id"],
                 "additionalProperties": false
               }
             }
@@ -1864,9 +1670,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1883,9 +1687,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1902,9 +1704,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1921,9 +1721,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1934,9 +1732,7 @@
     },
     "/api/material-variant/{id}": {
       "get": {
-        "tags": [
-          "Material Variant"
-        ],
+        "tags": ["Material Variant"],
         "summary": "Get a material variant by id",
         "parameters": [
           {
@@ -1971,9 +1767,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -1990,9 +1784,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2009,9 +1801,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2028,9 +1818,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2039,9 +1827,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "Material Variant"
-        ],
+        "tags": ["Material Variant"],
         "summary": "Update a material variant",
         "parameters": [
           {
@@ -2067,10 +1853,7 @@
                   },
                   "unit": {
                     "type": "string",
-                    "enum": [
-                      "pieces",
-                      "meters"
-                    ]
+                    "enum": ["pieces", "meters"]
                   },
                   "material_id": {
                     "type": "integer"
@@ -2103,9 +1886,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2122,9 +1903,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2141,9 +1920,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2160,9 +1937,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2171,9 +1946,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Material Variant"
-        ],
+        "tags": ["Material Variant"],
         "summary": "Delete a material variant",
         "parameters": [
           {
@@ -2198,9 +1971,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2217,9 +1988,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2236,9 +2005,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2255,9 +2022,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2274,9 +2039,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2287,9 +2050,7 @@
     },
     "/api/material-variant/restore/{id}": {
       "post": {
-        "tags": [
-          "Material Variant"
-        ],
+        "tags": ["Material Variant"],
         "summary": "Restore a soft-deleted material variant",
         "parameters": [
           {
@@ -2324,9 +2085,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2343,9 +2102,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2362,9 +2119,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2381,9 +2136,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2394,9 +2147,7 @@
     },
     "/api/supply": {
       "get": {
-        "tags": [
-          "Supply"
-        ],
+        "tags": ["Supply"],
         "summary": "List active supplies with their remaining stock",
         "parameters": [
           {
@@ -2443,9 +2194,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2462,9 +2211,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2481,9 +2228,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2500,9 +2245,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2511,9 +2254,7 @@
         }
       },
       "post": {
-        "tags": [
-          "Supply"
-        ],
+        "tags": ["Supply"],
         "summary": "Create a supply",
         "requestBody": {
           "required": true,
@@ -2587,9 +2328,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2606,9 +2345,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2625,9 +2362,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2644,9 +2379,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2657,9 +2390,7 @@
     },
     "/api/supply/{id}": {
       "get": {
-        "tags": [
-          "Supply"
-        ],
+        "tags": ["Supply"],
         "summary": "Get a supply",
         "parameters": [
           {
@@ -2694,9 +2425,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2713,9 +2442,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2732,9 +2459,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2751,9 +2476,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2762,9 +2485,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "Supply"
-        ],
+        "tags": ["Supply"],
         "summary": "Update or correct a supply",
         "parameters": [
           {
@@ -2844,9 +2565,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2863,9 +2582,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2882,9 +2599,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2901,9 +2616,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2912,9 +2625,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Supply"
-        ],
+        "tags": ["Supply"],
         "summary": "Delete a supply",
         "parameters": [
           {
@@ -2939,9 +2650,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2958,9 +2667,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2977,9 +2684,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -2996,9 +2701,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3015,9 +2718,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3028,9 +2729,7 @@
     },
     "/api/supply/stock/{id}": {
       "get": {
-        "tags": [
-          "Supply"
-        ],
+        "tags": ["Supply"],
         "summary": "Get the stock derived from the supplies of a material variant",
         "description": "The id is a material variant id. A soft-deleted variant stays readable: the figure is derived, never written.",
         "parameters": [
@@ -3066,9 +2765,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3085,9 +2782,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3104,9 +2799,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3123,9 +2816,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3136,9 +2827,7 @@
     },
     "/api/supply/restore/{id}": {
       "post": {
-        "tags": [
-          "Supply"
-        ],
+        "tags": ["Supply"],
         "summary": "Restore a soft-deleted supply",
         "parameters": [
           {
@@ -3173,9 +2862,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3192,9 +2879,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3211,9 +2896,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3230,9 +2913,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3243,9 +2924,7 @@
     },
     "/api/supplier": {
       "get": {
-        "tags": [
-          "Supplier"
-        ],
+        "tags": ["Supplier"],
         "summary": "List active suppliers",
         "responses": {
           "200": {
@@ -3272,9 +2951,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3291,9 +2968,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3310,9 +2985,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3329,9 +3002,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3340,9 +3011,7 @@
         }
       },
       "post": {
-        "tags": [
-          "Supplier"
-        ],
+        "tags": ["Supplier"],
         "summary": "Create a supplier",
         "requestBody": {
           "required": true,
@@ -3365,9 +3034,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "name"
-                ],
+                "required": ["name"],
                 "additionalProperties": false
               }
             }
@@ -3395,9 +3062,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3414,9 +3079,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3433,9 +3096,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3452,9 +3113,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3465,9 +3124,7 @@
     },
     "/api/supplier/{id}": {
       "get": {
-        "tags": [
-          "Supplier"
-        ],
+        "tags": ["Supplier"],
         "summary": "Get a supplier",
         "parameters": [
           {
@@ -3502,9 +3159,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3521,9 +3176,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3540,9 +3193,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3559,9 +3210,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3570,9 +3219,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "Supplier"
-        ],
+        "tags": ["Supplier"],
         "summary": "Update a supplier",
         "parameters": [
           {
@@ -3633,9 +3280,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3652,9 +3297,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3671,9 +3314,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3690,9 +3331,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3701,9 +3340,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Supplier"
-        ],
+        "tags": ["Supplier"],
         "summary": "Delete a supplier",
         "parameters": [
           {
@@ -3728,9 +3365,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3747,9 +3382,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3766,9 +3399,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3785,9 +3416,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3804,9 +3433,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3817,9 +3444,7 @@
     },
     "/api/supplier/restore/{id}": {
       "post": {
-        "tags": [
-          "Supplier"
-        ],
+        "tags": ["Supplier"],
         "summary": "Restore a soft-deleted supplier",
         "parameters": [
           {
@@ -3854,9 +3479,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3873,9 +3496,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3892,9 +3513,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3911,9 +3530,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -3924,9 +3541,7 @@
     },
     "/api/settings": {
       "get": {
-        "tags": [
-          "Settings"
-        ],
+        "tags": ["Settings"],
         "summary": "Get the settings",
         "responses": {
           "200": {
@@ -3959,11 +3574,7 @@
                           "format": "date-time"
                         }
                       },
-                      "required": [
-                        "id",
-                        "work_hour_cost",
-                        "created_at"
-                      ],
+                      "required": ["id", "work_hour_cost", "created_at"],
                       "additionalProperties": false
                     },
                     {
@@ -3973,9 +3584,7 @@
                           "type": "integer"
                         }
                       },
-                      "required": [
-                        "work_hour_cost"
-                      ],
+                      "required": ["work_hour_cost"],
                       "additionalProperties": false
                     }
                   ]
@@ -3994,9 +3603,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -4013,9 +3620,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -4032,9 +3637,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -4051,9 +3654,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -4062,9 +3663,7 @@
         }
       },
       "post": {
-        "tags": [
-          "Settings"
-        ],
+        "tags": ["Settings"],
         "summary": "Create or update the settings",
         "requestBody": {
           "required": true,
@@ -4074,12 +3673,11 @@
                 "type": "object",
                 "properties": {
                   "work_hour_cost": {
-                    "type": "integer"
+                    "type": "integer",
+                    "minimum": 0
                   }
                 },
-                "required": [
-                  "work_hour_cost"
-                ],
+                "required": ["work_hour_cost"],
                 "additionalProperties": false
               }
             }
@@ -4107,9 +3705,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -4126,9 +3722,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -4145,9 +3739,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -4164,9 +3756,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "additionalProperties": false
                 }
               }
@@ -4177,9 +3767,7 @@
     },
     "/api/health": {
       "get": {
-        "tags": [
-          "Health"
-        ],
+        "tags": ["Health"],
         "summary": "Report service health including database reachability",
         "responses": {
           "200": {
@@ -4191,14 +3779,10 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "enum": [
-                        "ok"
-                      ]
+                      "enum": ["ok"]
                     }
                   },
-                  "required": [
-                    "status"
-                  ],
+                  "required": ["status"],
                   "additionalProperties": false
                 }
               }

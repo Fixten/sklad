@@ -8,6 +8,13 @@
       "when": 1791057341090,
       "tag": "0000_needy_pestilence",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1794419933487,
+      "tag": "0001_tough_titanium_man",
+      "breakpoints": true
     }
   ]
 }

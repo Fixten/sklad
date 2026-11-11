@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { expect, test } from "vitest";
 import { userEvent } from "vitest/browser";
 
@@ -266,6 +267,72 @@ test("creates a new variant under an existing material on save", async () => {
     quantity: 2,
     purchase_price: 500,
   });
+});
+
+const withBackLink = (
+  <>
+    <Link to="/material">Материалы</Link>
+    <SupplyCreate />
+  </>
+);
+
+test("asks before leaving when the form is dirty", async () => {
+  const screen = await renderSupply(withBackLink, { form: false });
+
+  await screen.getByLabelText("Количество").fill("2");
+  await screen.getByRole("link", { name: "Материалы" }).click();
+
+  await expect.element(screen.getByRole("dialog")).toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("button", { name: "Остаться" }))
+    .toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("button", { name: "Уйти" }))
+    .toBeInTheDocument();
+});
+
+test("leaves the dirty form on Уйти", async () => {
+  const screen = await renderSupply(withBackLink, { form: false });
+
+  await screen.getByLabelText("Количество").fill("2");
+  await screen.getByRole("link", { name: "Материалы" }).click();
+  await screen.getByRole("button", { name: "Уйти" }).click();
+
+  await expect.element(screen.getByText("Материалы")).toBeInTheDocument();
+  await expect.element(screen.getByRole("dialog")).not.toBeInTheDocument();
+});
+
+test("leaves without a dialog when the form is clean", async () => {
+  const screen = await renderSupply(withBackLink, { form: false });
+
+  await screen.getByRole("link", { name: "Материалы" }).click();
+
+  await expect.element(screen.getByText("Материалы")).toBeInTheDocument();
+  await expect.element(screen.getByRole("dialog")).not.toBeInTheDocument();
+});
+
+test("does not block navigation while the form is submitting", async () => {
+  const screen = await renderSupply(withBackLink, {
+    form: false,
+    routes: {
+      ...supplyPageRoutes,
+      "/api/supply": {
+        get: () => [],
+        post: () => new Promise<never>(() => undefined),
+      },
+    },
+  });
+
+  await fillDoskaSupply(screen);
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+  await expect
+    .element(screen.getByRole("button", { name: "Сохраняем…" }))
+    .toBeInTheDocument();
+
+  await screen.getByRole("link", { name: "Материалы" }).click();
+
+  await expect.element(screen.getByText("Материалы")).toBeInTheDocument();
+  await expect.element(screen.getByRole("dialog")).not.toBeInTheDocument();
 });
 
 test("creates the type, material, and variant chain on save", async () => {

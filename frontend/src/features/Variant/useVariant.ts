@@ -1,53 +1,27 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-
-import { retryApiError } from "@/api/api-error";
 import { MaterialQueryKey } from "@/features/Material/useMaterial";
+import { createEntityHook } from "@/lib/useEntity";
 
 import VariantApi from "./Variant.api";
-import { VariantModel } from "./Variant.model";
+import type { VariantPatchDTO } from "./Variant.model";
 
 const api = new VariantApi();
 
 export const VariantQueryKey = "material-variant";
 
+const useVariantEntity = createEntityHook({
+  queryKey: VariantQueryKey,
+  api,
+  create: api.create,
+  invalidate: [MaterialQueryKey],
+  toPatch: (value: VariantPatchDTO & { id: number }) => ({
+    name: value.name,
+    unit: value.unit,
+    material_id: value.material_id,
+  }),
+});
+
 export default function useVariant() {
-  const queryClient = useQueryClient();
+  const { rows, ...entity } = useVariantEntity();
 
-  const query = useQuery({
-    queryKey: [VariantQueryKey],
-    queryFn: api.getAll,
-    retry: retryApiError,
-  });
-
-  const invalidate = () => {
-    void queryClient.invalidateQueries({ queryKey: [MaterialQueryKey] });
-    void queryClient.invalidateQueries({ queryKey: [VariantQueryKey] });
-  };
-
-  const addMutation = useMutation({
-    mutationFn: api.create,
-    onSuccess: invalidate,
-  });
-  const updateMutation = useMutation({
-    mutationFn: (variant: VariantModel) => api.update(variant, variant.id),
-    onSuccess: invalidate,
-  });
-  const removeMutation = useMutation({
-    mutationFn: api.remove,
-    onSuccess: invalidate,
-  });
-  const restoreMutation = useMutation({
-    mutationFn: api.restore,
-    onSuccess: invalidate,
-  });
-  const variants = (query.data ?? []).filter((row) => !row.deleted_at);
-
-  return {
-    query,
-    variants,
-    addMutation,
-    removeMutation,
-    updateMutation,
-    restoreMutation,
-  };
+  return { ...entity, variants: rows };
 }

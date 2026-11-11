@@ -25,12 +25,15 @@ drive both runtime validation and the generated OpenAPI document.
 - Soft-delete: rows carry `deleted_at` (NULL = active). Deletion is soft when children reference
   the row, hard when none do. See `docs/tech/data modeling.md` §26 (deletion strategy), §34
   (validation responsibility).
-- Name uniqueness is enforced in the service by checking active siblings; the index only backs up
-  a concurrent write, as no case-insensitive index exists.
+- Name uniqueness is enforced in the service by checking active siblings. The index backs it up
+  against concurrent writes but is partial unique with COLLATE NOCASE (folds ASCII A–Z only;
+  Cyrillic folding stays in the service check).
 - DB: snake_case plural tables/columns, FKs `RESTRICT` with enforcement on, no cascades.
 - HTTP per resource: `GET /`, `GET /:id`, `POST /`, `PATCH /:id`, `DELETE /:id`. Follow the
   convention for new features.
 - Unit test meaningful logic only; pure pass-through wrappers don't need tests.
+- Typecheck with `pnpm typecheck` after any code change. Jest (babel) strips types without
+  checking them — passing `test:unit` does not mean the types are valid.
 - Lint with `pnpm lint:fix`.
 
 ## Gotchas & decisions

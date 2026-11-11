@@ -32,7 +32,10 @@ function Form<
         {...props}
         data-slot="form"
         noValidate
+        aria-busy={form.formState.isSubmitting}
         onSubmit={(event) => {
+          if (form.formState.isSubmitting) return;
+
           void handleSubmit(event);
         }}
       />

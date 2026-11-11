@@ -248,7 +248,7 @@ test("type change clears material and variant", async () => {
   await expect.element(screen.getByTestId("variant")).toHaveValue("");
   await expect.element(screen.getByLabelText("Материал")).toHaveValue("");
   await expect.element(screen.getByLabelText("Вариант")).toHaveValue("");
-  await expect.element(screen.getByTestId("unit")).toHaveValue("meters");
+  await expect.element(screen.getByTestId("unit")).toHaveValue("");
   await expect
     .element(screen.getByRole("combobox", { name: /Единица/ }))
     .toBeEnabled();

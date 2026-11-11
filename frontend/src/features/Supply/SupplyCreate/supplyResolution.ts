@@ -13,6 +13,7 @@ import type {
   VariantDTO,
   VariantModel,
 } from "@/features/Variant/Variant.model";
+import { sameName } from "@/lib/text/text";
 
 import type { SupplyDraft, TargetDraft } from "./supplyForm";
 
@@ -67,7 +68,7 @@ const resolveSupplierId = async (
   deps: SupplyResolutionDeps,
   name: string,
 ): Promise<number> => {
-  const supplier = deps.suppliers.find((row) => row.name === name);
+  const supplier = deps.suppliers.find((row) => sameName(row.name, name));
 
   if (supplier) return supplier.id;
 
@@ -76,8 +77,8 @@ const resolveSupplierId = async (
   } catch (error) {
     if (!(error instanceof ApiError) || error.status !== 409) throw error;
 
-    const raced = (await deps.listFreshSuppliers()).find(
-      (row) => row.name === name,
+    const raced = (await deps.listFreshSuppliers()).find((row) =>
+      sameName(row.name, name),
     );
 
     if (raced) return raced.id;
@@ -97,14 +98,18 @@ export const resolveSupplyDto = async (
     unit: draft.target.unit,
   };
 
-  const type = deps.catalog.types.find((row) => row.name === target.typeName);
+  const type = deps.catalog.types.find((row) =>
+    sameName(row.name, target.typeName),
+  );
   const material = deps.catalog.materials.find(
     (row) =>
-      row.name === target.materialName && row.material_type_id === type?.id,
+      sameName(row.name, target.materialName) &&
+      row.material_type_id === type?.id,
   );
   const variant = deps.catalog.variants.find(
     (row) =>
-      row.name === target.variantName && row.material_id === material?.id,
+      sameName(row.name, target.variantName) &&
+      row.material_id === material?.id,
   );
 
   const materialVariantId =

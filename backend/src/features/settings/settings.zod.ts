@@ -16,7 +16,9 @@ export const settingsShortZ = z.object({ work_hour_cost: z.int() }).strict();
 
 export const settingsGetZ = z.union([settingsRowZ, settingsShortZ]);
 
-export const settingsBodyZ = z.object({ work_hour_cost: z.int() }).strict();
+export const settingsBodyZ = z
+  .object({ work_hour_cost: z.int().nonnegative() })
+  .strict();
 
 export type SettingsRow = z.infer<typeof settingsRowZ>;
 export type SettingsBody = z.infer<typeof settingsBodyZ>;

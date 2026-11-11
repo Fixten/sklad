@@ -1,7 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-
-import { retryApiError } from "@/api/api-error";
-import { MaterialDTO, MaterialModel } from "@/features/Material/Material.model";
+import { createEntityHook } from "@/lib/useEntity";
 
 import MaterialApi from "./Material.api";
 
@@ -9,37 +6,14 @@ const api = new MaterialApi();
 
 export const MaterialQueryKey = "material";
 
-export default function useMaterial() {
-  const query = useQuery({
-    queryKey: [MaterialQueryKey],
-    queryFn: api.getAll,
-    retry: retryApiError,
-  });
-  const addMutation = useMutation({
-    mutationFn: api.create,
-    onSuccess: () => query.refetch(),
-  });
-  const updateMutation = useMutation({
-    mutationFn: (material: MaterialDTO & Pick<MaterialModel, "id">) =>
-      api.update(material, material.id),
-    onSuccess: () => query.refetch(),
-  });
-  const removeMutation = useMutation({
-    mutationFn: api.remove,
-    onSuccess: () => query.refetch(),
-  });
-  const restoreMutation = useMutation({
-    mutationFn: api.restore,
-    onSuccess: () => query.refetch(),
-  });
-  const materials = (query.data ?? []).filter((row) => !row.deleted_at);
+const useMaterialEntity = createEntityHook({
+  queryKey: MaterialQueryKey,
+  api,
+  create: api.create,
+});
 
-  return {
-    query,
-    materials,
-    addMutation,
-    updateMutation,
-    removeMutation,
-    restoreMutation,
-  };
+export default function useMaterial() {
+  const { rows, ...entity } = useMaterialEntity();
+
+  return { ...entity, materials: rows };
 }

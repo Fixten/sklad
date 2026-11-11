@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { MemoryRouter, Route, Routes } from "react-router";
+import { createMemoryRouter, RouterProvider } from "react-router";
 import { expect } from "vitest";
 import { render } from "vitest-browser-react";
 
@@ -24,16 +24,22 @@ export const renderPage = async () => {
     defaultOptions: { queries: { retry: false, gcTime: 0 } },
   });
 
+  const router = createMemoryRouter(
+    [
+      {
+        element: <AppLayout />,
+        children: [
+          { path: "/material", element: <MaterialPage /> },
+          { path: "/material/supply", element: <SupplyPage /> },
+        ],
+      },
+    ],
+    { initialEntries: ["/material"] },
+  );
+
   return render(
     <QueryClientProvider client={queryClient}>
-      <MemoryRouter initialEntries={["/material"]}>
-        <Routes>
-          <Route element={<AppLayout />}>
-            <Route path="/material" element={<MaterialPage />} />
-            <Route path="/material/supply" element={<SupplyPage />} />
-          </Route>
-        </Routes>
-      </MemoryRouter>
+      <RouterProvider router={router} />
     </QueryClientProvider>,
   );
 };

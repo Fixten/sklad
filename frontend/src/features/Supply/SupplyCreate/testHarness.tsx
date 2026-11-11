@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
-import { MemoryRouter, Route, Routes } from "react-router";
+import { createMemoryRouter, RouterProvider } from "react-router";
 import { render } from "vitest-browser-react";
 
 import { supplyPageRoutes } from "@/features/Supply/testFixtures";
@@ -65,14 +65,17 @@ export async function renderSupply(
       </Harness>
     );
 
+  const router = createMemoryRouter(
+    [
+      { path: "/material/supply", element: content },
+      { path: "/material", element: <div>Материалы</div> },
+    ],
+    { initialEntries: ["/material/supply"] },
+  );
+
   const screen = await render(
     <QueryClientProvider client={queryClient}>
-      <MemoryRouter initialEntries={["/material/supply"]}>
-        <Routes>
-          <Route path="/material/supply" element={content} />
-          <Route path="/material" element={<div>Материалы</div>} />
-        </Routes>
-      </MemoryRouter>
+      <RouterProvider router={router} />
     </QueryClientProvider>,
   );
 

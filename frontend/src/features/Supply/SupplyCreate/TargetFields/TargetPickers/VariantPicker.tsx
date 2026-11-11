@@ -2,6 +2,7 @@ import { useFormContext, useWatch } from "react-hook-form";
 
 import useMaterial from "@/features/Material/useMaterial";
 import useVariant from "@/features/Variant/useVariant";
+import { sameName } from "@/lib/text/text";
 import { FormOptionPicker } from "@ui/OptionPicker";
 import type { OptionPickerOption } from "@ui/OptionPicker/OptionPicker";
 
@@ -15,7 +16,9 @@ export default function VariantPicker() {
   const { control, setValue } = useFormContext<SupplyFormValues>();
   const material = useWatch({ control, name: "material" });
 
-  const chosenMaterialId = materials.find((item) => item.name === material)?.id;
+  const chosenMaterialId = materials.find((item) =>
+    sameName(item.name, material),
+  )?.id;
   const options: OptionPickerOption[] = variants
     .filter((item) => item.material_id === chosenMaterialId)
     .map((item) => ({
@@ -25,7 +28,8 @@ export default function VariantPicker() {
 
   function onSelect(value: string) {
     const unit = variants.find(
-      (item) => item.material_id === chosenMaterialId && item.name === value,
+      (item) =>
+        item.material_id === chosenMaterialId && sameName(item.name, value),
     )?.unit;
 
     if (unit) setValue("unit", unit, writeOptions);

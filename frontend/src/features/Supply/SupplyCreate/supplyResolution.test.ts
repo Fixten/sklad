@@ -221,6 +221,31 @@ describe("resolveSupplyDto", () => {
     expect(deps.createSupplier).toHaveBeenCalledTimes(2);
   });
 
+  it("matches existing names case-insensitively without creating anything", async () => {
+    const deps = makeDeps({
+      catalog: {
+        types: [{ id: 1, name: "пиломатериал" }],
+        materials: [{ id: 10, name: "дуб", material_type_id: 1 }],
+        variants: [
+          {
+            id: 100,
+            name: "доска 40 мм",
+            unit: "meters",
+            material_id: 10,
+          },
+        ],
+      },
+      suppliers: [{ id: 5, name: "ХДМ" }],
+    });
+    const dto = await resolveSupplyDto(deps, {
+      ...draft,
+      supplierName: "хдм",
+    });
+
+    expect(dto).toMatchObject({ material_variant_id: 100, supplier_id: 5 });
+    expect(deps.createSupplier).not.toHaveBeenCalled();
+  });
+
   it("propagates non-conflict supplier errors without refetching", async () => {
     const failure = new ApiError("INTERNAL", 500);
     const deps = makeDeps({

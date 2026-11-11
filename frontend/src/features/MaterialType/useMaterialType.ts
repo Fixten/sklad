@@ -1,45 +1,19 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-
-import { retryApiError } from "@/api/api-error";
+import { createEntityHook } from "@/lib/useEntity";
 
 import MaterialTypeApi from "./MaterialType.api";
-import type { MaterialTypePatchDTO } from "./MaterialType.model";
 
 const api = new MaterialTypeApi();
 
 export const MaterialTypeQueryKey = "material-type";
 
-export default function useMaterialType() {
-  const query = useQuery({
-    queryKey: [MaterialTypeQueryKey],
-    queryFn: api.getAll,
-    retry: retryApiError,
-  });
-  const addMutation = useMutation({
-    mutationFn: (name: string) => api.create({ name }),
-    onSuccess: () => query.refetch(),
-  });
-  const updateMutation = useMutation({
-    mutationFn: (value: MaterialTypePatchDTO & { id: number }) =>
-      api.update(value, value.id),
-    onSuccess: () => query.refetch(),
-  });
-  const removeMutation = useMutation({
-    mutationFn: api.remove,
-    onSuccess: () => query.refetch(),
-  });
-  const restoreMutation = useMutation({
-    mutationFn: api.restore,
-    onSuccess: () => query.refetch(),
-  });
-  const types = (query.data ?? []).filter((row) => !row.deleted_at);
+const useMaterialTypeEntity = createEntityHook({
+  queryKey: MaterialTypeQueryKey,
+  api,
+  create: (name: string) => api.create({ name }),
+});
 
-  return {
-    query,
-    types,
-    addMutation,
-    updateMutation,
-    removeMutation,
-    restoreMutation,
-  };
+export default function useMaterialType() {
+  const { rows, ...entity } = useMaterialTypeEntity();
+
+  return { ...entity, types: rows };
 }

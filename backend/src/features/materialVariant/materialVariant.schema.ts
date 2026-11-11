@@ -25,7 +25,7 @@ export const materialVariantSchema = getSchema(
   },
   (table) => [
     uniqueIndex("material_variants_material_name_unique")
-      .on(table.material_id, table.name)
+      .on(table.material_id, sql`${table.name} COLLATE NOCASE`)
       .where(sql`${table.deleted_at} IS NULL`),
   ],
 );

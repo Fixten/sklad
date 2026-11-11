@@ -21,7 +21,7 @@ export const supplierSchema = getSchema(
   },
   (table) => [
     uniqueIndex("suppliers_name_unique")
-      .on(table.name)
+      .on(sql`${table.name} COLLATE NOCASE`)
       .where(sql`${table.deleted_at} IS NULL`),
   ],
 );

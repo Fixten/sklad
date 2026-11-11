@@ -23,6 +23,7 @@ export default function TypePicker() {
 
     setValue("material", "", writeOptions);
     setValue("variant", "", writeOptions);
+    setValue("unit", null, writeOptions);
   }
 
   return (
