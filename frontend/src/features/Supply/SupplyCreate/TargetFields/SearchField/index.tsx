@@ -1,8 +1,8 @@
 import { useFormContext } from "react-hook-form";
 
-import useMaterialsCatalog, {
+import useVariantsCatalog, {
   type MaterialCatalogRow,
-} from "@/features/Material/useMaterialsCatalog";
+} from "@/features/Variant/useVariantsCatalog";
 import OptionPicker from "@ui/OptionPicker";
 
 import type { SupplyFormValues } from "../../supplyForm";
@@ -10,7 +10,7 @@ import type { SupplyFormValues } from "../../supplyForm";
 const writeOptions = { shouldDirty: true, shouldValidate: true } as const;
 
 export default function SearchField() {
-  const catalog = useMaterialsCatalog();
+  const catalog = useVariantsCatalog();
   const { setValue } = useFormContext<SupplyFormValues>();
 
   function applyTarget(row: MaterialCatalogRow) {

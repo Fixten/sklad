@@ -1,8 +1,8 @@
+import useMaterial from "@/features/Material/useMaterial";
 import useMaterialType from "@/features/MaterialType/useMaterialType";
 import type { Unit } from "@/features/units";
-import useVariant from "@/features/Variant/useVariant";
 
-import useMaterial from "./useMaterial";
+import useVariant from "./useVariant";
 
 export interface MaterialTarget {
   id: number;
@@ -36,7 +36,7 @@ export function buildMaterialCatalogRow(
   };
 }
 
-export default function useMaterialsCatalog() {
+export default function useVariantsCatalog() {
   const { materials, query: materialQuery } = useMaterial();
   const { variants, query: variantQuery } = useVariant();
   const { types, query: typeQuery } = useMaterialType();
