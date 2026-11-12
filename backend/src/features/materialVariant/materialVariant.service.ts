@@ -5,7 +5,10 @@ import { isSameName } from "@/utils/isSameName.js";
 import SupplyService from "../supply/supply.service.js";
 
 import { MaterialVariantRepository } from "./materialVariant.repository.js";
-import { MaterialVariantModel } from "./materialVariant.schema.js";
+import {
+  MaterialVariantModel,
+  MaterialVariantSchema,
+} from "./materialVariant.schema.js";
 
 export class MaterialVariantService {
   static getSingleton = createSingleton(
@@ -20,10 +23,19 @@ export class MaterialVariantService {
     private repository: MaterialVariantRepository,
   ) {}
 
+  private decorate(row: MaterialVariantSchema) {
+    return {
+      ...row,
+      unit_locked:
+        this.supplyService.getAllByVariant(row.id).length > 0 ||
+        this.repository.hasUsage(row.id),
+    };
+  }
+
   createVariant(variant: MaterialVariantModel) {
     this.getMaterial(variant.material_id);
     this.assertNameIsFree(variant.name, variant.material_id);
-    return this.repository.create(variant);
+    return this.decorate(this.repository.create(variant));
   }
 
   updateVariant(id: number, value: Partial<MaterialVariantModel>) {
@@ -37,19 +49,21 @@ export class MaterialVariantService {
         value.material_id ?? current.material_id,
         current.id,
       );
-    return this.repository.update(id, value);
+    return this.decorate(this.repository.update(id, value));
   }
 
   delete(id: number) {
-    const supplies = this.supplyService.getAllByVariant(id);
-    if (supplies.length > 0) return this.repository.softDelete(id);
+    const referenced =
+      this.supplyService.getAllByVariant(id).length > 0 ||
+      this.repository.hasUsage(id);
+    if (referenced) return this.repository.softDelete(id);
     else return this.repository.hardDelete(id);
   }
 
   restore(id: number) {
     const current = this.repository.getById(id);
     this.assertNameIsFree(current.name, current.material_id, current.id);
-    return this.repository.restore(id);
+    return this.decorate(this.repository.restore(id));
   }
 
   getAll({ includeHidden = false }: { includeHidden?: boolean } = {}) {
@@ -58,7 +72,7 @@ export class MaterialVariantService {
       : this.repository.getAllActive();
   }
   get(id: number) {
-    return this.repository.getById(id);
+    return this.decorate(this.repository.getById(id));
   }
   getByMaterial(materialId: number) {
     return this.repository.getByMaterial(materialId);
@@ -85,7 +99,7 @@ export class MaterialVariantService {
   ) {
     if (currentUnit === nextUnit) return;
     const supplies = this.supplyService.getAllByVariant(id);
-    if (supplies.length > 0)
+    if (supplies.length > 0 || this.repository.hasUsage(id))
       throw new Error(ErrorMessages.UNIT_CHANGE_AFTER_USAGE);
   }
 

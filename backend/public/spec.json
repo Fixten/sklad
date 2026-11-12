@@ -139,6 +139,50 @@
         "required": ["id", "name", "unit", "material_id", "created_at"],
         "additionalProperties": false
       },
+      "MaterialVariantDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "unit": {
+            "type": "string",
+            "enum": ["pieces", "meters"]
+          },
+          "material_id": {
+            "type": "integer"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time"
+          },
+          "unit_locked": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "unit",
+          "material_id",
+          "created_at",
+          "unit_locked"
+        ],
+        "additionalProperties": false
+      },
       "Supply": {
         "type": "object",
         "properties": {
@@ -1687,7 +1731,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MaterialVariant"
+                  "$ref": "#/components/schemas/MaterialVariantDetail"
                 }
               }
             }
@@ -1784,7 +1828,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MaterialVariant"
+                  "$ref": "#/components/schemas/MaterialVariantDetail"
                 }
               }
             }
@@ -1903,7 +1947,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MaterialVariant"
+                  "$ref": "#/components/schemas/MaterialVariantDetail"
                 }
               }
             }
@@ -2102,7 +2146,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MaterialVariant"
+                  "$ref": "#/components/schemas/MaterialVariantDetail"
                 }
               }
             }

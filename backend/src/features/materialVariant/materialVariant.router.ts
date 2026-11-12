@@ -14,17 +14,17 @@ import { MaterialVariantModel } from "./materialVariant.schema.js";
 import { MaterialVariantService } from "./materialVariant.service.js";
 import {
   materialVariantCreateZ,
+  materialVariantDetailZ,
   materialVariantListQueryZ,
   materialVariantPatchZ,
   materialVariantRowListZ,
-  materialVariantRowZ,
 } from "./materialVariant.zod.js";
 
 const materialVariantRouter = Router();
 
 const service = MaterialVariantService.getSingleton();
 
-const sendRow = sendSpec(materialVariantRowZ);
+const sendRow = sendSpec(materialVariantDetailZ);
 const sendList = sendSpec(materialVariantRowListZ);
 
 type Id = Request<{ id: string }>;

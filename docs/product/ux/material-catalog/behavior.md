@@ -6,8 +6,8 @@ The user maintains the material catalog — Material Types, Materials, and Mater
 
 ## User flow
 
-1. From the Materials page, the user starts "Управление материалами" in the command palette.
-2. The catalog page opens as a list of cards. By default the cards are Material Variants.
+1. The Materials page itself is the catalog. It opens directly as a list of cards, with the command palette kept at the top of the page.
+2. By default the cards are Material Variants.
 3. The user finds the card to fix using the search box, which matches the names of the card's entity and of its parents (for variants: variant, material, and type names).
 4. The user edits a card in place, deletes it, or restores it if hidden.
 5. Changes apply immediately from the card; there are no dialogs. The user leaves the page when done.

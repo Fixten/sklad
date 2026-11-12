@@ -15,6 +15,10 @@ export const materialVariantRowZ = z
   })
   .strict();
 
+export const materialVariantDetailZ = materialVariantRowZ.extend({
+  unit_locked: z.boolean(),
+});
+
 export const materialVariantCreateZ = z
   .object({
     name: z.string().trim().min(1),
@@ -30,5 +34,6 @@ export const materialVariantListQueryZ = listQueryZ;
 export const materialVariantRowListZ = z.array(materialVariantRowZ);
 
 export type MaterialVariantRow = z.infer<typeof materialVariantRowZ>;
+export type MaterialVariantDetail = z.infer<typeof materialVariantDetailZ>;
 export type MaterialVariantCreate = z.infer<typeof materialVariantCreateZ>;
 export type MaterialVariantPatch = z.infer<typeof materialVariantPatchZ>;

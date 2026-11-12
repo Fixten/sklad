@@ -1022,7 +1022,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            "application/json": components["schemas"]["MaterialVariant"];
+            "application/json": components["schemas"]["MaterialVariantDetail"];
           };
         };
         /** @description Invalid request */
@@ -1102,7 +1102,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            "application/json": components["schemas"]["MaterialVariant"];
+            "application/json": components["schemas"]["MaterialVariantDetail"];
           };
         };
         /** @description Invalid request */
@@ -1251,7 +1251,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            "application/json": components["schemas"]["MaterialVariant"];
+            "application/json": components["schemas"]["MaterialVariantDetail"];
           };
         };
         /** @description Invalid request */
@@ -1329,7 +1329,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            "application/json": components["schemas"]["MaterialVariant"];
+            "application/json": components["schemas"]["MaterialVariantDetail"];
           };
         };
         /** @description Invalid request */
@@ -2649,6 +2649,20 @@ export interface components {
       updated_at?: string | null;
       /** Format: date-time */
       deleted_at?: string | null;
+    };
+    MaterialVariantDetail: {
+      id: number;
+      name: string;
+      /** @enum {string} */
+      unit: "pieces" | "meters";
+      material_id: number;
+      /** Format: date-time */
+      created_at: string;
+      /** Format: date-time */
+      updated_at?: string | null;
+      /** Format: date-time */
+      deleted_at?: string | null;
+      unit_locked: boolean;
     };
     Supply: {
       id: number;

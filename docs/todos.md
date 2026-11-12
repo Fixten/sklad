@@ -7,4 +7,4 @@
 - [x] use native upsert
 - [x] make async functions sync in be
 - [x] frontend/src/features/Supply/SupplySheet/steps/VariantStep/useVariantStep.ts - run is a code smell
-- [ ] Toast for a landed write. The supply flow should close with a toast. There is no toast primitive yet.
+- [x] Toast for a landed write. The supply flow should close with a toast. There is no toast primitive yet.

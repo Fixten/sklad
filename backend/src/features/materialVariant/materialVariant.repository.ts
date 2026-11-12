@@ -5,6 +5,7 @@ import Repository from "@/db/repository.js";
 import { createSingleton } from "@/utils/createSingleton.js";
 
 import { materialSchema } from "../material/material.schema.js";
+import { materialUsageSchema } from "../materialUsage/materialUsage.schema.js";
 
 import {
   MaterialVariantModel,
@@ -36,6 +37,16 @@ export class MaterialVariantRepository {
       .from(materialSchema)
       .where(eq(materialSchema.id, materialId))
       .get();
+  }
+
+  hasUsage(variantId: number): boolean {
+    return (
+      this.db.client
+        .select({ id: materialUsageSchema.id })
+        .from(materialUsageSchema)
+        .where(eq(materialUsageSchema.material_variant_id, variantId))
+        .get() !== undefined
+    );
   }
 
   getById(id: number) {

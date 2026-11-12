@@ -39,22 +39,78 @@ describe("VariantService", () => {
     repo =
       new MaterialVariantRepository() as jest.Mocked<MaterialVariantRepository>;
     repo.getMaterialReference.mockReturnValue({ id: 1, deleted_at: null });
+    repo.hasUsage.mockReturnValue(false);
+    repo.create.mockReturnValue(row());
+    repo.update.mockReturnValue(row());
+    repo.restore.mockReturnValue(row());
+    supplyService.getAllByVariant.mockReturnValue([]);
     service = new MaterialVariantService(supplyService, repo);
   });
 
   describe("getAll", () => {
-    test("returns only active rows by default", () => {
+    test("returns only active rows by default without unit_locked", () => {
       const active = [row()];
       repo.getAllActive.mockReturnValue(active);
       expect(service.getAll()).toEqual(active);
       expect(repo.getAll).not.toHaveBeenCalled();
     });
 
-    test("returns active and soft-deleted rows with includeHidden", () => {
+    test("returns active and soft-deleted rows with includeHidden without unit_locked", () => {
       const all = [row(), row({ id: 2, deleted_at: new Date() })];
       repo.getAll.mockReturnValue(all);
       expect(service.getAll({ includeHidden: true })).toEqual(all);
       expect(repo.getAllActive).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("unit_locked on single-row returns", () => {
+    test("get marks locked when supplies exist", () => {
+      repo.getById.mockReturnValue(row());
+      supplyService.getAllByVariant.mockReturnValue([{} as SupplySchema]);
+      expect(service.get(1)).toEqual({ ...row(), unit_locked: true });
+    });
+
+    test("get marks locked when a usage exists even without supplies", () => {
+      const found = row();
+      repo.getById.mockReturnValue(found);
+      repo.hasUsage.mockReturnValue(true);
+      expect(service.get(1)).toEqual({ ...found, unit_locked: true });
+    });
+
+    test("get marks unlocked when neither supplies nor usages exist", () => {
+      const found = row();
+      repo.getById.mockReturnValue(found);
+      expect(service.get(1)).toEqual({ ...found, unit_locked: false });
+    });
+
+    test("createVariant computes unit_locked via the same helper", () => {
+      const created = row();
+      repo.getActiveByMaterial.mockReturnValue([]);
+      repo.create.mockReturnValue(created);
+      supplyService.getAllByVariant.mockReturnValue([{} as SupplySchema]);
+      expect(service.createVariant(created)).toEqual({
+        ...created,
+        unit_locked: true,
+      });
+    });
+
+    test("updateVariant returns the updated row decorated", () => {
+      const updated = row({ name: "new name" });
+      repo.getById.mockReturnValue(row());
+      repo.getActiveByMaterial.mockReturnValue([]);
+      repo.update.mockReturnValue(updated);
+      expect(service.updateVariant(1, { name: "new name" })).toEqual({
+        ...updated,
+        unit_locked: false,
+      });
+    });
+
+    test("restore returns the restored row decorated", () => {
+      const restored = row();
+      repo.getById.mockReturnValue(row());
+      repo.getActiveByMaterial.mockReturnValue([]);
+      repo.restore.mockReturnValue(restored);
+      expect(service.restore(1)).toEqual({ ...restored, unit_locked: false });
     });
   });
 
@@ -69,6 +125,19 @@ describe("VariantService", () => {
       supplyService.getAllByVariant.mockReturnValue([]);
       service.delete(0);
       expect(repo.hardDelete).toHaveBeenCalled();
+    });
+
+    test("soft deletes when usages exist even with no supplies", () => {
+      repo.hasUsage.mockReturnValue(true);
+      service.delete(0);
+      expect(repo.softDelete).toHaveBeenCalled();
+      expect(repo.hardDelete).not.toHaveBeenCalled();
+    });
+
+    test("hard deletes when neither supplies nor usages exist", () => {
+      service.delete(0);
+      expect(repo.hardDelete).toHaveBeenCalled();
+      expect(repo.softDelete).not.toHaveBeenCalled();
     });
   });
 
@@ -128,6 +197,15 @@ describe("VariantService", () => {
       supplyService.getAllByVariant.mockReturnValue([]);
       service.updateVariant(0, { unit: "pieces" });
       expect(repo.update).toHaveBeenCalledWith(0, { unit: "pieces" });
+    });
+
+    test("rejects unit change when usages exist even with no supplies", () => {
+      repo.getById.mockReturnValue(row({ unit: "meters" }));
+      repo.hasUsage.mockReturnValue(true);
+      expect(() => service.updateVariant(0, { unit: "pieces" })).toThrow(
+        ErrorMessages.UNIT_CHANGE_AFTER_USAGE,
+      );
+      expect(repo.update).not.toHaveBeenCalled();
     });
 
     test("allows unchanged unit while supplies reference the variant", () => {

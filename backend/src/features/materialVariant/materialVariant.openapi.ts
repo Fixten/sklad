@@ -17,6 +17,7 @@ import { getFullPathname } from "@/utils/getFullPathname.js";
 
 import {
   materialVariantCreateZ,
+  materialVariantDetailZ,
   materialVariantListQueryZ,
   materialVariantPatchZ,
   materialVariantRowZ,
@@ -26,6 +27,10 @@ export function registerMaterialVariantOpenApi(registry: OpenAPIRegistry) {
   const materialVariant = registry.register(
     "MaterialVariant",
     materialVariantRowZ,
+  );
+  const materialVariantDetail = registry.register(
+    "MaterialVariantDetail",
+    materialVariantDetailZ,
   );
   const base = getFullPathname(Urls.materialVariant);
 
@@ -53,7 +58,7 @@ export function registerMaterialVariantOpenApi(registry: OpenAPIRegistry) {
     responses: {
       200: {
         description: "The material variant",
-        content: jsonContent(materialVariant),
+        content: jsonContent(materialVariantDetail),
       },
       ...errors,
     },
@@ -67,7 +72,7 @@ export function registerMaterialVariantOpenApi(registry: OpenAPIRegistry) {
     responses: {
       200: {
         description: "The created material variant",
-        content: jsonContent(materialVariant),
+        content: jsonContent(materialVariantDetail),
       },
       ...errors,
     },
@@ -81,7 +86,7 @@ export function registerMaterialVariantOpenApi(registry: OpenAPIRegistry) {
     responses: {
       200: {
         description: "The updated material variant",
-        content: jsonContent(materialVariant),
+        content: jsonContent(materialVariantDetail),
       },
       ...errors,
     },
@@ -106,7 +111,7 @@ export function registerMaterialVariantOpenApi(registry: OpenAPIRegistry) {
     responses: {
       200: {
         description: "The restored material variant",
-        content: jsonContent(materialVariant),
+        content: jsonContent(materialVariantDetail),
       },
       ...errors,
     },

@@ -11,12 +11,13 @@ import type {
 
 const createdAt = "2026-01-01T00:00:00Z";
 
-const variant: VariantModel = {
+const variant: VariantModel & { unit_locked: boolean } = {
   id: 100,
   name: "Доска 40 мм",
   unit: "meters",
   material_id: 10,
   created_at: createdAt,
+  unit_locked: false,
 };
 
 const variantBody: VariantDTO = {

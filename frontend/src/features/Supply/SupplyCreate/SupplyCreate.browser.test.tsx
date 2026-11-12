@@ -35,6 +35,7 @@ const createChainRoutes = {
       unit: body.unit,
       material_id: body.material_id,
       created_at: createdAt,
+      unit_locked: false,
     }),
   },
 } satisfies Routes;
