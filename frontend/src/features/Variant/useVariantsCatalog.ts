@@ -38,16 +38,13 @@ export function buildMaterialCatalogRow(
 }
 
 export default function useVariantsCatalog() {
-  const { query: materialQuery } = useMaterial({ hidden: true });
+  const { rows: materialRows, query: materialQuery } = useMaterial();
   const { variants, query: variantQuery } = useVariant();
-  const { query: typeQuery } = useMaterialType({ hidden: true });
+  const { rows: typeRows, query: typeQuery } = useMaterialType();
 
-  const typeNames = typeNamesById(typeQuery.data ?? []);
+  const typeNames = typeNamesById(typeRows);
   const materialById = new Map(
-    (materialQuery.data ?? []).map((materialRow) => [
-      materialRow.id,
-      materialRow,
-    ]),
+    materialRows.map((materialRow) => [materialRow.id, materialRow]),
   );
 
   const rows = variants.flatMap((variantRow) => {

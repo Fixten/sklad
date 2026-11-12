@@ -28,15 +28,19 @@ const routes = {
 } satisfies Routes;
 
 test("returns non-deleted materials and keeps deleted rows on the query", async () => {
-  stubRoutes(routes);
+  const requests = stubRoutes(routes);
 
   const Harness = () => {
-    const { materials, query } = useMaterial();
+    const { materials, rows, query } = useMaterial();
 
     return (
       <>
         <div data-testid="filtered">{materials.length}</div>
         <div data-testid="raw">{query.data?.length ?? 0}</div>
+        <div data-testid="all">{rows.length}</div>
+        <div data-testid="hidden">
+          {rows.filter((row) => row.deleted_at).length}
+        </div>
       </>
     );
   };
@@ -49,4 +53,7 @@ test("returns non-deleted materials and keeps deleted rows on the query", async 
 
   await expect.element(screen.getByTestId("filtered")).toHaveTextContent("1");
   await expect.element(screen.getByTestId("raw")).toHaveTextContent("2");
+  await expect.element(screen.getByTestId("all")).toHaveTextContent("2");
+  await expect.element(screen.getByTestId("hidden")).toHaveTextContent("1");
+  expect(requests[0]?.search).toBe("?hidden=true");
 });

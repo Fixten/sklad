@@ -5,7 +5,7 @@ interface Props {
 }
 
 export default function MaterialTypeLabel(props: Props) {
-  const { query } = useMaterialType();
+  const { types } = useMaterialType();
 
-  return query.data?.find((v) => props.id === v.id)?.name;
+  return types.find((v) => props.id === v.id)?.name;
 }

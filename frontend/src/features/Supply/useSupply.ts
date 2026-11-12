@@ -20,9 +20,9 @@ const useSupplyEntity = createEntityHook({
 });
 
 export default function useSupply() {
-  const { rows, ...entity } = useSupplyEntity();
+  const { activeRows, ...entity } = useSupplyEntity();
 
-  return { ...entity, supplies: rows };
+  return { ...entity, supplies: activeRows };
 }
 
 export function useSupplyList(params?: SupplyListQuery) {

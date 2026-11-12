@@ -21,7 +21,7 @@ const useVariantEntity = createEntityHook({
 });
 
 export default function useVariant() {
-  const { rows, ...entity } = useVariantEntity();
+  const { activeRows, ...entity } = useVariantEntity();
 
-  return { ...entity, variants: rows };
+  return { ...entity, variants: activeRows };
 }

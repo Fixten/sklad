@@ -13,7 +13,7 @@ const useSupplierEntity = createEntityHook({
 });
 
 export default function useSupplier() {
-  const { rows, ...entity } = useSupplierEntity();
+  const { activeRows, ...entity } = useSupplierEntity();
 
-  return { ...entity, suppliers: rows };
+  return { ...entity, suppliers: activeRows };
 }

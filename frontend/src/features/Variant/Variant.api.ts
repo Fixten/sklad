@@ -1,6 +1,10 @@
 import Api from "@/api";
 
-import type { VariantDTO, VariantPatchDTO } from "./Variant.model";
+import type {
+  VariantDTO,
+  VariantListQuery,
+  VariantPatchDTO,
+} from "./Variant.model";
 
 export default class VariantApi {
   private api = new Api("/api/material-variant");
@@ -9,8 +13,8 @@ export default class VariantApi {
     return this.api.get(id);
   };
 
-  getAll = () => {
-    return this.api.getAll();
+  getAll = (params?: VariantListQuery) => {
+    return this.api.getAll(params);
   };
 
   create = (value: VariantDTO) => {

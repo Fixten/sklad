@@ -32,15 +32,12 @@ export function createEntityHook<
   TCreateResult,
   TPatch,
 >(config: EntityConfig<TRow, TCreate, TCreateResult, TPatch>) {
-  function useEntity(options?: { hidden?: boolean }) {
+  function useEntity() {
     const queryClient = useQueryClient();
 
     const query = useQuery({
-      queryKey: options?.hidden
-        ? [config.queryKey, "hidden"]
-        : [config.queryKey],
-      queryFn: () =>
-        config.api.getAll(options?.hidden ? { hidden: "true" } : undefined),
+      queryKey: [config.queryKey],
+      queryFn: () => config.api.getAll({ hidden: "true" }),
       retry: retryApiError,
     });
 
@@ -80,11 +77,13 @@ export function createEntityHook<
       mutationFn: config.api.restore,
       onSuccess: invalidate,
     });
-    const rows = (query.data ?? []).filter((row) => !row.deleted_at);
+    const rows = query.data ?? [];
+    const activeRows = rows.filter((row) => !row.deleted_at);
 
     return {
       query,
       rows,
+      activeRows,
       addMutation,
       updateMutation,
       removeMutation,

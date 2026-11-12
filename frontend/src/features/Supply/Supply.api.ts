@@ -10,8 +10,8 @@ export default class SupplyApi {
   private api = new Api("/api/supply");
   private stockApi = new Api("/api/supply/stock/{id}");
 
-  getAll = (params?: SupplyListQuery) => {
-    return this.api.getAll(params);
+  getAll = ({ material_variant_id, supplier_id }: SupplyListQuery = {}) => {
+    return this.api.getAll({ material_variant_id, supplier_id });
   };
 
   get = (id: number) => {
