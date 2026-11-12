@@ -35,3 +35,16 @@ test("opens the supply page from the supply action", async () => {
 
   await expect.element(screen.getByRole("dialog")).not.toBeInTheDocument();
 });
+
+test("renders the catalog list area with an empty state", async () => {
+  stubPageApi();
+  const screen = await renderPage();
+
+  await expect
+    .element(screen.getByTestId("material-catalog-list"))
+    .toBeInTheDocument();
+  await expect
+    .element(screen.getByTestId("material-catalog-empty"))
+    .toBeInTheDocument();
+  await expect.element(screen.getByText("Каталог пуст")).toBeInTheDocument();
+});
