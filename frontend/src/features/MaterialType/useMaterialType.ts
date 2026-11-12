@@ -12,8 +12,8 @@ const useMaterialTypeEntity = createEntityHook({
   create: (name: string) => api.create({ name }),
 });
 
-export default function useMaterialType() {
-  const { rows, ...entity } = useMaterialTypeEntity();
+export default function useMaterialType(options?: { hidden?: boolean }) {
+  const { rows, ...entity } = useMaterialTypeEntity(options);
 
   return { ...entity, types: rows };
 }

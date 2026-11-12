@@ -4,7 +4,7 @@ import type { Routes } from "@/test/apiStub";
 
 type Schemas = components["schemas"];
 
-const createdAt = "2026-01-01T00:00:00Z";
+export const createdAt = "2026-01-01T00:00:00Z";
 
 const types: Schemas["MaterialType"][] = [
   { id: 1, name: "Пиломатериал", created_at: createdAt },

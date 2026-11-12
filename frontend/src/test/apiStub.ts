@@ -16,6 +16,7 @@ type Reply<P extends keyof paths, M extends Operation> =
 
 type Handler<P extends keyof paths, M extends Operation> = (request: {
   body: JsonBody<P, M>;
+  search: URLSearchParams;
 }) => Reply<P, M> | Promise<Reply<P, M>>;
 
 export type Routes = {
@@ -32,7 +33,10 @@ const toMatcher = (pathname: string) =>
       .join("/")}$`,
   );
 
-type AnyHandler = (request: { body: unknown }) => unknown;
+type AnyHandler = (request: {
+  body: unknown;
+  search: URLSearchParams;
+}) => unknown;
 
 const unhandled: string[] = [];
 
@@ -102,7 +106,10 @@ export const createApiStub = (routes: Routes) => {
       return errorResponse(404, "unexpected request");
     }
 
-    const reply: unknown = await operation.handler({ body });
+    const reply: unknown = await operation.handler({
+      body,
+      search: url.searchParams,
+    });
 
     return reply instanceof Response ? reply : jsonResponse(reply);
   };

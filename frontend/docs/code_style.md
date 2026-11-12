@@ -1,9 +1,8 @@
 # Core principles
 
 - Unix principal: something you build does one thing and does it well
-- Yagni: you aint gonna need it. Focus on the most base level implementation.
 - Less is more: do as little as you can. Make minimal test suit, use minimal css rules, write as little logic as possible.
-- Deep modules with minimal see: hide as much implementation as possible behind a seam. The seam should be tight, remove any extra.
+- Deep modules with minimal seam: hide as much implementation as possible behind a seam. The seam should be tight, remove any extra.
 - Dry: reuse as much as possible.
 
 ## Requiremnets
@@ -17,7 +16,7 @@
 - When the core is implemented and approved by the user, you can extend it. Follow the same logic for every extension you do, minimal execution only, edge cases out. Drive minimal working solution.
 - Do not invent requirements. Cut requirements. Cut as much as you can, question everything, analyse against docs and remove if they are not critical.
 
-## Existing code
+## code
 
 - Before extending a component, hook, prop or type, question whether it's exsiting is truly motivated. Raise this question to user if not sure.
 - Use deep modules principle, focus on keeping high level seam steady. Inner structure can be reworked as much as needed.
@@ -39,3 +38,9 @@
   add implementation detail to them; implementation belongs in code.
 - Render all text through `@ui/Typography`; base `body` carries `type-body`, so raw
   `p`/`span`/`div` inherit the body role (`type-*` wins when set).
+- use if\else for multiline conditions
+- Prefer using ui/* components, if there is something missing do one of this:
+  - check if one of component should be extended
+  - check if there are ui/base components that can be used to build ui/ component
+  - look for a component in shadcn library (use shadcn skill)
+  - look for a component in base ui library

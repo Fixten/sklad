@@ -17,7 +17,7 @@ The user maintains the material catalog — Material Types, Materials, and Mater
 ### List
 
 - A level switcher chooses what the cards represent: Варианты (default), Материалы, Типы.
-- A Variant card shows the variant's name, its unit, and its Material and Type as context.
+- A Variant card shows the variant's name and its Material and Type as context.
 - A Material card shows the name, description, and its Type.
 - A Type card shows the name and description.
 - The search box filters cards by any of the names shown on them; it does not create anything.
@@ -53,6 +53,7 @@ The user maintains the material catalog — Material Types, Materials, and Mater
 - A hidden card offers a restore action. Restoring makes it a normal card again.
 - Restoring can fail when another active entity now uses the same name (hidden entities release their name). The card shows that the name is taken and the entity stays hidden.
 - A hidden parent does not prevent a child from being visible, and restoring a child does not restore its parent; each entity is restored separately.
+- When an entity is referred as context (a variant card shows its Material and Type; a Material card shows its Type), the referred entity is shown by name even if it is hidden. Lists themselves show active entities only.
 
 ## Important cases
 

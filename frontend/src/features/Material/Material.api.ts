@@ -1,12 +1,12 @@
 import Api from "@/api";
 
-import type { MaterialDTO } from "./Material.model";
+import type { MaterialDTO, MaterialListQuery } from "./Material.model";
 
 export default class MaterialApi {
   private api = new Api("/api/material");
 
-  getAll = () => {
-    return this.api.getAll();
+  getAll = (params?: MaterialListQuery) => {
+    return this.api.getAll(params);
   };
 
   create = (value: MaterialDTO) => {

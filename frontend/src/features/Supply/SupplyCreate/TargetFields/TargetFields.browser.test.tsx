@@ -1,9 +1,27 @@
 import { expect, test } from "vitest";
 import { userEvent } from "vitest/browser";
 
+import type { Routes } from "@/test/apiStub";
+
+import { createdAt, supplyPageRoutes } from "../../testFixtures";
 import { renderSupply, selectDoska } from "../testHarness";
 
 import TargetFields from ".";
+
+const hiddenType = {
+  id: 1,
+  name: "Металл",
+  created_at: createdAt,
+  deleted_at: createdAt,
+};
+
+const hiddenTypeRoutes = {
+  ...supplyPageRoutes,
+  "/api/material-type": {
+    get: ({ search }: { search: URLSearchParams }) =>
+      search.get("hidden") === "true" ? [hiddenType] : [],
+  },
+} satisfies Routes;
 
 test("fills the target pickers from the search selection", async () => {
   const screen = await renderSupply(<TargetFields />);
@@ -56,5 +74,24 @@ test("keeps a chain built through the pickers when the search is typed", async (
     .not.toBeInTheDocument();
   await expect
     .element(screen.getByText("Выберите единицу"))
+    .not.toBeInTheDocument();
+});
+
+test("fills the type with a hidden type name from the search selection", async () => {
+  const screen = await renderSupply(<TargetFields />, {
+    routes: hiddenTypeRoutes,
+  });
+
+  await selectDoska(screen);
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  await expect
+    .element(screen.getByText("Выберите или создайте тип"))
+    .not.toBeInTheDocument();
+  await expect
+    .element(screen.getByText("Выберите или создайте материал"))
+    .not.toBeInTheDocument();
+  await expect
+    .element(screen.getByText("Выберите или создайте вариант"))
     .not.toBeInTheDocument();
 });

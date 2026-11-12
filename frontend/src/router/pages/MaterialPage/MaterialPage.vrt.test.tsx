@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { page } from "vitest/browser";
 
-import { renderPage, stubPageApi } from "./testHarness";
+import { catalogFixtures, renderPage, stubPageApi } from "./testHarness";
 
 const viewport = () => page.elementLocator(document.body);
 
@@ -12,6 +12,14 @@ test("renders the page with the palette at rest", async () => {
   await expect
     .element(page.getByPlaceholder("Начать работу"))
     .toBeInTheDocument();
+  await expect(viewport()).toMatchScreenshot();
+});
+
+test("renders the catalog with cards", async () => {
+  stubPageApi(catalogFixtures);
+  await renderPage();
+
+  await expect.element(page.getByText("Доска 100x20")).toBeInTheDocument();
   await expect(viewport()).toMatchScreenshot();
 });
 

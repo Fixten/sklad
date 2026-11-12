@@ -55,7 +55,7 @@ export default defineConfig({
         test: {
           name: "vrt",
           include: ["src/**/*.vrt.test.tsx"],
-          setupFiles: ["./src/test/browser.setup.ts"],
+          setupFiles: ["./src/test/vrt.setup.ts"],
           browser: {
             enabled: true,
             provider: playwright(),

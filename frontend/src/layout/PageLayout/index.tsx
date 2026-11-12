@@ -18,7 +18,7 @@ export default function PageLayout({
   children,
 }: PageLayoutProps) {
   return (
-    <div className={cn("flex max-w-2xl flex-col gap-6", className)}>
+    <div className={cn("flex w-full max-w-4xl flex-col gap-6", className)}>
       {back ? (
         <Link
           to={back.to}

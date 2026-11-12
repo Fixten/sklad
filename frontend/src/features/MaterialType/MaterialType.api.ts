@@ -2,6 +2,7 @@ import Api from "@/api";
 
 import type {
   MaterialTypeDTO,
+  MaterialTypeListQuery,
   MaterialTypePatchDTO,
 } from "./MaterialType.model";
 
@@ -12,8 +13,8 @@ export default class MaterialTypeApi {
     return this.api.get(id);
   };
 
-  getAll = () => {
-    return this.api.getAll();
+  getAll = (params?: MaterialTypeListQuery) => {
+    return this.api.getAll(params);
   };
 
   create = (value: MaterialTypeDTO) => {

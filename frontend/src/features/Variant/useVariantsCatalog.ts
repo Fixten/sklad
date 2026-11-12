@@ -1,4 +1,5 @@
 import useMaterial from "@/features/Material/useMaterial";
+import { typeNamesById } from "@/features/MaterialType/MaterialType.utils";
 import useMaterialType from "@/features/MaterialType/useMaterialType";
 import type { Unit } from "@/features/units";
 
@@ -37,13 +38,16 @@ export function buildMaterialCatalogRow(
 }
 
 export default function useVariantsCatalog() {
-  const { materials, query: materialQuery } = useMaterial();
+  const { query: materialQuery } = useMaterial({ hidden: true });
   const { variants, query: variantQuery } = useVariant();
-  const { types, query: typeQuery } = useMaterialType();
+  const { query: typeQuery } = useMaterialType({ hidden: true });
 
-  const typeNames = new Map(types.map((type) => [type.id, type.name]));
+  const typeNames = typeNamesById(typeQuery.data ?? []);
   const materialById = new Map(
-    materials.map((materialRow) => [materialRow.id, materialRow]),
+    (materialQuery.data ?? []).map((materialRow) => [
+      materialRow.id,
+      materialRow,
+    ]),
   );
 
   const rows = variants.flatMap((variantRow) => {

@@ -2,8 +2,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { retryApiError } from "@/api/api-error";
 
+type EntityQuery = object;
+
 interface EntityApi<TRow extends { deleted_at?: string | null }, TPatch> {
-  getAll: () => Promise<TRow[]>;
+  getAll: (params?: EntityQuery) => Promise<TRow[]>;
   update: (patch: TPatch, id: number) => Promise<unknown>;
   remove: (id: number) => Promise<unknown>;
   restore: (id: number) => Promise<unknown>;
@@ -30,12 +32,15 @@ export function createEntityHook<
   TCreateResult,
   TPatch,
 >(config: EntityConfig<TRow, TCreate, TCreateResult, TPatch>) {
-  function useEntity() {
+  function useEntity(options?: { hidden?: boolean }) {
     const queryClient = useQueryClient();
 
     const query = useQuery({
-      queryKey: [config.queryKey],
-      queryFn: () => config.api.getAll(),
+      queryKey: options?.hidden
+        ? [config.queryKey, "hidden"]
+        : [config.queryKey],
+      queryFn: () =>
+        config.api.getAll(options?.hidden ? { hidden: "true" } : undefined),
       retry: retryApiError,
     });
 
