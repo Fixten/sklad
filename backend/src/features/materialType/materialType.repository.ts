@@ -30,6 +30,9 @@ export default class MaterialTypeRepository {
   getAllActive() {
     return this.repository.getAllActive();
   }
+  getAll() {
+    return this.repository.getAll();
+  }
   getById(id: number) {
     return this.repository.getById(id);
   }

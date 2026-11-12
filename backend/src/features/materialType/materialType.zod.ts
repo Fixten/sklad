@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { dateZ } from "@/openapi/common.zod.js";
+import { dateZ, listQueryZ } from "@/openapi/common.zod.js";
 
 export const materialTypeRowZ = z
   .object({
@@ -21,6 +21,8 @@ export const materialTypeCreateZ = z
   .strict();
 
 export const materialTypePatchZ = materialTypeCreateZ.partial();
+
+export const materialTypeListQueryZ = listQueryZ;
 
 export const materialTypeRowListZ = z.array(materialTypeRowZ);
 

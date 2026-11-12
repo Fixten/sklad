@@ -44,6 +44,9 @@ export class MaterialVariantRepository {
   getAllActive() {
     return this.baseRepository.getAllActive();
   }
+  getAll() {
+    return this.baseRepository.getAll();
+  }
   getByMaterial(materialId: number) {
     return this.baseRepository.getByValue(
       eq(this.schema.material_id, materialId),

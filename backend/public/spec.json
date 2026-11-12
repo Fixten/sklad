@@ -315,10 +315,21 @@
     "/api/material-type": {
       "get": {
         "tags": ["Material Type"],
-        "summary": "List active material types",
+        "summary": "List material types",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "enum": ["true", "false"]
+            },
+            "required": false,
+            "name": "hidden",
+            "in": "query"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Active material types",
+            "description": "Material types; includes soft-deleted ones when hidden=true",
             "content": {
               "application/json": {
                 "schema": {
@@ -922,10 +933,21 @@
     "/api/material": {
       "get": {
         "tags": ["Material"],
-        "summary": "List active materials",
+        "summary": "List materials",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "enum": ["true", "false"]
+            },
+            "required": false,
+            "name": "hidden",
+            "in": "query"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Active materials",
+            "description": "Materials; includes soft-deleted ones when hidden=true",
             "content": {
               "application/json": {
                 "schema": {
@@ -1535,10 +1557,21 @@
     "/api/material-variant": {
       "get": {
         "tags": ["Material Variant"],
-        "summary": "List active material variants",
+        "summary": "List material variants",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "enum": ["true", "false"]
+            },
+            "required": false,
+            "name": "hidden",
+            "in": "query"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Active material variants",
+            "description": "Material variants; includes soft-deleted ones when hidden=true",
             "content": {
               "application/json": {
                 "schema": {

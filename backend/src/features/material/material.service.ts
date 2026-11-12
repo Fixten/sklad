@@ -26,8 +26,10 @@ export class MaterialService {
     else return this.repository.hardDelete(id);
   }
 
-  getAll() {
-    return this.repository.getAllActive();
+  getAll({ includeHidden = false }: { includeHidden?: boolean } = {}) {
+    return includeHidden
+      ? this.repository.getAll()
+      : this.repository.getAllActive();
   }
   get(id: number) {
     return this.repository.getById(id);

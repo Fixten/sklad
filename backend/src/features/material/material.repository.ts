@@ -41,6 +41,9 @@ export class MaterialRepository {
   getAllActive() {
     return this.baseRepository.getAllActive();
   }
+  getAll() {
+    return this.baseRepository.getAll();
+  }
   getByType(materialTypeId: number) {
     return this.baseRepository.getByValue(
       eq(this.schema.material_type_id, materialTypeId),

@@ -2,16 +2,19 @@ import { Request, Router } from "express";
 
 import { IdParamsZ } from "@/openapi/common.zod.js";
 import {
+  queryOf,
   sendDeleted,
   sendSpec,
   validateBody,
   validateParams,
+  validateQuery,
 } from "@/openapi/validation.js";
 
 import { MaterialModel } from "./material.schema.js";
 import { MaterialService } from "./material.service.js";
 import {
   materialCreateZ,
+  materialListQueryZ,
   materialPatchZ,
   materialRowListZ,
   materialRowZ,
@@ -26,8 +29,9 @@ const sendList = sendSpec(materialRowListZ);
 
 type Id = Request<{ id: string }>;
 
-materialRouter.get("/", (req, res) => {
-  sendList(res, service.getAll());
+materialRouter.get("/", validateQuery(materialListQueryZ), (_req, res) => {
+  const { hidden } = queryOf(res) as { hidden?: boolean };
+  sendList(res, service.getAll({ includeHidden: hidden }));
 });
 
 materialRouter.get("/:id", validateParams(IdParamsZ), (req: Id, res) => {

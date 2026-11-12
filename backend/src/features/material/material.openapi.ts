@@ -10,12 +10,14 @@ import {
   itemPath,
   jsonContent,
   paramsOf,
+  queryOf,
   restorePath,
 } from "@/openapi/registry.js";
 import { getFullPathname } from "@/utils/getFullPathname.js";
 
 import {
   materialCreateZ,
+  materialListQueryZ,
   materialPatchZ,
   materialRowZ,
 } from "./material.zod.js";
@@ -28,10 +30,11 @@ export function registerMaterialOpenApi(registry: OpenAPIRegistry) {
     method: "get",
     path: base,
     tags: ["Material"],
-    summary: "List active materials",
+    summary: "List materials",
+    request: queryOf(materialListQueryZ),
     responses: {
       200: {
-        description: "Active materials",
+        description: "Materials; includes soft-deleted ones when hidden=true",
         content: jsonContent(z.array(material)),
       },
       ...errors,

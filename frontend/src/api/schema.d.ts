@@ -11,17 +11,19 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** List active material types */
+    /** List material types */
     get: {
       parameters: {
-        query?: never;
+        query?: {
+          hidden?: "true" | "false";
+        };
         header?: never;
         path?: never;
         cookie?: never;
       };
       requestBody?: never;
       responses: {
-        /** @description Active material types */
+        /** @description Material types; includes soft-deleted ones when hidden=true */
         200: {
           headers: {
             [name: string]: unknown;
@@ -467,17 +469,19 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** List active materials */
+    /** List materials */
     get: {
       parameters: {
-        query?: never;
+        query?: {
+          hidden?: "true" | "false";
+        };
         header?: never;
         path?: never;
         cookie?: never;
       };
       requestBody?: never;
       responses: {
-        /** @description Active materials */
+        /** @description Materials; includes soft-deleted ones when hidden=true */
         200: {
           headers: {
             [name: string]: unknown;
@@ -925,17 +929,19 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** List active material variants */
+    /** List material variants */
     get: {
       parameters: {
-        query?: never;
+        query?: {
+          hidden?: "true" | "false";
+        };
         header?: never;
         path?: never;
         cookie?: never;
       };
       requestBody?: never;
       responses: {
-        /** @description Active material variants */
+        /** @description Material variants; includes soft-deleted ones when hidden=true */
         200: {
           headers: {
             [name: string]: unknown;

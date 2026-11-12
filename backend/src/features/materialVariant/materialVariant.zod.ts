@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { MATERIAL_UNITS } from "@/features/materialVariant/utils/quantity.js";
-import { dateZ } from "@/openapi/common.zod.js";
+import { dateZ, listQueryZ } from "@/openapi/common.zod.js";
 
 export const materialVariantRowZ = z
   .object({
@@ -24,6 +24,8 @@ export const materialVariantCreateZ = z
   .strict();
 
 export const materialVariantPatchZ = materialVariantCreateZ.partial();
+
+export const materialVariantListQueryZ = listQueryZ;
 
 export const materialVariantRowListZ = z.array(materialVariantRowZ);
 

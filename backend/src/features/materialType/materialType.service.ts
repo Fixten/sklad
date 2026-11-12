@@ -41,8 +41,10 @@ export default class MaterialTypeService {
     this.assertNameIsFree(current.name, current.id);
     return this.repository.restore(id);
   }
-  getAll() {
-    return this.repository.getAllActive();
+  getAll({ includeHidden = false }: { includeHidden?: boolean } = {}) {
+    return includeHidden
+      ? this.repository.getAll()
+      : this.repository.getAllActive();
   }
   get(id: number) {
     return this.repository.getById(id);

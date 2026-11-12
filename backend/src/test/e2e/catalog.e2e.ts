@@ -136,6 +136,34 @@ describe("catalog e2e", () => {
       expect(byId.status).toBe(200);
     });
 
+    test("lists soft-deleted types only with hidden=true", async () => {
+      const type = await createType(app);
+      await createMaterial(app, type.id);
+      expect(listOf(await request(app).get("/api/material-type"))).toHaveLength(
+        1,
+      );
+
+      const deleted = await request(app).delete(
+        `/api/material-type/${String(type.id)}`,
+      );
+      expect(deleted.status).toBe(200);
+      expect(listOf(await request(app).get("/api/material-type"))).toHaveLength(
+        0,
+      );
+
+      const hidden = await request(app).get("/api/material-type?hidden=true");
+      expect(hidden.status).toBe(200);
+      const hiddenList = listOf(hidden) as MaterialType[];
+      expect(hiddenList).toHaveLength(1);
+      expect(hiddenList[0]!.deleted_at).toBeTruthy();
+
+      const bogus = await request(app).get("/api/material-type?hidden=bogus");
+      expect(bogus.status).toBe(400);
+
+      const unknownKey = await request(app).get("/api/material-type?foo=1");
+      expect(unknownKey.status).toBe(400);
+    });
+
     test("returns 404 when deleting a missing type", async () => {
       const res = await request(app).delete("/api/material-type/999");
       expect(res.status).toBe(404);

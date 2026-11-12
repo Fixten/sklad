@@ -42,6 +42,22 @@ describe("material service", () => {
     service = new MaterialService(repo, variantService);
   });
 
+  describe("getAll", () => {
+    it("returns only active rows by default", () => {
+      const active = [row()];
+      repo.getAllActive.mockReturnValue(active);
+      expect(service.getAll()).toEqual(active);
+      expect(repo.getAll).not.toHaveBeenCalled();
+    });
+
+    it("returns active and soft-deleted rows with includeHidden", () => {
+      const all = [row(), row({ id: 2, deleted_at: new Date() })];
+      repo.getAll.mockReturnValue(all);
+      expect(service.getAll({ includeHidden: true })).toEqual(all);
+      expect(repo.getAllActive).not.toHaveBeenCalled();
+    });
+  });
+
   describe("deleteMaterial", () => {
     it("soft deletes material when variants reference it", () => {
       variantService.getByMaterial.mockReturnValue([
