@@ -7,6 +7,7 @@ export enum ErrorMessages {
   ITEM_TO_DELETE_NOT_FOUND = "Item to delete was not found",
   ITEM_DELETED = "Item is deleted",
   NAME_ALREADY_EXISTS = "Name already exists",
+  NAME_RESERVED_BY_HIDDEN = "Name is reserved by a hidden record",
   DB_OPERATION_FAILED = "Db operation failed",
   UNIT_CHANGE_AFTER_USAGE = "Unit cannot be changed after historical usage",
   VARIANT_CHANGE_AFTER_USAGE = "Material variant cannot be changed after the supply was consumed",

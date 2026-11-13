@@ -18,9 +18,10 @@ export const materialTypeSchema = getSchema(
     description: text(),
   },
   (table) => [
-    uniqueIndex("material_types_name_unique")
-      .on(sql`${table.name} COLLATE NOCASE`)
-      .where(sql`${table.deleted_at} IS NULL`),
+    // shortcut: index trim()/NOCASE cover only spaces and ASCII A-Z; the service trim/toLowerCase is the real gate
+    uniqueIndex("material_types_name_unique").on(
+      sql`trim(${table.name}) COLLATE NOCASE`,
+    ),
   ],
 );
 

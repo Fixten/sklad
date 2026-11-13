@@ -49,11 +49,6 @@ export class MaterialRepository {
       eq(this.schema.material_type_id, materialTypeId),
     );
   }
-  getActiveByType(materialTypeId: number) {
-    return this.baseRepository.getActiveByValue(
-      eq(this.schema.material_type_id, materialTypeId),
-    );
-  }
   create(material: MaterialModel) {
     return this.baseRepository.addNew(material);
   }

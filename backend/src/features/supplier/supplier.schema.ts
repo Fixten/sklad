@@ -20,9 +20,9 @@ export const supplierSchema = getSchema(
     contact: text(),
   },
   (table) => [
-    uniqueIndex("suppliers_name_unique")
-      .on(sql`${table.name} COLLATE NOCASE`)
-      .where(sql`${table.deleted_at} IS NULL`),
+    uniqueIndex("suppliers_name_unique").on(
+      sql`trim(${table.name}) COLLATE NOCASE`,
+    ),
   ],
 );
 

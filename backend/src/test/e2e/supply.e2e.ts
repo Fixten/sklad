@@ -145,18 +145,23 @@ describe("supplier and supply e2e", () => {
       expect(bodyOf(res).message).toBe("Name already exists");
     });
 
-    test("allows a deleted name to be reused but not to be restored into", async () => {
+    test("reserves a deleted name and still restores the row", async () => {
       const created = await createReferencedSupplier(app);
       await request(app).delete(`/api/supplier/${String(created.id)}`);
 
-      const recreated = await createSupplier(app);
-      expect(recreated.id).not.toBe(created.id);
+      const reserved = await request(app)
+        .post("/api/supplier")
+        .send({ name: "lumber co" });
+      expect(reserved.status).toBe(409);
+      expect(bodyOf(reserved).message).toBe(
+        "Name is reserved by a hidden record",
+      );
 
       const restored = await request(app).post(
         `/api/supplier/restore/${String(created.id)}`,
       );
-      expect(restored.status).toBe(409);
-      expect(bodyOf(restored).message).toBe("Name already exists");
+      expect(restored.status).toBe(200);
+      expect(bodyOf(restored).name).toBe("Lumber Co");
     });
 
     test("rejects editing a soft-deleted supplier with 409", async () => {

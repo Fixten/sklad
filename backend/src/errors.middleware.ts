@@ -16,6 +16,7 @@ const badRequestMessages = [
 const conflictMessages = [
   ErrorMessages.ITEM_DELETED,
   ErrorMessages.NAME_ALREADY_EXISTS,
+  ErrorMessages.NAME_RESERVED_BY_HIDDEN,
   ErrorMessages.QUANTITY_BELOW_CONSUMED,
   ErrorMessages.QUANTITY_REQUIRED_FOR_UNIT_CHANGE,
   ErrorMessages.REFERENCED_ITEM_DELETED,

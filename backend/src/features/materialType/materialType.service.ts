@@ -31,15 +31,21 @@ export default class MaterialTypeService {
     else return this.repository.hardDelete(id);
   }
   update(id: number, newValue: Partial<MaterialTypeModel>) {
-    const current = this.getEditable(id);
-    if (newValue.name !== undefined)
-      this.assertNameIsFree(newValue.name, current.id);
-    return this.repository.update(id, newValue);
+    const current = this.repository.getById(id);
+    if (!current.deleted_at) {
+      if (newValue.name !== undefined)
+        this.assertNameIsFree(newValue.name, current.id);
+      return this.repository.update(id, newValue);
+    }
+    const name = newValue.name;
+    if (name === undefined || Object.keys(newValue).length !== 1)
+      throw new Error(ErrorMessages.ITEM_DELETED);
+    this.assertNameIsFree(name, current.id);
+    return this.repository.update(id, { name });
   }
   restore(id: number) {
     const current = this.repository.getById(id);
-    this.assertNameIsFree(current.name, current.id);
-    return this.repository.restore(id);
+    return this.repository.restore(current.id);
   }
   getAll({ includeHidden = false }: { includeHidden?: boolean } = {}) {
     return includeHidden
@@ -50,16 +56,13 @@ export default class MaterialTypeService {
     return this.repository.getById(id);
   }
 
-  private getEditable(id: number) {
-    const current = this.repository.getById(id);
-    if (current.deleted_at) throw new Error(ErrorMessages.ITEM_DELETED);
-    return current;
-  }
   private assertNameIsFree(name: string, excludeId?: number) {
-    const existing = this.repository.getAllActive();
-    const taken = existing.some(
+    const rows = this.repository.getAll();
+    const conflict = rows.find(
       (row) => row.id !== excludeId && isSameName(row.name, name),
     );
-    if (taken) throw new Error(ErrorMessages.NAME_ALREADY_EXISTS);
+    if (conflict?.deleted_at)
+      throw new Error(ErrorMessages.NAME_RESERVED_BY_HIDDEN);
+    if (conflict) throw new Error(ErrorMessages.NAME_ALREADY_EXISTS);
   }
 }

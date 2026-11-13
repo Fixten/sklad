@@ -42,7 +42,7 @@ describe("SupplierService", () => {
 
   describe("create", () => {
     test("stores the name and defaults the optional fields to null", () => {
-      repo.getAllActive.mockReturnValue([]);
+      repo.getAll.mockReturnValue([]);
       repo.create.mockImplementation((value) => row(value));
 
       service.create({ name: "Lumber Co" });
@@ -56,10 +56,21 @@ describe("SupplierService", () => {
     });
 
     test("rejects a name already used by another active supplier", () => {
-      repo.getAllActive.mockReturnValue([row({ name: "Lumber Co" })]);
+      repo.getAll.mockReturnValue([row({ name: "Lumber Co" })]);
 
       expect(() => service.create({ name: "lumber co" })).toThrow(
         ErrorMessages.NAME_ALREADY_EXISTS,
+      );
+      expect(repo.create).not.toHaveBeenCalled();
+    });
+
+    test("rejects a name held by a soft-deleted supplier", () => {
+      repo.getAll.mockReturnValue([
+        row({ name: "Lumber Co", deleted_at: new Date() }),
+      ]);
+
+      expect(() => service.create({ name: "lumber co" })).toThrow(
+        ErrorMessages.NAME_RESERVED_BY_HIDDEN,
       );
       expect(repo.create).not.toHaveBeenCalled();
     });
@@ -68,7 +79,7 @@ describe("SupplierService", () => {
   describe("update", () => {
     test("updates a supplier keeping its own name", () => {
       repo.getById.mockReturnValue(row());
-      repo.getAllActive.mockReturnValue([row()]);
+      repo.getAll.mockReturnValue([row()]);
 
       service.update(1, { name: "lumber co", contact: "mail" });
 
@@ -80,7 +91,7 @@ describe("SupplierService", () => {
 
     test("rejects a name taken by another active supplier", () => {
       repo.getById.mockReturnValue(row({ id: 1 }));
-      repo.getAllActive.mockReturnValue([row({ id: 2, name: "Lumber Co" })]);
+      repo.getAll.mockReturnValue([row({ id: 2, name: "Lumber Co" })]);
 
       expect(() => service.update(1, { name: "Lumber Co" })).toThrow(
         ErrorMessages.NAME_ALREADY_EXISTS,
@@ -88,12 +99,40 @@ describe("SupplierService", () => {
       expect(repo.update).not.toHaveBeenCalled();
     });
 
-    test("rejects editing a soft-deleted supplier", () => {
+    test("rejects renaming onto a soft-deleted supplier's name", () => {
+      repo.getById.mockReturnValue(row({ id: 1 }));
+      repo.getAll.mockReturnValue([
+        row({ id: 2, name: "Lumber Co", deleted_at: new Date() }),
+      ]);
+
+      expect(() => service.update(1, { name: "lumber co" })).toThrow(
+        ErrorMessages.NAME_RESERVED_BY_HIDDEN,
+      );
+      expect(repo.update).not.toHaveBeenCalled();
+    });
+
+    test("renames a soft-deleted supplier when only the name changes", () => {
+      repo.getById.mockReturnValue(row({ deleted_at: new Date() }));
+      repo.getAll.mockReturnValue([]);
+
+      service.update(1, { name: "New Co" });
+
+      expect(repo.update).toHaveBeenCalledWith(1, { name: "New Co" });
+    });
+
+    test("rejects a non-name edit on a soft-deleted supplier", () => {
       repo.getById.mockReturnValue(row({ deleted_at: new Date() }));
 
       expect(() => service.update(1, { description: "late" })).toThrow(
         ErrorMessages.ITEM_DELETED,
       );
+      expect(repo.update).not.toHaveBeenCalled();
+    });
+
+    test("rejects an empty patch on a soft-deleted supplier", () => {
+      repo.getById.mockReturnValue(row({ deleted_at: new Date() }));
+
+      expect(() => service.update(1, {})).toThrow(ErrorMessages.ITEM_DELETED);
       expect(repo.update).not.toHaveBeenCalled();
     });
   });
@@ -121,7 +160,7 @@ describe("SupplierService", () => {
   describe("restore", () => {
     test("restores a supplier whose name is still free", () => {
       repo.getById.mockReturnValue(row({ deleted_at: new Date() }));
-      repo.getAllActive.mockReturnValue([]);
+      repo.getAll.mockReturnValue([]);
       repo.restore.mockImplementation((id) => row({ id }));
 
       service.restore(1);
@@ -129,14 +168,13 @@ describe("SupplierService", () => {
       expect(repo.restore).toHaveBeenCalledWith(1);
     });
 
-    test("rejects restoring into a name now taken by an active supplier", () => {
+    test("restores a supplier even when another active row uses the name", () => {
       repo.getById.mockReturnValue(row({ deleted_at: new Date() }));
-      repo.getAllActive.mockReturnValue([row({ id: 2, name: "Lumber Co" })]);
+      repo.restore.mockImplementation((id) => row({ id }));
 
-      expect(() => service.restore(1)).toThrow(
-        ErrorMessages.NAME_ALREADY_EXISTS,
-      );
-      expect(repo.restore).not.toHaveBeenCalled();
+      service.restore(1);
+
+      expect(repo.restore).toHaveBeenCalledWith(1);
     });
   });
 });

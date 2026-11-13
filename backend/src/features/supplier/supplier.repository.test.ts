@@ -3,9 +3,14 @@ import { getTestDbWithMigrations } from "@/db/dbTestHelpers.js";
 import SupplierRepository from "./supplier.repository.js";
 import { supplierSchema } from "./supplier.schema.js";
 
+import type { SupplierModel } from "./supplier.schema.js";
 import type { TestDbWithMigrations } from "@/db/dbTestHelpers.js";
 
-describe("SupplierRepository", () => {
+function supplier(name: string): SupplierModel {
+  return { name, description: null, url: null, contact: null };
+}
+
+describe("SupplierRepository name index", () => {
   let db: TestDbWithMigrations;
   let repository: SupplierRepository;
 
@@ -19,21 +24,34 @@ describe("SupplierRepository", () => {
   });
 
   test("rejects a name that differs from an active supplier only in case", () => {
-    repository.create({
-      name: "Oak",
-      description: null,
-      url: null,
-      contact: null,
-    });
+    repository.create(supplier("Oak"));
 
-    expect(() =>
-      repository.create({
-        name: "oak",
-        description: null,
-        url: null,
-        contact: null,
-      }),
-    ).toThrow(/UNIQUE constraint failed/);
+    expect(() => repository.create(supplier("oak"))).toThrow(
+      /UNIQUE constraint failed/,
+    );
     expect(db.client.select().from(supplierSchema).all()).toHaveLength(1);
+  });
+
+  test("rejects a name held by a soft-deleted supplier", () => {
+    const created = repository.create(supplier("Oak"));
+    repository.softDelete(created.id);
+
+    expect(() => repository.create(supplier("oak"))).toThrow(
+      /UNIQUE constraint failed/,
+    );
+  });
+
+  test("rejects a name that differs from an existing supplier only in whitespace", () => {
+    repository.create(supplier("Oak"));
+
+    expect(() => repository.create(supplier("  Oak  "))).toThrow(
+      /UNIQUE constraint failed/,
+    );
+  });
+
+  test("keeps Cyrillic names that differ in case apart at the index", () => {
+    repository.create(supplier("Дуб"));
+
+    expect(repository.create(supplier("дуб")).name).toBe("дуб");
   });
 });

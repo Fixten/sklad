@@ -95,7 +95,7 @@ describe("catalog e2e", () => {
       expect(bodyOf(duplicate).message).toBe("Name already exists");
     });
 
-    test("allows reusing the name after the type is soft-deleted", async () => {
+    test("rejects reusing the name while the type is soft-deleted", async () => {
       const created = await createType(app);
       await request(app).post("/api/material").send({
         name: "Oak",
@@ -107,11 +107,14 @@ describe("catalog e2e", () => {
       );
       expect(deleted.status).toBe(200);
 
-      const recreated = await createType(app);
-      expect(recreated.id).toBeGreaterThan(created.id);
+      const reserved = await createTypeApp(app);
+      expect(reserved.status).toBe(409);
+      expect(bodyOf(reserved).message).toBe(
+        "Name is reserved by a hidden record",
+      );
 
       const list = await request(app).get("/api/material-type");
-      expect(listOf(list)).toHaveLength(1);
+      expect(listOf(list)).toHaveLength(0);
     });
 
     test("hard-deletes an unreferenced type and soft-deletes a referenced one", async () => {
@@ -286,7 +289,7 @@ describe("catalog e2e", () => {
       expect(res.status).toBe(409);
     });
 
-    test("rejects a PATCH on a soft-deleted material with 409", async () => {
+    test("renames a soft-deleted material and rejects other edits with 409", async () => {
       const type = await createType(app);
       const material = await createMaterial(app, type.id);
       await createVariant(app, material.id);
@@ -297,11 +300,17 @@ describe("catalog e2e", () => {
       );
       expect(byId.status).toBe(200);
 
-      const res = await request(app)
+      const renamed = await request(app)
         .patch(`/api/material/${String(material.id)}`)
         .send({ name: "new" });
-      expect(res.status).toBe(409);
-      expect(bodyOf(res).message).toBe("Item is deleted");
+      expect(renamed.status).toBe(200);
+      expect(bodyOf(renamed).name).toBe("new");
+
+      const rejected = await request(app)
+        .patch(`/api/material/${String(material.id)}`)
+        .send({ description: "late" });
+      expect(rejected.status).toBe(409);
+      expect(bodyOf(rejected).message).toBe("Item is deleted");
     });
   });
 
@@ -376,7 +385,7 @@ describe("catalog e2e", () => {
       expect(supplies[0]!.quantity).toBe(5);
     });
 
-    test("rejects restoring into a name now taken by another active row", async () => {
+    test("keeps a hidden variant's name reserved and still restores it", async () => {
       const type = await createType(app, "Wood");
       const material = await createMaterial(app, type.id, "Oak");
       const variant = await createVariant(app, material.id, "Oak plank");
@@ -387,23 +396,33 @@ describe("catalog e2e", () => {
       });
       await request(app).delete(`/api/material-variant/${String(variant.id)}`);
 
-      await createVariant(app, material.id, "oak PLANK");
+      const reserved = await request(app)
+        .post("/api/material-variant")
+        .send({ name: "oak PLANK", unit: "pieces", material_id: material.id });
+      expect(reserved.status).toBe(409);
+      expect(bodyOf(reserved).message).toBe(
+        "Name is reserved by a hidden record",
+      );
 
-      const res = await request(app).post(
+      const restored = await request(app).post(
         `/api/material-variant/restore/${String(variant.id)}`,
       );
-      expect(res.status).toBe(409);
+      expect(restored.status).toBe(200);
+      expect((bodyOf(restored) as MaterialVariant).name).toBe("Oak plank");
     });
 
-    test("allows a soft-deleted name to be reused until the row is restored", async () => {
+    test("rejects reusing a soft-deleted material's name", async () => {
       const type = await createType(app);
       const material = await createMaterial(app, type.id, "Oak");
       await createVariant(app, material.id);
       await request(app).delete(`/api/material/${String(material.id)}`);
 
-      const recreated = await createMaterial(app, type.id, "oak");
-      expect(recreated.id).toBeGreaterThan(material.id);
-      expect(listOf(await request(app).get("/api/material"))).toHaveLength(1);
+      const res = await request(app)
+        .post("/api/material")
+        .send({ name: "oak", material_type_id: type.id });
+      expect(res.status).toBe(409);
+      expect(bodyOf(res).message).toBe("Name is reserved by a hidden record");
+      expect(listOf(await request(app).get("/api/material"))).toHaveLength(0);
     });
 
     test("returns 404 when restoring a missing or hard-deleted row", async () => {

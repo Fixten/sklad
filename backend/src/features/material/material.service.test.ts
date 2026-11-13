@@ -87,21 +87,31 @@ describe("material service", () => {
 
   describe("create", () => {
     it("creates a material with a name free within its type", () => {
-      repo.getActiveByType.mockReturnValue([]);
+      repo.getByType.mockReturnValue([]);
       service.create(row());
       expect(repo.create).toHaveBeenCalled();
     });
 
     it("rejects a name already used within the same type", () => {
-      repo.getActiveByType.mockReturnValue([row({ name: "Oak" })]);
+      repo.getByType.mockReturnValue([row({ name: "Oak" })]);
       expect(() => service.create(row({ name: "oak" }))).toThrow(
         ErrorMessages.NAME_ALREADY_EXISTS,
       );
       expect(repo.create).not.toHaveBeenCalled();
     });
 
+    it("rejects a name held by a soft-deleted material of the same type", () => {
+      repo.getByType.mockReturnValue([
+        row({ name: "Oak", deleted_at: new Date() }),
+      ]);
+      expect(() => service.create(row({ name: "oak" }))).toThrow(
+        ErrorMessages.NAME_RESERVED_BY_HIDDEN,
+      );
+      expect(repo.create).not.toHaveBeenCalled();
+    });
+
     it("allows the same name in another type", () => {
-      repo.getActiveByType.mockReturnValue([]);
+      repo.getByType.mockReturnValue([]);
       service.create(row({ name: "oak", material_type_id: 2 }));
       expect(repo.create).toHaveBeenCalled();
     });
@@ -122,32 +132,56 @@ describe("material service", () => {
   });
 
   describe("update", () => {
-    it("rejects editing a soft-deleted material", () => {
+    it("renames a soft-deleted material when only the name changes", () => {
       repo.getById.mockReturnValue(row({ deleted_at: new Date() }));
-      expect(() => service.update(0, { name: "new" })).toThrow(
+      repo.getByType.mockReturnValue([]);
+      service.update(0, { name: "new" });
+      expect(repo.update).toHaveBeenCalledWith(0, { name: "new" });
+    });
+
+    it("rejects a non-name edit on a soft-deleted material", () => {
+      repo.getById.mockReturnValue(row({ deleted_at: new Date() }));
+      expect(() => service.update(0, { description: "late" })).toThrow(
         ErrorMessages.ITEM_DELETED,
       );
       expect(repo.update).not.toHaveBeenCalled();
     });
 
+    it("rejects an empty patch on a soft-deleted material", () => {
+      repo.getById.mockReturnValue(row({ deleted_at: new Date() }));
+      expect(() => service.update(0, {})).toThrow(ErrorMessages.ITEM_DELETED);
+      expect(repo.update).not.toHaveBeenCalled();
+    });
+
     it("rejects a name already used within the same type", () => {
       repo.getById.mockReturnValue(row({ name: "Oak" }));
-      repo.getActiveByType.mockReturnValue([row({ id: 2, name: "Ash" })]);
+      repo.getByType.mockReturnValue([row({ id: 2, name: "Ash" })]);
       expect(() => service.update(0, { name: "ASH" })).toThrow(
         ErrorMessages.NAME_ALREADY_EXISTS,
       );
       expect(repo.update).not.toHaveBeenCalled();
     });
 
+    it("rejects renaming onto a soft-deleted material's name", () => {
+      repo.getById.mockReturnValue(row({ name: "Oak" }));
+      repo.getByType.mockReturnValue([
+        row({ id: 2, name: "Ash", deleted_at: new Date() }),
+      ]);
+      expect(() => service.update(0, { name: "ash" })).toThrow(
+        ErrorMessages.NAME_RESERVED_BY_HIDDEN,
+      );
+      expect(repo.update).not.toHaveBeenCalled();
+    });
+
     it("allows a name only the row itself already uses", () => {
       repo.getById.mockReturnValue(row({ name: "Oak" }));
-      repo.getActiveByType.mockReturnValue([row({ name: "oak" })]);
+      repo.getByType.mockReturnValue([row({ name: "oak" })]);
       service.update(0, { name: "oak" });
       expect(repo.update).toHaveBeenCalledWith(0, { name: "oak" });
     });
     it("checks the name when only the type changes", () => {
       repo.getById.mockReturnValue(row({ name: "Oak" }));
-      repo.getActiveByType.mockReturnValue([row({ id: 2, name: "Oak" })]);
+      repo.getByType.mockReturnValue([row({ id: 2, name: "Oak" })]);
       expect(() => service.update(0, { material_type_id: 2 })).toThrow(
         ErrorMessages.NAME_ALREADY_EXISTS,
       );
@@ -176,18 +210,14 @@ describe("material service", () => {
   describe("restore", () => {
     it("restores the row", () => {
       repo.getById.mockReturnValue(row());
-      repo.getActiveByType.mockReturnValue([]);
       service.restore(1);
       expect(repo.restore).toHaveBeenCalledWith(1);
     });
 
-    it("rejects when an active material in the same type already uses the name", () => {
+    it("restores even when another active material in the same type uses the name", () => {
       repo.getById.mockReturnValue(row({ id: 2, name: "Oak" }));
-      repo.getActiveByType.mockReturnValue([row({ id: 1, name: "oak" })]);
-      expect(() => service.restore(2)).toThrow(
-        ErrorMessages.NAME_ALREADY_EXISTS,
-      );
-      expect(repo.restore).not.toHaveBeenCalled();
+      service.restore(2);
+      expect(repo.restore).toHaveBeenCalledWith(2);
     });
 
     it("propagates not found for a missing material", () => {

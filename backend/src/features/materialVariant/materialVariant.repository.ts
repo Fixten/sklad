@@ -63,11 +63,6 @@ export class MaterialVariantRepository {
       eq(this.schema.material_id, materialId),
     );
   }
-  getActiveByMaterial(materialId: number) {
-    return this.baseRepository.getActiveByValue(
-      eq(this.schema.material_id, materialId),
-    );
-  }
   create(variant: MaterialVariantModel) {
     return this.baseRepository.addNew(variant);
   }

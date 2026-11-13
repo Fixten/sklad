@@ -49,7 +49,14 @@ export default class SupplierService {
   }
 
   update(id: number, input: SupplierUpdateInput) {
-    const current = this.getEditable(id);
+    const current = this.repository.getById(id);
+    if (current.deleted_at) {
+      const name = input.name;
+      if (name === undefined || Object.keys(input).length !== 1)
+        throw new Error(ErrorMessages.ITEM_DELETED);
+      this.assertNameIsFree(name, current.id);
+      return this.repository.update(id, { name });
+    }
     if (input.name !== undefined) this.assertNameIsFree(input.name, current.id);
     return this.repository.update(id, input);
   }
@@ -66,21 +73,16 @@ export default class SupplierService {
 
   restore(id: number): SupplierSchema {
     const current = this.repository.getById(id);
-    this.assertNameIsFree(current.name, current.id);
-    return this.repository.restore(id);
-  }
-
-  private getEditable(id: number) {
-    const current = this.repository.getById(id);
-    if (current.deleted_at) throw new Error(ErrorMessages.ITEM_DELETED);
-    return current;
+    return this.repository.restore(current.id);
   }
 
   private assertNameIsFree(name: string, excludeId?: number) {
-    const suppliers = this.repository.getAllActive();
-    const taken = suppliers.some(
+    const rows = this.repository.getAll();
+    const conflict = rows.find(
       (row) => row.id !== excludeId && isSameName(row.name, name),
     );
-    if (taken) throw new Error(ErrorMessages.NAME_ALREADY_EXISTS);
+    if (conflict?.deleted_at)
+      throw new Error(ErrorMessages.NAME_RESERVED_BY_HIDDEN);
+    if (conflict) throw new Error(ErrorMessages.NAME_ALREADY_EXISTS);
   }
 }

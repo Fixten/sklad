@@ -52,7 +52,7 @@ Material Types support create, view, edit, and delete operations.
 
 Material Types use soft deletion when they have historical relationships.
 
-Active names should be unique.
+Names are unique across all Material Types, including soft-deleted records.
 
 ---
 
@@ -69,7 +69,7 @@ Fields:
 - `updated_at`
 - `deleted_at`
 
-Active Material names should be unique within their Material Type.
+Names are unique within their Material Type, including soft-deleted records.
 
 Materials use soft deletion when historically referenced.
 
@@ -111,9 +111,7 @@ meters → pieces
 
 after it has associated Supplies or Product Item Material Usage records.
 
-If a different unit is required, a new Material Variant must be created.
-
-Active Variant names should be unique within their Material.
+Names are unique within their Material, including soft-deleted records.
 
 ---
 
@@ -133,7 +131,7 @@ Fields:
 
 Supplier information is not an accounting/customer entity.
 
-Active Supplier names should be unique.
+Names are unique across all Suppliers, including soft-deleted records.
 
 Suppliers use soft deletion when historically referenced by Supplies.
 
@@ -258,7 +256,7 @@ Fields:
 - `updated_at`
 - `deleted_at`
 
-Active Product Template names should be unique.
+Names are unique across all Product Templates, including soft-deleted records.
 
 ## 6.1 Expected Production Hours
 
@@ -947,7 +945,22 @@ Soft deletion applies where historical relationships exist to:
 - Suppliers
 - Product Templates
 
-Soft-deleted records do not prevent creation of new records with the same business name.
+**Identity and names.** A record's business name is its identity within its uniqueness scope:
+Material Type names are unique across all types; Material names are unique within their
+Material Type; Material Variant names are unique within their Material; Supplier and Product
+Template names are unique across their entity. Names are unique within their scope, across
+both active and soft-deleted records.
+
+A soft-deleted record keeps its name reserved. A new record cannot take a name held by a
+soft-deleted record: creation fails with a conflict that identifies the hidden record, and the
+user restores that record (or renames it) instead of creating a duplicate. Restoring a record
+never conflicts on its name.
+
+Renaming a record frees its previous name. Renaming is allowed for soft-deleted records; other
+edits on soft-deleted records remain rejected.
+
+Hard-deleted records leave no identity: their names become free. Supply has no business name
+and Product Item is hard-deleted; this rule does not apply to them.
 
 Soft deletion applies to the deleted record only. Related records are not modified,
 so a child of a soft-deleted parent stays active and usable, and may be restored while
@@ -1146,9 +1159,13 @@ only enforcement point and no `UNIQUE`-style DDL is added for it.
 
 The backend is responsible for business validation including:
 
-- Material Type, Material, and Material Variant names are unique ignoring case among active rows.
-- Soft-deleted rows release their name; a name reused by an active row makes the original unrestorable.
-- Editing a soft-deleted row is rejected; restoring a row is not.
+- Names are unique within scope, including soft-deleted rows. Uniqueness is enforced by the
+  service, case- and whitespace-insensitive; a full unique index on `trim(name) COLLATE NOCASE`
+  backs it up as a safety net (SQLite `NOCASE` folds ASCII only).
+- Creating or renaming onto a name held by a soft-deleted row fails with `NAME_RESERVED_BY_HIDDEN`;
+  an active-row conflict stays `NAME_ALREADY_EXISTS`.
+- Restore performs no name-availability check.
+- Soft-deleted rows accept a name-only update; other edits are rejected.
 - Pieces must be whole numbers.
 - Meters support up to three decimal places.
 - Work hours support up to three decimal places.
@@ -1166,6 +1183,9 @@ The backend is responsible for business validation including:
 - Decimal conversion uses scaled integer representation.
 - Monetary conversion rounds down to the smaller monetary value.
 - All persistence-specific decimal/money conversion occurs in the backend service/domain layer.
+
+`isSameName` (the service name check) trims surrounding whitespace before folding case; the index
+normalizes names the same way.
 
 ---
 

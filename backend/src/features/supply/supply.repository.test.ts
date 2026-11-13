@@ -21,10 +21,12 @@ describe("SupplyRepository", () => {
   let db: TestDbWithMigrations;
   let repository: SupplyRepository;
   let variantId: number;
+  let templateSeq: number;
 
   beforeEach(() => {
     db = getTestDbWithMigrations();
     repository = new SupplyRepository(db);
+    templateSeq = 0;
 
     const [materialType] = db.client
       .insert(materialTypeSchema)
@@ -62,9 +64,10 @@ describe("SupplyRepository", () => {
   }
 
   function addConsumption(supplyId: number, consumed: number) {
+    templateSeq += 1;
     const [template] = db.client
       .insert(productTemplateSchema)
-      .values({ name: "Shelf" })
+      .values({ name: `Shelf ${String(templateSeq)}` })
       .returning()
       .all();
     const [item] = db.client

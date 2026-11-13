@@ -49,9 +49,9 @@ The user maintains the material catalog — Material Types, Materials, and Mater
 ### Hidden entities
 
 - A "показать скрытые" toggle reveals hidden cards, marked as hidden.
-- Hidden cards cannot be edited.
+- A hidden card can only be renamed.
 - A hidden card offers a restore action. Restoring makes it a normal card again.
-- Restoring can fail when another active entity now uses the same name (hidden entities release their name). The card shows that the name is taken and the entity stays hidden.
+- Restoring never fails on a name: a hidden entity's name stays reserved, so no active entity can hold it.
 - A hidden parent does not prevent a child from being visible, and restoring a child does not restore its parent; each entity is restored separately.
 - When an entity is referred as context (a variant card shows its Material and Type; a Material card shows its Type), the referred entity is shown by name even if it is hidden. Lists themselves show active entities only.
 
@@ -61,7 +61,7 @@ The user maintains the material catalog — Material Types, Materials, and Mater
 - An entity is in the wrong place: the user reassigns it — a Variant to another Material, a Material to another Type — without deleting anything.
 - The entity is no longer needed and unreferenced: the user deletes it permanently after inline confirmation.
 - The entity is referenced by supplies, production, or templates: deletion hides it; restore brings it back.
-- The name of a hidden entity was reused while it was hidden: restore fails with an inline explanation; the user must rename the active entity or pick a different outcome.
+- Creating an entity whose name is held by a hidden entity is rejected with an inline message that points at the hidden entity; the user restores it (via the hidden toggle) or renames it and creates the new entity.
 - A variant has historical usage: its unit is locked; changing it requires creating a different variant.
 - The catalog is empty: the page shows an empty state with "Добавить" as the way to create the first Type.
 - Optional fields are left empty: Type and Material descriptions may stay empty.

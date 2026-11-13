@@ -10,6 +10,10 @@ describe("isSameName", () => {
     expect(isSameName("Oak plank", "Ash")).toBe(false);
   });
 
+  test("ignores surrounding whitespace", () => {
+    expect(isSameName("  Oak plank ", "oak plank")).toBe(true);
+  });
+
   test("keeps accents apart", () => {
     expect(isSameName("е", "ё")).toBe(false);
   });

@@ -65,9 +65,10 @@ describe("VariantService", () => {
 
   describe("unit_locked on single-row returns", () => {
     test("get marks locked when supplies exist", () => {
-      repo.getById.mockReturnValue(row());
+      const found = row();
+      repo.getById.mockReturnValue(found);
       supplyService.getAllByVariant.mockReturnValue([{} as SupplySchema]);
-      expect(service.get(1)).toEqual({ ...row(), unit_locked: true });
+      expect(service.get(1)).toEqual({ ...found, unit_locked: true });
     });
 
     test("get marks locked when a usage exists even without supplies", () => {
@@ -85,7 +86,7 @@ describe("VariantService", () => {
 
     test("createVariant computes unit_locked via the same helper", () => {
       const created = row();
-      repo.getActiveByMaterial.mockReturnValue([]);
+      repo.getByMaterial.mockReturnValue([]);
       repo.create.mockReturnValue(created);
       supplyService.getAllByVariant.mockReturnValue([{} as SupplySchema]);
       expect(service.createVariant(created)).toEqual({
@@ -97,7 +98,7 @@ describe("VariantService", () => {
     test("updateVariant returns the updated row decorated", () => {
       const updated = row({ name: "new name" });
       repo.getById.mockReturnValue(row());
-      repo.getActiveByMaterial.mockReturnValue([]);
+      repo.getByMaterial.mockReturnValue([]);
       repo.update.mockReturnValue(updated);
       expect(service.updateVariant(1, { name: "new name" })).toEqual({
         ...updated,
@@ -108,7 +109,7 @@ describe("VariantService", () => {
     test("restore returns the restored row decorated", () => {
       const restored = row();
       repo.getById.mockReturnValue(row());
-      repo.getActiveByMaterial.mockReturnValue([]);
+      repo.getByMaterial.mockReturnValue([]);
       repo.restore.mockReturnValue(restored);
       expect(service.restore(1)).toEqual({ ...restored, unit_locked: false });
     });
@@ -143,21 +144,31 @@ describe("VariantService", () => {
 
   describe("createVariant", () => {
     test("creates a variant with a free name", () => {
-      repo.getActiveByMaterial.mockReturnValue([]);
+      repo.getByMaterial.mockReturnValue([]);
       service.createVariant(row({ name: "Oak plank" }));
       expect(repo.create).toHaveBeenCalled();
     });
 
     test("rejects a name already used by another variant of the material", () => {
-      repo.getActiveByMaterial.mockReturnValue([row({ name: "Oak plank" })]);
+      repo.getByMaterial.mockReturnValue([row({ name: "Oak plank" })]);
       expect(() => service.createVariant(row({ name: "oak plank" }))).toThrow(
         ErrorMessages.NAME_ALREADY_EXISTS,
       );
       expect(repo.create).not.toHaveBeenCalled();
     });
 
+    test("rejects a name held by a soft-deleted variant of the material", () => {
+      repo.getByMaterial.mockReturnValue([
+        row({ name: "Oak plank", deleted_at: new Date() }),
+      ]);
+      expect(() => service.createVariant(row({ name: "oak plank" }))).toThrow(
+        ErrorMessages.NAME_RESERVED_BY_HIDDEN,
+      );
+      expect(repo.create).not.toHaveBeenCalled();
+    });
+
     test("allows the same name under another material", () => {
-      repo.getActiveByMaterial.mockReturnValue([]);
+      repo.getByMaterial.mockReturnValue([]);
       service.createVariant(row({ name: "oak plank", material_id: 2 }));
       expect(repo.create).toHaveBeenCalled();
     });
@@ -211,30 +222,56 @@ describe("VariantService", () => {
     test("allows unchanged unit while supplies reference the variant", () => {
       repo.getById.mockReturnValue(row({ unit: "meters" }));
       supplyService.getAllByVariant.mockReturnValue([{} as SupplySchema]);
-      repo.getActiveByMaterial.mockReturnValue([]);
+      repo.getByMaterial.mockReturnValue([]);
       service.updateVariant(0, { unit: "meters", name: "new name" });
       expect(repo.update).toHaveBeenCalled();
     });
 
     test("rejects a name already used by another variant of the material", () => {
       repo.getById.mockReturnValue(row({ name: "Oak plank" }));
-      repo.getActiveByMaterial.mockReturnValue([row({ id: 2, name: "Board" })]);
+      repo.getByMaterial.mockReturnValue([row({ id: 2, name: "Board" })]);
       expect(() => service.updateVariant(0, { name: "board" })).toThrow(
         ErrorMessages.NAME_ALREADY_EXISTS,
       );
       expect(repo.update).not.toHaveBeenCalled();
     });
 
+    test("rejects renaming onto a soft-deleted variant's name", () => {
+      repo.getById.mockReturnValue(row({ name: "Oak plank" }));
+      repo.getByMaterial.mockReturnValue([
+        row({ id: 2, name: "Board", deleted_at: new Date() }),
+      ]);
+      expect(() => service.updateVariant(0, { name: "board" })).toThrow(
+        ErrorMessages.NAME_RESERVED_BY_HIDDEN,
+      );
+      expect(repo.update).not.toHaveBeenCalled();
+    });
+
     test("allows a name only the row itself already uses", () => {
       repo.getById.mockReturnValue(row({ name: "Oak plank" }));
-      repo.getActiveByMaterial.mockReturnValue([row({ name: "oak plank" })]);
+      repo.getByMaterial.mockReturnValue([row({ name: "oak plank" })]);
       service.updateVariant(0, { name: "Oak plank" });
       expect(repo.update).toHaveBeenCalled();
     });
 
-    test("rejects editing a soft-deleted variant", () => {
+    test("renames a soft-deleted variant when only the name changes", () => {
       repo.getById.mockReturnValue(row({ deleted_at: new Date() }));
-      expect(() => service.updateVariant(0, { name: "new name" })).toThrow(
+      repo.getByMaterial.mockReturnValue([]);
+      service.updateVariant(0, { name: "new name" });
+      expect(repo.update).toHaveBeenCalledWith(0, { name: "new name" });
+    });
+
+    test("rejects a non-name edit on a soft-deleted variant", () => {
+      repo.getById.mockReturnValue(row({ deleted_at: new Date() }));
+      expect(() => service.updateVariant(0, { unit: "pieces" })).toThrow(
+        ErrorMessages.ITEM_DELETED,
+      );
+      expect(repo.update).not.toHaveBeenCalled();
+    });
+
+    test("rejects an empty patch on a soft-deleted variant", () => {
+      repo.getById.mockReturnValue(row({ deleted_at: new Date() }));
+      expect(() => service.updateVariant(0, {})).toThrow(
         ErrorMessages.ITEM_DELETED,
       );
       expect(repo.update).not.toHaveBeenCalled();
@@ -250,9 +287,7 @@ describe("VariantService", () => {
     });
     test("checks the name when only the material changes", () => {
       repo.getById.mockReturnValue(row({ name: "Oak plank" }));
-      repo.getActiveByMaterial.mockReturnValue([
-        row({ id: 2, name: "Oak plank" }),
-      ]);
+      repo.getByMaterial.mockReturnValue([row({ id: 2, name: "Oak plank" })]);
       expect(() => service.updateVariant(0, { material_id: 2 })).toThrow(
         ErrorMessages.NAME_ALREADY_EXISTS,
       );
@@ -284,20 +319,14 @@ describe("VariantService", () => {
   describe("restore", () => {
     test("restores the row", () => {
       repo.getById.mockReturnValue(row());
-      repo.getActiveByMaterial.mockReturnValue([]);
       service.restore(1);
       expect(repo.restore).toHaveBeenCalledWith(1);
     });
 
-    test("rejects when an active variant of the same material already uses the name", () => {
+    test("restores even when another active variant of the same material uses the name", () => {
       repo.getById.mockReturnValue(row({ id: 2, name: "Oak plank" }));
-      repo.getActiveByMaterial.mockReturnValue([
-        row({ id: 1, name: "oak plank" }),
-      ]);
-      expect(() => service.restore(2)).toThrow(
-        ErrorMessages.NAME_ALREADY_EXISTS,
-      );
-      expect(repo.restore).not.toHaveBeenCalled();
+      service.restore(2);
+      expect(repo.restore).toHaveBeenCalledWith(2);
     });
   });
 });

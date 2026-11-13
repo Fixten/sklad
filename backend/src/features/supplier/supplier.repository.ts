@@ -26,6 +26,10 @@ export default class SupplierRepository {
     return this.baseRepository.getAllActive();
   }
 
+  getAll() {
+    return this.baseRepository.getAll();
+  }
+
   create(supplier: SupplierModel) {
     return this.baseRepository.addNew(supplier);
   }

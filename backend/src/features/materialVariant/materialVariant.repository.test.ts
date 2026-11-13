@@ -16,10 +16,12 @@ describe("MaterialVariantRepository.hasUsage", () => {
   let repository: MaterialVariantRepository;
   let variantId: number;
   let otherVariantId: number;
+  let templateSeq = 0;
 
   beforeEach(() => {
     db = getTestDbWithMigrations();
     repository = new MaterialVariantRepository(db);
+    templateSeq = 0;
 
     const [materialType] = db.client
       .insert(materialTypeSchema)
@@ -50,9 +52,10 @@ describe("MaterialVariantRepository.hasUsage", () => {
   });
 
   function addUsage(forVariantId: number) {
+    templateSeq += 1;
     const [template] = db.client
       .insert(productTemplateSchema)
-      .values({ name: "Shelf" })
+      .values({ name: `Shelf ${String(templateSeq)}` })
       .returning()
       .all();
     const [item] = db.client

@@ -39,7 +39,14 @@ export class MaterialVariantService {
   }
 
   updateVariant(id: number, value: Partial<MaterialVariantModel>) {
-    const current = this.getEditable(id);
+    const current = this.repository.getById(id);
+    if (current.deleted_at) {
+      const name = value.name;
+      if (name === undefined || Object.keys(value).length !== 1)
+        throw new Error(ErrorMessages.ITEM_DELETED);
+      this.assertNameIsFree(name, current.material_id, current.id);
+      return this.decorate(this.repository.update(id, { name }));
+    }
     if (value.unit !== undefined)
       this.assertUnitChangeAllowed(id, current.unit, value.unit);
     if (value.material_id !== undefined) this.getMaterial(value.material_id);
@@ -62,8 +69,7 @@ export class MaterialVariantService {
 
   restore(id: number) {
     const current = this.repository.getById(id);
-    this.assertNameIsFree(current.name, current.material_id, current.id);
-    return this.decorate(this.repository.restore(id));
+    return this.decorate(this.repository.restore(current.id));
   }
 
   getAll({ includeHidden = false }: { includeHidden?: boolean } = {}) {
@@ -76,12 +82,6 @@ export class MaterialVariantService {
   }
   getByMaterial(materialId: number) {
     return this.repository.getByMaterial(materialId);
-  }
-
-  private getEditable(id: number) {
-    const current = this.repository.getById(id);
-    if (current.deleted_at) throw new Error(ErrorMessages.ITEM_DELETED);
-    return current;
   }
 
   private getMaterial(materialId: number) {
@@ -108,10 +108,12 @@ export class MaterialVariantService {
     materialId: number,
     excludeId?: number,
   ) {
-    const siblings = this.repository.getActiveByMaterial(materialId);
-    const taken = siblings.some(
+    const siblings = this.repository.getByMaterial(materialId);
+    const conflict = siblings.find(
       (row) => row.id !== excludeId && isSameName(row.name, name),
     );
-    if (taken) throw new Error(ErrorMessages.NAME_ALREADY_EXISTS);
+    if (conflict?.deleted_at)
+      throw new Error(ErrorMessages.NAME_RESERVED_BY_HIDDEN);
+    if (conflict) throw new Error(ErrorMessages.NAME_ALREADY_EXISTS);
   }
 }
