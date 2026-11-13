@@ -1,5 +1,7 @@
 import { ErrorMessages } from "@/constants/Errors";
 
+import { userMessage } from "./api-error-message";
+
 export class ApiError extends Error {
   readonly status: number;
 
@@ -24,7 +26,8 @@ export const retryApiError = (failureCount: number, error: ApiError) =>
 export const getServerError = (status: number, body: unknown) => {
   if (typeof body === "object" && body !== null && "message" in body) {
     const { message } = body;
-    if (typeof message === "string") return new ApiError(message, status);
+    if (typeof message === "string")
+      return new ApiError(userMessage(message), status);
   }
   return new ApiError(ErrorMessages.FAILED_REQUEST, status);
 };

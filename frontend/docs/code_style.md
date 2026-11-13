@@ -4,6 +4,7 @@
 - Less is more: do as little as you can. Make minimal test suit, use minimal css rules, write as little logic as possible.
 - Deep modules with minimal seam: hide as much implementation as possible behind a seam. The seam should be tight, remove any extra.
 - Dry: reuse as much as possible.
+- System first. Create well designed system, no ad-hoc solutions.
 
 ## Requiremnets
 

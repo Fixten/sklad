@@ -16,11 +16,7 @@ export default function useSupplyCreateStep() {
   const { types, addMutation: addType } = useMaterialType();
   const { materials, addMutation: addMaterial } = useMaterial();
   const { variants, addMutation: addVariant } = useVariant();
-  const {
-    suppliers,
-    addMutation: addSupplier,
-    query: supplierQuery,
-  } = useSupplier();
+  const { suppliers, addMutation: addSupplier } = useSupplier();
   const { addMutation: addSupply } = useSupply();
 
   const submit = async (draft: SupplyDraft) => {
@@ -32,11 +28,6 @@ export default function useSupplyCreateStep() {
         createMaterial: (dto) => addMaterial.mutateAsync(dto),
         createVariant: (dto) => addVariant.mutateAsync(dto),
         createSupplier: (dto) => addSupplier.mutateAsync(dto),
-        listFreshSuppliers: async () => {
-          const result = await supplierQuery.refetch();
-
-          return (result.data ?? []).filter((row) => !row.deleted_at);
-        },
       },
       draft,
     );

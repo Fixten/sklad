@@ -270,6 +270,37 @@ test("creates a new variant under an existing material on save", async () => {
   });
 });
 
+test("shows the reserved-name message inline when a new variant's name is held by a hidden record", async () => {
+  const screen = await renderSupply(<SupplyCreate />, {
+    form: false,
+    routes: {
+      ...createChainRoutes,
+      "/api/material-variant": {
+        get: createChainRoutes["/api/material-variant"].get,
+        post: () => errorResponse(409, "Name is reserved by a hidden record"),
+      },
+    },
+  });
+
+  await commitExisting(screen, "Тип", "Пиломатериал");
+  await commitExisting(screen, "Материал", "Дуб");
+  await commitNew(screen, "Вариант", "Доска 50 мм");
+  await pickUnit(screen, "метр");
+
+  await screen.getByLabelText("Количество").fill("2");
+  await screen.getByLabelText("Цена закупки, всего").fill("500");
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  await expect
+    .element(screen.getByText("Скрыто, восстановите, чтобы продолжить."))
+    .toBeInTheDocument();
+  expect(
+    screen.requests.some(
+      (row) => row.method === "POST" && row.path === "/api/supply",
+    ),
+  ).toBe(false);
+});
+
 const withBackLink = (
   <>
     <Link to="/material">Материалы</Link>

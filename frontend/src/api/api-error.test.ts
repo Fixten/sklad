@@ -33,6 +33,20 @@ describe("getServerError", () => {
     expect(error.status).toBe(409);
   });
 
+  it("maps a reserved-name conflict to user copy", () => {
+    const error = getServerError(409, {
+      message: ErrorMessages.NAME_RESERVED_BY_HIDDEN,
+    });
+    expect(error.message).toBe("Скрыто, восстановите, чтобы продолжить.");
+  });
+
+  it("maps an active name conflict to user copy", () => {
+    const error = getServerError(409, {
+      message: ErrorMessages.NAME_ALREADY_EXISTS,
+    });
+    expect(error.message).toBe("Такое имя уже занято.");
+  });
+
   it.each([
     ["null body", null],
     ["non-object body", "nope"],

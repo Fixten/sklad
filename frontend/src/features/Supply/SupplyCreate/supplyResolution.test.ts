@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import { ApiError } from "@/api/api-error";
+import { ErrorMessages } from "@/constants/Errors";
 import type { MaterialDTO } from "@/features/Material/Material.model";
 import type { SupplierDTO } from "@/features/Supplier/Supplier.model";
 import type { VariantDTO } from "@/features/Variant/Variant.model";
@@ -42,7 +43,6 @@ const makeDeps = (
   createSupplier: vi.fn((value: SupplierDTO) =>
     Promise.resolve({ id: 6, ...value }),
   ),
-  listFreshSuppliers: vi.fn(() => Promise.resolve([])),
   ...overrides,
 });
 
@@ -167,7 +167,6 @@ describe("resolveSupplyDto", () => {
 
     expect(dto.supplier_id).toBeUndefined();
     expect(deps.createSupplier).not.toHaveBeenCalled();
-    expect(deps.listFreshSuppliers).not.toHaveBeenCalled();
   });
 
   it("creates a missing supplier", async () => {
@@ -178,47 +177,6 @@ describe("resolveSupplyDto", () => {
     expect(deps.createSupplier).toHaveBeenCalledWith({
       name: "Столярный двор",
     });
-  });
-
-  it("recovers a supplier duplicate race by refetching and matching", async () => {
-    const deps = makeDeps({
-      suppliers: [],
-      createSupplier: vi
-        .fn((value: SupplierDTO) => Promise.resolve({ id: 6, ...value }))
-        .mockRejectedValueOnce(new ApiError("NAME_ALREADY_EXISTS", 409)),
-      listFreshSuppliers: vi.fn(() =>
-        Promise.resolve([{ id: 7, name: "Столярный двор" }]),
-      ),
-    });
-    const dto = await resolveSupplyDto(deps, draft);
-
-    expect(dto).toMatchObject({ supplier_id: 7 });
-    expect(deps.createSupplier).toHaveBeenCalledTimes(1);
-    expect(deps.listFreshSuppliers).toHaveBeenCalledTimes(1);
-  });
-
-  it("retries the supplier create once when the refetch finds no match", async () => {
-    const deps = makeDeps({
-      suppliers: [],
-      createSupplier: vi
-        .fn((value: SupplierDTO) => Promise.resolve({ id: 6, ...value }))
-        .mockRejectedValueOnce(new ApiError("NAME_ALREADY_EXISTS", 409)),
-    });
-    const dto = await resolveSupplyDto(deps, draft);
-
-    expect(dto).toMatchObject({ supplier_id: 6 });
-    expect(deps.createSupplier).toHaveBeenCalledTimes(2);
-  });
-
-  it("surfaces the error when the retried supplier create conflicts again", async () => {
-    const conflict = new ApiError("NAME_ALREADY_EXISTS", 409);
-    const deps = makeDeps({
-      suppliers: [],
-      createSupplier: vi.fn(() => Promise.reject(conflict)),
-    });
-
-    await expect(resolveSupplyDto(deps, draft)).rejects.toBe(conflict);
-    expect(deps.createSupplier).toHaveBeenCalledTimes(2);
   });
 
   it("matches existing names case-insensitively without creating anything", async () => {
@@ -246,7 +204,7 @@ describe("resolveSupplyDto", () => {
     expect(deps.createSupplier).not.toHaveBeenCalled();
   });
 
-  it("propagates non-conflict supplier errors without refetching", async () => {
+  it("propagates supplier create errors", async () => {
     const failure = new ApiError("INTERNAL", 500);
     const deps = makeDeps({
       suppliers: [],
@@ -254,6 +212,16 @@ describe("resolveSupplyDto", () => {
     });
 
     await expect(resolveSupplyDto(deps, draft)).rejects.toBe(failure);
-    expect(deps.listFreshSuppliers).not.toHaveBeenCalled();
+  });
+
+  it("surfaces a supplier name conflict", async () => {
+    const conflict = new ApiError(ErrorMessages.NAME_ALREADY_EXISTS, 409);
+    const deps = makeDeps({
+      suppliers: [],
+      createSupplier: vi.fn(() => Promise.reject(conflict)),
+    });
+
+    await expect(resolveSupplyDto(deps, draft)).rejects.toBe(conflict);
+    expect(deps.createSupplier).toHaveBeenCalledTimes(1);
   });
 });

@@ -1,4 +1,3 @@
-import { ApiError } from "@/api/api-error";
 import type {
   MaterialDTO,
   MaterialModel,
@@ -30,7 +29,6 @@ export interface SupplyResolutionDeps {
   createMaterial: (value: MaterialDTO) => Promise<Pick<MaterialModel, "id">>;
   createVariant: (value: VariantDTO) => Promise<Pick<VariantModel, "id">>;
   createSupplier: (value: SupplierDTO) => Promise<Pick<SupplierModel, "id">>;
-  listFreshSuppliers: () => Promise<Pick<SupplierModel, "id" | "name">[]>;
 }
 
 const trimmedDetail = (value: string | undefined): string | undefined => {
@@ -70,21 +68,7 @@ const resolveSupplierId = async (
 ): Promise<number> => {
   const supplier = deps.suppliers.find((row) => sameName(row.name, name));
 
-  if (supplier) return supplier.id;
-
-  try {
-    return (await deps.createSupplier({ name })).id;
-  } catch (error) {
-    if (!(error instanceof ApiError) || error.status !== 409) throw error;
-
-    const raced = (await deps.listFreshSuppliers()).find((row) =>
-      sameName(row.name, name),
-    );
-
-    if (raced) return raced.id;
-
-    return (await deps.createSupplier({ name })).id;
-  }
+  return supplier?.id ?? (await deps.createSupplier({ name })).id;
 };
 
 export const resolveSupplyDto = async (
