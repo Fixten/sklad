@@ -1,5 +1,5 @@
 {
-  "*.{ts,tsx,mjs,js,css,json}": "prettier --write",
+  "*.{ts,tsx,mjs,mts,js,css,json,md,html}": "prettier --write --ignore-path .gitignore --ignore-path backend/.prettierignore --ignore-path frontend/.prettierignore --ignore-path e2e/.prettierignore",
   "backend/src/**/*.ts": "eslint --fix -c backend/eslint.config.mjs",
   "frontend/src/**/*.{ts,tsx}": "eslint --fix -c frontend/eslint.config.mjs"
 }
