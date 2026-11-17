@@ -1,8 +1,7 @@
 import { useFormContext, useWatch } from "react-hook-form";
 
 import useMaterial from "@/features/Material/useMaterial";
-import useVariant from "@/features/Variant/useVariant";
-import { sameName } from "@/lib/text/text";
+import useVariantData from "@/features/Variant/useVariant";
 import { FormOptionPicker } from "@ui/OptionPicker";
 import type { OptionPickerOption } from "@ui/OptionPicker/OptionPicker";
 
@@ -11,37 +10,39 @@ import type { SupplyFormValues } from "../../supplyForm";
 import { writeOptions } from "./writeOptions";
 
 export default function VariantPicker() {
-  const { materials } = useMaterial();
-  const { variants } = useVariant();
+  const { getMap: materialsMap } = useMaterial();
+  const { getActiveData, getMap } = useVariantData();
   const { control, setValue } = useFormContext<SupplyFormValues>();
-  const material = useWatch({ control, name: "material" });
+  const materialString = useWatch({ control, name: "materialId" });
+  const material = Number(materialString);
+  const materials = materialsMap();
+  const variants = getActiveData();
+  const variantsMap = getMap();
 
-  const chosenMaterialId = materials.find((item) =>
-    sameName(item.name, material),
-  )?.id;
-  const options: OptionPickerOption[] = variants
-    .filter((item) => item.material_id === chosenMaterialId)
-    .map((item) => ({
-      value: item.name,
-      label: item.name,
-    }));
+  const chosenMaterialId = material && materials.get(material)?.id;
+  const options = variants.reduce<OptionPickerOption[]>((prev, cur) => {
+    if (!chosenMaterialId || cur.material_id === chosenMaterialId) {
+      return [
+        ...prev,
+        {
+          value: String(cur.id),
+          label: cur.name,
+        },
+      ];
+    } else return prev;
+  }, []);
 
   function onSelect(value: string) {
-    const unit = variants.find(
-      (item) =>
-        item.material_id === chosenMaterialId && sameName(item.name, value),
-    )?.unit;
-
+    const unit = variantsMap.get(Number(value))?.unit;
     if (unit) setValue("unit", unit, writeOptions);
   }
 
   return (
     <FormOptionPicker
       control={control}
-      name="variant"
+      name="variantId"
       label="Вариант"
       options={options}
-      canCreate
       onSelect={onSelect}
     />
   );

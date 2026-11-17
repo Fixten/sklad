@@ -88,7 +88,9 @@ describe("VariantApi", () => {
   it("update() patches the variant by id", async () => {
     const requests = stubApi();
 
-    await expect(api.update(patchBody, 100)).resolves.toEqual(variant);
+    await expect(api.update({ dto: patchBody, id: 100 })).resolves.toEqual(
+      variant,
+    );
 
     expect(requests.at(-1)).toMatchObject({
       path: "/api/material-variant/100",

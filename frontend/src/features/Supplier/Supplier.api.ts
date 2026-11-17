@@ -17,8 +17,8 @@ export default class SupplierApi {
     return this.api.post(value);
   };
 
-  update = (value: SupplierPatchDTO, id: number) => {
-    return this.api.patch(value, id);
+  update = ({ dto, id }: { dto: SupplierPatchDTO; id: number }) => {
+    return this.api.patch(dto, id);
   };
 
   remove = (id: number) => {

@@ -3,7 +3,7 @@ import type { paths } from "./schema";
 import type { JsonBody, JsonQuery, JsonResponse } from "./schema-helpers";
 
 type ApiPath = keyof paths;
-type ItemPath<P extends ApiPath> = `${P}/{id}`;
+type ItemPath<P extends ApiPath> = P extends `${string}/{id}` ? P : `${P}/{id}`;
 type RestorePath<P extends ApiPath> = `${P}/restore/{id}`;
 
 export type Id = string | number;

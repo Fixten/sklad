@@ -17,6 +17,16 @@ type UseZodFormProps<TSchema extends FormSchema> = Omit<
   schema: TSchema;
 };
 
+interface RootError {
+  message?: string;
+  set: (message: string) => void;
+  clear: () => void;
+}
+
+interface RootErrorProps {
+  rootError: RootError;
+}
+
 function useZodForm<TSchema extends FormSchema>({
   schema,
   mode = "onSubmit",
@@ -26,19 +36,31 @@ function useZodForm<TSchema extends FormSchema>({
   z.input<TSchema>,
   unknown,
   z.output<TSchema>
-> {
+> &
+  RootErrorProps {
   const resolver = zodResolver(schema) as unknown as Resolver<
     z.input<TSchema>,
     unknown,
     z.output<TSchema>
   >;
-
-  return useForm<z.input<TSchema>, unknown, z.output<TSchema>>({
+  const form = useForm<z.input<TSchema>, unknown, z.output<TSchema>>({
     mode,
     reValidateMode,
     ...props,
     resolver,
   });
+  return {
+    ...form,
+    rootError: {
+      message: form.formState.errors.root?.message,
+      set: (message) => {
+        form.setError("root", { type: "submit", message });
+      },
+      clear: () => {
+        form.clearErrors("root");
+      },
+    },
+  };
 }
 
 export { useZodForm };

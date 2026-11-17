@@ -1,68 +1,95 @@
+import { MaterialModel } from "@/features/Material/Material.model";
 import useMaterial from "@/features/Material/useMaterial";
-import { typeNamesById } from "@/features/MaterialType/MaterialType.utils";
+import { MaterialTypeModel } from "@/features/MaterialType/MaterialType.model";
 import useMaterialType from "@/features/MaterialType/useMaterialType";
 import type { Unit } from "@/features/units";
 
-import useVariant from "./useVariant";
+import useVariantData from "./useVariant";
+import { VariantModel } from "./Variant.model";
 
-export interface MaterialTarget {
+type Mapper<T> = (
+  variant: VariantModel,
+  material: MaterialModel,
+  type: MaterialTypeModel,
+) => T;
+
+const getEntry: Mapper<{
+  variantId: number;
+  materialId: number;
+  typeId: number;
+}> = (variant, materail, type) => ({
+  variantId: variant.id,
+  materialId: materail.id,
+  typeId: type.id,
+});
+
+interface ItemWithName {
   id: number;
   name: string;
-  materialTypeName: string;
-  materialTypeId: number;
 }
-
-export interface MaterialCatalogRow {
-  variantId: number;
-  variantName: string;
+export interface CatalogItemWithName {
+  variant: ItemWithName;
+  material: ItemWithName;
+  type: ItemWithName;
   unit: Unit;
-  material: MaterialTarget;
 }
 
-export function buildMaterialCatalogRow(
-  variant: { id: number; name: string; unit: Unit; material_id: number },
-  material: { id: number; name: string; material_type_id: number },
-  typeName: string,
-): MaterialCatalogRow {
-  return {
-    variantId: variant.id,
-    variantName: variant.name,
-    unit: variant.unit,
-    material: {
-      id: material.id,
-      name: material.name,
-      materialTypeName: typeName,
-      materialTypeId: material.material_type_id,
-    },
-  };
-}
+const getEntryWithName: Mapper<CatalogItemWithName> = (
+  variant,
+  material,
+  type,
+) => ({
+  variant: {
+    id: variant.id,
+    name: variant.name,
+  },
+  material: {
+    id: material.id,
+    name: material.name,
+  },
+  type: {
+    id: type.id,
+    name: type.name,
+  },
+  unit: variant.unit,
+});
+
+const getEntryFull: Mapper<{
+  variant: VariantModel;
+  material: MaterialModel;
+  type: MaterialTypeModel;
+}> = (variant, material, type) => ({
+  variant,
+  material,
+  type,
+});
 
 export default function useVariantsCatalog() {
-  const { rows: materialRows, query: materialQuery } = useMaterial();
-  const { variants, query: variantQuery } = useVariant();
-  const { rows: typeRows, query: typeQuery } = useMaterialType();
+  const { getMap: getTypeMap, query: typeQuery } = useMaterialType();
+  const { getMap: getMaterialMap, query: materialQuery } = useMaterial();
+  const { getActiveData, query: variantQuery } = useVariantData();
 
-  const typeNames = typeNamesById(typeRows);
-  const materialById = new Map(
-    materialRows.map((materialRow) => [materialRow.id, materialRow]),
-  );
-
-  const rows = variants.flatMap((variantRow) => {
-    const materialRow = materialById.get(variantRow.material_id);
-
-    if (!materialRow) return [];
-
-    return [
-      buildMaterialCatalogRow(
-        variantRow,
-        materialRow,
-        typeNames.get(materialRow.material_type_id) ?? "",
-      ),
-    ];
-  });
+  function MakeGetCatalog<T>(mapper: Mapper<T>) {
+    return () =>
+      getActiveData()
+        .map((variant) => {
+          const material = getMaterialMap().get(variant.material_id);
+          if (material) {
+            const type = getTypeMap().get(material.material_type_id);
+            if (type) {
+              return mapper(variant, material, type);
+            }
+          }
+        })
+        .filter((v): v is T => !!v);
+  }
 
   return {
-    rows,
+    getCatalog: MakeGetCatalog(getEntry),
+    getCatalogWithNames: MakeGetCatalog(getEntryWithName),
+    getCatalogFull: MakeGetCatalog(getEntryFull),
+    getTypeMap,
+    getMaterialMap,
     isLoading:
       materialQuery.isLoading || variantQuery.isLoading || typeQuery.isLoading,
   };

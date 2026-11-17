@@ -1,43 +1,35 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { retryApiError } from "@/api/api-error";
-import { MaterialQueryKey } from "@/features/Material/useMaterial";
-import { VariantQueryKey } from "@/features/Variant/useVariant";
-import { createEntityHook } from "@/lib/useEntity";
+import { useApiMutations, useFeatureData } from "@/lib/useFeature";
 
 import SupplyApi from "./Supply.api";
 import type { SupplyListQuery } from "./Supply.model";
 
 const api = new SupplyApi();
 
-export const SupplyQueryKey = "supply";
+const queryKey = ["supply"];
 
-const useSupplyEntity = createEntityHook({
-  queryKey: SupplyQueryKey,
-  api,
-  create: api.create,
-  invalidate: [VariantQueryKey, MaterialQueryKey],
-});
-
-export default function useSupply() {
-  const { activeRows, ...entity } = useSupplyEntity();
-
-  return { ...entity, supplies: activeRows };
+export default function useSupplyData(params: SupplyListQuery) {
+  return useFeatureData(
+    [
+      ...queryKey,
+      ...[params.material_variant_id, params.supplier_id].filter(Boolean),
+    ],
+    () => api.getAll(params),
+  );
 }
 
-export function useSupplyList(params?: SupplyListQuery) {
-  return useQuery({
-    queryKey: [SupplyQueryKey, "list", params ?? {}],
-    queryFn: () => api.getAll(params),
-    retry: retryApiError,
-  });
+export type SupplyData = ReturnType<typeof useSupplyData>;
+
+export function useSupplyMutations() {
+  return useApiMutations(queryKey, api);
 }
 
-export function useSupplyStock(materialVariantId: number | null) {
+export function useSupplyStock(materialVariantId: number) {
   return useQuery({
-    queryKey: [SupplyQueryKey, "stock", materialVariantId],
-    queryFn: () => api.getStock(materialVariantId ?? 0),
-    enabled: materialVariantId !== null,
+    queryKey: [queryKey, "stock", materialVariantId],
+    queryFn: () => api.getStock(materialVariantId),
     retry: retryApiError,
   });
 }

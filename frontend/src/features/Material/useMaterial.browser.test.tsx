@@ -31,8 +31,9 @@ test("returns non-deleted materials and keeps deleted rows on the query", async 
   const requests = stubRoutes(routes);
 
   const Harness = () => {
-    const { materials, rows, query } = useMaterial();
-
+    const { getActiveData, getAllData, query } = useMaterial();
+    const materials = getActiveData();
+    const rows = getAllData();
     return (
       <>
         <div data-testid="filtered">{materials.length}</div>

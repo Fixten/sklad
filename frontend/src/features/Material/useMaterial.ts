@@ -1,19 +1,16 @@
-import { createEntityHook } from "@/lib/useEntity";
+import { useApiMutations, useFeatureData } from "@/lib/useFeature";
 
 import MaterialApi from "./Material.api";
 
 const api = new MaterialApi();
 
-export const MaterialQueryKey = "material";
+const queryKey = ["material"];
 
-const useMaterialEntity = createEntityHook({
-  queryKey: MaterialQueryKey,
-  api,
-  create: api.create,
-});
+export default function useMaterialData() {
+  return useFeatureData(queryKey, () => api.getAll({ hidden: "true" }));
+}
+export type MaterialssData = ReturnType<typeof useMaterialData>;
 
-export default function useMaterial() {
-  const { activeRows, ...entity } = useMaterialEntity();
-
-  return { ...entity, materials: activeRows };
+export function useMaterialMutations() {
+  return useApiMutations(queryKey, api);
 }

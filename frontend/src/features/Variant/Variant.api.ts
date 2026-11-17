@@ -21,8 +21,8 @@ export default class VariantApi {
     return this.api.post(value);
   };
 
-  update = (value: VariantPatchDTO, id: number) => {
-    return this.api.patch(value, id);
+  update = ({ dto, id }: { dto: VariantPatchDTO; id: number }) => {
+    return this.api.patch(dto, id);
   };
 
   remove = (variantId: number) => {

@@ -1,19 +1,19 @@
-import { createEntityHook } from "@/lib/useEntity";
+import { useApiMutations, useFeatureData } from "@/lib/useFeature";
 
 import SupplierApi from "./Supplier.api";
 
 const api = new SupplierApi();
 
-export const SupplierQueryKey = "supplier";
+const queryKey = ["supplier"];
 
-const useSupplierEntity = createEntityHook({
-  queryKey: SupplierQueryKey,
-  api,
-  create: api.create,
-});
-
-export default function useSupplier() {
-  const { activeRows, ...entity } = useSupplierEntity();
-
-  return { ...entity, suppliers: activeRows };
+export default function useSupplierData() {
+  return useFeatureData(queryKey, () => api.getAll());
 }
+
+export type SuppliersData = ReturnType<typeof useSupplierData>;
+
+export function useSupplierMutations() {
+  return useApiMutations(queryKey, api);
+}
+
+export type SupplierMutations = ReturnType<typeof useSupplierMutations>;

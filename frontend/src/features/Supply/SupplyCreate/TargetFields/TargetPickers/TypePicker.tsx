@@ -9,30 +9,32 @@ import type { SupplyFormValues } from "../../supplyForm";
 import { writeOptions } from "./writeOptions";
 
 export default function TypePicker() {
-  const { types } = useMaterialType();
+  const { getAllData } = useMaterialType();
   const { control, setValue } = useFormContext<SupplyFormValues>();
-  const type = useWatch({ control, name: "type" });
+  const typeString = useWatch({ control, name: "typeId" });
+  const type = Number(typeString);
+  const types = getAllData();
 
   const options: OptionPickerOption[] = types.map((item) => ({
-    value: item.name,
+    value: String(item.id),
     label: item.name,
   }));
 
-  function onSelect(value: string) {
-    if (value === type) return;
-
-    setValue("material", "", writeOptions);
-    setValue("variant", "", writeOptions);
-    setValue("unit", null, writeOptions);
+  function onSelect(id: string) {
+    const numberId = Number(id);
+    if (numberId !== type) {
+      setValue("materialId", "", writeOptions);
+      setValue("variantId", "", writeOptions);
+      setValue("unit", "", writeOptions);
+    }
   }
 
   return (
     <FormOptionPicker
       control={control}
-      name="type"
+      name="typeId"
       label="Тип"
       options={options}
-      canCreate
       onSelect={onSelect}
     />
   );

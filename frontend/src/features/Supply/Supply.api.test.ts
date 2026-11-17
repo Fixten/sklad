@@ -115,7 +115,9 @@ describe("SupplyApi", () => {
   it("update() patches the supply by id", async () => {
     const requests = stubApi();
 
-    await expect(api.update(patchBody, 30)).resolves.toEqual(supply);
+    await expect(api.update({ dto: patchBody, id: 30 })).resolves.toEqual(
+      supply,
+    );
 
     expect(requests.at(-1)).toMatchObject({
       path: "/api/supply/30",

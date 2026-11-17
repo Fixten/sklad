@@ -9,9 +9,10 @@ type FormOptionPickerProps<
   TName extends FieldPath<TFieldValues>,
   TContext,
   TTransformedValues,
-> = Omit<OptionPickerProps, "name" | "value" | "error"> & {
+> = Omit<OptionPickerProps, "name" | "value" | "error" | "onSelect"> & {
   control: Control<TFieldValues, TContext, TTransformedValues>;
   name: TName;
+  onSelect?: OptionPickerProps["onSelect"];
 };
 
 function FormOptionPicker<
@@ -34,9 +35,9 @@ function FormOptionPicker<
           name={field.name}
           value={field.value}
           error={fieldState.error?.message}
-          onSelect={(option: string) => {
+          onSelect={(option) => {
             field.onChange(option);
-            props.onSelect(option);
+            props.onSelect?.(option);
           }}
           options={props.options}
         />

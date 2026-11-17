@@ -42,11 +42,8 @@ test("shows the linked material in the manual picker after a selection", async (
   const screen = await renderSupply(<TargetFields />);
 
   await selectDoska(screen);
-  await screen.getByLabelText("Материал").click();
 
-  await expect
-    .element(screen.getByRole("option", { name: /Дуб/ }))
-    .toBeInTheDocument();
+  await expect.element(screen.getByLabelText("Материал")).toHaveValue("Дуб");
 });
 
 test("keeps a chain built through the pickers when the search is typed", async () => {

@@ -6,41 +6,46 @@ The user records a purchase of a material so that its quantity becomes available
 
 ## User flow
 
-1. From the Materials page, the user starts "Сделать поставку" in the command palette.
-2. The new supply form opens.
-3. The user finds the Material Variant being purchased:
-   - The user can search across the whole catalog, or fill the Type, Material, and Variant fields directly.
-   - Each of these three fields accepts an existing value (searchable) or a new one.
-   - The overall search only finds existing matches and fills the three fields; it cannot create anything.
+1. The user starts "Сделать поставку" from one of:
+   - the Materials page command palette — the form opens blank;
+   - a Material Variant card's supply action — Type, Material, Variant, and unit are filled from that variant;
+   - a Supplier card's supply action — the supplier is filled from that supplier.
+2. The supply form opens.
+3. The user sets the Material Variant being purchased:
+   - The user can search across the whole catalog, or choose the Type, Material, and Variant fields in order.
+   - Only existing catalog entries can be chosen. The form does not create any.
 4. The user enters the quantity and the total purchase price for that quantity.
-5. Optionally, the user adds a supplier, a description, and a link.
+5. Optionally, the user adds or changes a supplier, a description, and a link.
 6. The user saves the supply.
 7. A confirmation toast appears, the user returns to the Materials page, and the selected Material Variant's stock increases by the entered quantity.
 
 ## Behavior
 
 - The Material Variant is required.
-- The unit is shown from the selected Material Variant. The user does not choose a unit for an existing variant.
-- Entering a new Material Variant requires the user to set its unit.
+- Type, Material, Variant, and Supplier are chosen from existing records only. The form never creates catalog entities or suppliers.
+- The overall search finds existing variants and fills the Type, Material, and Variant fields. It cannot create anything.
+- Prefilled values can still be changed before saving.
+- The unit is shown from the selected Material Variant. The user does not choose a unit.
 - Quantity must be greater than zero. Pieces are whole numbers; meters allow up to three decimal places.
 - Purchase price is the total for the entered quantity. It may be zero but not negative. The unit purchase cost is calculated from it.
 - Supplier, description, and link are optional.
-- The supplier field accepts an existing supplier (searchable) or a new name. A new supplier is created with just a name.
-- Entering a new catalog value or supplier does not lose data already entered. The new entry is created together with the supply when the user saves.
 - Saving with missing or invalid values shows the problem and does not create the supply.
-- After a successful save, the form closes and the user is back on the Materials page.
+- After a successful save, the form closes and the user is on the Materials page.
 
 ## Important cases
 
-- The exact Material Variant exists: the user finds it through the overall search or the Type, Material, and Variant fields.
-- The Material exists, but the Variant does not: the user enters a new Variant name and sets its unit.
-- The Material does not exist: the user enters a new Material name, and a new Type name if needed.
-- The user does not know the exact name: the user searches across the catalog.
+- The exact Material Variant is known and exists: the user starts from its card and only fills the purchase details.
+- The variant exists but the user is not sure which one: the user starts from the command palette and searches.
+- The variant does not exist: the user creates it in the material catalog, then uses its card's supply action. The supply form does not offer to create it.
+- The Material or Type does not exist: the user creates it in the catalog, then its Variant, then starts the supply from that card.
+- The supplier does not exist: the user creates it in supplier management, or saves the supply without a supplier. The supply form does not offer to create one.
+- The search finds nothing: the form shows no options; the user tries another search or leaves. It does not suggest creating anything.
+- The user leaves the form to create a missing entity: the entered values are discarded after a warning.
 - Optional fields are left empty: the supply is still created.
 
 ## Out of scope
 
 - Viewing, editing, correcting, or deleting supplies.
-- Managing the material catalog outside the inline creation needed for the supply.
-- Managing suppliers outside picking or creating one for the supply.
+- Managing the material catalog (Types, Materials, Variants), including creating them.
+- Managing suppliers, including creating them.
 - Stock levels and their correction.

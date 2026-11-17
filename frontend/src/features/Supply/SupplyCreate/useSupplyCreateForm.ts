@@ -1,35 +1,32 @@
-import { useState } from "react";
-
 import { ApiError } from "@/api/api-error";
 import { useZodForm } from "@ui/Form";
 
 import { createSupplyFormSchema, supplyFormDefaults } from "./supplyForm";
 import type { SupplyDraft } from "./supplyForm";
-import useSupplyCreateStep from "./useSupplyCreateStep";
+import useSupplyCreateSubmit from "./useSupplyCreateSubmit";
 
 const supplyFormSchema = createSupplyFormSchema();
 
 export default function useSupplyCreateForm() {
-  const step = useSupplyCreateStep();
+  const { submit } = useSupplyCreateSubmit();
   const form = useZodForm({
     schema: supplyFormSchema,
     defaultValues: supplyFormDefaults,
   });
-  const [error, setError] = useState<string | undefined>();
 
   const onSubmit = async (values: SupplyDraft) => {
-    setError(undefined);
+    form.rootError.clear();
 
     try {
-      await step.submit(values);
-    } catch (cause) {
-      setError(
-        cause instanceof ApiError
-          ? cause.message
+      await submit(values);
+    } catch (error) {
+      form.rootError.set(
+        error instanceof ApiError
+          ? error.message
           : "Не удалось создать поставку",
       );
     }
   };
 
-  return { form, onSubmit, error };
+  return { form, onSubmit };
 }

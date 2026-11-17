@@ -66,7 +66,9 @@ describe("MaterialApi", () => {
   it("update() patches the material by id", async () => {
     const requests = stubApi();
 
-    await expect(api.update(patchBody, 10)).resolves.toEqual(material);
+    await expect(api.update({ dto: patchBody, id: 10 })).resolves.toEqual(
+      material,
+    );
 
     expect(requests.at(-1)).toMatchObject({
       path: "/api/material/10",

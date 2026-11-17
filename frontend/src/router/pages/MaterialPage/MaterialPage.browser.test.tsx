@@ -80,7 +80,7 @@ test("shows the hidden type name as the variant context", async () => {
     .toBeInTheDocument();
 });
 
-test("renders material cards with description and type context", async () => {
+test("renders material cards with description", async () => {
   stubPageApi(catalogFixtures);
   const screen = await renderPage();
 
@@ -89,11 +89,8 @@ test("renders material cards with description and type context", async () => {
 
   await expect.element(screen.getByText("Доска сосна")).toBeInTheDocument();
   await expect.element(screen.getByText("Сорт первый")).toBeInTheDocument();
-  await expect.element(screen.getByText("Древесина")).toBeInTheDocument();
   await expect.element(screen.getByText("Болт")).toBeInTheDocument();
-  await expect.element(screen.getByText("Металл")).toBeInTheDocument();
   await expect.element(screen.getByText("Фанера")).toBeInTheDocument();
-  await expect.element(screen.getByText("Скрытый тип")).toBeInTheDocument();
   await expect
     .element(screen.getByText("Доска 100x20"))
     .not.toBeInTheDocument();

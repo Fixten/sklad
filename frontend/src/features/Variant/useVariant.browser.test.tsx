@@ -5,7 +5,7 @@ import { render } from "vitest-browser-react";
 import type { Routes } from "@/test/apiStub";
 import { stubRoutes } from "@/test/apiStub.vitest";
 
-import useVariant from "./useVariant";
+import useVariantData from "./useVariant";
 
 const routes = {
   "/api/material-variant": {
@@ -33,11 +33,11 @@ test("returns non-deleted variants and keeps deleted rows on the query", async (
   stubRoutes(routes);
 
   const Harness = () => {
-    const { variants, query } = useVariant();
+    const { getActiveData, query } = useVariantData();
 
     return (
       <>
-        <div data-testid="filtered">{variants.length}</div>
+        <div data-testid="filtered">{getActiveData().length}</div>
         <div data-testid="raw">{query.data?.length ?? 0}</div>
       </>
     );

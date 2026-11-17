@@ -13,8 +13,8 @@ export default class MaterialApi {
     return this.api.post(value);
   };
 
-  update = (value: MaterialDTO, id: number) => {
-    return this.api.patch(value, id);
+  update = ({ dto, id }: { dto: MaterialDTO; id: number }) => {
+    return this.api.patch(dto, id);
   };
 
   remove = (id: number) => {

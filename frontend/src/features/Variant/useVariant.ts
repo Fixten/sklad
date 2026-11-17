@@ -1,27 +1,16 @@
-import { MaterialQueryKey } from "@/features/Material/useMaterial";
-import { createEntityHook } from "@/lib/useEntity";
+import { useApiMutations, useFeatureData } from "@/lib/useFeature";
 
 import VariantApi from "./Variant.api";
-import type { VariantPatchDTO } from "./Variant.model";
 
 const api = new VariantApi();
 
-export const VariantQueryKey = "material-variant";
+const queryKey = ["material-variant"];
 
-const useVariantEntity = createEntityHook({
-  queryKey: VariantQueryKey,
-  api,
-  create: api.create,
-  invalidate: [MaterialQueryKey],
-  toPatch: (value: VariantPatchDTO & { id: number }) => ({
-    name: value.name,
-    unit: value.unit,
-    material_id: value.material_id,
-  }),
-});
+export default function useVariantData() {
+  return useFeatureData(queryKey, () => api.getAll({ hidden: "true" }));
+}
+export type VariantsData = ReturnType<typeof useVariantData>;
 
-export default function useVariant() {
-  const { activeRows, ...entity } = useVariantEntity();
-
-  return { ...entity, variants: activeRows };
+export function useVariantMutations() {
+  return useApiMutations(queryKey, api);
 }

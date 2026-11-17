@@ -1,17 +1,26 @@
 import Typography from "@ui/Typography";
 
-import type { CatalogCardData } from "../buildCards";
-import CatalogCard from "../CatalogCard";
+import { CatalogLevel } from "../levels";
+
+import CatalogCard from "./CatalogCard";
+import useCardsData from "./useCardsData";
 
 interface Props {
-  cards: CatalogCardData[];
-  isLoading: boolean;
+  level: CatalogLevel;
+  query: string;
+  showHidden: boolean;
 }
 
 export default function CardList(props: Props) {
+  const { cards, isLoading } = useCardsData(props.level, props.showHidden);
+
+  const filteredCards = cards.filter((card) =>
+    card.search.includes(props.query.trim().toLowerCase()),
+  );
+
   return (
     <div data-testid="material-catalog-list" className="flex flex-col gap-4">
-      {!props.isLoading && props.cards.length === 0 ? (
+      {!isLoading && filteredCards.length === 0 ? (
         <Typography
           data-testid="material-catalog-empty"
           variant="caption"
@@ -20,7 +29,7 @@ export default function CardList(props: Props) {
           Каталог пуст
         </Typography>
       ) : (
-        props.cards.map((card) => <CatalogCard key={card.key} card={card} />)
+        filteredCards.map((card) => <CatalogCard key={card.id} {...card} />)
       )}
     </div>
   );

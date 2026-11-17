@@ -26,8 +26,8 @@ export default class SupplyApi {
     return this.api.post(value);
   };
 
-  update = (value: SupplyPatchDTO, id: number) => {
-    return this.api.patch(value, id);
+  update = ({ dto, id }: { dto: SupplyPatchDTO; id: number }) => {
+    return this.api.patch(dto, id);
   };
 
   remove = (id: number) => {

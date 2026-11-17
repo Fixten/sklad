@@ -8,14 +8,14 @@ import TargetFields from "./TargetFields";
 import useSupplyCreateForm from "./useSupplyCreateForm";
 
 export default function SupplyCreate() {
-  const { form, onSubmit, error } = useSupplyCreateForm();
-  const when = form.formState.isDirty && !form.formState.isSubmitting;
+  const { form, onSubmit } = useSupplyCreateForm();
+  const shouldBlock = form.formState.isDirty && !form.formState.isSubmitting;
 
   return (
     <Form form={form} onSubmit={onSubmit} className="flex flex-col gap-8">
       <TargetFields />
       <DetailsFields />
-      <InlineError message={error} />
+      <InlineError message={form.rootError.message} />
       <Button
         type="submit"
         pending={form.formState.isSubmitting}
@@ -24,7 +24,7 @@ export default function SupplyCreate() {
       >
         Сохранить
       </Button>
-      <LeaveGuard when={when} />
+      <LeaveGuard shouldBlock={shouldBlock} />
     </Form>
   );
 }

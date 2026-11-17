@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useBlocker } from "react-router";
 
 import { Button } from "@ui/Button";
@@ -11,21 +10,11 @@ import {
 } from "@ui/Dialog";
 
 interface Props {
-  when: boolean;
+  shouldBlock: boolean;
 }
 
-function LeaveGuard({ when }: Props) {
-  const blocker = useBlocker(when);
-
-  useEffect(() => {
-    if (!when) return;
-
-    const handler = (event: BeforeUnloadEvent) => event.preventDefault();
-
-    window.addEventListener("beforeunload", handler);
-
-    return () => window.removeEventListener("beforeunload", handler);
-  }, [when]);
+function LeaveGuard({ shouldBlock: shouldBlock }: Props) {
+  const blocker = useBlocker(shouldBlock);
 
   return blocker.state === "blocked" ? (
     <Dialog

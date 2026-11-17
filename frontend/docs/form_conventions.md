@@ -33,9 +33,7 @@ General project rules only. Feature schemas, fields, and tests define feature-sp
 
 ## Form modules
 
-- `use<Step>Form` owns form creation, schema selection, busy state. It may
-  call `use<Step>Step`.
-- `use<Step>Step` owns mutations, entity resolution, and step navigation.
+- `use<feature>Form` owns form creation, schema selection, busy state.
 - The step component is rendering only: layout, labels, copy, and field placement.
 - The submit handler awaits the mutation path so RHF `isSubmitting` is accurate.
 - Keep schemas co-located with their form module. Use a schema factory when rules depend on runtime

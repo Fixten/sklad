@@ -16,7 +16,7 @@ type StatefulPickerProps = Omit<OptionPickerProps, "value" | "onSelect"> & {
 };
 
 function StatefulPicker(props: StatefulPickerProps) {
-  const [value, setValue] = useState(props.value);
+  const [value, setValue] = useState<string | undefined>(props.value);
 
   return (
     <OptionPicker

@@ -19,7 +19,6 @@ declare module "@tanstack/react-query" {
   }
 }
 
-/**Ignores deterministic failures of 4xx */
 export const retryApiError = (failureCount: number, error: ApiError) =>
   failureCount < 3 && ([0, 408].includes(error.status) || error.status >= 500);
 

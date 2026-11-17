@@ -63,9 +63,11 @@ export default function OptionPicker(props: OptionPickerProps) {
   const [query, setQuery] = useState("");
   const filter = useComboboxFilter();
 
-  const optionsWithNewItem = getOptionsWithNewItem(props.options, query);
-  const options =
-    props.canCreate && !props.value ? optionsWithNewItem : props.options;
+  const optionsWithNewItem = props.canCreate
+    ? getOptionsWithNewItem(props.options, query)
+    : props.options;
+  const options = props.value ? [] : optionsWithNewItem;
+  const selectedOption = getSelectedOption(optionsWithNewItem, props.value);
 
   function onQuery(v: string, event: ComboboxRootChangeEventDetails) {
     if (event.reason === "input-change") {
@@ -84,8 +86,6 @@ export default function OptionPicker(props: OptionPickerProps) {
       )
     );
   }
-
-  const selectedOption = getSelectedOption(optionsWithNewItem, props.value);
 
   const hint = selectedOption?.newItemLabel ? "Создать" : undefined;
 

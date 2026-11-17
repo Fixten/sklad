@@ -25,8 +25,8 @@ test("returns non-deleted material types and keeps deleted rows on the query", a
   stubRoutes(routes);
 
   const Harness = () => {
-    const { types, query } = useMaterialType();
-
+    const { getActiveData, query } = useMaterialType();
+    const types = getActiveData();
     return (
       <>
         <div data-testid="filtered">{types.length}</div>

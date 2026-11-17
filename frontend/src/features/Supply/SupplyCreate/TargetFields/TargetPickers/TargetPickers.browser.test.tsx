@@ -57,7 +57,7 @@ interface ProbeProps {
 const Probe = ({ control, name, testId }: ProbeProps) => {
   const value = useWatch({ control, name });
 
-  return <input data-testid={testId} value={value ?? ""} readOnly />;
+  return <input data-testid={testId} value={value} readOnly />;
 };
 
 interface HarnessProps {
@@ -79,9 +79,9 @@ const Harness = ({ defaults }: HarnessProps) => {
       className="flex flex-col gap-8"
     >
       <TargetPickers />
-      <Probe control={control} name="type" testId="type" />
-      <Probe control={control} name="material" testId="material" />
-      <Probe control={control} name="variant" testId="variant" />
+      <Probe control={control} name="typeId" testId="typeId" />
+      <Probe control={control} name="materialId" testId="materialId" />
+      <Probe control={control} name="variantId" testId="variantId" />
       <Probe control={control} name="unit" testId="unit" />
       <button type="submit">Сохранить</button>
     </Form>
@@ -143,39 +143,20 @@ const changeMaterial = async (screen: Screen, name: string) => {
   await screen.getByRole("option", { name }).click();
 };
 
-test("commits typed text as a new value via the create row", async () => {
+test("commits typed text as a new material via the create row", async () => {
   const screen = await renderPickers();
-
-  const type = screen.getByLabelText("Тип");
-  await type.click();
-  await type.fill("Новый тип");
-  await screen.getByRole("option", { name: "Создать Новый тип" }).click();
-
-  await expect.element(type).toHaveValue("Новый тип");
-  await expect.element(screen.getByTestId("type")).toHaveValue("Новый тип");
 
   const material = screen.getByLabelText("Материал");
   await material.click();
   await material.fill("Новый материал");
   await screen.getByRole("option", { name: "Создать Новый материал" }).click();
 
+  await expect.element(material).toHaveValue("Новый материал");
   await expect
-    .element(screen.getByTestId("material"))
+    .element(screen.getByTestId("materialId"))
     .toHaveValue("Новый материал");
-
-  const variant = screen.getByLabelText("Вариант");
-  await variant.click();
-  await variant.fill("Новый вариант");
-  await screen.getByRole("option", { name: "Создать Новый вариант" }).click();
-
-  await expect
-    .element(screen.getByTestId("variant"))
-    .toHaveValue("Новый вариант");
-
+  await expect.element(screen.getByTestId("variantId")).toHaveValue("");
   await expect.element(screen.getByTestId("unit")).toHaveValue("");
-  await expect
-    .element(screen.getByRole("combobox", { name: /Единица/ }))
-    .toBeEnabled();
 });
 
 test("commits a picked result and drops it on edit", async () => {
@@ -186,14 +167,14 @@ test("commits a picked result and drops it on edit", async () => {
   await expect
     .element(screen.getByLabelText("Тип"))
     .toHaveValue("Пиломатериал");
-  await expect.element(screen.getByTestId("type")).toHaveValue("Пиломатериал");
+  await expect.element(screen.getByTestId("typeId")).toHaveValue("1");
 
   await screen.getByLabelText("Тип").fill("Пиломатериал 2");
 
-  await expect.element(screen.getByTestId("type")).toHaveValue("");
+  await expect.element(screen.getByTestId("typeId")).toHaveValue("");
 });
 
-test("scopes materials to the picked type and keeps them on a same-id re-pick", async () => {
+test("scopes materials to the picked type", async () => {
   const screen = await renderPickers();
 
   await screen.getByLabelText("Материал").click();
@@ -210,10 +191,7 @@ test("scopes materials to the picked type and keeps them on a same-id re-pick", 
     .toBeInTheDocument();
 
   await screen.getByRole("option", { name: "Дуб" }).click();
-  await expect.element(screen.getByTestId("material")).toHaveValue("Дуб");
-
-  await pickType(screen, "Пиломатериал");
-  await expect.element(screen.getByTestId("material")).toHaveValue("Дуб");
+  await expect.element(screen.getByTestId("materialId")).toHaveValue("10");
 });
 
 test("scopes variants to the picked material and seeds the unit", async () => {
@@ -232,9 +210,7 @@ test("scopes variants to the picked material and seeds the unit", async () => {
 
   await screen.getByRole("option", { name: "Доска 40 мм" }).click();
 
-  await expect
-    .element(screen.getByTestId("variant"))
-    .toHaveValue("Доска 40 мм");
+  await expect.element(screen.getByTestId("variantId")).toHaveValue("100");
   await expect.element(screen.getByTestId("unit")).toHaveValue("meters");
 });
 
@@ -244,14 +220,14 @@ test("type change clears material and variant", async () => {
 
   await changeType(screen, "Химия");
 
-  await expect.element(screen.getByTestId("material")).toHaveValue("");
-  await expect.element(screen.getByTestId("variant")).toHaveValue("");
+  await expect.element(screen.getByTestId("materialId")).toHaveValue("");
+  await expect.element(screen.getByTestId("variantId")).toHaveValue("");
   await expect.element(screen.getByLabelText("Материал")).toHaveValue("");
   await expect.element(screen.getByLabelText("Вариант")).toHaveValue("");
   await expect.element(screen.getByTestId("unit")).toHaveValue("");
   await expect
     .element(screen.getByRole("combobox", { name: /Единица/ }))
-    .toBeEnabled();
+    .toBeDisabled();
 });
 
 test("material change clears the variant only", async () => {
@@ -260,9 +236,9 @@ test("material change clears the variant only", async () => {
 
   await changeMaterial(screen, "Ясень");
 
-  await expect.element(screen.getByTestId("material")).toHaveValue("Ясень");
-  await expect.element(screen.getByTestId("variant")).toHaveValue("");
-  await expect.element(screen.getByTestId("type")).toHaveValue("Пиломатериал");
+  await expect.element(screen.getByTestId("materialId")).toHaveValue("11");
+  await expect.element(screen.getByTestId("variantId")).toHaveValue("");
+  await expect.element(screen.getByTestId("typeId")).toHaveValue("1");
   await expect.element(screen.getByLabelText("Вариант")).toHaveValue("");
 });
 
@@ -281,12 +257,12 @@ test("revalidates after a failed submit", async () => {
 
   await screen.getByRole("button", { name: "Сохранить" }).click();
   await expect
-    .element(screen.getByText("Выберите или создайте тип"))
+    .element(screen.getByText("Выберите или создайте вариант"))
     .toBeInTheDocument();
 
-  await pickType(screen, "Пиломатериал");
+  await commitChain(screen);
 
   await expect
-    .element(screen.getByText("Выберите или создайте тип"))
+    .element(screen.getByText("Выберите или создайте вариант"))
     .not.toBeInTheDocument();
 });

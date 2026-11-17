@@ -21,8 +21,8 @@ export default class MaterialTypeApi {
     return this.api.post(value);
   };
 
-  update = (value: MaterialTypePatchDTO, id: number) => {
-    return this.api.patch(value, id);
+  update = ({ dto, id }: { dto: MaterialTypePatchDTO; id: number }) => {
+    return this.api.patch(dto, id);
   };
 
   remove = (id: number) => {

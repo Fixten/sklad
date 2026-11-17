@@ -42,11 +42,11 @@ test("returns non-deleted supplies and keeps deleted rows on the query", async (
   stubRoutes(routes);
 
   const Harness = () => {
-    const { supplies, query } = useSupply();
+    const { getActiveData, query } = useSupply({});
 
     return (
       <>
-        <div data-testid="filtered">{supplies.length}</div>
+        <div data-testid="filtered">{getActiveData().length}</div>
         <div data-testid="raw">{query.data?.length ?? 0}</div>
       </>
     );

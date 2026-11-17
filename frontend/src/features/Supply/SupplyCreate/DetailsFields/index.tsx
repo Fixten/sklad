@@ -14,13 +14,14 @@ import Calculations from "./Calculations";
 
 export default function DetailsFields() {
   const { control } = useFormContext<SupplyFormValues, unknown, SupplyDraft>();
-  const { suppliers, query } = useSupplier();
+  const { getActiveData: getSuppliers, query } = useSupplier();
+  const suppliers = getSuppliers();
   const quantity = useWatch({ control, name: "quantity" });
   const price = useWatch({ control, name: "price" });
   const unit = useWatch({ control, name: "unit" });
 
   const options: OptionPickerOption[] = suppliers.map((item) => ({
-    value: item.name,
+    value: String(item.id),
     label: item.name,
   }));
 
@@ -63,12 +64,11 @@ export default function DetailsFields() {
 
       <FormOptionPicker
         control={control}
-        name="supplierName"
+        name="supplierId"
         label="Поставщик"
         options={options}
         loading={query.isLoading}
         canCreate
-        onSelect={() => undefined}
       />
       <FormInputField control={control} name="description" label="Описание" />
       <FormInputField

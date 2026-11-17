@@ -25,8 +25,8 @@ test("returns non-deleted suppliers and keeps deleted rows on the query", async 
   stubRoutes(routes);
 
   const Harness = () => {
-    const { suppliers, query } = useSupplier();
-
+    const { getActiveData, query } = useSupplier();
+    const suppliers = getActiveData();
     return (
       <>
         <div data-testid="filtered">{suppliers.length}</div>
