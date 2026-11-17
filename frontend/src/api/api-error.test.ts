@@ -47,6 +47,13 @@ describe("getServerError", () => {
     expect(error.message).toBe("Такое имя уже занято.");
   });
 
+  it("maps a deleted-reference conflict to user copy", () => {
+    const error = getServerError(409, {
+      message: ErrorMessages.REFERENCED_ITEM_DELETED,
+    });
+    expect(error.message).toBe("Скрыто, восстановите, чтобы продолжить.");
+  });
+
   it.each([
     ["null body", null],
     ["non-object body", "nope"],
