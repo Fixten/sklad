@@ -23,6 +23,7 @@ The user records a purchase of a material so that its quantity becomes available
 
 - The Material Variant is required.
 - Type, Material, Variant, and Supplier are chosen from existing records only. The form never creates catalog entities or suppliers.
+- Hidden Types and Materials are offered and marked «(скрыт)». Hidden Variants are not offered.
 - The overall search finds existing variants and fills the Type, Material, and Variant fields. It cannot create anything.
 - Prefilled values can still be changed before saving.
 - The unit is shown from the selected Material Variant. The user does not choose a unit.
@@ -37,6 +38,7 @@ The user records a purchase of a material so that its quantity becomes available
 - The exact Material Variant is known and exists: the user starts from its card and only fills the purchase details.
 - The variant exists but the user is not sure which one: the user starts from the command palette and searches.
 - The variant does not exist: the user creates it in the material catalog, then uses its card's supply action. The supply form does not offer to create it.
+- The needed Variant exists under a hidden Material or Type: the hidden parent is offered and marked «(скрыт)», so the Variant stays reachable.
 - The Material or Type does not exist: the user creates it in the catalog, then its Variant, then starts the supply from that card.
 - The supplier does not exist: the user creates it in supplier management, or saves the supply without a supplier. The supply form does not offer to create one.
 - The search finds nothing: the form shows no options; the user tries another search or leaves. It does not suggest creating anything.

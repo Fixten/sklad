@@ -19,11 +19,19 @@ const createdAt = "2026-01-01T00:00:00Z";
 const types = [
   { id: 1, name: "Пиломатериал", created_at: createdAt },
   { id: 2, name: "Химия", created_at: createdAt },
+  { id: 3, name: "Упаковка", created_at: createdAt, deleted_at: createdAt },
 ];
 const materials = [
   { id: 10, name: "Дуб", material_type_id: 1, created_at: createdAt },
   { id: 11, name: "Ясень", material_type_id: 1, created_at: createdAt },
   { id: 20, name: "Краситель", material_type_id: 2, created_at: createdAt },
+  {
+    id: 12,
+    name: "Дуб скрытый",
+    material_type_id: 1,
+    created_at: createdAt,
+    deleted_at: createdAt,
+  },
 ];
 const variants = [
   {
@@ -39,6 +47,21 @@ const variants = [
     material_id: 10,
     unit: "pieces" as const,
     created_at: createdAt,
+  },
+  {
+    id: 103,
+    name: "Доска 50 мм",
+    material_id: 12,
+    unit: "meters" as const,
+    created_at: createdAt,
+  },
+  {
+    id: 104,
+    name: "Скрытая рейка",
+    material_id: 10,
+    unit: "pieces" as const,
+    created_at: createdAt,
+    deleted_at: createdAt,
   },
 ];
 
@@ -212,6 +235,52 @@ test("scopes variants to the picked material and seeds the unit", async () => {
 
   await expect.element(screen.getByTestId("variantId")).toHaveValue("100");
   await expect.element(screen.getByTestId("unit")).toHaveValue("meters");
+});
+
+test("marks hidden types", async () => {
+  const screen = await renderPickers();
+
+  await screen.getByLabelText("Тип").click();
+
+  await expect
+    .element(screen.getByRole("option", { name: "Упаковка (скрыт)" }))
+    .toBeInTheDocument();
+});
+
+test("marks hidden materials and keeps their variants reachable", async () => {
+  const screen = await renderPickers();
+
+  await pickType(screen, "Пиломатериал");
+  await screen.getByLabelText("Материал").click();
+
+  await expect
+    .element(screen.getByRole("option", { name: "Дуб скрытый (скрыт)" }))
+    .toBeInTheDocument();
+
+  await screen.getByRole("option", { name: "Дуб скрытый (скрыт)" }).click();
+
+  await expect.element(screen.getByTestId("materialId")).toHaveValue("12");
+  await expect
+    .element(screen.getByLabelText("Материал"))
+    .toHaveValue("Дуб скрытый (скрыт)");
+
+  await pickVariant(screen, "Доска 50 мм");
+  await expect.element(screen.getByTestId("variantId")).toHaveValue("103");
+});
+
+test("does not offer hidden variants", async () => {
+  const screen = await renderPickers();
+
+  await pickType(screen, "Пиломатериал");
+  await pickMaterial(screen, "Дуб");
+  await screen.getByLabelText("Вариант").click();
+
+  await expect
+    .element(screen.getByRole("option", { name: "Скрытая рейка" }))
+    .not.toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("option", { name: "Доска 40 мм" }))
+    .toBeInTheDocument();
 });
 
 test("type change clears material and variant", async () => {

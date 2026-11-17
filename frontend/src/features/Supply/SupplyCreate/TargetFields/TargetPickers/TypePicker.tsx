@@ -17,7 +17,7 @@ export default function TypePicker() {
 
   const options: OptionPickerOption[] = types.map((item) => ({
     value: String(item.id),
-    label: item.name,
+    label: item.deleted_at ? `${item.name} (скрыт)` : item.name,
   }));
 
   function onSelect(id: string) {

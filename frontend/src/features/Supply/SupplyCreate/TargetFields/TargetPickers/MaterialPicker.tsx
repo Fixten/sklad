@@ -31,7 +31,7 @@ export default function MaterialPicker() {
         ...prev,
         {
           value: String(cur.id),
-          label: cur.name,
+          label: cur.deleted_at ? `${cur.name} (скрыт)` : cur.name,
         },
       ];
     } else return prev;
