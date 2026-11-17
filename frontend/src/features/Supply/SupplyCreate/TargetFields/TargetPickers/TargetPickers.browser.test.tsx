@@ -166,20 +166,17 @@ const changeMaterial = async (screen: Screen, name: string) => {
   await screen.getByRole("option", { name }).click();
 };
 
-test("commits typed text as a new material via the create row", async () => {
+test("offers no create row for an unknown material", async () => {
   const screen = await renderPickers();
 
   const material = screen.getByLabelText("Материал");
   await material.click();
   await material.fill("Новый материал");
-  await screen.getByRole("option", { name: "Создать Новый материал" }).click();
 
-  await expect.element(material).toHaveValue("Новый материал");
   await expect
-    .element(screen.getByTestId("materialId"))
-    .toHaveValue("Новый материал");
-  await expect.element(screen.getByTestId("variantId")).toHaveValue("");
-  await expect.element(screen.getByTestId("unit")).toHaveValue("");
+    .element(screen.getByRole("option", { name: "Создать Новый материал" }))
+    .not.toBeInTheDocument();
+  await expect.element(screen.getByTestId("materialId")).toHaveValue("");
 });
 
 test("commits a picked result and drops it on edit", async () => {
@@ -325,13 +322,9 @@ test("revalidates after a failed submit", async () => {
   const screen = await renderPickers();
 
   await screen.getByRole("button", { name: "Сохранить" }).click();
-  await expect
-    .element(screen.getByText("Выберите или создайте вариант"))
-    .toBeInTheDocument();
+  await expect.element(screen.getByText("Выберите")).toBeInTheDocument();
 
   await commitChain(screen);
 
-  await expect
-    .element(screen.getByText("Выберите или создайте вариант"))
-    .not.toBeInTheDocument();
+  await expect.element(screen.getByText("Выберите")).not.toBeInTheDocument();
 });

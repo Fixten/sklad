@@ -68,7 +68,6 @@ export default function DetailsFields() {
         label="Поставщик"
         options={options}
         loading={query.isLoading}
-        canCreate
       />
       <FormInputField control={control} name="description" label="Описание" />
       <FormInputField

@@ -11,7 +11,7 @@ export const createSupplyFormSchema = () =>
     .object({
       typeId: zod.string(),
       materialId: zod.string(),
-      variantId: zod.string().min(1, "Выберите или создайте вариант"),
+      variantId: zod.string().min(1, "Выберите"),
       unit: zod.union([zod.literal(""), UnitSchema]),
       quantity: zod
         .string()
