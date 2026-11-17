@@ -4,2728 +4,2726 @@
  */
 
 export interface paths {
-  "/api/material-type": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/material-type": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List material types */
+        get: {
+            parameters: {
+                query?: {
+                    hidden?: "true" | "false";
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Material types; includes soft-deleted ones when hidden=true */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["MaterialType"][];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Create a material type */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        name: string;
+                        description?: string | null;
+                    };
+                };
+            };
+            responses: {
+                /** @description The created material type */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["MaterialType"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** List material types */
-    get: {
-      parameters: {
-        query?: {
-          hidden?: "true" | "false";
+    "/api/material-type/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
         };
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description Material types; includes soft-deleted ones when hidden=true */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["MaterialType"][];
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
+        /** Get a material type by id */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
             };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
+            requestBody?: never;
+            responses: {
+                /** @description The material type */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["MaterialType"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
             };
-          };
         };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
+        put?: never;
+        post?: never;
+        /** Delete a material type */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
             };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
+            requestBody?: never;
+            responses: {
+                /** @description Delete confirmation */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
             };
-          };
         };
-      };
+        options?: never;
+        head?: never;
+        /** Update a material type */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        name?: string;
+                        description?: string | null;
+                    };
+                };
+            };
+            responses: {
+                /** @description The updated material type */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["MaterialType"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
     };
-    put?: never;
-    /** Create a material type */
-    post: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody: {
-        content: {
-          "application/json": {
+    "/api/material-type/restore/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Restore a soft-deleted material type */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The restored material type */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["MaterialType"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/material": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List materials */
+        get: {
+            parameters: {
+                query?: {
+                    hidden?: "true" | "false";
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Materials; includes soft-deleted ones when hidden=true */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Material"][];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Create a material */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        name: string;
+                        description?: string | null;
+                        material_type_id: number;
+                    };
+                };
+            };
+            responses: {
+                /** @description The created material */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Material"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/material/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a material by id */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The material */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Material"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** Delete a material */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Delete confirmation */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Update a material */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        name?: string;
+                        description?: string | null;
+                        material_type_id?: number;
+                    };
+                };
+            };
+            responses: {
+                /** @description The updated material */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Material"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/material/restore/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Restore a soft-deleted material */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The restored material */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Material"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/material-variant": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List material variants */
+        get: {
+            parameters: {
+                query?: {
+                    hidden?: "true" | "false";
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Material variants; includes soft-deleted ones when hidden=true */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["MaterialVariant"][];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Create a material variant */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        name: string;
+                        /** @enum {string} */
+                        unit: "pieces" | "meters";
+                        material_id: number;
+                    };
+                };
+            };
+            responses: {
+                /** @description The created material variant */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["MaterialVariantDetail"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/material-variant/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a material variant by id */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The material variant */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["MaterialVariantDetail"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** Delete a material variant */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Delete confirmation */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Update a material variant */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        name?: string;
+                        /** @enum {string} */
+                        unit?: "pieces" | "meters";
+                        material_id?: number;
+                    };
+                };
+            };
+            responses: {
+                /** @description The updated material variant */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["MaterialVariantDetail"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/material-variant/restore/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Restore a soft-deleted material variant */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The restored material variant */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["MaterialVariantDetail"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/supply": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List active supplies with their remaining stock */
+        get: {
+            parameters: {
+                query?: {
+                    material_variant_id?: number | null;
+                    supplier_id?: number | null;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Supplies */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Supply"][];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Create a supply */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        description?: string;
+                        purchase_price: number | string;
+                        quantity: number | string;
+                        url?: string;
+                        material_variant_id: number;
+                        supplier_id?: number;
+                    };
+                };
+            };
+            responses: {
+                /** @description The created supply */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Supply"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/supply/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a supply */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The supply */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Supply"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** Delete a supply */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Delete confirmation */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Update or correct a supply */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        description?: string;
+                        purchase_price?: number | string;
+                        quantity?: number | string;
+                        url?: string;
+                        material_variant_id?: number;
+                        supplier_id?: number;
+                    };
+                };
+            };
+            responses: {
+                /** @description The updated supply */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Supply"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/supply/stock/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get the stock derived from the supplies of a material variant
+         * @description The id is a material variant id. A soft-deleted variant stays readable: the figure is derived, never written.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Remaining stock of the material variant */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SupplyStock"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/supply/restore/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Restore a soft-deleted supply */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The restored supply */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Supply"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/supplier": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List active suppliers */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Active suppliers */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Supplier"][];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Create a supplier */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        name: string;
+                        description?: string;
+                        url?: string;
+                        contact?: string;
+                    };
+                };
+            };
+            responses: {
+                /** @description The created supplier */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Supplier"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/supplier/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a supplier */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The supplier */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Supplier"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** Delete a supplier */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Delete confirmation */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Update a supplier */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        name?: string;
+                        description?: string;
+                        url?: string;
+                        contact?: string;
+                    };
+                };
+            };
+            responses: {
+                /** @description The updated supplier */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Supplier"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/supplier/restore/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Restore a soft-deleted supplier */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The restored supplier */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Supplier"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get the settings */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The settings row or its default */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            id: number;
+                            work_hour_cost: number;
+                            /** Format: date-time */
+                            created_at: string;
+                            /** Format: date-time */
+                            updated_at?: string | null;
+                            /** Format: date-time */
+                            deleted_at?: string | null;
+                        } | {
+                            work_hour_cost: number;
+                        };
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Create or update the settings */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        work_hour_cost: number;
+                    };
+                };
+            };
+            responses: {
+                /** @description The stored settings row */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Settings"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Resource not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Conflict with existing data */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/health": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Report service health including database reachability */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The service and its database are reachable */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @enum {string} */
+                            status: "ok";
+                        };
+                    };
+                };
+                /** @description The database is unreachable */
+                503: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["HealthError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+}
+export type webhooks = Record<string, never>;
+export interface components {
+    schemas: {
+        ErrorResponse: {
+            message: string;
+        };
+        MaterialType: {
+            id: number;
             name: string;
             description?: string | null;
-          };
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at?: string | null;
+            /** Format: date-time */
+            deleted_at?: string | null;
         };
-      };
-      responses: {
-        /** @description The created material type */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["MaterialType"];
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/material-type/{id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** Get a material type by id */
-    get: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description The material type */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["MaterialType"];
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    put?: never;
-    post?: never;
-    /** Delete a material type */
-    delete: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description Delete confirmation */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    options?: never;
-    head?: never;
-    /** Update a material type */
-    patch: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody: {
-        content: {
-          "application/json": {
-            name?: string;
-            description?: string | null;
-          };
-        };
-      };
-      responses: {
-        /** @description The updated material type */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["MaterialType"];
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    trace?: never;
-  };
-  "/api/material-type/restore/{id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /** Restore a soft-deleted material type */
-    post: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description The restored material type */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["MaterialType"];
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/material": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** List materials */
-    get: {
-      parameters: {
-        query?: {
-          hidden?: "true" | "false";
-        };
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description Materials; includes soft-deleted ones when hidden=true */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["Material"][];
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    put?: never;
-    /** Create a material */
-    post: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody: {
-        content: {
-          "application/json": {
+        Material: {
+            id: number;
             name: string;
             description?: string | null;
             material_type_id: number;
-          };
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at?: string | null;
+            /** Format: date-time */
+            deleted_at?: string | null;
         };
-      };
-      responses: {
-        /** @description The created material */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["Material"];
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/material/{id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** Get a material by id */
-    get: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description The material */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["Material"];
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    put?: never;
-    post?: never;
-    /** Delete a material */
-    delete: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description Delete confirmation */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    options?: never;
-    head?: never;
-    /** Update a material */
-    patch: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody: {
-        content: {
-          "application/json": {
-            name?: string;
-            description?: string | null;
-            material_type_id?: number;
-          };
-        };
-      };
-      responses: {
-        /** @description The updated material */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["Material"];
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    trace?: never;
-  };
-  "/api/material/restore/{id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /** Restore a soft-deleted material */
-    post: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description The restored material */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["Material"];
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/material-variant": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** List material variants */
-    get: {
-      parameters: {
-        query?: {
-          hidden?: "true" | "false";
-        };
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description Material variants; includes soft-deleted ones when hidden=true */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["MaterialVariant"][];
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    put?: never;
-    /** Create a material variant */
-    post: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody: {
-        content: {
-          "application/json": {
+        MaterialVariant: {
+            id: number;
             name: string;
             /** @enum {string} */
             unit: "pieces" | "meters";
             material_id: number;
-          };
-        };
-      };
-      responses: {
-        /** @description The created material variant */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["MaterialVariantDetail"];
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/material-variant/{id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** Get a material variant by id */
-    get: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description The material variant */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["MaterialVariantDetail"];
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    put?: never;
-    post?: never;
-    /** Delete a material variant */
-    delete: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description Delete confirmation */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    options?: never;
-    head?: never;
-    /** Update a material variant */
-    patch: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody: {
-        content: {
-          "application/json": {
-            name?: string;
-            /** @enum {string} */
-            unit?: "pieces" | "meters";
-            material_id?: number;
-          };
-        };
-      };
-      responses: {
-        /** @description The updated material variant */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["MaterialVariantDetail"];
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    trace?: never;
-  };
-  "/api/material-variant/restore/{id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /** Restore a soft-deleted material variant */
-    post: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description The restored material variant */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["MaterialVariantDetail"];
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/supply": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** List active supplies with their remaining stock */
-    get: {
-      parameters: {
-        query?: {
-          material_variant_id?: number | null;
-          supplier_id?: number | null;
-        };
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description Supplies */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["Supply"][];
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    put?: never;
-    /** Create a supply */
-    post: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody: {
-        content: {
-          "application/json": {
-            description?: string;
-            purchase_price: number | string;
-            quantity: number | string;
-            url?: string;
-            material_variant_id: number;
-            supplier_id?: number;
-          };
-        };
-      };
-      responses: {
-        /** @description The created supply */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["Supply"];
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/supply/{id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** Get a supply */
-    get: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description The supply */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["Supply"];
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    put?: never;
-    post?: never;
-    /** Delete a supply */
-    delete: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description Delete confirmation */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    options?: never;
-    head?: never;
-    /** Update or correct a supply */
-    patch: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody: {
-        content: {
-          "application/json": {
-            description?: string;
-            purchase_price?: number | string;
-            quantity?: number | string;
-            url?: string;
-            material_variant_id?: number;
-            supplier_id?: number;
-          };
-        };
-      };
-      responses: {
-        /** @description The updated supply */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["Supply"];
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    trace?: never;
-  };
-  "/api/supply/stock/{id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /**
-     * Get the stock derived from the supplies of a material variant
-     * @description The id is a material variant id. A soft-deleted variant stays readable: the figure is derived, never written.
-     */
-    get: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description Remaining stock of the material variant */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["SupplyStock"];
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/supply/restore/{id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /** Restore a soft-deleted supply */
-    post: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description The restored supply */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["Supply"];
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/supplier": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** List active suppliers */
-    get: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description Active suppliers */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["Supplier"][];
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    put?: never;
-    /** Create a supplier */
-    post: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody: {
-        content: {
-          "application/json": {
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at?: string | null;
+            /** Format: date-time */
+            deleted_at?: string | null;
+        };
+        MaterialVariantDetail: {
+            id: number;
             name: string;
-            description?: string;
-            url?: string;
-            contact?: string;
-          };
+            /** @enum {string} */
+            unit: "pieces" | "meters";
+            material_id: number;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at?: string | null;
+            /** Format: date-time */
+            deleted_at?: string | null;
+            unit_locked: boolean;
         };
-      };
-      responses: {
-        /** @description The created supplier */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["Supplier"];
-          };
+        Supply: {
+            id: number;
+            description?: string | null;
+            purchase_price: number;
+            quantity: number;
+            /** @enum {string} */
+            unit: "pieces" | "meters";
+            remaining_quantity: number;
+            unit_purchase_cost: number;
+            url?: string | null;
+            material_variant_id: number;
+            supplier_id?: number | null;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at?: string | null;
+            /** Format: date-time */
+            deleted_at?: string | null;
         };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
+        SupplyStock: {
+            material_variant_id: number;
+            /** @enum {string} */
+            unit: "pieces" | "meters";
+            quantity: number;
         };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
+        Supplier: {
+            id: number;
+            name: string;
+            description?: string | null;
+            url?: string | null;
+            contact?: string | null;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at?: string | null;
+            /** Format: date-time */
+            deleted_at?: string | null;
         };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/supplier/{id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** Get a supplier */
-    get: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description The supplier */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["Supplier"];
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    put?: never;
-    post?: never;
-    /** Delete a supplier */
-    delete: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description Delete confirmation */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    options?: never;
-    head?: never;
-    /** Update a supplier */
-    patch: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody: {
-        content: {
-          "application/json": {
-            name?: string;
-            description?: string;
-            url?: string;
-            contact?: string;
-          };
-        };
-      };
-      responses: {
-        /** @description The updated supplier */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["Supplier"];
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    trace?: never;
-  };
-  "/api/supplier/restore/{id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /** Restore a soft-deleted supplier */
-    post: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description The restored supplier */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["Supplier"];
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/settings": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** Get the settings */
-    get: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description The settings row or its default */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json":
-              | {
-                  id: number;
-                  work_hour_cost: number;
-                  /** Format: date-time */
-                  created_at: string;
-                  /** Format: date-time */
-                  updated_at?: string | null;
-                  /** Format: date-time */
-                  deleted_at?: string | null;
-                }
-              | {
-                  work_hour_cost: number;
-                };
-          };
-        };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
-    };
-    put?: never;
-    /** Create or update the settings */
-    post: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody: {
-        content: {
-          "application/json": {
+        Settings: {
+            id: number;
             work_hour_cost: number;
-          };
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at?: string | null;
+            /** Format: date-time */
+            deleted_at?: string | null;
         };
-      };
-      responses: {
-        /** @description The stored settings row */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["Settings"];
-          };
+        HealthOk: {
+            /** @enum {string} */
+            status: "ok";
         };
-        /** @description Invalid request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
+        HealthError: {
+            /** @enum {string} */
+            status: "error";
         };
-        /** @description Resource not found */
-        404: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Conflict with existing data */
-        409: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-        /** @description Internal server error */
-        500: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              message: string;
-            };
-          };
-        };
-      };
     };
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/health": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** Report service health including database reachability */
-    get: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description The service and its database are reachable */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              /** @enum {string} */
-              status: "ok";
-            };
-          };
-        };
-        /** @description The database is unreachable */
-        503: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["HealthError"];
-          };
-        };
-      };
-    };
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-}
-export type webhooks = Record<string, never>;
-export interface components {
-  schemas: {
-    ErrorResponse: {
-      message: string;
-    };
-    MaterialType: {
-      id: number;
-      name: string;
-      description?: string | null;
-      /** Format: date-time */
-      created_at: string;
-      /** Format: date-time */
-      updated_at?: string | null;
-      /** Format: date-time */
-      deleted_at?: string | null;
-    };
-    Material: {
-      id: number;
-      name: string;
-      description?: string | null;
-      material_type_id: number;
-      /** Format: date-time */
-      created_at: string;
-      /** Format: date-time */
-      updated_at?: string | null;
-      /** Format: date-time */
-      deleted_at?: string | null;
-    };
-    MaterialVariant: {
-      id: number;
-      name: string;
-      /** @enum {string} */
-      unit: "pieces" | "meters";
-      material_id: number;
-      /** Format: date-time */
-      created_at: string;
-      /** Format: date-time */
-      updated_at?: string | null;
-      /** Format: date-time */
-      deleted_at?: string | null;
-    };
-    MaterialVariantDetail: {
-      id: number;
-      name: string;
-      /** @enum {string} */
-      unit: "pieces" | "meters";
-      material_id: number;
-      /** Format: date-time */
-      created_at: string;
-      /** Format: date-time */
-      updated_at?: string | null;
-      /** Format: date-time */
-      deleted_at?: string | null;
-      unit_locked: boolean;
-    };
-    Supply: {
-      id: number;
-      description?: string | null;
-      purchase_price: number;
-      quantity: number;
-      /** @enum {string} */
-      unit: "pieces" | "meters";
-      remaining_quantity: number;
-      unit_purchase_cost: number;
-      url?: string | null;
-      material_variant_id: number;
-      supplier_id?: number | null;
-      /** Format: date-time */
-      created_at: string;
-      /** Format: date-time */
-      updated_at?: string | null;
-      /** Format: date-time */
-      deleted_at?: string | null;
-    };
-    SupplyStock: {
-      material_variant_id: number;
-      /** @enum {string} */
-      unit: "pieces" | "meters";
-      quantity: number;
-    };
-    Supplier: {
-      id: number;
-      name: string;
-      description?: string | null;
-      url?: string | null;
-      contact?: string | null;
-      /** Format: date-time */
-      created_at: string;
-      /** Format: date-time */
-      updated_at?: string | null;
-      /** Format: date-time */
-      deleted_at?: string | null;
-    };
-    Settings: {
-      id: number;
-      work_hour_cost: number;
-      /** Format: date-time */
-      created_at: string;
-      /** Format: date-time */
-      updated_at?: string | null;
-      /** Format: date-time */
-      deleted_at?: string | null;
-    };
-    HealthOk: {
-      /** @enum {string} */
-      status: "ok";
-    };
-    HealthError: {
-      /** @enum {string} */
-      status: "error";
-    };
-  };
-  responses: never;
-  parameters: never;
-  requestBodies: never;
-  headers: never;
-  pathItems: never;
+    responses: never;
+    parameters: never;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
 }
 export type $defs = Record<string, never>;
 export type operations = Record<string, never>;
