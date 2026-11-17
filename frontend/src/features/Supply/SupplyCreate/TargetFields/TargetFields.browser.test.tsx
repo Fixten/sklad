@@ -66,9 +66,7 @@ test("keeps a chain built through the pickers when the search is typed", async (
   await expect
     .element(screen.getByText("Выберите или создайте материал"))
     .not.toBeInTheDocument();
-  await expect
-    .element(screen.getByText("Выберите или создайте вариант"))
-    .not.toBeInTheDocument();
+  await expect.element(screen.getByText("Выберите")).not.toBeInTheDocument();
   await expect
     .element(screen.getByText("Выберите единицу"))
     .not.toBeInTheDocument();
@@ -88,7 +86,5 @@ test("fills the type with a hidden type name from the search selection", async (
   await expect
     .element(screen.getByText("Выберите или создайте материал"))
     .not.toBeInTheDocument();
-  await expect
-    .element(screen.getByText("Выберите или создайте вариант"))
-    .not.toBeInTheDocument();
+  await expect.element(screen.getByText("Выберите")).not.toBeInTheDocument();
 });

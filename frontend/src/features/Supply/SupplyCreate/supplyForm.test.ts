@@ -41,9 +41,7 @@ describe("createSupplyFormSchema", () => {
   it("requires a variant", () => {
     const result = parse({ variantId: "" });
 
-    expect(errorsOf(result).variantId).toEqual([
-      "Выберите или создайте вариант",
-    ]);
+    expect(errorsOf(result).variantId).toEqual(["Выберите"]);
   });
 
   it("accepts an empty supplier", () => {

@@ -14,9 +14,7 @@ test("reports missing values on submit", async () => {
 
   await screen.getByRole("button", { name: "Сохранить" }).click();
 
-  await expect
-    .element(screen.getByText("Выберите или создайте вариант"))
-    .toBeInTheDocument();
+  await expect.element(screen.getByText("Выберите")).toBeInTheDocument();
   await expect
     .element(screen.getByText("Укажите количество"))
     .toBeInTheDocument();
