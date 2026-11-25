@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
 import { isFeatureEnabled } from "@/config/features";
@@ -11,6 +12,7 @@ import pathsRouter from "@/router/paths.router";
 import { Button } from "@ui/Button";
 import Typography from "@ui/Typography";
 
+import EditForm from "./EditForm";
 import SupplyRows from "./SupplyRows";
 
 const back = { to: pathsRouter.material, label: "Материалы" };
@@ -30,6 +32,7 @@ export default function VariantPage() {
   const variants = useVariantData();
   const materials = useMaterialData();
   const types = useMaterialTypeData();
+  const [editing, setEditing] = useState(false);
   const variant = variants.getMap().get(Number(id));
 
   if (
@@ -44,6 +47,14 @@ export default function VariantPage() {
     return <PageLayout back={back} title="Запись не найдена" />;
   }
 
+  if (editing) {
+    return (
+      <PageLayout back={back} title={variant.name}>
+        <EditForm entity={variant} onDone={() => setEditing(false)} />
+      </PageLayout>
+    );
+  }
+
   const material = materials.getMap().get(variant.material_id);
   const type = material
     ? types.getMap().get(material.material_type_id)
@@ -51,7 +62,13 @@ export default function VariantPage() {
   const context = [material?.name, type?.name].filter(Boolean).join(" · ");
 
   return (
-    <PageLayout back={back} title={variant.name}>
+    <PageLayout back={back} title={variant.name} className="relative">
+      <Button
+        className="absolute top-0 right-0"
+        onClick={() => setEditing(true)}
+      >
+        {variant.deleted_at ? "Переименовать" : "Редактировать"}
+      </Button>
       <Typography variant="caption">
         Единица: {UnitLabels[variant.unit]}
       </Typography>

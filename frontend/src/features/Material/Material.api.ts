@@ -1,6 +1,10 @@
 import Api from "@/api";
 
-import type { MaterialDTO, MaterialListQuery } from "./Material.model";
+import type {
+  MaterialDTO,
+  MaterialListQuery,
+  MaterialPatchDTO,
+} from "./Material.model";
 
 export default class MaterialApi {
   private api = new Api("/api/material");
@@ -13,7 +17,7 @@ export default class MaterialApi {
     return this.api.post(value);
   };
 
-  update = ({ dto, id }: { dto: MaterialDTO; id: number }) => {
+  update = ({ dto, id }: { dto: MaterialPatchDTO; id: number }) => {
     return this.api.patch(dto, id);
   };
 

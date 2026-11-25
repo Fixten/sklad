@@ -9,7 +9,7 @@ import type { SupplyModel } from "@/features/Supply/Supply.model";
 import type { VariantModel } from "@/features/Variant/Variant.model";
 import AppLayout from "@/layout/App.layout";
 import pathsRouter from "@/router/paths.router";
-import { stubRoutes } from "@/test/apiStub.vitest";
+import { errorResponse, stubRoutes } from "@/test/apiStub.vitest";
 import Toaster from "@ui/Toast";
 
 import MaterialCardPage from "./MaterialCardPage";
@@ -24,6 +24,7 @@ export interface PageFixtures {
   types?: MaterialTypeModel[];
   variants?: VariantModel[];
   supplies?: SupplyModel[];
+  unitLocked?: boolean;
 }
 
 const catalogSupplies: SupplyModel[] = [
@@ -177,9 +178,9 @@ export const catalogFixtures = {
 } satisfies PageFixtures;
 
 export const pageRoutes = (fixtures: PageFixtures = {}) => {
-  const materials = fixtures.materials ?? [];
-  const types = fixtures.types ?? [];
-  const variants = fixtures.variants ?? [];
+  const materials = (fixtures.materials ?? []).map((row) => ({ ...row }));
+  const types = (fixtures.types ?? []).map((row) => ({ ...row }));
+  const variants = (fixtures.variants ?? []).map((row) => ({ ...row }));
   const supplies = fixtures.supplies ?? [];
 
   const active = <T extends { deleted_at?: string | null }>(rows: T[]) =>
@@ -190,10 +191,59 @@ export const pageRoutes = (fixtures: PageFixtures = {}) => {
     ({ search }: { search: URLSearchParams }) =>
       search.get("hidden") === "true" ? rows : active(rows);
 
+  const idFrom = (path: string) => Number(path.split("/").pop());
+
   return {
     "/api/material": { get: list(materials) },
     "/api/material-type": { get: list(types) },
     "/api/material-variant": { get: list(variants) },
+    "/api/material-type/{id}": {
+      patch: ({
+        body,
+        path,
+      }: {
+        body: Record<string, unknown>;
+        path: string;
+      }) => {
+        const row = types.find((type) => type.id === idFrom(path));
+        if (!row) return errorResponse(404, "not found");
+        Object.assign(row, body);
+        return row;
+      },
+    },
+    "/api/material/{id}": {
+      patch: ({
+        body,
+        path,
+      }: {
+        body: Record<string, unknown>;
+        path: string;
+      }) => {
+        const row = materials.find((material) => material.id === idFrom(path));
+        if (!row) return errorResponse(404, "not found");
+        Object.assign(row, body);
+        return row;
+      },
+    },
+    "/api/material-variant/{id}": {
+      get: ({ path }: { path: string }) => {
+        const row = variants.find((variant) => variant.id === idFrom(path));
+        if (!row) return errorResponse(404, "not found");
+        return { ...row, unit_locked: fixtures.unitLocked ?? false };
+      },
+      patch: ({
+        body,
+        path,
+      }: {
+        body: Record<string, unknown>;
+        path: string;
+      }) => {
+        const row = variants.find((variant) => variant.id === idFrom(path));
+        if (!row) return errorResponse(404, "not found");
+        Object.assign(row, body);
+        return { ...row, unit_locked: false };
+      },
+    },
     "/api/supplier": { get: () => [] },
     "/api/supply": {
       get: ({ search }: { search: URLSearchParams }) => {

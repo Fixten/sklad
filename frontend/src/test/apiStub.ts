@@ -17,6 +17,7 @@ type Reply<P extends keyof paths, M extends Operation> =
 type Handler<P extends keyof paths, M extends Operation> = (request: {
   body: JsonBody<P, M>;
   search: URLSearchParams;
+  path: string;
 }) => Reply<P, M> | Promise<Reply<P, M>>;
 
 export type Routes = {
@@ -36,6 +37,7 @@ const toMatcher = (pathname: string) =>
 type AnyHandler = (request: {
   body: unknown;
   search: URLSearchParams;
+  path: string;
 }) => unknown;
 
 const unhandled: string[] = [];
@@ -109,6 +111,7 @@ export const createApiStub = (routes: Routes) => {
     const reply: unknown = await operation.handler({
       body,
       search: url.searchParams,
+      path: pathname,
     });
 
     return reply instanceof Response ? reply : jsonResponse(reply);

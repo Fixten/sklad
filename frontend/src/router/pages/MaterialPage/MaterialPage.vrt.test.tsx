@@ -68,3 +68,32 @@ test("renders the variant card page", async () => {
     .toBeInTheDocument();
   await expect(viewport()).toMatchScreenshot();
 });
+
+test("renders the type edit form", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/type/1");
+
+  await screen.getByRole("button", { name: "Редактировать" }).click();
+  await expect.element(page.getByLabelText("Название")).toBeInTheDocument();
+  await expect(viewport()).toMatchScreenshot();
+});
+
+test("renders the material edit form", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/material/10");
+
+  await screen.getByRole("button", { name: "Редактировать" }).click();
+  await expect.element(page.getByLabelText("Название")).toBeInTheDocument();
+  await expect(viewport()).toMatchScreenshot();
+});
+
+test("renders the variant edit form", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/variant/100");
+
+  await screen.getByRole("button", { name: "Редактировать" }).click();
+  await expect
+    .element(page.getByRole("combobox", { name: "Единица" }))
+    .toBeInTheDocument();
+  await expect(viewport()).toMatchScreenshot();
+});

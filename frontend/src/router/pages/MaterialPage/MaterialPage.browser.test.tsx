@@ -610,3 +610,503 @@ test("opens a blank supply form without a variant param", async () => {
 
   await expect.element(screen.getByLabelText("Вариант")).toHaveValue("");
 });
+
+const patchesTo = (
+  requests: { method: string; path: string; body: unknown }[],
+  path: string,
+) =>
+  requests.find(
+    (request) => request.method === "PATCH" && request.path === path,
+  );
+
+test("edits a type: prefilled form, PATCH body and updated view", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/type/1");
+
+  await screen.getByRole("button", { name: "Редактировать" }).click();
+
+  await expect
+    .element(screen.getByLabelText("Название"))
+    .toHaveValue("Древесина");
+  await expect
+    .element(screen.getByLabelText("Описание"))
+    .toHaveValue("Пиломатериалы");
+
+  await screen.getByLabelText("Название").fill("Древесина твёрдая");
+  await screen.getByLabelText("Описание").fill("Твёрдые породы");
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  await expect
+    .element(
+      screen.getByRole("heading", { name: "Древесина твёрдая", level: 1 }),
+    )
+    .toBeInTheDocument();
+  await expect.element(screen.getByText("Твёрдые породы")).toBeInTheDocument();
+  expect(patchesTo(requests, "/api/material-type/1")?.body).toEqual({
+    name: "Древесина твёрдая",
+    description: "Твёрдые породы",
+  });
+});
+
+test("cancels a type edit without saving", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/type/1");
+
+  await screen.getByRole("button", { name: "Редактировать" }).click();
+  await screen.getByLabelText("Название").fill("Древесина твёрдая");
+  await screen.getByRole("button", { name: "Отмена" }).click();
+
+  await expect
+    .element(screen.getByRole("heading", { name: "Древесина", level: 1 }))
+    .toBeInTheDocument();
+  expect(requests.filter((request) => request.method === "PATCH")).toHaveLength(
+    0,
+  );
+});
+
+test("rejects an empty type name without saving", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/type/1");
+
+  await screen.getByRole("button", { name: "Редактировать" }).click();
+  await screen.getByLabelText("Название").fill("   ");
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  await expect
+    .element(screen.getByText("Укажите название"))
+    .toBeInTheDocument();
+  expect(requests.filter((request) => request.method === "PATCH")).toHaveLength(
+    0,
+  );
+});
+
+test("shows a mapped server error and keeps values on a failed type save", async () => {
+  const requests = stubRoutes({
+    ...pageRoutes(catalogFixtures),
+    "/api/material-type/{id}": {
+      patch: () => errorResponse(409, "Name already exists"),
+    },
+  });
+  const screen = await renderPage("/materials/type/1");
+
+  await screen.getByRole("button", { name: "Редактировать" }).click();
+  await screen.getByLabelText("Название").fill("Металл");
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  await expect
+    .element(screen.getByText("Такое имя уже занято."))
+    .toBeInTheDocument();
+  await expect.element(screen.getByLabelText("Название")).toHaveValue("Металл");
+  expect(requests.filter((request) => request.method === "PATCH")).toHaveLength(
+    1,
+  );
+});
+
+test("edits a material: prefilled form, PATCH body and updated view", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/material/10");
+
+  await screen.getByRole("button", { name: "Редактировать" }).click();
+
+  await expect
+    .element(screen.getByLabelText("Название"))
+    .toHaveValue("Доска сосна");
+  await expect
+    .element(screen.getByLabelText("Описание"))
+    .toHaveValue("Сорт первый");
+  await expect
+    .element(screen.getByRole("combobox", { name: "Тип" }))
+    .toMatchTextContent("Древесина");
+
+  await screen.getByLabelText("Название").fill("Доска липа");
+  await screen.getByLabelText("Описание").fill("");
+  await screen.getByRole("combobox", { name: "Тип" }).click();
+  await screen.getByRole("option", { name: "Металл" }).click();
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  await expect
+    .element(screen.getByRole("heading", { name: "Доска липа", level: 1 }))
+    .toBeInTheDocument();
+  await expect.element(screen.getByText("Металл")).toBeInTheDocument();
+  expect(patchesTo(requests, "/api/material/10")?.body).toEqual({
+    name: "Доска липа",
+    description: null,
+    material_type_id: 2,
+  });
+});
+
+test("cancels a material edit without saving", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/material/10");
+
+  await screen.getByRole("button", { name: "Редактировать" }).click();
+  await screen.getByLabelText("Название").fill("Доска липа");
+  await screen.getByRole("button", { name: "Отмена" }).click();
+
+  await expect
+    .element(screen.getByRole("heading", { name: "Доска сосна", level: 1 }))
+    .toBeInTheDocument();
+  expect(requests.filter((request) => request.method === "PATCH")).toHaveLength(
+    0,
+  );
+});
+
+test("rejects an empty material name without saving", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/material/10");
+
+  await screen.getByRole("button", { name: "Редактировать" }).click();
+  await screen.getByLabelText("Название").fill("");
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  await expect
+    .element(screen.getByText("Укажите название"))
+    .toBeInTheDocument();
+  expect(requests.filter((request) => request.method === "PATCH")).toHaveLength(
+    0,
+  );
+});
+
+test("rejects a material edit without an available type", async () => {
+  const requests = stubPageApi({
+    ...catalogFixtures,
+    types: catalogFixtures.types.filter((type) => type.id !== 1),
+  });
+  const screen = await renderPage("/materials/material/10");
+
+  await screen.getByRole("button", { name: "Редактировать" }).click();
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  await expect.element(screen.getByText("Выберите тип")).toBeInTheDocument();
+  expect(requests.filter((request) => request.method === "PATCH")).toHaveLength(
+    0,
+  );
+});
+
+test("keeps a hidden type selectable but omits it from the PATCH", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/material/13");
+
+  await screen.getByRole("button", { name: "Редактировать" }).click();
+  await expect
+    .element(screen.getByRole("combobox", { name: "Тип" }))
+    .toMatchTextContent("Скрытый тип (скрыт)");
+
+  await screen.getByLabelText("Название").fill("Фанера берёзовая");
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  expect(patchesTo(requests, "/api/material/13")?.body).toEqual({
+    name: "Фанера берёзовая",
+    description: null,
+  });
+});
+
+test("keeps a hidden material selectable but omits it from a variant PATCH", async () => {
+  const requests = stubPageApi({
+    ...catalogFixtures,
+    variants: [
+      ...catalogFixtures.variants,
+      {
+        id: 107,
+        name: "Скрытый шпон",
+        unit: "pieces",
+        material_id: 12,
+        created_at: "2026-01-01T00:00:00.000Z",
+      },
+    ],
+  });
+  const screen = await renderPage("/materials/variant/107");
+
+  await screen.getByRole("button", { name: "Редактировать" }).click();
+  await expect
+    .element(screen.getByRole("combobox", { name: "Материал" }))
+    .toMatchTextContent("Скрытый материал (скрыт)");
+
+  await screen.getByLabelText("Название").fill("Скрытый шпон 2");
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  await expect
+    .element(screen.getByRole("heading", { name: "Скрытый шпон 2", level: 1 }))
+    .toBeInTheDocument();
+  expect(patchesTo(requests, "/api/material-variant/107")?.body).toEqual({
+    name: "Скрытый шпон 2",
+    unit: "pieces",
+  });
+});
+
+test("omits the unit from the PATCH when the detail cannot be loaded", async () => {
+  const routes = pageRoutes(catalogFixtures);
+  const requests = stubRoutes({
+    ...routes,
+    "/api/material-variant/{id}": {
+      get: () => errorResponse(500, "Variant unavailable"),
+      patch: routes["/api/material-variant/{id}"].patch,
+    },
+  });
+  const screen = await renderPage("/materials/variant/100");
+
+  await screen.getByRole("button", { name: "Редактировать" }).click();
+
+  await expect
+    .element(screen.getByText("Не удалось проверить единицу"))
+    .toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("combobox", { name: "Единица" }))
+    .toBeDisabled();
+
+  await screen.getByLabelText("Название").fill("Доска 100x25");
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  await expect
+    .element(screen.getByRole("heading", { name: "Доска 100x25", level: 1 }))
+    .toBeInTheDocument();
+  expect(patchesTo(requests, "/api/material-variant/100")?.body).toEqual({
+    name: "Доска 100x25",
+  });
+});
+
+test("prefills freshly saved values on a quick re-edit", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/material/10");
+
+  await screen.getByRole("button", { name: "Редактировать" }).click();
+  await screen.getByLabelText("Название").fill("Доска липа");
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+  await expect
+    .element(screen.getByRole("heading", { name: "Доска липа", level: 1 }))
+    .toBeInTheDocument();
+
+  await screen.getByRole("button", { name: "Редактировать" }).click();
+  await expect
+    .element(screen.getByLabelText("Название"))
+    .toHaveValue("Доска липа");
+});
+
+test("shows a mapped server error and keeps values on a failed material save", async () => {
+  const requests = stubRoutes({
+    ...pageRoutes(catalogFixtures),
+    "/api/material/{id}": {
+      patch: () => errorResponse(409, "Name already exists"),
+    },
+  });
+  const screen = await renderPage("/materials/material/10");
+
+  await screen.getByRole("button", { name: "Редактировать" }).click();
+  await screen.getByLabelText("Название").fill("Металл");
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  await expect
+    .element(screen.getByText("Такое имя уже занято."))
+    .toBeInTheDocument();
+  await expect.element(screen.getByLabelText("Название")).toHaveValue("Металл");
+  expect(requests.filter((request) => request.method === "PATCH")).toHaveLength(
+    1,
+  );
+});
+
+test("edits a variant: prefilled form, PATCH body and updated view", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/variant/100");
+
+  await screen.getByRole("button", { name: "Редактировать" }).click();
+
+  await expect
+    .element(screen.getByLabelText("Название"))
+    .toHaveValue("Доска 100x20");
+  await expect
+    .element(screen.getByRole("combobox", { name: "Материал" }))
+    .toMatchTextContent("Доска сосна");
+  await expect
+    .element(screen.getByRole("combobox", { name: "Единица" }))
+    .toMatchTextContent("метр");
+
+  await screen.getByLabelText("Название").fill("Доска 100x25");
+  await screen.getByRole("combobox", { name: "Единица" }).click();
+  await screen.getByRole("option", { name: "штука" }).click();
+  await screen.getByRole("combobox", { name: "Материал" }).click();
+  await screen.getByRole("option", { name: "Болт" }).click();
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  await expect
+    .element(screen.getByRole("heading", { name: "Доска 100x25", level: 1 }))
+    .toBeInTheDocument();
+  await expect.element(screen.getByText("Болт · Металл")).toBeInTheDocument();
+  await expect.element(screen.getByText("Единица: штука")).toBeInTheDocument();
+  expect(patchesTo(requests, "/api/material-variant/100")?.body).toEqual({
+    name: "Доска 100x25",
+    unit: "pieces",
+    material_id: 11,
+  });
+});
+
+test("cancels a variant edit without saving", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/variant/100");
+
+  await screen.getByRole("button", { name: "Редактировать" }).click();
+  await screen.getByLabelText("Название").fill("Доска 100x25");
+  await screen.getByRole("button", { name: "Отмена" }).click();
+
+  await expect
+    .element(screen.getByRole("heading", { name: "Доска 100x20", level: 1 }))
+    .toBeInTheDocument();
+  expect(requests.filter((request) => request.method === "PATCH")).toHaveLength(
+    0,
+  );
+});
+
+test("rejects an empty variant name without saving", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/variant/100");
+
+  await screen.getByRole("button", { name: "Редактировать" }).click();
+  await screen.getByLabelText("Название").fill("");
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  await expect
+    .element(screen.getByText("Укажите название"))
+    .toBeInTheDocument();
+  expect(requests.filter((request) => request.method === "PATCH")).toHaveLength(
+    0,
+  );
+});
+
+test("rejects a variant edit without an available material", async () => {
+  const requests = stubPageApi({
+    ...catalogFixtures,
+    materials: catalogFixtures.materials.filter(
+      (material) => material.id !== 10,
+    ),
+  });
+  const screen = await renderPage("/materials/variant/100");
+
+  await screen.getByRole("button", { name: "Редактировать" }).click();
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  await expect
+    .element(screen.getByText("Выберите материал"))
+    .toBeInTheDocument();
+  expect(requests.filter((request) => request.method === "PATCH")).toHaveLength(
+    0,
+  );
+});
+
+test("shows a mapped server error and keeps values on a failed variant save", async () => {
+  const routes = pageRoutes(catalogFixtures);
+  const requests = stubRoutes({
+    ...routes,
+    "/api/material-variant/{id}": {
+      get: routes["/api/material-variant/{id}"].get,
+      patch: () => errorResponse(409, "Name already exists"),
+    },
+  });
+  const screen = await renderPage("/materials/variant/100");
+
+  await screen.getByRole("button", { name: "Редактировать" }).click();
+  await expect
+    .element(screen.getByRole("combobox", { name: "Единица" }))
+    .toMatchTextContent("метр");
+  await screen.getByLabelText("Название").fill("Брусок 100");
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  await expect
+    .element(screen.getByText("Такое имя уже занято."))
+    .toBeInTheDocument();
+  await expect
+    .element(screen.getByLabelText("Название"))
+    .toHaveValue("Брусок 100");
+  expect(requests.filter((request) => request.method === "PATCH")).toHaveLength(
+    1,
+  );
+});
+
+test("fetches the unit lock on edit and omits a locked unit from the PATCH", async () => {
+  const requests = stubPageApi({ ...catalogFixtures, unitLocked: true });
+  const screen = await renderPage("/materials/variant/100");
+
+  expect(
+    requests.some((request) => request.path === "/api/material-variant/100"),
+  ).toBe(false);
+
+  await screen.getByRole("button", { name: "Редактировать" }).click();
+
+  await expect
+    .element(screen.getByText("Единицу нельзя изменить"))
+    .toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("combobox", { name: "Единица" }))
+    .toBeDisabled();
+  expect(
+    requests.some((request) => request.path === "/api/material-variant/100"),
+  ).toBe(true);
+
+  await screen.getByLabelText("Название").fill("Доска 200x40");
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  await expect
+    .element(screen.getByRole("heading", { name: "Доска 200x40", level: 1 }))
+    .toBeInTheDocument();
+  expect(patchesTo(requests, "/api/material-variant/100")?.body).toEqual({
+    name: "Доска 200x40",
+  });
+});
+
+test("renames a hidden type without changing other fields", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/type/3");
+
+  await screen.getByRole("button", { name: "Переименовать" }).click();
+  await expect
+    .element(screen.getByLabelText("Название"))
+    .toHaveValue("Скрытый тип");
+  await expect
+    .element(screen.getByLabelText("Описание"))
+    .not.toBeInTheDocument();
+
+  await screen.getByLabelText("Название").fill("Скрытый тип 2");
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  expect(patchesTo(requests, "/api/material-type/3")?.body).toEqual({
+    name: "Скрытый тип 2",
+  });
+});
+
+test("renames a hidden material without changing other fields", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/material/12");
+
+  await screen.getByRole("button", { name: "Переименовать" }).click();
+  await expect
+    .element(screen.getByLabelText("Описание"))
+    .not.toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("combobox", { name: "Тип" }))
+    .not.toBeInTheDocument();
+
+  await screen.getByLabelText("Название").fill("Скрытый материал 2");
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  expect(patchesTo(requests, "/api/material/12")?.body).toEqual({
+    name: "Скрытый материал 2",
+  });
+});
+
+test("renames a hidden variant without changing other fields", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/variant/102");
+
+  await screen.getByRole("button", { name: "Переименовать" }).click();
+  await expect
+    .element(screen.getByRole("combobox", { name: "Единица" }))
+    .not.toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("combobox", { name: "Материал" }))
+    .not.toBeInTheDocument();
+
+  await screen.getByLabelText("Название").fill("Скрытый вариант 2");
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  expect(patchesTo(requests, "/api/material-variant/102")?.body).toEqual({
+    name: "Скрытый вариант 2",
+  });
+});

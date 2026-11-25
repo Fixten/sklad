@@ -3,4 +3,5 @@ import type { JsonBody, JsonQuery } from "@/api/schema-helpers";
 
 export type MaterialModel = components["schemas"]["Material"];
 export type MaterialDTO = JsonBody<"/api/material", "post">;
+export type MaterialPatchDTO = JsonBody<"/api/material/{id}", "patch">;
 export type MaterialListQuery = JsonQuery<"/api/material", "get">;
