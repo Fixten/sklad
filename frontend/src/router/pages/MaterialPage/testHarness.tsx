@@ -8,10 +8,14 @@ import type { MaterialTypeModel } from "@/features/MaterialType/MaterialType.mod
 import type { SupplyModel } from "@/features/Supply/Supply.model";
 import type { VariantModel } from "@/features/Variant/Variant.model";
 import AppLayout from "@/layout/App.layout";
+import pathsRouter from "@/router/paths.router";
 import { stubRoutes } from "@/test/apiStub.vitest";
 import Toaster from "@ui/Toast";
 
+import MaterialCardPage from "./MaterialCardPage";
 import SupplyPage from "./SupplyPage";
+import TypePage from "./TypePage";
+import VariantPage from "./VariantPage";
 
 import MaterialPage from "./index";
 
@@ -191,14 +195,25 @@ export const pageRoutes = (fixtures: PageFixtures = {}) => {
     "/api/material-type": { get: list(types) },
     "/api/material-variant": { get: list(variants) },
     "/api/supplier": { get: () => [] },
-    "/api/supply": { get: () => supplies },
+    "/api/supply": {
+      get: ({ search }: { search: URLSearchParams }) => {
+        const variantId = search.get("material_variant_id");
+        return variantId
+          ? supplies.filter(
+              (supply) => supply.material_variant_id === Number(variantId),
+            )
+          : supplies;
+      },
+    },
   };
 };
 
 export const stubPageApi = (fixtures: PageFixtures = {}) =>
   stubRoutes(pageRoutes(fixtures));
 
-export const renderPage = async () => {
+export const renderPage = async (
+  initialEntry: string = pathsRouter.material,
+) => {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false, gcTime: 0 } },
   });
@@ -208,12 +223,15 @@ export const renderPage = async () => {
       {
         element: <AppLayout />,
         children: [
-          { path: "/material", element: <MaterialPage /> },
-          { path: "/material/supply", element: <SupplyPage /> },
+          { path: pathsRouter.material, element: <MaterialPage /> },
+          { path: pathsRouter.supply, element: <SupplyPage /> },
+          { path: pathsRouter.materialType, element: <TypePage /> },
+          { path: pathsRouter.materialItem, element: <MaterialCardPage /> },
+          { path: pathsRouter.materialVariant, element: <VariantPage /> },
         ],
       },
     ],
-    { initialEntries: ["/material"] },
+    { initialEntries: [initialEntry] },
   );
 
   return render(

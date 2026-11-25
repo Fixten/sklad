@@ -1,6 +1,9 @@
+import { generatePath } from "react-router";
+
 import useMaterialData from "@/features/Material/useMaterial";
 import type { MaterialTypeModel } from "@/features/MaterialType/MaterialType.model";
 import useMaterialTypeData from "@/features/MaterialType/useMaterialType";
+import pathsRouter from "@/router/paths.router";
 
 import CardGrid from "../CardGrid";
 import CatalogCard from "../CatalogCard";
@@ -35,6 +38,7 @@ export default function TypeCards(props: Props) {
         <CatalogCard
           key={type.id}
           title={type.name}
+          to={generatePath(pathsRouter.materialType, { id: String(type.id) })}
           description={type.description ?? ""}
           content={<TypeCardContent materials={childrenOf(type)} />}
         />

@@ -1,7 +1,10 @@
+import { generatePath } from "react-router";
+
 import type { MaterialModel } from "@/features/Material/Material.model";
 import useMaterialData from "@/features/Material/useMaterial";
 import useMaterialTypeData from "@/features/MaterialType/useMaterialType";
 import useVariantData from "@/features/Variant/useVariant";
+import pathsRouter from "@/router/paths.router";
 
 import CardGrid from "../CardGrid";
 import CatalogCard from "../CatalogCard";
@@ -10,6 +13,7 @@ import MaterialCardContent from "../CatalogCard/MaterialCardContent";
 interface Props {
   query: string;
   showHidden: boolean;
+  typeId?: number;
 }
 
 export default function MaterialCards(props: Props) {
@@ -35,8 +39,11 @@ export default function MaterialCards(props: Props) {
   const rows = props.showHidden
     ? materials.getAllData()
     : materials.getActiveData();
-  const visible = rows.filter((material) =>
-    searchText(material).includes(query),
+  const visible = rows.filter(
+    (material) =>
+      (props.typeId === undefined ||
+        material.material_type_id === props.typeId) &&
+      searchText(material).includes(query),
   );
 
   return (
@@ -52,6 +59,9 @@ export default function MaterialCards(props: Props) {
         <CatalogCard
           key={material.id}
           title={material.name}
+          to={generatePath(pathsRouter.materialItem, {
+            id: String(material.id),
+          })}
           description={material.description ?? ""}
           content={
             <MaterialCardContent

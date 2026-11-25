@@ -1,6 +1,7 @@
 import { expect, test } from "vitest";
 import { userEvent } from "vitest/browser";
 
+import type { VariantModel } from "@/features/Variant/Variant.model";
 import { errorResponse, stubRoutes } from "@/test/apiStub.vitest";
 
 import {
@@ -352,4 +353,260 @@ test("clears search and restores all default rows", async () => {
   await expect.element(screen.getByText("Доска сосна")).toBeInTheDocument();
   await expect.element(screen.getByText("Болт")).toBeInTheDocument();
   await expect.element(screen.getByText("Фанера")).toBeInTheDocument();
+});
+
+test("catalog root is /materials", async () => {
+  stubPageApi();
+  const screen = await renderPage();
+
+  await expect
+    .element(screen.getByRole("link", { name: "Материалы" }))
+    .toHaveAttribute("href", "/materials");
+});
+
+test("opens the type page from a card title", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage();
+  await switchLevel(screen, "Типы");
+
+  await screen.getByRole("link", { name: "Древесина" }).click();
+
+  await expect
+    .element(screen.getByRole("heading", { name: "Древесина", level: 1 }))
+    .toBeInTheDocument();
+  await expect.element(screen.getByText("Пиломатериалы")).toBeInTheDocument();
+  await expect.element(screen.getByText("Доска сосна")).toBeInTheDocument();
+  await expect.element(screen.getByText("Дуб")).toBeInTheDocument();
+  await expect.element(screen.getByText("Ясень")).toBeInTheDocument();
+  await expect.element(screen.getByText("Шпон")).toBeInTheDocument();
+  await expect
+    .element(screen.getByText("Скрытый материал"))
+    .not.toBeInTheDocument();
+});
+
+test("opens the material page from a card title", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage();
+
+  await screen.getByRole("link", { name: "Доска сосна" }).click();
+
+  await expect
+    .element(screen.getByRole("heading", { name: "Доска сосна", level: 1 }))
+    .toBeInTheDocument();
+  await expect.element(screen.getByText("Сорт первый")).toBeInTheDocument();
+  await expect.element(screen.getByText("Древесина")).toBeInTheDocument();
+  await expect.element(screen.getByText("Доска 100x20")).toBeInTheDocument();
+  await expect.element(screen.getByText("Остаток: 7 м")).toBeInTheDocument();
+  await expect
+    .element(screen.getByText("Последняя поставка: 2026-03-15"))
+    .toBeInTheDocument();
+  await expect
+    .element(screen.getByText("Скрытый вариант"))
+    .not.toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("button", { name: "Добавить вариант" }))
+    .toBeInTheDocument();
+});
+
+test("shows a hidden type as context on the material page", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage();
+
+  await screen.getByRole("link", { name: "Фанера" }).click();
+
+  await expect
+    .element(screen.getByRole("heading", { name: "Фанера", level: 1 }))
+    .toBeInTheDocument();
+  await expect.element(screen.getByText("Скрытый тип")).toBeInTheDocument();
+  await expect.element(screen.getByText("Фанера 4мм")).toBeInTheDocument();
+});
+
+test("opens the variant page from a card title", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage();
+  await switchLevel(screen, "Варианты");
+
+  await screen.getByRole("link", { name: "Доска 100x20" }).click();
+
+  await expect
+    .element(screen.getByRole("heading", { name: "Доска 100x20", level: 1 }))
+    .toBeInTheDocument();
+  await expect
+    .element(screen.getByText("Доска сосна · Древесина"))
+    .toBeInTheDocument();
+  await expect.element(screen.getByText("Единица: метр")).toBeInTheDocument();
+  await expect
+    .element(screen.getByText("2026-02-01 · 4.5 м · Остаток: 4.5 м"))
+    .toBeInTheDocument();
+  await expect
+    .element(screen.getByText("2026-03-15 · 2.5 м · Остаток: 2.5 м"))
+    .toBeInTheDocument();
+  await expect.element(screen.getByText(/2026-01-20/)).not.toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("button", { name: "Сделать поставку" }))
+    .toBeInTheDocument();
+});
+
+test("shows hidden parent context on the variant page", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/variant/103");
+
+  await expect
+    .element(screen.getByRole("heading", { name: "Фанера 4мм", level: 1 }))
+    .toBeInTheDocument();
+  await expect
+    .element(screen.getByText("Фанера · Скрытый тип"))
+    .toBeInTheDocument();
+});
+
+test("returns to the list from a card page", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/material/10");
+  await expect
+    .element(screen.getByRole("heading", { name: "Доска сосна", level: 1 }))
+    .toBeInTheDocument();
+
+  await screen.getByRole("link", { name: "← Материалы" }).click();
+
+  await expect
+    .element(screen.getByTestId("material-catalog-list"))
+    .toBeInTheDocument();
+});
+
+test("shows not found for an unknown id", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/type/999999");
+
+  await expect
+    .element(screen.getByText("Запись не найдена"))
+    .toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("link", { name: "← Материалы" }))
+    .toBeInTheDocument();
+});
+
+const expectPrefilledDoskaSupply = async (screen: Page) => {
+  await expect.element(screen.getByLabelText("Тип")).toHaveValue("Древесина");
+  await expect
+    .element(screen.getByLabelText("Материал"))
+    .toHaveValue("Доска сосна");
+  await expect
+    .element(screen.getByLabelText("Вариант"))
+    .toHaveValue("Доска 100x20");
+  await expect
+    .element(screen.getByRole("combobox", { name: /Единица/ }))
+    .toMatchTextContent("метр");
+};
+
+test("starts a prefilled supply from a variant card", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage();
+  await switchLevel(screen, "Варианты");
+
+  await screen
+    .getByRole("button", { name: "Сделать поставку" })
+    .first()
+    .click();
+
+  await expect
+    .element(screen.getByRole("heading", { name: "Поставка" }))
+    .toBeInTheDocument();
+  await expectPrefilledDoskaSupply(screen);
+});
+
+test("starts a prefilled supply from the material page", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/material/10");
+  await expect
+    .element(screen.getByRole("heading", { name: "Доска сосна", level: 1 }))
+    .toBeInTheDocument();
+
+  await screen
+    .getByRole("button", { name: "Сделать поставку" })
+    .first()
+    .click();
+
+  await expectPrefilledDoskaSupply(screen);
+});
+
+test("starts a prefilled supply from the variant page", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/variant/100");
+  await expect
+    .element(screen.getByRole("heading", { name: "Доска 100x20", level: 1 }))
+    .toBeInTheDocument();
+
+  await screen.getByRole("button", { name: "Сделать поставку" }).click();
+
+  await expectPrefilledDoskaSupply(screen);
+});
+
+test("prefills a supply from the variant query param", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/supply?variant=103");
+
+  await expect
+    .element(screen.getByLabelText("Тип"))
+    .toHaveValue("Скрытый тип (скрыт)");
+  await expect.element(screen.getByLabelText("Материал")).toHaveValue("Фанера");
+  await expect
+    .element(screen.getByLabelText("Вариант"))
+    .toHaveValue("Фанера 4мм");
+  await expect
+    .element(screen.getByRole("combobox", { name: /Единица/ }))
+    .toMatchTextContent("штука");
+});
+
+test("keeps user input when variant data arrives late", async () => {
+  let resolveVariants: (rows: VariantModel[]) => void = () => undefined;
+  const deferred = new Promise<VariantModel[]>((resolve) => {
+    resolveVariants = resolve;
+  });
+
+  stubRoutes({
+    ...pageRoutes(catalogFixtures),
+    "/api/material-variant": { get: () => deferred },
+  });
+  const screen = await renderPage("/materials/supply?variant=100");
+
+  await screen.getByLabelText("Количество").fill("5");
+
+  resolveVariants(catalogFixtures.variants);
+
+  await expect
+    .element(screen.getByRole("status", { name: "Loading" }).first())
+    .not.toBeInTheDocument();
+
+  await expect.element(screen.getByLabelText("Количество")).toHaveValue(5);
+  await expect.element(screen.getByLabelText("Тип")).toHaveValue("");
+  await expect.element(screen.getByLabelText("Материал")).toHaveValue("");
+  await expect.element(screen.getByLabelText("Вариант")).toHaveValue("");
+});
+
+test("ignores an unknown variant id in the supply query", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/supply?variant=999999");
+
+  await expect.element(screen.getByLabelText("Вариант")).toHaveValue("");
+});
+
+test("ignores a non-numeric variant id in the supply query", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/supply?variant=abc");
+
+  await expect.element(screen.getByLabelText("Вариант")).toHaveValue("");
+});
+
+test("ignores a hidden variant id in the supply query", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/supply?variant=102");
+
+  await expect.element(screen.getByLabelText("Вариант")).toHaveValue("");
+});
+
+test("opens a blank supply form without a variant param", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/supply");
+
+  await expect.element(screen.getByLabelText("Вариант")).toHaveValue("");
 });

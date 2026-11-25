@@ -8,7 +8,7 @@ interface PageLayoutProps {
   back?: { to: string; label: string };
   title: string;
   className?: string;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 export default function PageLayout({

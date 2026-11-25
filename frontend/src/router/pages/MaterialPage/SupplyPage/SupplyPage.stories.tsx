@@ -17,11 +17,11 @@ const meta = {
   decorators: [
     (Story) => (
       <QueryClientProvider client={queryClient}>
-        <MemoryRouter initialEntries={["/material/supply"]}>
+        <MemoryRouter initialEntries={["/materials/supply"]}>
           <Routes>
             <Route element={<AppLayout />}>
-              <Route path="/material" element={<div>Материалы</div>} />
-              <Route path="/material/supply" element={<Story />} />
+              <Route path="/materials" element={<div>Материалы</div>} />
+              <Route path="/materials/supply" element={<Story />} />
             </Route>
           </Routes>
         </MemoryRouter>

@@ -54,11 +54,11 @@ test("creates a supply through the UI and the stock reflects it", async ({
 }) => {
   const variant = await seedVariant(request);
 
-  await page.goto("/material");
+  await page.goto("/materials");
   await page.getByPlaceholder("Начать работу").click();
   await page.getByText("Сделать поставку").click();
 
-  await expect(page).toHaveURL("/material/supply");
+  await expect(page).toHaveURL("/materials/supply");
   await expect(page.getByRole("heading", { name: "Поставка" })).toBeVisible();
 
   await commit(page, "Тип", typeName);
@@ -70,7 +70,7 @@ test("creates a supply through the UI and the stock reflects it", async ({
   await page.getByLabel("Цена закупки, всего").fill("500");
   await page.getByRole("button", { name: "Сохранить" }).click();
 
-  await expect(page).toHaveURL("/material");
+  await expect(page).toHaveURL("/materials");
   await expect(page.getByText("Поставка создана")).toBeVisible();
 
   const stock = await request.get(`${api}/supply/stock/${String(variant.id)}`);
@@ -82,16 +82,16 @@ test("blocks saving when required fields are missing", async ({
   page,
   request,
 }) => {
-  await page.goto("/material/supply");
+  await page.goto("/materials/supply");
 
   const suppliesBefore = await (await request.get(`${api}/supply`)).json();
 
   await page.getByRole("button", { name: "Сохранить" }).click();
 
-  await expect(page.getByText("Выберите или создайте вариант")).toBeVisible();
+  await expect(page.getByText("Выберите", { exact: true })).toBeVisible();
   await expect(page.getByText("Укажите количество")).toBeVisible();
   await expect(page.getByText("Укажите цену закупки")).toBeVisible();
-  await expect(page).toHaveURL("/material/supply");
+  await expect(page).toHaveURL("/materials/supply");
 
   const suppliesAfter = await (await request.get(`${api}/supply`)).json();
   expect(suppliesAfter).toEqual(suppliesBefore);

@@ -33,3 +33,38 @@ test("renders the open actions palette", async () => {
     .toBeInTheDocument();
   await expect(viewport()).toMatchScreenshot();
 });
+
+test("renders the type card page", async () => {
+  stubPageApi(catalogFixtures);
+  await renderPage("/materials/type/1");
+
+  await expect
+    .element(page.getByRole("heading", { name: "Древесина", level: 1 }))
+    .toBeInTheDocument();
+  await expect.element(page.getByText("Шпон")).toBeInTheDocument();
+  await expect(viewport()).toMatchScreenshot();
+});
+
+test("renders the material card page", async () => {
+  stubPageApi(catalogFixtures);
+  await renderPage("/materials/material/10");
+
+  await expect
+    .element(page.getByRole("heading", { name: "Доска сосна", level: 1 }))
+    .toBeInTheDocument();
+  await expect.element(page.getByText("Остаток: 7 м")).toBeInTheDocument();
+  await expect(viewport()).toMatchScreenshot();
+});
+
+test("renders the variant card page", async () => {
+  stubPageApi(catalogFixtures);
+  await renderPage("/materials/variant/100");
+
+  await expect
+    .element(page.getByRole("heading", { name: "Доска 100x20", level: 1 }))
+    .toBeInTheDocument();
+  await expect
+    .element(page.getByText("2026-03-15 · 2.5 м · Остаток: 2.5 м"))
+    .toBeInTheDocument();
+  await expect(viewport()).toMatchScreenshot();
+});

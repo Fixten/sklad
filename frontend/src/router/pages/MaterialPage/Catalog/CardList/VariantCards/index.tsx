@@ -1,9 +1,12 @@
+import { generatePath } from "react-router";
+
 import type { MaterialModel } from "@/features/Material/Material.model";
 import useMaterialData from "@/features/Material/useMaterial";
 import useMaterialTypeData from "@/features/MaterialType/useMaterialType";
 import useSupplyData from "@/features/Supply/useSupply";
 import useVariantData from "@/features/Variant/useVariant";
 import type { VariantModel } from "@/features/Variant/Variant.model";
+import pathsRouter from "@/router/paths.router";
 
 import CardGrid from "../CardGrid";
 import CatalogCard from "../CatalogCard";
@@ -14,6 +17,7 @@ import { supplyStatsByVariant } from "./supplyStats";
 interface Props {
   query: string;
   showHidden: boolean;
+  materialId?: number;
 }
 
 export default function VariantCards(props: Props) {
@@ -39,7 +43,12 @@ export default function VariantCards(props: Props) {
   const rows = props.showHidden
     ? variants.getAllData()
     : variants.getActiveData();
-  const visible = rows.filter((variant) => searchText(variant).includes(query));
+  const visible = rows.filter(
+    (variant) =>
+      (props.materialId === undefined ||
+        variant.material_id === props.materialId) &&
+      searchText(variant).includes(query),
+  );
 
   return (
     <CardGrid
@@ -58,6 +67,9 @@ export default function VariantCards(props: Props) {
           <CatalogCard
             key={variant.id}
             title={variant.name}
+            to={generatePath(pathsRouter.materialVariant, {
+              id: String(variant.id),
+            })}
             content={
               <VariantCardContent
                 variant={variant}
@@ -65,6 +77,7 @@ export default function VariantCards(props: Props) {
                 type={typeOf(material)}
                 stock={stats?.stock ?? 0}
                 lastSupply={stats?.lastSupply}
+                supplyTo={`${pathsRouter.supply}?variant=${String(variant.id)}`}
               />
             }
           />

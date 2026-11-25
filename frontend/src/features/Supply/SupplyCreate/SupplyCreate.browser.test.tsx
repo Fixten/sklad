@@ -158,7 +158,7 @@ test("saves an existing variant picked through the fields", async () => {
 
 const withBackLink = (
   <>
-    <Link to="/material">Материалы</Link>
+    <Link to="/materials">Материалы</Link>
     <SupplyCreate />
   </>
 );

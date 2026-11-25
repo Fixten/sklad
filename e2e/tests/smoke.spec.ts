@@ -12,9 +12,9 @@ test("navigates between pages", async ({ page }) => {
   await page.goto("/");
 
   await page.getByRole("link", { name: "Материалы" }).click();
-  await expect(page).toHaveURL("/material");
+  await expect(page).toHaveURL("/materials");
 
   await page.getByPlaceholder("Начать работу").fill("поставк");
   await page.getByText("Сделать поставку").click();
-  await expect(page).toHaveURL("/material/supply");
+  await expect(page).toHaveURL("/materials/supply");
 });

@@ -1,8 +1,12 @@
+import { useNavigate } from "react-router";
+
+import { isFeatureEnabled } from "@/config/features";
 import type { MaterialModel } from "@/features/Material/Material.model";
 import type { MaterialTypeModel } from "@/features/MaterialType/MaterialType.model";
 import { UnitShortLabels } from "@/features/units";
 import type { VariantModel } from "@/features/Variant/Variant.model";
 import { formatLocalDate } from "@/lib/date";
+import { Button } from "@ui/Button";
 import Typography from "@ui/Typography";
 
 interface Props {
@@ -11,9 +15,11 @@ interface Props {
   type?: MaterialTypeModel;
   stock: number;
   lastSupply?: string;
+  supplyTo: string;
 }
 
 export default function VariantCardContent(props: Props) {
+  const navigate = useNavigate();
   const context = [props.material?.name, props.type?.name]
     .filter(Boolean)
     .join(" · ");
@@ -29,6 +35,15 @@ export default function VariantCardContent(props: Props) {
         <Typography variant="caption">
           {`Последняя поставка: ${formatLocalDate(props.lastSupply)}`}
         </Typography>
+      ) : null}
+      {isFeatureEnabled("supply") ? (
+        <Button
+          onClick={() => {
+            void navigate(props.supplyTo);
+          }}
+        >
+          Сделать поставку
+        </Button>
       ) : null}
     </>
   );

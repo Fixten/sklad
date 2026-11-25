@@ -67,10 +67,10 @@ export async function renderSupply(
 
   const router = createMemoryRouter(
     [
-      { path: "/material/supply", element: content },
-      { path: "/material", element: <div>Материалы</div> },
+      { path: "/materials/supply", element: content },
+      { path: "/materials", element: <div>Материалы</div> },
     ],
-    { initialEntries: ["/material/supply"] },
+    { initialEntries: ["/materials/supply"] },
   );
 
   const screen = await render(

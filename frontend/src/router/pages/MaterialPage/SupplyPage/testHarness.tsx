@@ -20,12 +20,12 @@ export const renderPage = async () => {
       {
         element: <AppLayout />,
         children: [
-          { path: "/material", element: <div>Материалы</div> },
-          { path: "/material/supply", element: <SupplyPage /> },
+          { path: "/materials", element: <div>Материалы</div> },
+          { path: "/materials/supply", element: <SupplyPage /> },
         ],
       },
     ],
-    { initialEntries: ["/material/supply"] },
+    { initialEntries: ["/materials/supply"] },
   );
 
   return render(

@@ -5,7 +5,10 @@ import AppLayout from "@/layout/App.layout";
 import Home from "@/router/pages/Home";
 
 import MaterialPage from "./pages/MaterialPage";
+import MaterialCardPage from "./pages/MaterialPage/MaterialCardPage";
 import SupplyPage from "./pages/MaterialPage/SupplyPage";
+import TypePage from "./pages/MaterialPage/TypePage";
+import VariantPage from "./pages/MaterialPage/VariantPage";
 import SettingsPage from "./pages/SettingsPage";
 import pathsRouter from "./paths.router";
 
@@ -30,6 +33,18 @@ const router = createBrowserRouter([
             {
               path: pathsRouter.material,
               Component: MaterialPage,
+            },
+            {
+              path: pathsRouter.materialType,
+              Component: TypePage,
+            },
+            {
+              path: pathsRouter.materialItem,
+              Component: MaterialCardPage,
+            },
+            {
+              path: pathsRouter.materialVariant,
+              Component: VariantPage,
             },
           ]
         : []),
