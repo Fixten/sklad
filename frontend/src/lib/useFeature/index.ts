@@ -6,8 +6,10 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
+import { useEffect, useRef } from "react";
 
-import { retryApiError } from "@/api/api-error";
+import { type ApiError, retryApiError } from "@/api/api-error";
+import { toastError } from "@ui/Toast";
 
 interface BaseItem {
   id: number;
@@ -23,6 +25,14 @@ export function useFeatureData<T extends BaseItem>(
     queryFn: getItems,
     retry: retryApiError,
   });
+  const toasted = useRef<ApiError | undefined>(undefined);
+
+  useEffect(() => {
+    if (query.error && query.error !== toasted.current) {
+      toasted.current = query.error;
+      toastError("Не удалось загрузить данные");
+    }
+  }, [query.error]);
 
   const getAllData = () => query.data ?? [];
 

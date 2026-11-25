@@ -1,9 +1,8 @@
-import Typography from "@ui/Typography";
-
 import { CatalogLevel } from "../levels";
 
-import CatalogCard from "./CatalogCard";
-import useCardsData from "./useCardsData";
+import MaterialCards from "./MaterialCards";
+import TypeCards from "./TypeCards";
+import VariantCards from "./VariantCards";
 
 interface Props {
   level: CatalogLevel;
@@ -12,25 +11,14 @@ interface Props {
 }
 
 export default function CardList(props: Props) {
-  const { cards, isLoading } = useCardsData(props.level, props.showHidden);
-
-  const filteredCards = cards.filter((card) =>
-    card.search.includes(props.query.trim().toLowerCase()),
-  );
-
-  return (
-    <div data-testid="material-catalog-list" className="flex flex-col gap-4">
-      {!isLoading && filteredCards.length === 0 ? (
-        <Typography
-          data-testid="material-catalog-empty"
-          variant="caption"
-          className="text-muted-foreground"
-        >
-          Каталог пуст
-        </Typography>
-      ) : (
-        filteredCards.map((card) => <CatalogCard key={card.id} {...card} />)
-      )}
-    </div>
-  );
+  switch (props.level) {
+    case "types":
+      return <TypeCards query={props.query} showHidden={props.showHidden} />;
+    case "materials":
+      return (
+        <MaterialCards query={props.query} showHidden={props.showHidden} />
+      );
+    case "variants":
+      return <VariantCards query={props.query} showHidden={props.showHidden} />;
+  }
 }

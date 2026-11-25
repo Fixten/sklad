@@ -320,24 +320,15 @@ There is no independent editable stock quantity for a Material Variant.
 
 #### Material Variant stock projection
 
-The aggregate above is exposed as a dedicated read operation:
+The single-Variant read operation is:
 
 ```text
 GET /api/supply/stock/{id}
 ```
 
-It returns the Material Variant id, its unit, and the sum of the remaining quantities of its active Supplies. The path id is a Material Variant id, not a Supply id; the operation lives under Supply because Supply owns both the rows and the summation.
+It returns the Material Variant id, its unit, and the sum of the remaining quantities of its active Supplies. The path id is a Material Variant id, not a Supply id; the operation lives under Supply because Supply owns the rows and quantity conversion. The value is derived on read, so the endpoint adds no stored state and no write path.
 
-**Decision:** the derived aggregate is served by its own endpoint instead of being computed by the frontend.
-
-**Motivation:**
-
-- The aggregate is a first-class value the user sees and acts on (product creation must check available material, and correction decisions depend on it), so it belongs to the API contract rather than to every client that needs it.
-- Reconstructing it in the client means fetching every Supply of a variant. Supply listing is paginated in the API contract, so a client-side sum silently becomes wrong as soon as a variant holds more Supplies than one page.
-- Duplicating the summation rule in the frontend would make the unit handling (`docs/tech/data modeling.md`) a second source of truth; the backend already has to apply it to keep `remaining_quantity` and unit cost consistent.
-- The value is derived on read, so the endpoint adds no stored state and no write path.
-
-The projection is served by Supply, which owns the Supplies and the summation rule, so the client asking for stock talks to the feature that holds it. A soft-deleted Material Variant stays readable through this operation: its Supplies still exist, and the figure is derived on read rather than written, so there is nothing to refuse. Only an unknown variant is rejected, with `404 Item was not found`.
+A soft-deleted Material Variant stays readable through this operation: its Supplies still exist, and the figure is derived on read rather than written, so there is nothing to refuse. Only an unknown variant is rejected, with `404 Item was not found`.
 
 ### Product inventory
 
@@ -510,8 +501,6 @@ For example, production is conceptually different from simply inserting a Produc
 
 The API should therefore model such operations around their business meaning rather than forcing every operation into generic CRUD.
 
-A derived aggregate that users act on is modelled as an explicit read operation rather than left for clients to reconstruct, because resource listing is paginated and a client-side aggregation over one page is silently wrong (see §8, Material Variant stock projection).
-
 API contracts should eventually be shared between frontend and backend through a dedicated shared package.
 
 ---
@@ -552,11 +541,8 @@ Expected configuration includes items such as:
 - database location
 - backend port
 - frontend/backend runtime configuration
-- application timezone
 
 The configured labor cost is **not infrastructure configuration**. It is business data and therefore belongs in the database.
-
-The application uses a single configured timezone.
 
 ---
 
@@ -758,11 +744,11 @@ Future capabilities such as authentication, additional users, reporting, or inte
 | Runtime environment    | Private LAN / home server                                                                   |
 | Authentication         | Not currently required                                                                      |
 | Configuration          | Environment variables + feature flags                                                       |
-| Timezone               | Single configured timezone                                                                  |
+| Timezone               | User-local presentation of technical timestamps                                             |
 | Currency               | RUB                                                                                         |
 | Monetary storage       | Integer kopecks                                                                             |
 | Material stock         | Derived from Supplies                                                                       |
-| Material Variant stock | Derived on read, served as `GET /api/supply/stock/{id}`                                     |
+| Material Variant stock | Derived on read from active Supplies                                                        |
 | Product stock          | Derived from Product Items                                                                  |
 | Deletion policy        | Default hard delete; soft delete only when entity has historical references (e.g. Supplies) |
 | Table ownership        | Every table written only by its owning feature's repository (§5)                            |

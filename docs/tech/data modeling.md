@@ -1034,11 +1034,9 @@ Sale information uses:
 
 There is no separate production date.
 
-The application uses one configured timezone.
+Technical timestamps are stored consistently in UTC and presented in the user's local machine timezone.
 
-Technical timestamps are stored consistently in UTC.
-
-The configured timezone is used for business/UI presentation.
+Business calendar dates are plain dates and are not shifted between timezones.
 
 ---
 

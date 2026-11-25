@@ -6,7 +6,7 @@ import LevelSwitcher from "./LevelSwitcher";
 import SearchField from "./SearchField";
 
 export default function MaterialCatalog() {
-  const [level, setLevel] = useState<CatalogLevel>("variants");
+  const [level, setLevel] = useState<CatalogLevel>("materials");
   const [query, setQuery] = useState<string>("");
   const [showHidden] = useState<boolean>(false);
 

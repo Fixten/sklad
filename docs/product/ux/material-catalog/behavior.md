@@ -34,7 +34,7 @@ The user maintains the material catalog — Material Types, Materials, and Mater
 - A page shows the entity's name and description, its parent as context, and its children.
 - A Material page lists its Variants and is where the user finds a Variant to supply.
 - A Variant card offers "Сделать поставку", which starts supply creation with the Variant filled. It is available both in the Variants list and on the Material page.
-- A Variant page lists its supplies and also offers "Сделать поставку".
+- A Variant page links to its detailed supplies and also offers "Сделать поставку".
 - A Material page shows its Type; a Variant page shows its Material and Type.
 
 ### Creating

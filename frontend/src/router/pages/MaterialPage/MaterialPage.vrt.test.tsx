@@ -19,7 +19,7 @@ test("renders the catalog with cards", async () => {
   stubPageApi(catalogFixtures);
   await renderPage();
 
-  await expect.element(page.getByText("Доска 100x20")).toBeInTheDocument();
+  await expect.element(page.getByText("Доска сосна")).toBeInTheDocument();
   await expect(viewport()).toMatchScreenshot();
 });
 

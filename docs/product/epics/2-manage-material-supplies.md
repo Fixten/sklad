@@ -11,11 +11,12 @@ A Supply represents a physical purchased quantity of a Material Variant.
 The user can:
 
 - Record a new Supply.
-- View Supplies and their current remaining stock.
+- View all Supplies and their current remaining stock, including Supplies filtered by Material Variant.
 - Edit a Supply.
 - Correct an incorrectly recorded Supply.
 - Delete a Supply when required.
 - Associate a Supplier with a Supply.
+- Create, view, edit, delete, and restore Suppliers.
 
 Stock is represented by the remaining quantity of Supplies. The user does not directly edit Material Variant stock.
 
