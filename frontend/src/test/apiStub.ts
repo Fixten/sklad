@@ -72,12 +72,14 @@ export const createApiStub = (routes: Routes) => {
     input: RequestInfo | URL,
     init?: RequestInit,
   ): Promise<Response> => {
-    const href =
-      input instanceof URL
-        ? input.href
-        : typeof input === "string"
-          ? input
-          : input.url;
+    let href: string;
+    if (input instanceof URL) {
+      href = input.href;
+    } else if (typeof input === "string") {
+      href = input;
+    } else {
+      href = input.url;
+    }
     const url = new URL(href);
     const pathname = decodeURIComponent(url.pathname);
     const method = (init?.method ?? "GET").toUpperCase();

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { ReactNode } from "react";
 import { useParams } from "react-router";
 
 import useMaterialData from "@/features/Material/useMaterial";
@@ -9,6 +10,7 @@ import { Button } from "@ui/Button";
 import Typography from "@ui/Typography";
 
 import VariantCards from "../Catalog/CardList/VariantCards";
+import VariantEditForm from "../VariantPage/EditForm";
 
 import EditForm from "./EditForm";
 
@@ -18,7 +20,8 @@ export default function MaterialCardPage() {
   const { id } = useParams();
   const materials = useMaterialData();
   const types = useMaterialTypeData();
-  const [editing, setEditing] = useState(false);
+  const [editingId, setEditingId] = useState<number>();
+  const [creatingForId, setCreatingForId] = useState<number>();
 
   if (materials.query.isLoading || types.query.isLoading) {
     return <PageLayout back={back} title="" />;
@@ -29,12 +32,32 @@ export default function MaterialCardPage() {
     return <PageLayout back={back} title="Запись не найдена" />;
   }
   const type = types.getMap().get(material.material_type_id);
+  const editing = editingId === material.id;
+  const creating = creatingForId === material.id;
 
   if (editing) {
     return (
       <PageLayout back={back} title={material.name}>
-        <EditForm entity={material} onDone={() => setEditing(false)} />
+        <EditForm entity={material} onDone={() => setEditingId(undefined)} />
       </PageLayout>
+    );
+  }
+
+  let addVariant: ReactNode;
+  if (material.deleted_at) {
+    addVariant = null;
+  } else if (creating) {
+    addVariant = (
+      <VariantEditForm
+        defaultMaterialId={material.id}
+        onDone={() => setCreatingForId(undefined)}
+      />
+    );
+  } else {
+    addVariant = (
+      <Button onClick={() => setCreatingForId(material.id)}>
+        Добавить вариант
+      </Button>
     );
   }
 
@@ -42,7 +65,10 @@ export default function MaterialCardPage() {
     <PageLayout back={back} title={material.name} className="relative">
       <Button
         className="absolute top-0 right-0"
-        onClick={() => setEditing(true)}
+        onClick={() => {
+          setCreatingForId(undefined);
+          setEditingId(material.id);
+        }}
       >
         {material.deleted_at ? "Переименовать" : "Редактировать"}
       </Button>
@@ -50,7 +76,7 @@ export default function MaterialCardPage() {
         <Typography>{material.description}</Typography>
       ) : null}
       {type ? <Typography variant="caption">{type.name}</Typography> : null}
-      <Button>Добавить вариант</Button>
+      {addVariant}
       <VariantCards query="" showHidden={false} materialId={material.id} />
     </PageLayout>
   );

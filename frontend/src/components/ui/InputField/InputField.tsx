@@ -1,6 +1,6 @@
 import { cn } from "cn";
 import { useId } from "react";
-import type { ComponentProps } from "react";
+import type { ComponentProps, ReactNode } from "react";
 
 import {
   Field as BaseField,
@@ -55,9 +55,21 @@ function InputField({
 
   const invalid = Boolean(error);
   const numeric = type === "number";
-  const messageId = invalid ? errorId : hint ? hintId : null;
+  let messageId: string | null = null;
+  if (invalid) {
+    messageId = errorId;
+  } else if (hint) {
+    messageId = hintId;
+  }
   const describedBy =
     [unit ? unitId : null, messageId].filter(Boolean).join(" ") || undefined;
+
+  let fieldMessage: ReactNode;
+  if (invalid) {
+    fieldMessage = <FieldError id={errorId}>{error}</FieldError>;
+  } else if (hint) {
+    fieldMessage = <FieldDescription id={hintId}>{hint}</FieldDescription>;
+  }
 
   return (
     <BaseField
@@ -91,11 +103,7 @@ function InputField({
           </InputGroupAddon>
         ) : null}
       </InputGroup>
-      {invalid ? (
-        <FieldError id={errorId}>{error}</FieldError>
-      ) : hint ? (
-        <FieldDescription id={hintId}>{hint}</FieldDescription>
-      ) : null}
+      {fieldMessage}
     </BaseField>
   );
 }

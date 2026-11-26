@@ -1,9 +1,16 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { createMemoryRouter, RouterProvider } from "react-router";
 import { expect, test } from "vitest";
 import { userEvent } from "vitest/browser";
+import { render } from "vitest-browser-react";
 
 import type { VariantModel } from "@/features/Variant/Variant.model";
+import AppLayout from "@/layout/App.layout";
+import pathsRouter from "@/router/paths.router";
 import { errorResponse, stubRoutes } from "@/test/apiStub.vitest";
+import Toaster from "@ui/Toast";
 
+import MaterialCardPage from "./MaterialCardPage";
 import {
   type Page,
   catalogFixtures,
@@ -12,6 +19,7 @@ import {
   renderPage,
   stubPageApi,
 } from "./testHarness";
+import TypePage from "./TypePage";
 
 const switchLevel = async (screen: Page, label: string) => {
   await screen.getByRole("combobox", { name: "Уровень" }).click();
@@ -1109,4 +1117,347 @@ test("renames a hidden variant without changing other fields", async () => {
   expect(patchesTo(requests, "/api/material-variant/102")?.body).toEqual({
     name: "Скрытый вариант 2",
   });
+});
+
+const postsTo = (
+  requests: { method: string; path: string; body: unknown }[],
+  path: string,
+) =>
+  requests.find(
+    (request) => request.method === "POST" && request.path === path,
+  );
+
+test("offers an add action matching each catalog level and resets form on level change", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage();
+
+  await expect
+    .element(screen.getByRole("button", { name: "Добавить материал" }))
+    .toBeInTheDocument();
+  await screen.getByRole("button", { name: "Добавить материал" }).click();
+  await expect.element(screen.getByLabelText("Название")).toBeInTheDocument();
+
+  await switchLevel(screen, "Варианты");
+  await expect
+    .element(screen.getByLabelText("Название"))
+    .not.toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("button", { name: "Добавить вариант" }))
+    .toBeInTheDocument();
+
+  await switchLevel(screen, "Типы");
+  await expect
+    .element(screen.getByRole("button", { name: "Добавить тип" }))
+    .toBeInTheDocument();
+});
+
+test("creates a type from the types list and opens its page", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const screen = await renderPage();
+  await switchLevel(screen, "Типы");
+
+  await screen.getByRole("button", { name: "Добавить тип" }).click();
+  await screen.getByLabelText("Название").fill("Пластик");
+  await screen.getByLabelText("Описание").fill("Листовой");
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  await expect
+    .element(screen.getByRole("heading", { name: "Пластик", level: 1 }))
+    .toBeInTheDocument();
+  await expect.element(screen.getByText("Листовой")).toBeInTheDocument();
+  expect(postsTo(requests, "/api/material-type")?.body).toEqual({
+    name: "Пластик",
+    description: "Листовой",
+  });
+});
+
+test("creates a material from the materials list and opens its page", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const screen = await renderPage();
+
+  await screen.getByRole("button", { name: "Добавить материал" }).click();
+  await screen.getByLabelText("Название").fill("Кедр");
+  await screen.getByLabelText("Описание").fill("Сибирский");
+  await screen.getByRole("combobox", { name: "Тип" }).click();
+  await screen.getByRole("option", { name: "Древесина" }).click();
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  await expect
+    .element(screen.getByRole("heading", { name: "Кедр", level: 1 }))
+    .toBeInTheDocument();
+  await expect.element(screen.getByText("Сибирский")).toBeInTheDocument();
+  await expect.element(screen.getByText("Древесина")).toBeInTheDocument();
+  expect(postsTo(requests, "/api/material")?.body).toEqual({
+    name: "Кедр",
+    description: "Сибирский",
+    material_type_id: 1,
+  });
+});
+
+test("creates a variant from the variants list and opens its page", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const screen = await renderPage();
+  await switchLevel(screen, "Варианты");
+
+  await screen.getByRole("button", { name: "Добавить вариант" }).click();
+  await screen.getByLabelText("Название").fill("Гайка М8");
+  await screen.getByRole("combobox", { name: "Единица" }).click();
+  await screen.getByRole("option", { name: "штука" }).click();
+  await screen.getByRole("combobox", { name: "Материал" }).click();
+  await screen.getByRole("option", { name: "Болт" }).click();
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  await expect
+    .element(screen.getByRole("heading", { name: "Гайка М8", level: 1 }))
+    .toBeInTheDocument();
+  await expect.element(screen.getByText("Единица: штука")).toBeInTheDocument();
+  await expect.element(screen.getByText("Болт · Металл")).toBeInTheDocument();
+  expect(postsTo(requests, "/api/material-variant")?.body).toEqual({
+    name: "Гайка М8",
+    unit: "pieces",
+    material_id: 11,
+  });
+});
+
+test("creates a material from a type page with the type prefilled", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/type/2");
+
+  await screen.getByRole("button", { name: "Добавить материал" }).click();
+  await expect
+    .element(screen.getByRole("combobox", { name: "Тип" }))
+    .toMatchTextContent("Металл");
+
+  await screen.getByLabelText("Название").fill("Шайба");
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  await expect
+    .element(screen.getByRole("heading", { name: "Шайба", level: 1 }))
+    .toBeInTheDocument();
+  await expect.element(screen.getByText("Металл")).toBeInTheDocument();
+  expect(postsTo(requests, "/api/material")?.body).toEqual({
+    name: "Шайба",
+    description: null,
+    material_type_id: 2,
+  });
+});
+
+test("creates a variant from a material page with the material prefilled", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/material/11");
+
+  await screen.getByRole("button", { name: "Добавить вариант" }).click();
+  await expect
+    .element(screen.getByRole("combobox", { name: "Материал" }))
+    .toMatchTextContent("Болт");
+
+  await screen.getByLabelText("Название").fill("Болт М10");
+  await screen.getByRole("combobox", { name: "Единица" }).click();
+  await screen.getByRole("option", { name: "штука" }).click();
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  await expect
+    .element(screen.getByRole("heading", { name: "Болт М10", level: 1 }))
+    .toBeInTheDocument();
+  await expect.element(screen.getByText("Болт · Металл")).toBeInTheDocument();
+  expect(postsTo(requests, "/api/material-variant")?.body).toEqual({
+    name: "Болт М10",
+    unit: "pieces",
+    material_id: 11,
+  });
+});
+
+test("excludes hidden parents when creating and hides add button on hidden parent pages", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage();
+
+  await screen.getByRole("button", { name: "Добавить материал" }).click();
+  await screen.getByRole("combobox", { name: "Тип" }).click();
+  await expect
+    .element(screen.getByRole("option", { name: "Древесина" }))
+    .toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("option", { name: /Скрытый тип/ }))
+    .not.toBeInTheDocument();
+  await userEvent.keyboard("{Escape}");
+
+  await switchLevel(screen, "Варианты");
+  await screen.getByRole("button", { name: "Добавить вариант" }).click();
+  await screen.getByRole("combobox", { name: "Материал" }).click();
+  await expect
+    .element(screen.getByRole("option", { name: "Доска сосна" }))
+    .toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("option", { name: /Скрытый материал/ }))
+    .not.toBeInTheDocument();
+  await userEvent.keyboard("{Escape}");
+
+  const hiddenTypeScreen = await renderPage("/materials/type/3");
+  await expect
+    .element(
+      hiddenTypeScreen.getByRole("heading", { name: "Скрытый тип", level: 1 }),
+    )
+    .toBeInTheDocument();
+  await expect
+    .element(
+      hiddenTypeScreen.getByRole("button", { name: "Добавить материал" }),
+    )
+    .not.toBeInTheDocument();
+
+  const hiddenMaterialScreen = await renderPage("/materials/material/12");
+  await expect
+    .element(
+      hiddenMaterialScreen.getByRole("heading", {
+        name: "Скрытый материал",
+        level: 1,
+      }),
+    )
+    .toBeInTheDocument();
+  await expect
+    .element(
+      hiddenMaterialScreen.getByRole("button", { name: "Добавить вариант" }),
+    )
+    .not.toBeInTheDocument();
+});
+
+test("cancels creating from the catalog without sending a POST", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const screen = await renderPage();
+
+  await screen.getByRole("button", { name: "Добавить материал" }).click();
+  await screen.getByLabelText("Название").fill("Черновик");
+  await screen.getByRole("button", { name: "Отмена" }).click();
+
+  await expect
+    .element(screen.getByLabelText("Название"))
+    .not.toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("button", { name: "Добавить материал" }))
+    .toBeInTheDocument();
+  expect(requests.filter((request) => request.method === "POST")).toHaveLength(
+    0,
+  );
+});
+
+test("validates required create fields without sending a POST", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const screen = await renderPage();
+
+  await screen.getByRole("button", { name: "Добавить материал" }).click();
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  await expect
+    .element(screen.getByText("Укажите название"))
+    .toBeInTheDocument();
+  await expect.element(screen.getByText("Выберите тип")).toBeInTheDocument();
+  expect(requests.filter((request) => request.method === "POST")).toHaveLength(
+    0,
+  );
+});
+
+test("shows the hidden-holder error message and preserves values on a 409 create", async () => {
+  const routes = pageRoutes(catalogFixtures);
+  const requests = stubRoutes({
+    ...routes,
+    "/api/material-type": {
+      get: routes["/api/material-type"].get,
+      post: () => errorResponse(409, "Name is reserved by a hidden record"),
+    },
+  });
+  const screen = await renderPage();
+  await switchLevel(screen, "Типы");
+
+  await screen.getByRole("button", { name: "Добавить тип" }).click();
+  await screen.getByLabelText("Название").fill("Скрытый тип");
+  await screen.getByRole("button", { name: "Сохранить" }).click();
+
+  await expect
+    .element(screen.getByText("Скрыто, восстановите, чтобы продолжить."))
+    .toBeInTheDocument();
+  await expect
+    .element(screen.getByLabelText("Название"))
+    .toHaveValue("Скрытый тип");
+  expect(requests.filter((request) => request.method === "POST")).toHaveLength(
+    1,
+  );
+});
+
+test("resets open create and edit forms when the route :id changes", async () => {
+  stubPageApi(catalogFixtures);
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false, gcTime: 0 } },
+  });
+  const router = createMemoryRouter(
+    [
+      {
+        element: <AppLayout />,
+        children: [
+          { path: pathsRouter.materialType, element: <TypePage /> },
+          { path: pathsRouter.materialItem, element: <MaterialCardPage /> },
+        ],
+      },
+    ],
+    { initialEntries: ["/materials/type/1"] },
+  );
+  const screen = await render(
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <Toaster />
+    </QueryClientProvider>,
+  );
+
+  await screen.getByRole("button", { name: "Добавить материал" }).click();
+  await expect
+    .element(screen.getByRole("combobox", { name: "Тип" }))
+    .toMatchTextContent("Древесина");
+
+  await router.navigate("/materials/type/2");
+  await expect
+    .element(screen.getByRole("heading", { name: "Металл", level: 1 }))
+    .toBeInTheDocument();
+  await expect
+    .element(screen.getByLabelText("Название"))
+    .not.toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("button", { name: "Добавить материал" }))
+    .toBeInTheDocument();
+
+  await screen.getByRole("button", { name: "Редактировать" }).click();
+  await expect.element(screen.getByLabelText("Название")).toHaveValue("Металл");
+
+  await router.navigate("/materials/type/1");
+  await expect
+    .element(screen.getByRole("heading", { name: "Древесина", level: 1 }))
+    .toBeInTheDocument();
+  await expect
+    .element(screen.getByLabelText("Название"))
+    .not.toBeInTheDocument();
+
+  await router.navigate("/materials/material/10");
+  await screen.getByRole("button", { name: "Добавить вариант" }).click();
+  await expect
+    .element(screen.getByRole("combobox", { name: "Материал" }))
+    .toMatchTextContent("Доска сосна");
+
+  await router.navigate("/materials/material/11");
+  await expect
+    .element(screen.getByRole("heading", { name: "Болт", level: 1 }))
+    .toBeInTheDocument();
+  await expect
+    .element(screen.getByLabelText("Название"))
+    .not.toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("button", { name: "Добавить вариант" }))
+    .toBeInTheDocument();
+
+  await screen.getByRole("button", { name: "Редактировать" }).click();
+  await expect.element(screen.getByLabelText("Название")).toHaveValue("Болт");
+
+  await router.navigate("/materials/material/10");
+  await expect
+    .element(screen.getByRole("heading", { name: "Доска сосна", level: 1 }))
+    .toBeInTheDocument();
+  await expect
+    .element(screen.getByLabelText("Название"))
+    .not.toBeInTheDocument();
 });

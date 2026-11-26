@@ -113,6 +113,7 @@ export default defineConfig(
     },
     rules: {
       "@typescript-eslint/no-confusing-void-expression": "off",
+      "no-nested-ternary": "error",
       "import-x/order": [
         "error",
         {

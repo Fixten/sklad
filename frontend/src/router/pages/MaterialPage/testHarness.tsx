@@ -194,9 +194,58 @@ export const pageRoutes = (fixtures: PageFixtures = {}) => {
   const idFrom = (path: string) => Number(path.split("/").pop());
 
   return {
-    "/api/material": { get: list(materials) },
-    "/api/material-type": { get: list(types) },
-    "/api/material-variant": { get: list(variants) },
+    "/api/material": {
+      get: list(materials),
+      post: ({ body }: { body: Record<string, unknown> }) => {
+        const id = Math.max(0, ...materials.map((row) => row.id)) + 1;
+        const row: MaterialModel = {
+          id,
+          name: String(body.name),
+          description:
+            typeof body.description === "string" ? body.description : null,
+          material_type_id: Number(body.material_type_id),
+          created_at: "2026-04-01T10:00:00.000Z",
+          updated_at: "2026-04-01T10:00:00.000Z",
+          deleted_at: null,
+        };
+        materials.push(row);
+        return row;
+      },
+    },
+    "/api/material-type": {
+      get: list(types),
+      post: ({ body }: { body: Record<string, unknown> }) => {
+        const id = Math.max(0, ...types.map((row) => row.id)) + 1;
+        const row: MaterialTypeModel = {
+          id,
+          name: String(body.name),
+          description:
+            typeof body.description === "string" ? body.description : null,
+          created_at: "2026-04-01T10:00:00.000Z",
+          updated_at: "2026-04-01T10:00:00.000Z",
+          deleted_at: null,
+        };
+        types.push(row);
+        return row;
+      },
+    },
+    "/api/material-variant": {
+      get: list(variants),
+      post: ({ body }: { body: Record<string, unknown> }) => {
+        const id = Math.max(0, ...variants.map((row) => row.id)) + 1;
+        const row: VariantModel = {
+          id,
+          name: String(body.name),
+          unit: body.unit === "pieces" ? "pieces" : "meters",
+          material_id: Number(body.material_id),
+          created_at: "2026-04-01T10:00:00.000Z",
+          updated_at: "2026-04-01T10:00:00.000Z",
+          deleted_at: null,
+        };
+        variants.push(row);
+        return { ...row, unit_locked: false };
+      },
+    },
     "/api/material-type/{id}": {
       patch: ({
         body,
