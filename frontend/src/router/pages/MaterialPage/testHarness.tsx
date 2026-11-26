@@ -13,6 +13,8 @@ import { errorResponse, stubRoutes } from "@/test/apiStub.vitest";
 import Toaster from "@ui/Toast";
 
 import MaterialCardPage from "./MaterialCardPage";
+import SuppliersPage from "./SuppliersPage";
+import SuppliesPage from "./SuppliesPage";
 import SupplyPage from "./SupplyPage";
 import TypePage from "./TypePage";
 import VariantPage from "./VariantPage";
@@ -396,6 +398,8 @@ export const renderPage = async (
         children: [
           { path: pathsRouter.material, element: <MaterialPage /> },
           { path: pathsRouter.supply, element: <SupplyPage /> },
+          { path: pathsRouter.supplies, element: <SuppliesPage /> },
+          { path: pathsRouter.suppliers, element: <SuppliersPage /> },
           { path: pathsRouter.materialType, element: <TypePage /> },
           { path: pathsRouter.materialItem, element: <MaterialCardPage /> },
           { path: pathsRouter.materialVariant, element: <VariantPage /> },

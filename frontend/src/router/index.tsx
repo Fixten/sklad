@@ -6,6 +6,8 @@ import Home from "@/router/pages/Home";
 
 import MaterialPage from "./pages/MaterialPage";
 import MaterialCardPage from "./pages/MaterialPage/MaterialCardPage";
+import SuppliersPage from "./pages/MaterialPage/SuppliersPage";
+import SuppliesPage from "./pages/MaterialPage/SuppliesPage";
 import SupplyPage from "./pages/MaterialPage/SupplyPage";
 import TypePage from "./pages/MaterialPage/TypePage";
 import VariantPage from "./pages/MaterialPage/VariantPage";
@@ -53,6 +55,18 @@ const router = createBrowserRouter([
             {
               path: pathsRouter.supply,
               Component: SupplyPage,
+            },
+            {
+              path: pathsRouter.supplies,
+              Component: SuppliesPage,
+            },
+          ]
+        : []),
+      ...(isMaterialEnabled() && isFeatureEnabled("supplier")
+        ? [
+            {
+              path: pathsRouter.suppliers,
+              Component: SuppliersPage,
             },
           ]
         : []),

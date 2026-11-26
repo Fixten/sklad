@@ -1,9 +1,10 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createMemoryRouter, RouterProvider } from "react-router";
-import { expect, test } from "vitest";
+import { afterEach, expect, test, vi } from "vitest";
 import { userEvent } from "vitest/browser";
 import { render } from "vitest-browser-react";
 
+import type { FeatureName } from "@/config/features";
 import type { VariantModel } from "@/features/Variant/Variant.model";
 import AppLayout from "@/layout/App.layout";
 import pathsRouter from "@/router/paths.router";
@@ -23,6 +24,25 @@ import TypePage from "./TypePage";
 import VariantPage from "./VariantPage";
 
 import MaterialPage from "./index";
+
+const flags: Partial<Record<FeatureName, boolean>> = vi.hoisted(() => ({
+  supply: true,
+  supplier: true,
+}));
+
+vi.mock("@/config/features", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/config/features")>();
+  return {
+    ...actual,
+    isFeatureEnabled: (name: FeatureName) =>
+      flags[name] ?? actual.isFeatureEnabled(name),
+  };
+});
+
+afterEach(() => {
+  flags.supply = true;
+  flags.supplier = true;
+});
 
 const switchLevel = async (screen: Page, label: string) => {
   await screen.getByRole("combobox", { name: "Уровень" }).click();
@@ -61,6 +81,71 @@ test("opens the supply page from the supply action", async () => {
   await openSupplyPage(screen);
 
   await expect.element(screen.getByRole("dialog")).not.toBeInTheDocument();
+});
+
+test("lists the supplies and suppliers pages in the actions palette", async () => {
+  stubPageApi();
+  const screen = await renderPage();
+
+  await screen.getByPlaceholder("Начать работу").click();
+
+  await expect.element(screen.getByText("Поставки")).toBeInTheDocument();
+  await expect.element(screen.getByText("Поставщики")).toBeInTheDocument();
+});
+
+test("opens the supplies page from the palette", async () => {
+  stubPageApi();
+  const screen = await renderPage();
+
+  await screen.getByPlaceholder("Начать работу").click();
+  await screen.getByText("Поставки").click();
+
+  await expect
+    .element(screen.getByRole("heading", { name: "Поставки" }))
+    .toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("link", { name: "← Материалы" }))
+    .toBeInTheDocument();
+});
+
+test("opens the suppliers page from the palette", async () => {
+  stubPageApi();
+  const screen = await renderPage();
+
+  await screen.getByPlaceholder("Начать работу").click();
+  await screen.getByText("Поставщики").click();
+
+  await expect
+    .element(screen.getByRole("heading", { name: "Поставщики" }))
+    .toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("link", { name: "← Материалы" }))
+    .toBeInTheDocument();
+});
+
+test("hides the supply entries in the palette when the supply flag is off", async () => {
+  stubPageApi();
+  flags.supply = false;
+  const screen = await renderPage();
+
+  await screen.getByPlaceholder("Начать работу").click();
+
+  await expect.element(screen.getByText("Поставщики")).toBeInTheDocument();
+  await expect.element(screen.getByText("Поставки")).not.toBeInTheDocument();
+  await expect
+    .element(screen.getByText("Сделать поставку"))
+    .not.toBeInTheDocument();
+});
+
+test("hides the suppliers entry in the palette when the supplier flag is off", async () => {
+  stubPageApi();
+  flags.supplier = false;
+  const screen = await renderPage();
+
+  await screen.getByPlaceholder("Начать работу").click();
+
+  await expect.element(screen.getByText("Поставки")).toBeInTheDocument();
+  await expect.element(screen.getByText("Поставщики")).not.toBeInTheDocument();
 });
 
 test("renders the catalog list area with an empty state", async () => {

@@ -15,8 +15,8 @@ export default function MaterialPage() {
       <CommandPalette
         heading="Действия"
         emptyMessage="Ничего не нашлось"
-        items={
-          isFeatureEnabled("supply")
+        items={[
+          ...(isFeatureEnabled("supply")
             ? [
                 {
                   value: "supply",
@@ -25,9 +25,27 @@ export default function MaterialPage() {
                     void navigate(pathsRouter.supply);
                   },
                 },
+                {
+                  value: "supplies",
+                  label: "Поставки",
+                  onSelect: () => {
+                    void navigate(pathsRouter.supplies);
+                  },
+                },
               ]
-            : []
-        }
+            : []),
+          ...(isFeatureEnabled("supplier")
+            ? [
+                {
+                  value: "suppliers",
+                  label: "Поставщики",
+                  onSelect: () => {
+                    void navigate(pathsRouter.suppliers);
+                  },
+                },
+              ]
+            : []),
+        ]}
       />
       <MaterialCatalog />
     </PageLayout>
