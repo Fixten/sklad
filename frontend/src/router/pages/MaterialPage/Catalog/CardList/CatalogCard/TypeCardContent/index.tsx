@@ -1,10 +1,12 @@
 import type { MaterialModel } from "@/features/Material/Material.model";
 import Typography from "@ui/Typography";
 
+import HiddenMessage from "../../../../HiddenMessage";
 import summarizeNames from "../summarizeNames";
 
 interface Props {
   materials: MaterialModel[];
+  hidden?: boolean;
 }
 
 export default function TypeCardContent(props: Props) {
@@ -13,6 +15,7 @@ export default function TypeCardContent(props: Props) {
 
   return (
     <>
+      {props.hidden ? <HiddenMessage /> : null}
       <Typography variant="caption">
         Материалы: {props.materials.length}
       </Typography>

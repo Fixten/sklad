@@ -1,14 +1,19 @@
-import { useState } from "react";
 import type { ReactNode } from "react";
-import { useParams } from "react-router";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router";
 
-import useMaterialTypeData from "@/features/MaterialType/useMaterialType";
+import useMaterialTypeData, {
+  useMaterialTypesMutations,
+} from "@/features/MaterialType/useMaterialType";
 import PageLayout from "@/layout/PageLayout";
 import pathsRouter from "@/router/paths.router";
 import { Button } from "@ui/Button";
+import { toastSuccess } from "@ui/Toast";
 import Typography from "@ui/Typography";
 
 import MaterialCards from "../Catalog/CardList/MaterialCards";
+import EntityActions from "../EntityActions";
+import HiddenMessage from "../HiddenMessage";
 import MaterialEditForm from "../MaterialCardPage/EditForm";
 
 import EditForm from "./EditForm";
@@ -17,7 +22,9 @@ const back = { to: pathsRouter.material, label: "Материалы" };
 
 export default function TypePage() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const types = useMaterialTypeData();
+  const mutations = useMaterialTypesMutations();
   const [editingId, setEditingId] = useState<number>();
   const [creatingForId, setCreatingForId] = useState<number>();
 
@@ -30,8 +37,9 @@ export default function TypePage() {
     return <PageLayout back={back} title="Запись не найдена" />;
   }
 
-  const editing = editingId === type.id;
-  const creating = creatingForId === type.id;
+  const typeId = type.id;
+  const editing = editingId === typeId;
+  const creating = creatingForId === typeId;
 
   if (editing) {
     return (
@@ -61,18 +69,37 @@ export default function TypePage() {
 
   return (
     <PageLayout back={back} title={type.name} className="relative">
-      <Button
-        className="absolute top-0 right-0"
-        onClick={() => {
-          setCreatingForId(undefined);
-          setEditingId(type.id);
-        }}
+      <div
+        className="absolute top-0 right-0 flex gap-2"
+        data-testid="page-actions"
       >
-        {type.deleted_at ? "Переименовать" : "Редактировать"}
-      </Button>
+        <Button
+          onClick={() => {
+            setCreatingForId(undefined);
+            setEditingId(typeId);
+          }}
+        >
+          {type.deleted_at ? "Переименовать" : "Редактировать"}
+        </Button>
+        <EntityActions
+          isHidden={!!type.deleted_at}
+          onDelete={() => {
+            mutations.removeMutation.mutate(typeId, {
+              onSuccess: () => {
+                toastSuccess("Удалено");
+                void navigate(pathsRouter.material);
+              },
+            });
+          }}
+          onRestore={() => mutations.restoreMutation.mutate(typeId)}
+          deleteBusy={mutations.removeMutation.isPending}
+          restoreBusy={mutations.restoreMutation.isPending}
+        />
+      </div>
+      {type.deleted_at ? <HiddenMessage /> : null}
       {type.description ? <Typography>{type.description}</Typography> : null}
       {addMaterial}
-      <MaterialCards query="" showHidden={false} typeId={type.id} />
+      <MaterialCards query="" showHidden={false} typeId={typeId} />
     </PageLayout>
   );
 }

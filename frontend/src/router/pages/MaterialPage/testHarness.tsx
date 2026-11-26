@@ -259,6 +259,30 @@ export const pageRoutes = (fixtures: PageFixtures = {}) => {
         Object.assign(row, body);
         return row;
       },
+      delete: ({ path }: { path: string }) => {
+        const id = idFrom(path);
+        const index = types.findIndex((type) => type.id === id);
+        if (index === -1) return errorResponse(404, "not found");
+        const row = types[index];
+        if (row === undefined) return errorResponse(404, "not found");
+        const hasReferences = materials.some(
+          (material) => material.material_type_id === id,
+        );
+        if (hasReferences) {
+          row.deleted_at = "2026-04-01T10:00:00.000Z";
+        } else {
+          types.splice(index, 1);
+        }
+        return { message: "deleted" };
+      },
+    },
+    "/api/material-type/restore/{id}": {
+      post: ({ path }: { path: string }) => {
+        const row = types.find((type) => type.id === idFrom(path));
+        if (!row) return errorResponse(404, "not found");
+        row.deleted_at = null;
+        return row;
+      },
     },
     "/api/material/{id}": {
       patch: ({
@@ -271,6 +295,30 @@ export const pageRoutes = (fixtures: PageFixtures = {}) => {
         const row = materials.find((material) => material.id === idFrom(path));
         if (!row) return errorResponse(404, "not found");
         Object.assign(row, body);
+        return row;
+      },
+      delete: ({ path }: { path: string }) => {
+        const id = idFrom(path);
+        const index = materials.findIndex((material) => material.id === id);
+        if (index === -1) return errorResponse(404, "not found");
+        const row = materials[index];
+        if (row === undefined) return errorResponse(404, "not found");
+        const hasReferences = variants.some(
+          (variant) => variant.material_id === id,
+        );
+        if (hasReferences) {
+          row.deleted_at = "2026-04-01T10:00:00.000Z";
+        } else {
+          materials.splice(index, 1);
+        }
+        return { message: "deleted" };
+      },
+    },
+    "/api/material/restore/{id}": {
+      post: ({ path }: { path: string }) => {
+        const row = materials.find((material) => material.id === idFrom(path));
+        if (!row) return errorResponse(404, "not found");
+        row.deleted_at = null;
         return row;
       },
     },
@@ -290,6 +338,30 @@ export const pageRoutes = (fixtures: PageFixtures = {}) => {
         const row = variants.find((variant) => variant.id === idFrom(path));
         if (!row) return errorResponse(404, "not found");
         Object.assign(row, body);
+        return { ...row, unit_locked: false };
+      },
+      delete: ({ path }: { path: string }) => {
+        const id = idFrom(path);
+        const index = variants.findIndex((variant) => variant.id === id);
+        if (index === -1) return errorResponse(404, "not found");
+        const row = variants[index];
+        if (row === undefined) return errorResponse(404, "not found");
+        const hasReferences = supplies.some(
+          (supply) => supply.material_variant_id === id,
+        );
+        if (hasReferences) {
+          row.deleted_at = "2026-04-01T10:00:00.000Z";
+        } else {
+          variants.splice(index, 1);
+        }
+        return { message: "deleted" };
+      },
+    },
+    "/api/material-variant/restore/{id}": {
+      post: ({ path }: { path: string }) => {
+        const row = variants.find((variant) => variant.id === idFrom(path));
+        if (!row) return errorResponse(404, "not found");
+        row.deleted_at = null;
         return { ...row, unit_locked: false };
       },
     },

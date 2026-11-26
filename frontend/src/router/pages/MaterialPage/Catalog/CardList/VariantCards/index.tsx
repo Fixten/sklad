@@ -4,10 +4,14 @@ import type { MaterialModel } from "@/features/Material/Material.model";
 import useMaterialData from "@/features/Material/useMaterial";
 import useMaterialTypeData from "@/features/MaterialType/useMaterialType";
 import useSupplyData from "@/features/Supply/useSupply";
-import useVariantData from "@/features/Variant/useVariant";
+import useVariantData, {
+  useVariantMutations,
+} from "@/features/Variant/useVariant";
 import type { VariantModel } from "@/features/Variant/Variant.model";
 import pathsRouter from "@/router/paths.router";
+import { toastSuccess } from "@ui/Toast";
 
+import EntityActions from "../../../EntityActions";
 import CardGrid from "../CardGrid";
 import CatalogCard from "../CatalogCard";
 import VariantCardContent from "../CatalogCard/VariantCardContent";
@@ -25,6 +29,7 @@ export default function VariantCards(props: Props) {
   const materials = useMaterialData();
   const types = useMaterialTypeData();
   const supplies = useSupplyData({});
+  const mutations = useVariantMutations();
   const query = props.query.trim().toLowerCase();
   const materialMap = materials.getMap();
   const typeMap = types.getMap();
@@ -63,6 +68,7 @@ export default function VariantCards(props: Props) {
       {visible.map((variant) => {
         const material = materialOf(variant);
         const stats = supplyStats.get(variant.id);
+        const hidden = !!variant.deleted_at;
         return (
           <CatalogCard
             key={variant.id}
@@ -78,6 +84,20 @@ export default function VariantCards(props: Props) {
                 stock={stats?.stock ?? 0}
                 lastSupply={stats?.lastSupply}
                 supplyTo={`${pathsRouter.supply}?variant=${String(variant.id)}`}
+                hidden={hidden}
+              />
+            }
+            actions={
+              <EntityActions
+                isHidden={hidden}
+                onDelete={() =>
+                  mutations.removeMutation.mutate(variant.id, {
+                    onSuccess: () => toastSuccess("Удалено"),
+                  })
+                }
+                onRestore={() => mutations.restoreMutation.mutate(variant.id)}
+                deleteBusy={mutations.removeMutation.isPending}
+                restoreBusy={mutations.restoreMutation.isPending}
               />
             }
           />

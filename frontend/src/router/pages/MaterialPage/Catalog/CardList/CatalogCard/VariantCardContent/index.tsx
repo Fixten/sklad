@@ -9,6 +9,8 @@ import { formatLocalDate } from "@/lib/date";
 import { Button } from "@ui/Button";
 import Typography from "@ui/Typography";
 
+import HiddenMessage from "../../../../HiddenMessage";
+
 interface Props {
   variant: VariantModel;
   material?: MaterialModel;
@@ -16,6 +18,7 @@ interface Props {
   stock: number;
   lastSupply?: string;
   supplyTo: string;
+  hidden?: boolean;
 }
 
 export default function VariantCardContent(props: Props) {
@@ -27,6 +30,7 @@ export default function VariantCardContent(props: Props) {
 
   return (
     <>
+      {props.hidden ? <HiddenMessage /> : null}
       {context ? <Typography variant="caption">{context}</Typography> : null}
       <Typography variant="caption">
         Остаток: {stock} {UnitShortLabels[props.variant.unit]}
@@ -36,7 +40,7 @@ export default function VariantCardContent(props: Props) {
           {`Последняя поставка: ${formatLocalDate(props.lastSupply)}`}
         </Typography>
       ) : null}
-      {isFeatureEnabled("supply") ? (
+      {isFeatureEnabled("supply") && !props.hidden ? (
         <Button
           onClick={() => {
             void navigate(props.supplyTo);

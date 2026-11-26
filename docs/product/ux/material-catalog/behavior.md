@@ -59,12 +59,14 @@ The user maintains the material catalog — Material Types, Materials, and Mater
 
 - A delete action is available on the card in the list and on the card's page.
 - The user confirms before the deletion happens.
-- Deleting an entity that nothing references removes it permanently.
-- Deleting an entity that other records still reference hides it instead. The user is told it was hidden because it is still referenced, and that it can be restored.
+- The confirmation explains that a referenced entity will be hidden, not deleted.
+- After confirming, the user sees a single “Удалено” message and returns to the catalog.
+- Referenced entities become hidden and can be restored from the list or page.
 
 ### Hidden entities
 
-- A "показать скрытые" toggle reveals hidden cards in the list, marked as hidden.
+- Hidden entities are marked «Скрыто» wherever they appear.
+- A "показать скрытые" toggle reveals hidden cards in the list.
 - A hidden card offers restore in the list; its page offers rename and restore only. It cannot be given new children.
 - Restoring makes it a normal entity again.
 - Restoring never fails on a name: a hidden entity's name stays reserved, so no active entity can hold it.

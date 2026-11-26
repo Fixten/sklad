@@ -20,6 +20,9 @@ import {
   stubPageApi,
 } from "./testHarness";
 import TypePage from "./TypePage";
+import VariantPage from "./VariantPage";
+
+import MaterialPage from "./index";
 
 const switchLevel = async (screen: Page, label: string) => {
   await screen.getByRole("combobox", { name: "Уровень" }).click();
@@ -1127,6 +1130,14 @@ const postsTo = (
     (request) => request.method === "POST" && request.path === path,
   );
 
+const deletesTo = (
+  requests: { method: string; path: string; body: unknown }[],
+  path: string,
+) =>
+  requests.find(
+    (request) => request.method === "DELETE" && request.path === path,
+  );
+
 test("offers an add action matching each catalog level and resets form on level change", async () => {
   stubPageApi(catalogFixtures);
   const screen = await renderPage();
@@ -1460,4 +1471,270 @@ test("resets open create and edit forms when the route :id changes", async () =>
   await expect
     .element(screen.getByLabelText("Название"))
     .not.toBeInTheDocument();
+});
+
+const toggleHidden = async (screen: Page) => {
+  const showButtons = screen
+    .getByRole("button", { name: "Показать скрытые" })
+    .all();
+  const first = showButtons[0];
+  if (first) {
+    await first.click();
+  } else {
+    await screen.getByRole("button", { name: "Скрыть скрытые" }).click();
+  }
+};
+
+test("toggles hidden cards in the catalog", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage();
+
+  await expect.element(screen.getByText("Скрытый тип")).not.toBeInTheDocument();
+  await toggleHidden(screen);
+  await expect.element(screen.getByText("Скрытый тип")).toBeInTheDocument();
+  await expect.element(screen.getByText("Скрыто")).toBeInTheDocument();
+});
+
+test("cancels a delete from the card without sending DELETE", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const screen = await renderPage();
+  await switchLevel(screen, "Типы");
+  await userEvent.type(screen.getByLabelText("Поиск"), "металл");
+
+  await screen.getByRole("button", { name: "Удалить" }).click();
+  await expect
+    .element(
+      screen.getByText(
+        "Удалить? Если запись используется, она будет скрыта, а не удалена.",
+      ),
+    )
+    .toBeInTheDocument();
+  await screen.getByRole("button", { name: "Отмена" }).click();
+
+  await expect.element(screen.getByText("Металл")).toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("button", { name: "Удалить" }))
+    .toBeInTheDocument();
+  expect(deletesTo(requests, "/api/material-type/2")).toBeUndefined();
+});
+
+test("soft-deletes a referenced type from the card and shows the hidden mark", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const screen = await renderPage();
+  await switchLevel(screen, "Типы");
+  await userEvent.type(screen.getByLabelText("Поиск"), "металл");
+
+  await screen.getByRole("button", { name: "Удалить" }).click();
+  await screen.getByRole("button", { name: "Да" }).click();
+
+  await expect.element(screen.getByText("Удалено")).toBeInTheDocument();
+  await expect.element(screen.getByText("Металл")).not.toBeInTheDocument();
+  expect(deletesTo(requests, "/api/material-type/2")).toBeDefined();
+
+  await toggleHidden(screen);
+  await expect.element(screen.getByText("Скрыто")).toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("button", { name: "Восстановить" }))
+    .toBeInTheDocument();
+});
+
+test("hard-deletes an unreferenced variant from the card", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const screen = await renderPage();
+  await switchLevel(screen, "Варианты");
+  await userEvent.type(screen.getByLabelText("Поиск"), "саморез");
+
+  await screen.getByRole("button", { name: "Удалить" }).click();
+  await screen.getByRole("button", { name: "Да" }).click();
+
+  await expect.element(screen.getByText("Удалено").first()).toBeInTheDocument();
+  await expect.element(screen.getByText("Саморез 35")).not.toBeInTheDocument();
+  expect(deletesTo(requests, "/api/material-variant/101")).toBeDefined();
+
+  await toggleHidden(screen);
+  await userEvent.clear(screen.getByLabelText("Поиск"));
+  await expect.element(screen.getByText("Саморез 35")).not.toBeInTheDocument();
+});
+
+test("soft-deletes a referenced entity from its page and returns to the catalog", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false, gcTime: 0 } },
+  });
+  const router = createMemoryRouter(
+    [
+      {
+        element: <AppLayout />,
+        children: [
+          { path: pathsRouter.material, element: <MaterialPage /> },
+          { path: pathsRouter.materialType, element: <TypePage /> },
+        ],
+      },
+    ],
+    { initialEntries: ["/materials/type/2"] },
+  );
+  const screen = await render(
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <Toaster />
+    </QueryClientProvider>,
+  );
+
+  const actions = screen.getByTestId("page-actions");
+  await actions.getByRole("button", { name: "Удалить" }).click();
+  await actions.getByRole("button", { name: "Да" }).click();
+
+  await expect.element(screen.getByText("Удалено").first()).toBeInTheDocument();
+  expect(router.state.location.pathname).toBe("/materials");
+  await expect.element(screen.getByText("Доска сосна")).toBeInTheDocument();
+  expect(deletesTo(requests, "/api/material-type/2")).toBeDefined();
+
+  await switchLevel(screen, "Типы");
+  await toggleHidden(screen);
+  await userEvent.type(screen.getByLabelText("Поиск"), "металл");
+  await expect.element(screen.getByText("Скрыто")).toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("button", { name: "Восстановить" }))
+    .toBeInTheDocument();
+});
+
+test("hard-deletes an unreferenced entity from its page and returns to the catalog", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false, gcTime: 0 } },
+  });
+  const router = createMemoryRouter(
+    [
+      {
+        element: <AppLayout />,
+        children: [
+          { path: pathsRouter.material, element: <MaterialPage /> },
+          { path: pathsRouter.materialVariant, element: <VariantPage /> },
+        ],
+      },
+    ],
+    { initialEntries: ["/materials/variant/101"] },
+  );
+  const screen = await render(
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <Toaster />
+    </QueryClientProvider>,
+  );
+
+  const actions = screen.getByTestId("page-actions");
+  await actions.getByRole("button", { name: "Удалить" }).click();
+  await actions.getByRole("button", { name: "Да" }).click();
+
+  await expect.element(screen.getByText("Удалено").first()).toBeInTheDocument();
+  expect(router.state.location.pathname).toBe("/materials");
+  expect(deletesTo(requests, "/api/material-variant/101")).toBeDefined();
+
+  await switchLevel(screen, "Варианты");
+  await toggleHidden(screen);
+  await userEvent.type(screen.getByLabelText("Поиск"), "саморез");
+  await expect.element(screen.getByText("Саморез 35")).not.toBeInTheDocument();
+});
+
+test("restores a hidden type from the list", async () => {
+  const requests = stubPageApi(catalogFixtures);
+  const screen = await renderPage();
+  await switchLevel(screen, "Типы");
+  await toggleHidden(screen);
+  await userEvent.type(screen.getByLabelText("Поиск"), "скрытый тип");
+
+  await expect.element(screen.getByText("Скрыто")).toBeInTheDocument();
+  await screen.getByRole("button", { name: "Восстановить" }).click();
+
+  await expect.element(screen.getByText("Скрыто")).not.toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("button", { name: "Удалить" }))
+    .toBeInTheDocument();
+  expect(
+    requests.some(
+      (request) =>
+        request.method === "POST" &&
+        request.path === "/api/material-type/restore/3",
+    ),
+  ).toBe(true);
+});
+
+test("restores a hidden material from its page", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/material/12");
+
+  await expect.element(screen.getByText("Скрыто")).toBeInTheDocument();
+  await screen.getByRole("button", { name: "Восстановить" }).click();
+
+  await expect.element(screen.getByText("Скрыто")).not.toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("button", { name: "Редактировать" }))
+    .toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("button", { name: "Добавить вариант" }))
+    .toBeInTheDocument();
+});
+
+test("restores a hidden variant from its page", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/variant/102");
+
+  await expect.element(screen.getByText("Скрыто")).toBeInTheDocument();
+  await screen.getByRole("button", { name: "Восстановить" }).click();
+
+  await expect.element(screen.getByText("Скрыто")).not.toBeInTheDocument();
+  await expect
+    .element(screen.getByRole("button", { name: "Сделать поставку" }))
+    .toBeInTheDocument();
+});
+
+test("hidden pages offer only rename and restore", async () => {
+  stubPageApi(catalogFixtures);
+
+  const typeScreen = await renderPage("/materials/type/3");
+  await expect
+    .element(typeScreen.getByRole("button", { name: "Переименовать" }))
+    .toBeInTheDocument();
+  await expect
+    .element(typeScreen.getByRole("button", { name: "Восстановить" }))
+    .toBeInTheDocument();
+  await expect.element(typeScreen.getByText("Скрыто")).toBeInTheDocument();
+  await expect
+    .element(typeScreen.getByRole("button", { name: "Добавить материал" }))
+    .not.toBeInTheDocument();
+
+  const materialScreen = await renderPage("/materials/material/12");
+  await expect
+    .element(materialScreen.getByRole("button", { name: "Восстановить" }))
+    .toBeInTheDocument();
+  await expect.element(materialScreen.getByText("Скрыто")).toBeInTheDocument();
+  await expect
+    .element(materialScreen.getByRole("button", { name: "Добавить вариант" }))
+    .not.toBeInTheDocument();
+
+  const variantScreen = await renderPage("/materials/variant/102");
+  await expect
+    .element(variantScreen.getByRole("button", { name: "Восстановить" }))
+    .toBeInTheDocument();
+  await expect.element(variantScreen.getByText("Скрыто")).toBeInTheDocument();
+  await expect
+    .element(variantScreen.getByRole("button", { name: "Сделать поставку" }))
+    .not.toBeInTheDocument();
+});
+
+test("restores a child independently of a hidden parent", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage();
+  await switchLevel(screen, "Варианты");
+  await toggleHidden(screen);
+  await userEvent.type(screen.getByLabelText("Поиск"), "скрытый вариант");
+
+  await screen.getByRole("button", { name: "Восстановить" }).click();
+
+  await switchLevel(screen, "Материалы");
+  await expect.element(screen.getByText("Доска сосна")).toBeInTheDocument();
+  await switchLevel(screen, "Варианты");
+  await toggleHidden(screen);
+  await expect.element(screen.getByText("Скрытый вариант")).toBeInTheDocument();
+  await expect.element(screen.getByText("Скрыто")).not.toBeInTheDocument();
 });

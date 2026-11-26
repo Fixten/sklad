@@ -5,6 +5,7 @@ export interface CatalogCardProps {
   to?: string;
   description?: string;
   content: React.ReactNode;
+  actions?: React.ReactNode;
 }
 
 export default function CatalogCard(props: CatalogCardProps) {
@@ -15,6 +16,7 @@ export default function CatalogCard(props: CatalogCardProps) {
       description={props.description}
     >
       {props.content}
+      {props.actions}
     </Card>
   );
 }

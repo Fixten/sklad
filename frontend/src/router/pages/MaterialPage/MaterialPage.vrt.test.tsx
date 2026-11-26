@@ -106,3 +106,13 @@ test("renders the material create form", async () => {
   await expect.element(page.getByLabelText("Название")).toBeInTheDocument();
   await expect(viewport()).toMatchScreenshot();
 });
+
+test("renders the catalog with hidden cards revealed", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage();
+
+  await screen.getByRole("button", { name: "Показать скрытые" }).click();
+  await expect.element(page.getByText("Скрытый тип")).toBeInTheDocument();
+  await expect.element(page.getByText("Скрытый материал")).toBeInTheDocument();
+  await expect(viewport()).toMatchScreenshot();
+});

@@ -6,11 +6,17 @@ import useMaterialData from "@/features/Material/useMaterial";
 import useMaterialTypeData from "@/features/MaterialType/useMaterialType";
 import useSupplyData from "@/features/Supply/useSupply";
 import { UnitLabels } from "@/features/units";
-import useVariantData from "@/features/Variant/useVariant";
+import useVariantData, {
+  useVariantMutations,
+} from "@/features/Variant/useVariant";
 import PageLayout from "@/layout/PageLayout";
 import pathsRouter from "@/router/paths.router";
 import { Button } from "@ui/Button";
+import { toastSuccess } from "@ui/Toast";
 import Typography from "@ui/Typography";
+
+import EntityActions from "../EntityActions";
+import HiddenMessage from "../HiddenMessage";
 
 import EditForm from "./EditForm";
 import SupplyRows from "./SupplyRows";
@@ -32,7 +38,8 @@ export default function VariantPage() {
   const variants = useVariantData();
   const materials = useMaterialData();
   const types = useMaterialTypeData();
-  const [editing, setEditing] = useState(false);
+  const mutations = useVariantMutations();
+  const [editingId, setEditingId] = useState<number>();
   const variant = variants.getMap().get(Number(id));
 
   if (
@@ -47,10 +54,13 @@ export default function VariantPage() {
     return <PageLayout back={back} title="Запись не найдена" />;
   }
 
+  const variantId = variant.id;
+  const editing = editingId === variantId;
+
   if (editing) {
     return (
       <PageLayout back={back} title={variant.name}>
-        <EditForm entity={variant} onDone={() => setEditing(false)} />
+        <EditForm entity={variant} onDone={() => setEditingId(undefined)} />
       </PageLayout>
     );
   }
@@ -63,28 +73,43 @@ export default function VariantPage() {
 
   return (
     <PageLayout back={back} title={variant.name} className="relative">
-      <Button
-        className="absolute top-0 right-0"
-        onClick={() => setEditing(true)}
+      <div
+        className="absolute top-0 right-0 flex gap-2"
+        data-testid="page-actions"
       >
-        {variant.deleted_at ? "Переименовать" : "Редактировать"}
-      </Button>
+        <Button onClick={() => setEditingId(variantId)}>
+          {variant.deleted_at ? "Переименовать" : "Редактировать"}
+        </Button>
+        <EntityActions
+          isHidden={!!variant.deleted_at}
+          onDelete={() => {
+            mutations.removeMutation.mutate(variantId, {
+              onSuccess: () => {
+                toastSuccess("Удалено");
+                void navigate(pathsRouter.material);
+              },
+            });
+          }}
+          onRestore={() => mutations.restoreMutation.mutate(variantId)}
+          deleteBusy={mutations.removeMutation.isPending}
+          restoreBusy={mutations.restoreMutation.isPending}
+        />
+      </div>
+      {variant.deleted_at ? <HiddenMessage /> : null}
       <Typography variant="caption">
         Единица: {UnitLabels[variant.unit]}
       </Typography>
       {context ? <Typography variant="caption">{context}</Typography> : null}
-      {isFeatureEnabled("supply") ? (
+      {isFeatureEnabled("supply") && !variant.deleted_at ? (
         <Button
           onClick={() => {
-            void navigate(
-              `${pathsRouter.supply}?variant=${String(variant.id)}`,
-            );
+            void navigate(`${pathsRouter.supply}?variant=${String(variantId)}`);
           }}
         >
           Сделать поставку
         </Button>
       ) : null}
-      <VariantSupplies variantId={variant.id} />
+      <VariantSupplies variantId={variantId} />
     </PageLayout>
   );
 }

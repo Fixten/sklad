@@ -21,7 +21,7 @@ const addLabels: Record<CatalogLevel, string> = {
 export default function MaterialCatalog() {
   const [level, setLevel] = useState<CatalogLevel>("materials");
   const [query, setQuery] = useState<string>("");
-  const [showHidden] = useState<boolean>(false);
+  const [showHidden, setShowHidden] = useState<boolean>(false);
   const [creating, setCreating] = useState<boolean>(false);
 
   function handleLevelChange(next: CatalogLevel) {
@@ -51,6 +51,13 @@ export default function MaterialCatalog() {
       ) : (
         <Button onClick={() => setCreating(true)}>{addLabels[level]}</Button>
       )}
+      <Button
+        onClick={() => setShowHidden((value) => !value)}
+        aria-pressed={showHidden}
+        variant={showHidden ? "secondary" : "outline"}
+      >
+        {showHidden ? "Скрыть скрытые" : "Показать скрытые"}
+      </Button>
       <CardList level={level} query={query} showHidden={showHidden} />
     </div>
   );

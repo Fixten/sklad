@@ -1,11 +1,15 @@
 import { generatePath } from "react-router";
 
 import type { MaterialModel } from "@/features/Material/Material.model";
-import useMaterialData from "@/features/Material/useMaterial";
+import useMaterialData, {
+  useMaterialMutations,
+} from "@/features/Material/useMaterial";
 import useMaterialTypeData from "@/features/MaterialType/useMaterialType";
 import useVariantData from "@/features/Variant/useVariant";
 import pathsRouter from "@/router/paths.router";
+import { toastSuccess } from "@ui/Toast";
 
+import EntityActions from "../../../EntityActions";
 import CardGrid from "../CardGrid";
 import CatalogCard from "../CatalogCard";
 import MaterialCardContent from "../CatalogCard/MaterialCardContent";
@@ -20,6 +24,7 @@ export default function MaterialCards(props: Props) {
   const materials = useMaterialData();
   const types = useMaterialTypeData();
   const variants = useVariantData();
+  const mutations = useMaterialMutations();
   const query = props.query.trim().toLowerCase();
   const typeMap = types.getMap();
   const activeVariants = variants.getActiveData();
@@ -67,6 +72,20 @@ export default function MaterialCards(props: Props) {
             <MaterialCardContent
               type={typeOf(material)}
               variants={childrenOf(material)}
+              hidden={!!material.deleted_at}
+            />
+          }
+          actions={
+            <EntityActions
+              isHidden={!!material.deleted_at}
+              onDelete={() =>
+                mutations.removeMutation.mutate(material.id, {
+                  onSuccess: () => toastSuccess("Удалено"),
+                })
+              }
+              onRestore={() => mutations.restoreMutation.mutate(material.id)}
+              deleteBusy={mutations.removeMutation.isPending}
+              restoreBusy={mutations.restoreMutation.isPending}
             />
           }
         />
