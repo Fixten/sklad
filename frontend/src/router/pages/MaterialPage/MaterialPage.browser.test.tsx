@@ -543,6 +543,26 @@ test("opens the variant page from a card title", async () => {
     .toBeInTheDocument();
 });
 
+test("links from a variant card to that variant's supplies", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage();
+  await switchLevel(screen, "Варианты");
+  await userEvent.type(screen.getByLabelText("Поиск"), "саморез");
+
+  await expect
+    .element(screen.getByRole("link", { name: "Поставки" }))
+    .toHaveAttribute("href", "/materials/supplies?variant=101");
+});
+
+test("links from the variant page to that variant's supplies", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/variant/100");
+
+  await expect
+    .element(screen.getByRole("link", { name: "Поставки" }))
+    .toHaveAttribute("href", "/materials/supplies?variant=100");
+});
+
 test("shows hidden parent context on the variant page", async () => {
   stubPageApi(catalogFixtures);
   const screen = await renderPage("/materials/variant/103");

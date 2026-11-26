@@ -7,6 +7,7 @@ import { UnitShortLabels } from "@/features/units";
 import type { VariantModel } from "@/features/Variant/Variant.model";
 import { formatLocalDate } from "@/lib/date";
 import { Button } from "@ui/Button";
+import Link from "@ui/Link";
 import Typography from "@ui/Typography";
 
 import HiddenMessage from "../../../../HiddenMessage";
@@ -18,6 +19,7 @@ interface Props {
   stock: number;
   lastSupply?: string;
   supplyTo: string;
+  suppliesTo: string;
   hidden?: boolean;
 }
 
@@ -40,15 +42,19 @@ export default function VariantCardContent(props: Props) {
           {`Последняя поставка: ${formatLocalDate(props.lastSupply)}`}
         </Typography>
       ) : null}
-      {isFeatureEnabled("supply") && !props.hidden ? (
-        <Button
-          className="self-start"
-          onClick={() => {
-            void navigate(props.supplyTo);
-          }}
-        >
-          Сделать поставку
-        </Button>
+      {isFeatureEnabled("supply") ? (
+        <div className="flex items-center gap-2 self-start">
+          {props.hidden ? null : (
+            <Button
+              onClick={() => {
+                void navigate(props.supplyTo);
+              }}
+            >
+              Сделать поставку
+            </Button>
+          )}
+          <Link to={props.suppliesTo}>Поставки</Link>
+        </div>
       ) : null}
     </>
   );

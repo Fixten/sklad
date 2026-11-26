@@ -84,6 +84,7 @@ export default function VariantCards(props: Props) {
                 stock={stats?.stock ?? 0}
                 lastSupply={stats?.lastSupply}
                 supplyTo={`${pathsRouter.supply}?variant=${String(variant.id)}`}
+                suppliesTo={`${pathsRouter.supplies}?variant=${String(variant.id)}`}
                 hidden={hidden}
               />
             }

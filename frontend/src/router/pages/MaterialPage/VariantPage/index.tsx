@@ -12,6 +12,7 @@ import useVariantData, {
 import PageLayout from "@/layout/PageLayout";
 import pathsRouter from "@/router/paths.router";
 import { Button } from "@ui/Button";
+import Link from "@ui/Link";
 import { toastSuccess } from "@ui/Toast";
 import Typography from "@ui/Typography";
 
@@ -102,15 +103,23 @@ export default function VariantPage() {
         Единица: {UnitLabels[variant.unit]}
       </Typography>
       {context ? <Typography variant="caption">{context}</Typography> : null}
-      {isFeatureEnabled("supply") && !variant.deleted_at ? (
-        <Button
-          className="self-start"
-          onClick={() => {
-            void navigate(`${pathsRouter.supply}?variant=${String(variantId)}`);
-          }}
-        >
-          Сделать поставку
-        </Button>
+      {isFeatureEnabled("supply") ? (
+        <div className="flex items-center gap-2 self-start">
+          {variant.deleted_at ? null : (
+            <Button
+              onClick={() => {
+                void navigate(
+                  `${pathsRouter.supply}?variant=${String(variantId)}`,
+                );
+              }}
+            >
+              Сделать поставку
+            </Button>
+          )}
+          <Link to={`${pathsRouter.supplies}?variant=${String(variantId)}`}>
+            Поставки
+          </Link>
+        </div>
       ) : null}
       <VariantSupplies variantId={variantId} />
     </PageLayout>
