@@ -5,31 +5,41 @@ import { screen, userEvent } from "storybook/test";
 
 import AppLayout from "@/layout/App.layout";
 
+import { catalogFixtures, stubCatalogApi } from "./catalogFixtures";
+import MaterialCardPage from "./MaterialCardPage";
+
 import MaterialPage from "./index";
 
-const queryClient = new QueryClient({
-  defaultOptions: { queries: { retry: false } },
-});
-
-const openPalette = async () => {
-  await userEvent.click(screen.getByPlaceholderText("Начать работу"));
+const openMaterial = async () => {
+  await userEvent.click(screen.getByRole("link", { name: "Доска сосна" }));
 };
 
 const meta = {
   component: MaterialPage,
   decorators: [
-    (Story) => (
-      <QueryClientProvider client={queryClient}>
-        <MemoryRouter initialEntries={["/materials"]}>
-          <Routes>
-            <Route element={<AppLayout />}>
-              <Route path="/materials" element={<Story />} />
-            </Route>
-          </Routes>
-        </MemoryRouter>
-      </QueryClientProvider>
-    ),
+    (Story) => {
+      const queryClient = new QueryClient({
+        defaultOptions: { queries: { retry: false } },
+      });
+
+      return (
+        <QueryClientProvider client={queryClient}>
+          <MemoryRouter initialEntries={["/materials"]}>
+            <Routes>
+              <Route element={<AppLayout />}>
+                <Route path="/materials" element={<Story />} />
+                <Route
+                  path="/materials/material/:id"
+                  element={<MaterialCardPage />}
+                />
+              </Route>
+            </Routes>
+          </MemoryRouter>
+        </QueryClientProvider>
+      );
+    },
   ],
+  beforeEach: () => stubCatalogApi(catalogFixtures),
   parameters: {
     layout: "fullscreen",
   },
@@ -41,8 +51,29 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
+export const CardPage: Story = {
+  play: openMaterial,
+};
+
+export const EditForm: Story = {
+  play: async () => {
+    await openMaterial();
+    await userEvent.click(
+      screen.getByRole("button", { name: "Редактировать" }),
+    );
+  },
+};
+
+export const HiddenList: Story = {
+  play: async () => {
+    await userEvent.click(
+      screen.getByRole("button", { name: "Показать скрытые" }),
+    );
+  },
+};
+
 export const ActionsOpen: Story = {
   play: async () => {
-    await openPalette();
+    await userEvent.click(screen.getByPlaceholderText("Начать работу"));
   },
 };
