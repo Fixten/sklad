@@ -12,7 +12,7 @@ import { Button } from "@ui/Button";
 import { toastSuccess } from "@ui/Toast";
 import Typography from "@ui/Typography";
 
-import VariantCards from "../Catalog/CardList/VariantCards";
+import VariantCards from "../Catalog/VariantCards";
 import EntityActions from "../EntityActions";
 import HiddenMessage from "../HiddenMessage";
 import VariantEditForm from "../VariantPage/EditForm";

@@ -11,7 +11,7 @@ import type { VariantModel } from "@/features/Variant/Variant.model";
 import pathsRouter from "@/router/paths.router";
 import { toastSuccess } from "@ui/Toast";
 
-import EntityActions from "../../../EntityActions";
+import EntityActions from "../../EntityActions";
 import CardGrid from "../CardGrid";
 import CatalogCard from "../CatalogCard";
 import VariantCardContent from "../CatalogCard/VariantCardContent";

@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router";
 
 import PageLayout from "@/layout/PageLayout";
-import CardGrid from "@/router/pages/MaterialPage/Catalog/CardList/CardGrid";
+import CardGrid from "@/router/pages/MaterialPage/Catalog/CardGrid";
 import SearchField from "@/router/pages/MaterialPage/Catalog/SearchField";
 import pathsRouter from "@/router/paths.router";
 

@@ -11,7 +11,7 @@ import useSupplyData from "@/features/Supply/useSupply";
 import type { Unit } from "@/features/units";
 import useVariantData from "@/features/Variant/useVariant";
 import type { VariantModel } from "@/features/Variant/Variant.model";
-import { supplyStatsByVariant } from "@/router/pages/MaterialPage/Catalog/CardList/VariantCards/supplyStats";
+import { supplyStatsByVariant } from "@/router/pages/MaterialPage/Catalog/VariantCards/supplyStats";
 import pathsRouter from "@/router/paths.router";
 
 export interface SupplyContext {

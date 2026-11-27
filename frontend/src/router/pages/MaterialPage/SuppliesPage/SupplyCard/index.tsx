@@ -2,7 +2,7 @@ import type { SupplyModel } from "@/features/Supply/Supply.model";
 import { formatUnitCost } from "@/features/Supply/supplyFormRules";
 import { UnitShortLabels } from "@/features/units";
 import { formatLocalDate } from "@/lib/date";
-import CatalogCard from "@/router/pages/MaterialPage/Catalog/CardList/CatalogCard";
+import CatalogCard from "@/router/pages/MaterialPage/Catalog/CatalogCard";
 import Typography from "@ui/Typography";
 
 import type { SupplyContext } from "../useSuppliesView";

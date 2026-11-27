@@ -9,7 +9,7 @@ import useVariantData from "@/features/Variant/useVariant";
 import pathsRouter from "@/router/paths.router";
 import { toastSuccess } from "@ui/Toast";
 
-import EntityActions from "../../../EntityActions";
+import EntityActions from "../../EntityActions";
 import CardGrid from "../CardGrid";
 import CatalogCard from "../CatalogCard";
 import MaterialCardContent from "../CatalogCard/MaterialCardContent";

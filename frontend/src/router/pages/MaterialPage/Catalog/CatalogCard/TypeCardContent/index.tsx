@@ -1,7 +1,7 @@
 import type { MaterialModel } from "@/features/Material/Material.model";
 import Typography from "@ui/Typography";
 
-import HiddenMessage from "../../../../HiddenMessage";
+import HiddenMessage from "../../../HiddenMessage";
 import summarizeNames from "../summarizeNames";
 
 interface Props {

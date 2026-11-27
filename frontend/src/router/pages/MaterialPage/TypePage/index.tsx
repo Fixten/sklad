@@ -11,7 +11,7 @@ import { Button } from "@ui/Button";
 import { toastSuccess } from "@ui/Toast";
 import Typography from "@ui/Typography";
 
-import MaterialCards from "../Catalog/CardList/MaterialCards";
+import MaterialCards from "../Catalog/MaterialCards";
 import EntityActions from "../EntityActions";
 import HiddenMessage from "../HiddenMessage";
 import MaterialEditForm from "../MaterialCardPage/EditForm";

@@ -7,10 +7,12 @@ import MaterialEditForm from "../MaterialCardPage/EditForm";
 import TypeEditForm from "../TypePage/EditForm";
 import VariantEditForm from "../VariantPage/EditForm";
 
-import CardList from "./CardList";
 import { type CatalogLevel } from "./levels";
 import LevelSwitcher from "./LevelSwitcher";
+import MaterialCards from "./MaterialCards";
 import SearchField from "./SearchField";
+import TypeCards from "./TypeCards";
+import VariantCards from "./VariantCards";
 
 const addLabels: Record<CatalogLevel, string> = {
   materials: "Добавить материал",
@@ -34,12 +36,16 @@ export default function MaterialCatalog() {
   }
 
   let createForm: ReactNode;
+  let cardList: ReactNode;
   if (level === "types") {
     createForm = <TypeEditForm onDone={closeCreate} />;
+    cardList = <TypeCards query={query} showHidden={showHidden} />;
   } else if (level === "materials") {
     createForm = <MaterialEditForm onDone={closeCreate} />;
+    cardList = <MaterialCards query={query} showHidden={showHidden} />;
   } else {
     createForm = <VariantEditForm onDone={closeCreate} />;
+    cardList = <VariantCards query={query} showHidden={showHidden} />;
   }
 
   return (
@@ -48,20 +54,25 @@ export default function MaterialCatalog() {
         <SearchField value={query} onChange={setQuery} />
         <LevelSwitcher value={level} onChange={handleLevelChange} />
       </div>
-      <div className="flex flex-wrap items-center gap-4">
-        {!creating ? (
-          <Button onClick={() => setCreating(true)}>{addLabels[level]}</Button>
-        ) : null}
-        <Button
-          onClick={() => setShowHidden((value) => !value)}
-          aria-pressed={showHidden}
-          variant={showHidden ? "secondary" : "outline"}
-        >
-          {showHidden ? "Скрыть скрытые" : "Показать скрытые"}
-        </Button>
-      </div>
-      {creating ? createForm : null}
-      <CardList level={level} query={query} showHidden={showHidden} />
+      {creating ? (
+        createForm
+      ) : (
+        <>
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <Button onClick={() => setCreating(true)}>
+              {addLabels[level]}
+            </Button>
+            <Button
+              onClick={() => setShowHidden((value) => !value)}
+              aria-pressed={showHidden}
+              variant="ghost"
+            >
+              {showHidden ? "Скрыть скрытые" : "Показать скрытые"}
+            </Button>
+          </div>
+          {cardList}
+        </>
+      )}
     </div>
   );
 }

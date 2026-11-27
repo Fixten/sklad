@@ -8,7 +8,7 @@ import useMaterialTypeData, {
 import pathsRouter from "@/router/paths.router";
 import { toastSuccess } from "@ui/Toast";
 
-import EntityActions from "../../../EntityActions";
+import EntityActions from "../../EntityActions";
 import CardGrid from "../CardGrid";
 import CatalogCard from "../CatalogCard";
 import TypeCardContent from "../CatalogCard/TypeCardContent";

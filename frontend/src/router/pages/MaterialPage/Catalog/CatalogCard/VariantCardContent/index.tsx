@@ -10,7 +10,7 @@ import { Button } from "@ui/Button";
 import Link from "@ui/Link";
 import Typography from "@ui/Typography";
 
-import HiddenMessage from "../../../../HiddenMessage";
+import HiddenMessage from "../../../HiddenMessage";
 
 interface Props {
   variant: VariantModel;

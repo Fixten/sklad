@@ -2,7 +2,7 @@ import type { MaterialTypeModel } from "@/features/MaterialType/MaterialType.mod
 import type { VariantModel } from "@/features/Variant/Variant.model";
 import Typography from "@ui/Typography";
 
-import HiddenMessage from "../../../../HiddenMessage";
+import HiddenMessage from "../../../HiddenMessage";
 import summarizeNames from "../summarizeNames";
 
 interface Props {
