@@ -1,13 +1,17 @@
 import type { MaterialModel } from "@/features/Material/Material.model";
 import type { MaterialTypeModel } from "@/features/MaterialType/MaterialType.model";
+import type { SupplierModel } from "@/features/Supplier/Supplier.model";
 import type { SupplyModel } from "@/features/Supply/Supply.model";
 import type { VariantModel } from "@/features/Variant/Variant.model";
 import { createApiStub, errorResponse } from "@/test/apiStub";
+
+import { supplierFixtures, supplyFixtures } from "./SuppliesPage/fixtures";
 
 export interface PageFixtures {
   materials?: MaterialModel[];
   types?: MaterialTypeModel[];
   variants?: VariantModel[];
+  suppliers?: SupplierModel[];
   supplies?: SupplyModel[];
   unitLocked?: boolean;
 }
@@ -162,10 +166,17 @@ export const catalogFixtures = {
   supplies: catalogSupplies,
 } satisfies PageFixtures;
 
+export const suppliesFixtures: PageFixtures = {
+  ...catalogFixtures,
+  suppliers: supplierFixtures,
+  supplies: supplyFixtures,
+};
+
 export const pageRoutes = (fixtures: PageFixtures = {}) => {
   const materials = (fixtures.materials ?? []).map((row) => ({ ...row }));
   const types = (fixtures.types ?? []).map((row) => ({ ...row }));
   const variants = (fixtures.variants ?? []).map((row) => ({ ...row }));
+  const suppliers = fixtures.suppliers ?? supplierFixtures;
   const supplies = fixtures.supplies ?? [];
 
   const active = <T extends { deleted_at?: string | null }>(rows: T[]) =>
@@ -350,7 +361,7 @@ export const pageRoutes = (fixtures: PageFixtures = {}) => {
         return { ...row, unit_locked: false };
       },
     },
-    "/api/supplier": { get: () => [] },
+    "/api/supplier": { get: () => suppliers },
     "/api/supply": {
       get: ({ search }: { search: URLSearchParams }) => {
         const variantId = search.get("material_variant_id");
