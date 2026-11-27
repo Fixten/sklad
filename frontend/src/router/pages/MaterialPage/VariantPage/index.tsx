@@ -77,7 +77,7 @@ export default function VariantPage() {
         className="absolute top-0 right-0 flex gap-2"
         data-testid="page-actions"
       >
-        <Button onClick={() => setEditingId(variantId)}>
+        <Button variant="outline" onClick={() => setEditingId(variantId)}>
           {variant.deleted_at ? "Переименовать" : "Редактировать"}
         </Button>
         <EntityActions
@@ -102,6 +102,7 @@ export default function VariantPage() {
       {context ? <Typography variant="caption">{context}</Typography> : null}
       {isFeatureEnabled("supply") && !variant.deleted_at ? (
         <Button
+          className="self-start"
           onClick={() => {
             void navigate(`${pathsRouter.supply}?variant=${String(variantId)}`);
           }}

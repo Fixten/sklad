@@ -49,9 +49,12 @@ export default function MaterialCatalog() {
       {creating ? (
         createForm
       ) : (
-        <Button onClick={() => setCreating(true)}>{addLabels[level]}</Button>
+        <Button className="self-start" onClick={() => setCreating(true)}>
+          {addLabels[level]}
+        </Button>
       )}
       <Button
+        className="self-start"
         onClick={() => setShowHidden((value) => !value)}
         aria-pressed={showHidden}
         variant={showHidden ? "secondary" : "outline"}

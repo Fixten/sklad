@@ -63,7 +63,10 @@ export default function MaterialCardPage() {
     );
   } else {
     addVariant = (
-      <Button onClick={() => setCreatingForId(materialId)}>
+      <Button
+        className="self-start"
+        onClick={() => setCreatingForId(materialId)}
+      >
         Добавить вариант
       </Button>
     );
@@ -76,6 +79,7 @@ export default function MaterialCardPage() {
         data-testid="page-actions"
       >
         <Button
+          variant="outline"
           onClick={() => {
             setCreatingForId(undefined);
             setEditingId(materialId);
