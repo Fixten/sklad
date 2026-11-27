@@ -23,12 +23,7 @@ import VariantPage from "./VariantPage";
 
 import MaterialPage from "./index";
 
-export {
-  type PageFixtures,
-  catalogFixtures,
-  pageRoutes,
-  suppliesFixtures,
-};
+export { type PageFixtures, catalogFixtures, pageRoutes, suppliesFixtures };
 
 export const stubPageApi = (fixtures: PageFixtures = {}) =>
   stubRoutes(pageRoutes(fixtures));
