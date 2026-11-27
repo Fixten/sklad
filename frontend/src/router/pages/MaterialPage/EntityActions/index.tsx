@@ -44,7 +44,9 @@ export default function EntityActions(props: Props) {
           >
             Да
           </Button>
-          <Button onClick={() => setConfirming(false)}>Отмена</Button>
+          <Button onClick={() => setConfirming(false)} variant="outline">
+            Отмена
+          </Button>
         </div>
       </div>
     );

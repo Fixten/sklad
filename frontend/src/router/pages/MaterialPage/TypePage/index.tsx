@@ -61,7 +61,7 @@ export default function TypePage() {
     );
   } else {
     addMaterial = (
-      <Button onClick={() => setCreatingForId(type.id)}>
+      <Button className="self-start" onClick={() => setCreatingForId(type.id)}>
         Добавить материал
       </Button>
     );
@@ -74,6 +74,7 @@ export default function TypePage() {
         data-testid="page-actions"
       >
         <Button
+          variant="outline"
           onClick={() => {
             setCreatingForId(undefined);
             setEditingId(typeId);

@@ -146,7 +146,9 @@ export default function VariantEditForm(props: Props) {
         >
           Сохранить
         </Button>
-        <Button onClick={props.onDone}>Отмена</Button>
+        <Button onClick={props.onDone} variant="outline">
+          Отмена
+        </Button>
       </div>
     </Form>
   );
