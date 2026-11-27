@@ -72,29 +72,31 @@ export default function VariantPage() {
   const context = [material?.name, type?.name].filter(Boolean).join(" · ");
 
   return (
-    <PageLayout back={back} title={variant.name} className="relative">
-      <div
-        className="absolute top-0 right-0 flex gap-2"
-        data-testid="page-actions"
-      >
-        <Button variant="outline" onClick={() => setEditingId(variantId)}>
-          {variant.deleted_at ? "Переименовать" : "Редактировать"}
-        </Button>
-        <EntityActions
-          isHidden={!!variant.deleted_at}
-          onDelete={() => {
-            mutations.removeMutation.mutate(variantId, {
-              onSuccess: () => {
-                toastSuccess("Удалено");
-                void navigate(pathsRouter.material);
-              },
-            });
-          }}
-          onRestore={() => mutations.restoreMutation.mutate(variantId)}
-          deleteBusy={mutations.removeMutation.isPending}
-          restoreBusy={mutations.restoreMutation.isPending}
-        />
-      </div>
+    <PageLayout
+      back={back}
+      title={variant.name}
+      actions={
+        <div className="flex flex-wrap gap-2" data-testid="page-actions">
+          <Button variant="outline" onClick={() => setEditingId(variantId)}>
+            {variant.deleted_at ? "Переименовать" : "Редактировать"}
+          </Button>
+          <EntityActions
+            isHidden={!!variant.deleted_at}
+            onDelete={() => {
+              mutations.removeMutation.mutate(variantId, {
+                onSuccess: () => {
+                  toastSuccess("Удалено");
+                  void navigate(pathsRouter.material);
+                },
+              });
+            }}
+            onRestore={() => mutations.restoreMutation.mutate(variantId)}
+            deleteBusy={mutations.removeMutation.isPending}
+            restoreBusy={mutations.restoreMutation.isPending}
+          />
+        </div>
+      }
+    >
       {variant.deleted_at ? <HiddenMessage /> : null}
       <Typography variant="caption">
         Единица: {UnitLabels[variant.unit]}

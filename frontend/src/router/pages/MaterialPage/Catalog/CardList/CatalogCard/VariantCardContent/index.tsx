@@ -42,6 +42,7 @@ export default function VariantCardContent(props: Props) {
       ) : null}
       {isFeatureEnabled("supply") && !props.hidden ? (
         <Button
+          className="self-start"
           onClick={() => {
             void navigate(props.supplyTo);
           }}

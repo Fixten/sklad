@@ -8,12 +8,15 @@ interface Props {
 
 export default function CardGrid(props: Props) {
   return (
-    <div data-testid="material-catalog-list" className="flex flex-col gap-4">
+    <div
+      data-testid="material-catalog-list"
+      className="grid grid-cols-1 gap-4 sm:grid-cols-2"
+    >
       {!props.loading && props.count === 0 ? (
         <Typography
           data-testid="material-catalog-empty"
           variant="caption"
-          className="text-muted-foreground"
+          className="text-muted-foreground col-span-full py-8 text-center"
         >
           Каталог пуст
         </Typography>

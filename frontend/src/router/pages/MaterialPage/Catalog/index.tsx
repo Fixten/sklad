@@ -44,23 +44,23 @@ export default function MaterialCatalog() {
 
   return (
     <div className="flex flex-col gap-4">
-      <SearchField value={query} onChange={setQuery} />
-      <LevelSwitcher value={level} onChange={handleLevelChange} />
-      {creating ? (
-        createForm
-      ) : (
-        <Button className="self-start" onClick={() => setCreating(true)}>
-          {addLabels[level]}
+      <div className="grid gap-4 sm:grid-cols-2">
+        <SearchField value={query} onChange={setQuery} />
+        <LevelSwitcher value={level} onChange={handleLevelChange} />
+      </div>
+      <div className="flex flex-wrap items-center gap-4">
+        {!creating ? (
+          <Button onClick={() => setCreating(true)}>{addLabels[level]}</Button>
+        ) : null}
+        <Button
+          onClick={() => setShowHidden((value) => !value)}
+          aria-pressed={showHidden}
+          variant={showHidden ? "secondary" : "outline"}
+        >
+          {showHidden ? "Скрыть скрытые" : "Показать скрытые"}
         </Button>
-      )}
-      <Button
-        className="self-start"
-        onClick={() => setShowHidden((value) => !value)}
-        aria-pressed={showHidden}
-        variant={showHidden ? "secondary" : "outline"}
-      >
-        {showHidden ? "Скрыть скрытые" : "Показать скрытые"}
-      </Button>
+      </div>
+      {creating ? createForm : null}
       <CardList level={level} query={query} showHidden={showHidden} />
     </div>
   );

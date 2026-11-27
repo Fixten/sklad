@@ -73,35 +73,37 @@ export default function MaterialCardPage() {
   }
 
   return (
-    <PageLayout back={back} title={material.name} className="relative">
-      <div
-        className="absolute top-0 right-0 flex gap-2"
-        data-testid="page-actions"
-      >
-        <Button
-          variant="outline"
-          onClick={() => {
-            setCreatingForId(undefined);
-            setEditingId(materialId);
-          }}
-        >
-          {material.deleted_at ? "Переименовать" : "Редактировать"}
-        </Button>
-        <EntityActions
-          isHidden={!!material.deleted_at}
-          onDelete={() => {
-            mutations.removeMutation.mutate(materialId, {
-              onSuccess: () => {
-                toastSuccess("Удалено");
-                void navigate(pathsRouter.material);
-              },
-            });
-          }}
-          onRestore={() => mutations.restoreMutation.mutate(materialId)}
-          deleteBusy={mutations.removeMutation.isPending}
-          restoreBusy={mutations.restoreMutation.isPending}
-        />
-      </div>
+    <PageLayout
+      back={back}
+      title={material.name}
+      actions={
+        <div className="flex flex-wrap gap-2" data-testid="page-actions">
+          <Button
+            variant="outline"
+            onClick={() => {
+              setCreatingForId(undefined);
+              setEditingId(materialId);
+            }}
+          >
+            {material.deleted_at ? "Переименовать" : "Редактировать"}
+          </Button>
+          <EntityActions
+            isHidden={!!material.deleted_at}
+            onDelete={() => {
+              mutations.removeMutation.mutate(materialId, {
+                onSuccess: () => {
+                  toastSuccess("Удалено");
+                  void navigate(pathsRouter.material);
+                },
+              });
+            }}
+            onRestore={() => mutations.restoreMutation.mutate(materialId)}
+            deleteBusy={mutations.removeMutation.isPending}
+            restoreBusy={mutations.restoreMutation.isPending}
+          />
+        </div>
+      }
+    >
       {material.deleted_at ? <HiddenMessage /> : null}
       {material.description ? (
         <Typography>{material.description}</Typography>

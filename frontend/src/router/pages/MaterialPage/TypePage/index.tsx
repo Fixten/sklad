@@ -68,35 +68,37 @@ export default function TypePage() {
   }
 
   return (
-    <PageLayout back={back} title={type.name} className="relative">
-      <div
-        className="absolute top-0 right-0 flex gap-2"
-        data-testid="page-actions"
-      >
-        <Button
-          variant="outline"
-          onClick={() => {
-            setCreatingForId(undefined);
-            setEditingId(typeId);
-          }}
-        >
-          {type.deleted_at ? "Переименовать" : "Редактировать"}
-        </Button>
-        <EntityActions
-          isHidden={!!type.deleted_at}
-          onDelete={() => {
-            mutations.removeMutation.mutate(typeId, {
-              onSuccess: () => {
-                toastSuccess("Удалено");
-                void navigate(pathsRouter.material);
-              },
-            });
-          }}
-          onRestore={() => mutations.restoreMutation.mutate(typeId)}
-          deleteBusy={mutations.removeMutation.isPending}
-          restoreBusy={mutations.restoreMutation.isPending}
-        />
-      </div>
+    <PageLayout
+      back={back}
+      title={type.name}
+      actions={
+        <div className="flex flex-wrap gap-2" data-testid="page-actions">
+          <Button
+            variant="outline"
+            onClick={() => {
+              setCreatingForId(undefined);
+              setEditingId(typeId);
+            }}
+          >
+            {type.deleted_at ? "Переименовать" : "Редактировать"}
+          </Button>
+          <EntityActions
+            isHidden={!!type.deleted_at}
+            onDelete={() => {
+              mutations.removeMutation.mutate(typeId, {
+                onSuccess: () => {
+                  toastSuccess("Удалено");
+                  void navigate(pathsRouter.material);
+                },
+              });
+            }}
+            onRestore={() => mutations.restoreMutation.mutate(typeId)}
+            deleteBusy={mutations.removeMutation.isPending}
+            restoreBusy={mutations.restoreMutation.isPending}
+          />
+        </div>
+      }
+    >
       {type.deleted_at ? <HiddenMessage /> : null}
       {type.description ? <Typography>{type.description}</Typography> : null}
       {addMaterial}

@@ -8,6 +8,7 @@ interface PageLayoutProps {
   back?: { to: string; label: string };
   title: string;
   className?: string;
+  actions?: ReactNode;
   children?: ReactNode;
 }
 
@@ -15,6 +16,7 @@ export default function PageLayout({
   back,
   title,
   className,
+  actions,
   children,
 }: PageLayoutProps) {
   return (
@@ -28,7 +30,14 @@ export default function PageLayout({
           {`← ${back.label}`}
         </Link>
       ) : null}
-      <Typography variant="display">{title}</Typography>
+      {actions ? (
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <Typography variant="display">{title}</Typography>
+          {actions}
+        </div>
+      ) : (
+        <Typography variant="display">{title}</Typography>
+      )}
       {children}
     </div>
   );
