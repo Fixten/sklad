@@ -13,6 +13,7 @@ import healthRouter from "./features/health/health.router.js";
 import materialRouter from "./features/material/material.router.js";
 import materialTypeRouter from "./features/materialType/materialType.router.js";
 import materialVariantRouter from "./features/materialVariant/materialVariant.router.js";
+import productTemplateRouter from "./features/product/productTemplate.router.js";
 import settingsRouter from "./features/settings/settings.router.js";
 import supplierRouter from "./features/supplier/supplier.router.js";
 import supplyRouter from "./features/supply/supply.router.js";
@@ -51,6 +52,8 @@ export default function getServer(features = readFeatureFlags()) {
   if (features.material) apiRouter.use(Urls.material, materialRouter);
   if (features.supply) apiRouter.use(Urls.supply, supplyRouter);
   if (features.supplier) apiRouter.use(Urls.supplier, supplierRouter);
+  if (features.productTemplate)
+    apiRouter.use(Urls.productTemplate, productTemplateRouter);
 
   app.use(Urls.apiBase, apiRouter);
   app.use(errorHandler);

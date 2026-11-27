@@ -62,7 +62,8 @@ export class MaterialVariantService {
   delete(id: number) {
     const referenced =
       this.supplyService.getAllByVariant(id).length > 0 ||
-      this.repository.hasUsage(id);
+      this.repository.hasUsage(id) ||
+      this.repository.hasTemplateReferences(id);
     if (referenced) return this.repository.softDelete(id);
     else return this.repository.hardDelete(id);
   }

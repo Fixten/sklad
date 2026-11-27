@@ -7,6 +7,7 @@ import { registerHealthOpenApi } from "../features/health/health.openapi.js";
 import { registerMaterialOpenApi } from "../features/material/material.openapi.js";
 import { registerMaterialTypeOpenApi } from "../features/materialType/materialType.openapi.js";
 import { registerMaterialVariantOpenApi } from "../features/materialVariant/materialVariant.openapi.js";
+import { registerProductTemplateOpenApi } from "../features/product/productTemplate.openapi.js";
 import { registerSettingsOpenApi } from "../features/settings/settings.openapi.js";
 import { registerSupplierOpenApi } from "../features/supplier/supplier.openapi.js";
 import { registerSupplyOpenApi } from "../features/supply/supply.openapi.js";
@@ -20,6 +21,7 @@ registry.register("ErrorResponse", ErrorResponseZ);
 registerMaterialTypeOpenApi(registry);
 registerMaterialOpenApi(registry);
 registerMaterialVariantOpenApi(registry);
+registerProductTemplateOpenApi(registry);
 registerSupplyOpenApi(registry);
 registerSupplierOpenApi(registry);
 registerSettingsOpenApi(registry);
@@ -38,6 +40,7 @@ export function buildSpec() {
       { name: "Material Type" },
       { name: "Material" },
       { name: "Material Variant" },
+      { name: "Product Template" },
       { name: "Supply" },
       { name: "Supplier" },
       { name: "Settings" },

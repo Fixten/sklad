@@ -17,6 +17,7 @@ export function truncate() {
     DELETE FROM supply_consumptions;
     DELETE FROM material_usages;
     DELETE FROM product_items;
+    DELETE FROM template_materials;
     DELETE FROM product_templates;
     DELETE FROM supplies;
     DELETE FROM material_variants;

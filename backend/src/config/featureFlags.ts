@@ -15,6 +15,7 @@ export const FEATURE_NAMES = [
   "material",
   "supply",
   "supplier",
+  "productTemplate",
 ] as const;
 
 type FeatureName = (typeof FEATURE_NAMES)[number];

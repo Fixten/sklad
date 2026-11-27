@@ -11,6 +11,7 @@ import SuppliesPage from "./pages/MaterialPage/SuppliesPage";
 import SupplyPage from "./pages/MaterialPage/SupplyPage";
 import TypePage from "./pages/MaterialPage/TypePage";
 import VariantPage from "./pages/MaterialPage/VariantPage";
+import ProductTemplatePage from "./pages/ProductTemplatePage";
 import SettingsPage from "./pages/SettingsPage";
 import pathsRouter from "./paths.router";
 
@@ -47,6 +48,18 @@ const router = createBrowserRouter([
             {
               path: pathsRouter.materialVariant,
               Component: VariantPage,
+            },
+          ]
+        : []),
+      ...(isMaterialEnabled() && isFeatureEnabled("productTemplate")
+        ? [
+            {
+              path: pathsRouter.products,
+              Component: ProductTemplatePage,
+            },
+            {
+              path: pathsRouter.productTemplate,
+              Component: ProductTemplatePage,
             },
           ]
         : []),

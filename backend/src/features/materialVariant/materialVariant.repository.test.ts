@@ -5,13 +5,14 @@ import { materialTypeSchema } from "../materialType/materialType.schema.js";
 import { materialUsageSchema } from "../materialUsage/materialUsage.schema.js";
 import { productItemSchema } from "../product/productItem.schema.js";
 import { productTemplateSchema } from "../product/productTemplate.schema.js";
+import { templateMaterialSchema } from "../product/templateMaterial.schema.js";
 
 import { MaterialVariantRepository } from "./materialVariant.repository.js";
 import { materialVariantSchema } from "./materialVariant.schema.js";
 
 import type { TestDbWithMigrations } from "@/db/dbTestHelpers.js";
 
-describe("MaterialVariantRepository.hasUsage", () => {
+describe("MaterialVariantRepository", () => {
   let db: TestDbWithMigrations;
   let repository: MaterialVariantRepository;
   let variantId: number;
@@ -73,6 +74,35 @@ describe("MaterialVariantRepository.hasUsage", () => {
       .returning()
       .all();
   }
+
+  function addTemplateReference(forVariantId: number) {
+    templateSeq += 1;
+    const [template] = db.client
+      .insert(productTemplateSchema)
+      .values({ name: `Template ${String(templateSeq)}` })
+      .returning()
+      .all();
+    db.client
+      .insert(templateMaterialSchema)
+      .values({
+        product_template_id: template!.id,
+        material_variant_id: forVariantId,
+        default_quantity: 1000,
+      })
+      .run();
+  }
+
+  test("hasTemplateReferences is false without template materials", () => {
+    expect(repository.hasTemplateReferences(variantId)).toBe(false);
+  });
+
+  test("hasTemplateReferences detects a default without counting historical usage", () => {
+    addTemplateReference(variantId);
+
+    expect(repository.hasTemplateReferences(variantId)).toBe(true);
+    expect(repository.hasTemplateReferences(otherVariantId)).toBe(false);
+    expect(repository.hasUsage(variantId)).toBe(false);
+  });
 
   test("returns false when the variant has no usages", () => {
     expect(repository.hasUsage(variantId)).toBe(false);

@@ -22,6 +22,13 @@
       "when": 1794520760466,
       "tag": "0002_young_iron_man",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1795699791560,
+      "tag": "0003_far_zombie",
+      "breakpoints": true
     }
   ]
 }

@@ -11,6 +11,7 @@ const FEATURE_ROUTES = {
   material: "/api/material",
   supply: "/api/supply",
   supplier: "/api/supplier",
+  productTemplate: "/api/product-template",
 } as const;
 
 const FEATURE_NAMES = Object.keys(

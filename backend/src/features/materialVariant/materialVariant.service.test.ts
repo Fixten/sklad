@@ -40,6 +40,7 @@ describe("VariantService", () => {
       new MaterialVariantRepository() as jest.Mocked<MaterialVariantRepository>;
     repo.getMaterialReference.mockReturnValue({ id: 1, deleted_at: null });
     repo.hasUsage.mockReturnValue(false);
+    repo.hasTemplateReferences.mockReturnValue(false);
     repo.create.mockReturnValue(row());
     repo.update.mockReturnValue(row());
     repo.restore.mockReturnValue(row());
@@ -135,6 +136,13 @@ describe("VariantService", () => {
       expect(repo.hardDelete).not.toHaveBeenCalled();
     });
 
+    test("soft deletes when only template materials reference the variant", () => {
+      repo.hasTemplateReferences.mockReturnValue(true);
+      service.delete(0);
+      expect(repo.softDelete).toHaveBeenCalled();
+      expect(repo.hardDelete).not.toHaveBeenCalled();
+    });
+
     test("hard deletes when neither supplies nor usages exist", () => {
       service.delete(0);
       expect(repo.hardDelete).toHaveBeenCalled();
@@ -217,6 +225,16 @@ describe("VariantService", () => {
         ErrorMessages.UNIT_CHANGE_AFTER_USAGE,
       );
       expect(repo.update).not.toHaveBeenCalled();
+    });
+
+    test("template references do not lock the unit or block a unit change", () => {
+      repo.hasTemplateReferences.mockReturnValue(true);
+      repo.getById.mockReturnValue(row({ unit: "meters" }));
+      repo.getByMaterial.mockReturnValue([]);
+
+      expect(service.get(0).unit_locked).toBe(false);
+      service.updateVariant(0, { unit: "pieces" });
+      expect(repo.update).toHaveBeenCalledWith(0, { unit: "pieces" });
     });
 
     test("allows unchanged unit while supplies reference the variant", () => {

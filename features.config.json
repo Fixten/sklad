@@ -5,6 +5,7 @@
     "material": true,
     "supply": true,
     "supplier": true,
+    "productTemplate": true,
     "settings": false
   }
 }

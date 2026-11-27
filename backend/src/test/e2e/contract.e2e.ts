@@ -34,6 +34,7 @@ describe("contract e2e", () => {
       "/api/material-variant",
       "/api/supply",
       "/api/supplier",
+      "/api/product-template",
     ];
     for (const path of paths) {
       const res = await request(app).get(path);
@@ -51,6 +52,7 @@ describe("contract e2e", () => {
       "/api/supply/999",
       "/api/supply/stock/999",
       "/api/supplier/999",
+      "/api/product-template/999",
     ];
     for (const path of paths) {
       const res = await request(app).get(path);
@@ -72,6 +74,7 @@ describe("contract e2e", () => {
       ],
       ["/api/supplier", { name: "Timber Co", extra: true }],
       ["/api/settings", { work_hour_cost: 100, extra: true }],
+      ["/api/product-template", { name: "Shelf", extra: true }],
     ] as const;
     for (const [path, body] of posts) {
       const res = await request(app).post(path).send(body);
@@ -94,6 +97,7 @@ describe("contract e2e", () => {
       ["/api/material-variant/999", { name: "new" }],
       ["/api/supply/999", { quantity: 1 }],
       ["/api/supplier/999", { name: "new" }],
+      ["/api/product-template/999", { name: "new" }],
     ] as const;
     for (const [path, body] of patches) {
       const res = await request(app).patch(path).send(body);
@@ -108,6 +112,7 @@ describe("contract e2e", () => {
       "/api/material-variant/restore/999",
       "/api/supply/restore/999",
       "/api/supplier/restore/999",
+      "/api/product-template/restore/999",
     ]) {
       const res = await request(app).post(path);
       expectError(res, 404);

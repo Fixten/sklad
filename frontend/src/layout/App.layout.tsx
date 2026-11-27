@@ -13,6 +13,9 @@ export const navItems = [
   ...(isMaterialEnabled()
     ? [{ link: pathsRouter.material, name: "Материалы" }]
     : []),
+  ...(isMaterialEnabled() && isFeatureEnabled("productTemplate")
+    ? [{ link: pathsRouter.products, name: "Шаблоны" }]
+    : []),
 ];
 
 export default function AppLayout() {

@@ -20,10 +20,24 @@ Each required Material Variant occurs once in a Product Template.
 
 The Product Template references an exact Material Variant. If a product needs a different variant, the user can create/copy a template and change the required variant.
 
-The user can create, view, edit, and delete Product Templates when permitted by existing Product Items.
+The user can create, view, edit, and delete Product Templates. Deleting a template referenced by Product Items hides it instead of removing it, and hidden templates can be restored.
 
 Changes to a Product Template affect future Product Item creation only. Existing Product Items are not changed by later template edits.
 
 ## Enables
 
 This epic establishes reusable product definitions required for creating physical Product Items.
+
+## User Stories
+
+- **Maintain Product Templates**
+  - Create Product Template
+  - View Product Templates
+  - Edit Product Template
+  - Duplicate (copy) Product Template
+  - Delete Product Template
+  - Restore hidden Product Template
+  - Template contains Material Variants with default quantities (material rows)
+  - Each Material Variant occurs once in a Product Template
+  - Material row quantity follows the Material Variant's unit
+  - Appropriate relationship/deletion constraints

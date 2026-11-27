@@ -10,6 +10,7 @@ const badRequestMessages = [
   ErrorMessages.INVALID_DECIMAL_VALUE,
   ErrorMessages.INVALID_DECIMAL_PRECISION,
   ErrorMessages.QUANTITY_NOT_POSITIVE,
+  ErrorMessages.HOURS_NEGATIVE,
   ErrorMessages.PRICE_NEGATIVE,
 ] as string[];
 
@@ -21,6 +22,7 @@ const conflictMessages = [
   ErrorMessages.QUANTITY_REQUIRED_FOR_UNIT_CHANGE,
   ErrorMessages.REFERENCED_ITEM_DELETED,
   ErrorMessages.VARIANT_CHANGE_AFTER_USAGE,
+  ErrorMessages.VARIANT_ALREADY_IN_TEMPLATE,
 ] as string[];
 
 const NOT_FOUND_MESSAGES = [

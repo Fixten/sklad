@@ -25,6 +25,10 @@ import {
   productTemplateTable,
 } from "@/features/product/productTemplate.schema.js";
 import {
+  templateMaterialSchema,
+  templateMaterialTable,
+} from "@/features/product/templateMaterial.schema.js";
+import {
   settingsSchema,
   settingsTable,
 } from "@/features/settings/settings.schema.js";
@@ -49,6 +53,7 @@ export {
   supplierSchema,
   supplyConsumptionSchema,
   supplySchema,
+  templateMaterialSchema,
 };
 const schemas = {
   [materialTable]: materialSchema,
@@ -58,6 +63,7 @@ const schemas = {
   [supplyTable]: supplySchema,
   [settingsTable]: settingsSchema,
   [productTemplateTable]: productTemplateSchema,
+  [templateMaterialTable]: templateMaterialSchema,
   [productItemTable]: productItemSchema,
   [materialUsageTable]: materialUsageSchema,
   [supplyConsumptionTable]: supplyConsumptionSchema,

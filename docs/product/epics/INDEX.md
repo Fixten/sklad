@@ -39,28 +39,28 @@ and:
 
 ## Epics
 
-Each epic file holds **Goal**, **Scope**, **Enables**, and **User Stories**, and links to the PRD chapter(s) it implements. `User Stories` exists only where the epic has been broken down (currently Epic 1).
+Each epic file holds **Goal**, **Scope**, and **Enables**, and links to the PRD chapter(s) it implements. `User Stories` is included where the epic has been broken down (currently Epics 1 and 3).
 
-| # | File | Epic | PRD | User Stories |
-|---|---|---|---|---|
-| 1 | `1-manage-material-catalog.md` | Manage Material Catalog | `../prd/materials.md` | yes |
-| 2 | `2-manage-material-supplies.md` | Manage Material Supplies | `../prd/materials.md` | — |
-| 3 | `3-manage-product-templates.md` | Manage Product Templates | `../prd/products.md` | — |
-| 4 | `4-configure-labor-cost.md` | Configure Labor Cost | `../prd/costing.md` | — |
-| 5 | `5-manage-product-items.md` | Manage Product Items | `../prd/products.md` | — |
-| 6 | `6-manage-product-inventory.md` | Manage Product Inventory | `../prd/inventory.md` | — |
-| 7 | `7-manage-product-status.md` | Manage Product Status | `../prd/sales-and-status.md` | — |
-| 8 | `8-manage-product-costs.md` | Manage Product Costs | `../prd/costing.md` | — |
+| #   | File                            | Epic                     | PRD                          | User Stories |
+| --- | ------------------------------- | ------------------------ | ---------------------------- | ------------ |
+| 1   | `1-manage-material-catalog.md`  | Manage Material Catalog  | `../prd/materials.md`        | yes          |
+| 2   | `2-manage-material-supplies.md` | Manage Material Supplies | `../prd/materials.md`        | —            |
+| 3   | `3-manage-product-templates.md` | Manage Product Templates | `../prd/products.md`         | yes          |
+| 4   | `4-configure-labor-cost.md`     | Configure Labor Cost     | `../prd/costing.md`          | —            |
+| 5   | `5-manage-product-items.md`     | Manage Product Items     | `../prd/products.md`         | —            |
+| 6   | `6-manage-product-inventory.md` | Manage Product Inventory | `../prd/inventory.md`        | —            |
+| 7   | `7-manage-product-status.md`    | Manage Product Status    | `../prd/sales-and-status.md` | —            |
+| 8   | `8-manage-product-costs.md`     | Manage Product Costs     | `../prd/costing.md`          | —            |
 
 ## Concepts
 
-| Concept | Epic |
-|---|---|
-| Material Type / Material / Material Variant | 1 — `1-manage-material-catalog.md` |
-| Supply, Supplier, unit, material stock | 2 — `2-manage-material-supplies.md` |
-| Product Template | 3 — `3-manage-product-templates.md` |
-| Hourly labor cost setting | 4 — `4-configure-labor-cost.md` |
-| Product Item creation, material consumption, batch creation | 5 — `5-manage-product-items.md` |
-| Product inventory grouped by template | 6 — `6-manage-product-inventory.md` |
-| Statuses, sale information, customer/channel free text | 7 — `7-manage-product-status.md` |
-| Product Item cost and recalculation rules | 8 — `8-manage-product-costs.md` |
+| Concept                                                     | Epic                                |
+| ----------------------------------------------------------- | ----------------------------------- |
+| Material Type / Material / Material Variant                 | 1 — `1-manage-material-catalog.md`  |
+| Supply, Supplier, unit, material stock                      | 2 — `2-manage-material-supplies.md` |
+| Product Template                                            | 3 — `3-manage-product-templates.md` |
+| Hourly labor cost setting                                   | 4 — `4-configure-labor-cost.md`     |
+| Product Item creation, material consumption, batch creation | 5 — `5-manage-product-items.md`     |
+| Product inventory grouped by template                       | 6 — `6-manage-product-inventory.md` |
+| Statuses, sale information, customer/channel free text      | 7 — `7-manage-product-status.md`    |
+| Product Item cost and recalculation rules                   | 8 — `8-manage-product-costs.md`     |
