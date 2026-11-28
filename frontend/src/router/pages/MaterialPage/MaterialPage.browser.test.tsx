@@ -1607,10 +1607,11 @@ test("cancels a delete from the card without sending DELETE", async () => {
   await userEvent.type(screen.getByLabelText("Поиск"), "металл");
 
   await screen.getByRole("button", { name: "Удалить" }).click();
+  await expect.element(screen.getByText("Удалить?")).toBeInTheDocument();
   await expect
     .element(
       screen.getByText(
-        "Удалить? Если запись используется, она будет скрыта, а не удалена.",
+        "Если запись используется, она будет скрыта, а не удалена.",
       ),
     )
     .toBeInTheDocument();

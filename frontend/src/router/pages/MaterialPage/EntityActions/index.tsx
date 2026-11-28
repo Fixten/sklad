@@ -41,9 +41,12 @@ export default function EntityActions(props: Props) {
             </IconButton>
           }
         >
-          <Typography variant="caption" className="text-muted-foreground">
-            Удалить? Если запись используется, она будет скрыта, а не удалена.
-          </Typography>
+          <div className="flex flex-col gap-1">
+            <Typography variant="label">Удалить?</Typography>
+            <Typography variant="caption" className="text-muted-foreground">
+              Если запись используется, она будет скрыта, а не удалена.
+            </Typography>
+          </div>
           <div className="flex items-center gap-2">
             <IconButton
               aria-label="Да"
