@@ -1,6 +1,8 @@
 import { useState } from "react";
 
-import { Button } from "@ui/Button";
+import { CheckIcon, RotateCcwIcon, Trash2Icon, XIcon } from "@ui/Icon";
+import IconButton from "@ui/IconButton";
+import Popover from "@ui/Popover";
 import Typography from "@ui/Typography";
 
 interface Props {
@@ -13,50 +15,59 @@ interface Props {
 
 export default function EntityActions(props: Props) {
   const [confirming, setConfirming] = useState(false);
+  let content: React.ReactNode;
 
-  if (props.isHidden) {
-    return (
-      <div className="flex items-center gap-2 self-start">
-        <Button
+  switch (true) {
+    case props.isHidden:
+      content = (
+        <IconButton
+          aria-label="Восстановить"
+          title="Восстановить"
           onClick={() => void props.onRestore()}
           pending={props.restoreBusy}
         >
-          Восстановить
-        </Button>
-      </div>
-    );
+          <RotateCcwIcon aria-hidden="true" />
+        </IconButton>
+      );
+      break;
+    default:
+      content = (
+        <Popover
+          open={confirming}
+          onOpenChange={setConfirming}
+          trigger={
+            <IconButton aria-label="Удалить" title="Удалить">
+              <Trash2Icon aria-hidden="true" />
+            </IconButton>
+          }
+        >
+          <Typography variant="caption" className="text-muted-foreground">
+            Удалить? Если запись используется, она будет скрыта, а не удалена.
+          </Typography>
+          <div className="flex items-center gap-2">
+            <IconButton
+              aria-label="Да"
+              title="Да"
+              onClick={() => {
+                setConfirming(false);
+                void props.onDelete();
+              }}
+              pending={props.deleteBusy}
+              variant="destructive"
+            >
+              <CheckIcon aria-hidden="true" />
+            </IconButton>
+            <IconButton
+              aria-label="Отмена"
+              title="Отмена"
+              onClick={() => setConfirming(false)}
+            >
+              <XIcon aria-hidden="true" />
+            </IconButton>
+          </div>
+        </Popover>
+      );
   }
 
-  if (confirming) {
-    return (
-      <div className="flex flex-col gap-2 self-start">
-        <Typography variant="caption">
-          Удалить? Если запись используется, она будет скрыта, а не удалена.
-        </Typography>
-        <div className="flex items-center gap-2">
-          <Button
-            onClick={() => {
-              setConfirming(false);
-              void props.onDelete();
-            }}
-            pending={props.deleteBusy}
-            variant="destructive"
-          >
-            Да
-          </Button>
-          <Button onClick={() => setConfirming(false)} variant="outline">
-            Отмена
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex items-center gap-2 self-start">
-      <Button onClick={() => setConfirming(true)} variant="destructive">
-        Удалить
-      </Button>
-    </div>
-  );
+  return <div className="flex items-center gap-2 self-start">{content}</div>;
 }

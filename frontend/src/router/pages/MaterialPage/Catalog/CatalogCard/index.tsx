@@ -14,10 +14,10 @@ export default function CatalogCard(props: CatalogCardProps) {
       title={props.title}
       titleTo={props.to}
       description={props.description}
+      action={props.actions}
     >
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">{props.content}</div>
-        {props.actions}
       </div>
     </Card>
   );

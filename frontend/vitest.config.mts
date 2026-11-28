@@ -11,6 +11,7 @@ export default defineConfig({
   optimizeDeps: {
     include: [
       "@base-ui/react/dialog",
+      "@base-ui/react/popover",
       "@base-ui/react/select",
       "@hookform/resolvers/zod",
       "@tanstack/react-query",

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { generatePath } from "react-router";
 
 import useMaterialData from "@/features/Material/useMaterial";
@@ -16,6 +17,7 @@ import TypeCardContent from "../CatalogCard/TypeCardContent";
 interface Props {
   query: string;
   showHidden: boolean;
+  setHasHidden?: (value: boolean) => void;
 }
 
 export default function TypeCards(props: Props) {
@@ -26,13 +28,20 @@ export default function TypeCards(props: Props) {
   const activeMaterials = materials.getActiveData();
   const childrenOf = (type: MaterialTypeModel) =>
     activeMaterials.filter((material) => material.material_type_id === type.id);
-  const rows = props.showHidden ? types.getAllData() : types.getActiveData();
-  const visible = rows.filter((type) =>
+  const matchesQuery = (type: MaterialTypeModel) =>
     [type.name, ...childrenOf(type).map((material) => material.name)]
       .join(" ")
       .toLowerCase()
-      .includes(query),
-  );
+      .includes(query);
+  const matching = types.getAllData().filter(matchesQuery);
+  const visible = props.showHidden
+    ? matching
+    : matching.filter((type) => !type.deleted_at);
+
+  const { setHasHidden } = props;
+  useEffect(() => {
+    setHasHidden?.(matching.some((type) => !!type.deleted_at));
+  }, [matching, setHasHidden]);
 
   return (
     <CardGrid

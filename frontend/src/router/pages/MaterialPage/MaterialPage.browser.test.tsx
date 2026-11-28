@@ -1687,7 +1687,7 @@ test("soft-deletes a referenced entity from its page and returns to the catalog"
 
   const actions = screen.getByTestId("page-actions");
   await actions.getByRole("button", { name: "Удалить" }).click();
-  await actions.getByRole("button", { name: "Да" }).click();
+  await screen.getByRole("button", { name: "Да" }).click();
 
   await expect.element(screen.getByText("Удалено").first()).toBeInTheDocument();
   expect(router.state.location.pathname).toBe("/materials");
@@ -1729,7 +1729,7 @@ test("hard-deletes an unreferenced entity from its page and returns to the catal
 
   const actions = screen.getByTestId("page-actions");
   await actions.getByRole("button", { name: "Удалить" }).click();
-  await actions.getByRole("button", { name: "Да" }).click();
+  await screen.getByRole("button", { name: "Да" }).click();
 
   await expect.element(screen.getByText("Удалено").first()).toBeInTheDocument();
   expect(router.state.location.pathname).toBe("/materials");

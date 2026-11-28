@@ -1,14 +1,16 @@
-import { Button } from "@base/button";
+import { Button, type ButtonProps } from "@ui/Button";
 
-interface Props {
+interface Props extends Omit<
+  ButtonProps,
+  "size" | "children" | "pendingLabel"
+> {
   children: React.ReactNode;
-  onClick: () => void;
 }
 
 export default function IconButton(props: Props) {
   return (
-    <Button size="icon" variant="outline" onClick={props.onClick}>
-      {props.children}
+    <Button {...props} size="icon" variant={props.variant ?? "outline"}>
+      {props.pending ? null : props.children}
     </Button>
   );
 }

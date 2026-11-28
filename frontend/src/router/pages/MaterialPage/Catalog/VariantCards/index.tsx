@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { generatePath } from "react-router";
 
 import type { MaterialModel } from "@/features/Material/Material.model";
@@ -22,6 +23,7 @@ interface Props {
   query: string;
   showHidden: boolean;
   materialId?: number;
+  setHasHidden?: (value: boolean) => void;
 }
 
 export default function VariantCards(props: Props) {
@@ -45,15 +47,19 @@ export default function VariantCards(props: Props) {
       .join(" ")
       .toLowerCase();
   };
-  const rows = props.showHidden
-    ? variants.getAllData()
-    : variants.getActiveData();
-  const visible = rows.filter(
-    (variant) =>
-      (props.materialId === undefined ||
-        variant.material_id === props.materialId) &&
-      searchText(variant).includes(query),
-  );
+  const matchesQuery = (variant: VariantModel) =>
+    (props.materialId === undefined ||
+      variant.material_id === props.materialId) &&
+    searchText(variant).includes(query);
+  const matching = variants.getAllData().filter(matchesQuery);
+  const visible = props.showHidden
+    ? matching
+    : matching.filter((variant) => !variant.deleted_at);
+
+  const { setHasHidden } = props;
+  useEffect(() => {
+    setHasHidden?.(matching.some((variant) => !!variant.deleted_at));
+  }, [matching, setHasHidden]);
 
   return (
     <CardGrid

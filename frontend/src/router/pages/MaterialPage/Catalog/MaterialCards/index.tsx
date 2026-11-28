@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { generatePath } from "react-router";
 
 import type { MaterialModel } from "@/features/Material/Material.model";
@@ -18,6 +19,7 @@ interface Props {
   query: string;
   showHidden: boolean;
   typeId?: number;
+  setHasHidden?: (value: boolean) => void;
 }
 
 export default function MaterialCards(props: Props) {
@@ -41,15 +43,19 @@ export default function MaterialCards(props: Props) {
       .filter(Boolean)
       .join(" ")
       .toLowerCase();
-  const rows = props.showHidden
-    ? materials.getAllData()
-    : materials.getActiveData();
-  const visible = rows.filter(
-    (material) =>
-      (props.typeId === undefined ||
-        material.material_type_id === props.typeId) &&
-      searchText(material).includes(query),
-  );
+  const matchesQuery = (material: MaterialModel) =>
+    (props.typeId === undefined ||
+      material.material_type_id === props.typeId) &&
+    searchText(material).includes(query);
+  const matching = materials.getAllData().filter(matchesQuery);
+  const visible = props.showHidden
+    ? matching
+    : matching.filter((material) => !material.deleted_at);
+
+  const { setHasHidden } = props;
+  useEffect(() => {
+    setHasHidden?.(matching.some((material) => !!material.deleted_at));
+  }, [matching, setHasHidden]);
 
   return (
     <CardGrid
