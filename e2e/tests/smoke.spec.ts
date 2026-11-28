@@ -14,7 +14,7 @@ test("navigates between pages", async ({ page }) => {
   await page.getByRole("link", { name: "Материалы" }).click();
   await expect(page).toHaveURL("/materials");
 
-  await page.getByPlaceholder("Начать работу").fill("поставк");
-  await page.getByText("Сделать поставку").click();
+  await page.getByPlaceholder("Начать работу").click();
+  await page.getByRole("option", { name: "Сделать поставку" }).click();
   await expect(page).toHaveURL("/materials/supply");
 });

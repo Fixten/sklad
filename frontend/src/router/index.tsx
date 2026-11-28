@@ -5,6 +5,9 @@ import AppLayout from "@/layout/App.layout";
 import Home from "@/router/pages/Home";
 
 import MaterialPage from "./pages/MaterialPage";
+import CreateMaterialPage from "./pages/MaterialPage/CreateMaterialPage";
+import CreateTypePage from "./pages/MaterialPage/CreateTypePage";
+import CreateVariantPage from "./pages/MaterialPage/CreateVariantPage";
 import MaterialCardPage from "./pages/MaterialPage/MaterialCardPage";
 import SuppliersPage from "./pages/MaterialPage/SuppliersPage";
 import SuppliesPage from "./pages/MaterialPage/SuppliesPage";
@@ -36,6 +39,18 @@ const router = createBrowserRouter([
             {
               path: pathsRouter.material,
               Component: MaterialPage,
+            },
+            {
+              path: pathsRouter.materialTypeNew,
+              Component: CreateTypePage,
+            },
+            {
+              path: pathsRouter.materialItemNew,
+              Component: CreateMaterialPage,
+            },
+            {
+              path: pathsRouter.materialVariantNew,
+              Component: CreateVariantPage,
             },
             {
               path: pathsRouter.materialType,

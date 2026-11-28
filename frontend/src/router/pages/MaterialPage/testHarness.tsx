@@ -14,6 +14,9 @@ import {
   pageRoutes,
   suppliesFixtures,
 } from "./catalogFixtures";
+import CreateMaterialPage from "./CreateMaterialPage";
+import CreateTypePage from "./CreateTypePage";
+import CreateVariantPage from "./CreateVariantPage";
 import MaterialCardPage from "./MaterialCardPage";
 import SuppliersPage from "./SuppliersPage";
 import SuppliesPage from "./SuppliesPage";
@@ -41,6 +44,15 @@ export const renderPage = async (
         element: <AppLayout />,
         children: [
           { path: pathsRouter.material, element: <MaterialPage /> },
+          { path: pathsRouter.materialTypeNew, element: <CreateTypePage /> },
+          {
+            path: pathsRouter.materialItemNew,
+            element: <CreateMaterialPage />,
+          },
+          {
+            path: pathsRouter.materialVariantNew,
+            element: <CreateVariantPage />,
+          },
           { path: pathsRouter.supply, element: <SupplyPage /> },
           { path: pathsRouter.supplies, element: <SuppliesPage /> },
           { path: pathsRouter.suppliers, element: <SuppliersPage /> },

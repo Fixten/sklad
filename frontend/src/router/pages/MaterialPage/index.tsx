@@ -34,6 +34,27 @@ export default function MaterialPage() {
                 },
               ]
             : []),
+          {
+            value: "material-new",
+            label: "Добавить материал",
+            onSelect: () => {
+              void navigate(pathsRouter.materialItemNew);
+            },
+          },
+          {
+            value: "type-new",
+            label: "Добавить тип",
+            onSelect: () => {
+              void navigate(pathsRouter.materialTypeNew);
+            },
+          },
+          {
+            value: "variant-new",
+            label: "Добавить вариант",
+            onSelect: () => {
+              void navigate(pathsRouter.materialVariantNew);
+            },
+          },
           ...(isFeatureEnabled("supplier")
             ? [
                 {

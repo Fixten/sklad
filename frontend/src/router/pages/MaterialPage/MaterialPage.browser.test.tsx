@@ -49,6 +49,11 @@ const switchLevel = async (screen: Page, label: string) => {
   await screen.getByRole("option", { name: label }).click();
 };
 
+const selectCommandAction = async (screen: Page, label: string) => {
+  await screen.getByPlaceholder("Начать работу").click();
+  await screen.getByRole("option", { name: label }).click();
+};
+
 test("renders only the palette line at rest", async () => {
   stubPageApi();
   const screen = await renderPage();
@@ -1243,36 +1248,27 @@ const deletesTo = (
     (request) => request.method === "DELETE" && request.path === path,
   );
 
-test("offers an add action matching each catalog level and resets form on level change", async () => {
+test("shows create actions in command palette", async () => {
   stubPageApi(catalogFixtures);
   const screen = await renderPage();
 
+  await screen.getByPlaceholder("Начать работу").click();
   await expect
-    .element(screen.getByRole("button", { name: "Добавить материал" }))
+    .element(screen.getByRole("option", { name: "Добавить материал" }))
     .toBeInTheDocument();
-  await screen.getByRole("button", { name: "Добавить материал" }).click();
-  await expect.element(screen.getByLabelText("Название")).toBeInTheDocument();
-
-  await switchLevel(screen, "Варианты");
   await expect
-    .element(screen.getByLabelText("Название"))
-    .not.toBeInTheDocument();
-  await expect
-    .element(screen.getByRole("button", { name: "Добавить вариант" }))
+    .element(screen.getByRole("option", { name: "Добавить тип" }))
     .toBeInTheDocument();
-
-  await switchLevel(screen, "Типы");
   await expect
-    .element(screen.getByRole("button", { name: "Добавить тип" }))
+    .element(screen.getByRole("option", { name: "Добавить вариант" }))
     .toBeInTheDocument();
 });
 
-test("creates a type from the types list and opens its page", async () => {
+test("creates a type from the command palette and opens its page", async () => {
   const requests = stubPageApi(catalogFixtures);
   const screen = await renderPage();
-  await switchLevel(screen, "Типы");
 
-  await screen.getByRole("button", { name: "Добавить тип" }).click();
+  await selectCommandAction(screen, "Добавить тип");
   await screen.getByLabelText("Название").fill("Пластик");
   await screen.getByLabelText("Описание").fill("Листовой");
   await screen.getByRole("button", { name: "Сохранить" }).click();
@@ -1287,11 +1283,11 @@ test("creates a type from the types list and opens its page", async () => {
   });
 });
 
-test("creates a material from the materials list and opens its page", async () => {
+test("creates a material from the command palette and opens its page", async () => {
   const requests = stubPageApi(catalogFixtures);
   const screen = await renderPage();
 
-  await screen.getByRole("button", { name: "Добавить материал" }).click();
+  await selectCommandAction(screen, "Добавить материал");
   await screen.getByLabelText("Название").fill("Кедр");
   await screen.getByLabelText("Описание").fill("Сибирский");
   await screen.getByRole("combobox", { name: "Тип" }).click();
@@ -1310,12 +1306,11 @@ test("creates a material from the materials list and opens its page", async () =
   });
 });
 
-test("creates a variant from the variants list and opens its page", async () => {
+test("creates a variant from the command palette and opens its page", async () => {
   const requests = stubPageApi(catalogFixtures);
   const screen = await renderPage();
-  await switchLevel(screen, "Варианты");
 
-  await screen.getByRole("button", { name: "Добавить вариант" }).click();
+  await selectCommandAction(screen, "Добавить вариант");
   await screen.getByLabelText("Название").fill("Гайка М8");
   await screen.getByRole("combobox", { name: "Единица" }).click();
   await screen.getByRole("option", { name: "штука" }).click();
@@ -1387,7 +1382,7 @@ test("excludes hidden parents when creating and hides add button on hidden paren
   stubPageApi(catalogFixtures);
   const screen = await renderPage();
 
-  await screen.getByRole("button", { name: "Добавить материал" }).click();
+  await selectCommandAction(screen, "Добавить материал");
   await screen.getByRole("combobox", { name: "Тип" }).click();
   await expect
     .element(screen.getByRole("option", { name: "Древесина" }))
@@ -1396,9 +1391,9 @@ test("excludes hidden parents when creating and hides add button on hidden paren
     .element(screen.getByRole("option", { name: /Скрытый тип/ }))
     .not.toBeInTheDocument();
   await userEvent.keyboard("{Escape}");
+  await screen.getByRole("link", { name: "← Материалы" }).click();
 
-  await switchLevel(screen, "Варианты");
-  await screen.getByRole("button", { name: "Добавить вариант" }).click();
+  await selectCommandAction(screen, "Добавить вариант");
   await screen.getByRole("combobox", { name: "Материал" }).click();
   await expect
     .element(screen.getByRole("option", { name: "Доска сосна" }))
@@ -1406,7 +1401,6 @@ test("excludes hidden parents when creating and hides add button on hidden paren
   await expect
     .element(screen.getByRole("option", { name: /Скрытый материал/ }))
     .not.toBeInTheDocument();
-  await userEvent.keyboard("{Escape}");
 
   const hiddenTypeScreen = await renderPage("/materials/type/3");
   await expect
@@ -1436,20 +1430,20 @@ test("excludes hidden parents when creating and hides add button on hidden paren
     .not.toBeInTheDocument();
 });
 
-test("cancels creating from the catalog without sending a POST", async () => {
+test("cancels creating from the command palette without sending a POST", async () => {
   const requests = stubPageApi(catalogFixtures);
   const screen = await renderPage();
 
-  await screen.getByRole("button", { name: "Добавить материал" }).click();
+  await selectCommandAction(screen, "Добавить материал");
   await screen.getByLabelText("Название").fill("Черновик");
   await screen.getByRole("button", { name: "Отмена" }).click();
 
   await expect
+    .element(screen.getByRole("heading", { name: "Материалы", level: 1 }))
+    .toBeInTheDocument();
+  await expect
     .element(screen.getByLabelText("Название"))
     .not.toBeInTheDocument();
-  await expect
-    .element(screen.getByRole("button", { name: "Добавить материал" }))
-    .toBeInTheDocument();
   expect(requests.filter((request) => request.method === "POST")).toHaveLength(
     0,
   );
@@ -1459,7 +1453,7 @@ test("validates required create fields without sending a POST", async () => {
   const requests = stubPageApi(catalogFixtures);
   const screen = await renderPage();
 
-  await screen.getByRole("button", { name: "Добавить материал" }).click();
+  await selectCommandAction(screen, "Добавить материал");
   await screen.getByRole("button", { name: "Сохранить" }).click();
 
   await expect
@@ -1481,9 +1475,8 @@ test("shows the hidden-holder error message and preserves values on a 409 create
     },
   });
   const screen = await renderPage();
-  await switchLevel(screen, "Типы");
 
-  await screen.getByRole("button", { name: "Добавить тип" }).click();
+  await selectCommandAction(screen, "Добавить тип");
   await screen.getByLabelText("Название").fill("Скрытый тип");
   await screen.getByRole("button", { name: "Сохранить" }).click();
 
@@ -1579,14 +1572,13 @@ test("resets open create and edit forms when the route :id changes", async () =>
 });
 
 const toggleHidden = async (screen: Page) => {
-  const showButtons = screen
-    .getByRole("button", { name: "Показать скрытые" })
-    .all();
-  const first = showButtons[0];
-  if (first) {
-    await first.click();
+  const show = screen.getByRole("button", { name: "Показать скрытые" });
+  const hide = screen.getByRole("button", { name: "Скрыть скрытые" });
+  await expect.element(show.or(hide)).toBeInTheDocument();
+  if (show.all().length > 0) {
+    await show.first().click();
   } else {
-    await screen.getByRole("button", { name: "Скрыть скрытые" }).click();
+    await hide.click();
   }
 };
 
@@ -1657,7 +1649,6 @@ test("hard-deletes an unreferenced variant from the card", async () => {
   await expect.element(screen.getByText("Саморез 35")).not.toBeInTheDocument();
   expect(deletesTo(requests, "/api/material-variant/101")).toBeDefined();
 
-  await toggleHidden(screen);
   await userEvent.clear(screen.getByLabelText("Поиск"));
   await expect.element(screen.getByText("Саморез 35")).not.toBeInTheDocument();
 });
@@ -1794,37 +1785,45 @@ test("restores a hidden variant from its page", async () => {
     .toBeInTheDocument();
 });
 
-test("hidden pages offer only rename and restore", async () => {
+test("hidden type page offers only rename and restore", async () => {
   stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/type/3");
 
-  const typeScreen = await renderPage("/materials/type/3");
   await expect
-    .element(typeScreen.getByRole("button", { name: "Переименовать" }))
+    .element(screen.getByRole("button", { name: "Переименовать" }))
     .toBeInTheDocument();
   await expect
-    .element(typeScreen.getByRole("button", { name: "Восстановить" }))
+    .element(screen.getByRole("button", { name: "Восстановить" }))
     .toBeInTheDocument();
-  await expect.element(typeScreen.getByText("Скрыто")).toBeInTheDocument();
+  await expect.element(screen.getByText("Скрыто")).toBeInTheDocument();
   await expect
-    .element(typeScreen.getByRole("button", { name: "Добавить материал" }))
+    .element(screen.getByRole("button", { name: "Добавить материал" }))
     .not.toBeInTheDocument();
+});
 
-  const materialScreen = await renderPage("/materials/material/12");
+test("hidden material page offers only rename and restore", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/material/12");
+
   await expect
-    .element(materialScreen.getByRole("button", { name: "Восстановить" }))
+    .element(screen.getByRole("button", { name: "Восстановить" }))
     .toBeInTheDocument();
-  await expect.element(materialScreen.getByText("Скрыто")).toBeInTheDocument();
+  await expect.element(screen.getByText("Скрыто")).toBeInTheDocument();
   await expect
-    .element(materialScreen.getByRole("button", { name: "Добавить вариант" }))
+    .element(screen.getByRole("button", { name: "Добавить вариант" }))
     .not.toBeInTheDocument();
+});
 
-  const variantScreen = await renderPage("/materials/variant/102");
+test("hidden variant page offers only rename and restore", async () => {
+  stubPageApi(catalogFixtures);
+  const screen = await renderPage("/materials/variant/102");
+
   await expect
-    .element(variantScreen.getByRole("button", { name: "Восстановить" }))
+    .element(screen.getByRole("button", { name: "Восстановить" }))
     .toBeInTheDocument();
-  await expect.element(variantScreen.getByText("Скрыто")).toBeInTheDocument();
+  await expect.element(screen.getByText("Скрыто")).toBeInTheDocument();
   await expect
-    .element(variantScreen.getByRole("button", { name: "Сделать поставку" }))
+    .element(screen.getByRole("button", { name: "Сделать поставку" }))
     .not.toBeInTheDocument();
 });
 
@@ -1840,7 +1839,6 @@ test("restores a child independently of a hidden parent", async () => {
   await switchLevel(screen, "Материалы");
   await expect.element(screen.getByText("Доска сосна")).toBeInTheDocument();
   await switchLevel(screen, "Варианты");
-  await toggleHidden(screen);
   await expect.element(screen.getByText("Скрытый вариант")).toBeInTheDocument();
   await expect.element(screen.getByText("Скрыто")).not.toBeInTheDocument();
 });

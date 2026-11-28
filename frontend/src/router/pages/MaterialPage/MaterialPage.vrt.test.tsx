@@ -102,7 +102,8 @@ test("renders the material create form", async () => {
   stubPageApi(catalogFixtures);
   const screen = await renderPage();
 
-  await screen.getByRole("button", { name: "Добавить материал" }).click();
+  await screen.getByPlaceholder("Начать работу").click();
+  await screen.getByRole("option", { name: "Добавить материал" }).click();
   await expect.element(page.getByLabelText("Название")).toBeInTheDocument();
   await expect(viewport()).toMatchScreenshot();
 });

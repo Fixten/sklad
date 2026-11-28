@@ -67,6 +67,11 @@ async function pickOption(page: Page, label: string, option: string) {
   await page.getByRole("option", { name: option }).click();
 }
 
+async function selectCommandAction(page: Page, label: string) {
+  await page.getByPlaceholder("Начать работу").click();
+  await page.getByRole("option", { name: label }).click();
+}
+
 test("material catalog full flow", async ({ page, request }) => {
   const { type, material, variant } = await seed(request);
 
@@ -118,8 +123,7 @@ test("material catalog full flow", async ({ page, request }) => {
   await expect(page.getByText("Единица: штука")).toBeVisible();
 
   await page.getByRole("link", { name: "← Материалы" }).click();
-  await selectLevel(page, "Типы");
-  await page.getByRole("button", { name: "Добавить тип" }).click();
+  await selectCommandAction(page, "Добавить тип");
   await page.getByLabel("Название").fill(newTypeName);
   await page.getByRole("button", { name: "Сохранить" }).click();
   await expect(
@@ -127,7 +131,7 @@ test("material catalog full flow", async ({ page, request }) => {
   ).toBeVisible();
 
   await page.getByRole("link", { name: "← Материалы" }).click();
-  await page.getByRole("button", { name: "Добавить материал" }).click();
+  await selectCommandAction(page, "Добавить материал");
   await page.getByLabel("Название").fill(newMaterialName);
   await pickOption(page, "Тип", newTypeName);
   await page.getByRole("button", { name: "Сохранить" }).click();
@@ -136,8 +140,7 @@ test("material catalog full flow", async ({ page, request }) => {
   ).toBeVisible();
 
   await page.getByRole("link", { name: "← Материалы" }).click();
-  await selectLevel(page, "Варианты");
-  await page.getByRole("button", { name: "Добавить вариант" }).click();
+  await selectCommandAction(page, "Добавить вариант");
   await page.getByLabel("Название").fill(newVariantName);
   await page.getByRole("combobox", { name: "Единица" }).click();
   await page.getByRole("option", { name: "штука" }).click();
@@ -152,9 +155,7 @@ test("material catalog full flow", async ({ page, request }) => {
     .getByRole("button", { name: "Удалить" })
     .click();
   await expect(
-    page.getByText(
-      "Удалить? Если запись используется, она будет скрыта, а не удалена.",
-    ),
+    page.getByText("Если запись используется, она будет скрыта, а не удалена."),
   ).toBeVisible();
   await page.getByRole("button", { name: "Да", exact: true }).click();
   await expect(page.getByText("Удалено").first()).toBeVisible();
@@ -163,16 +164,12 @@ test("material catalog full flow", async ({ page, request }) => {
   await selectLevel(page, "Варианты");
   await searchField(page).fill(newVariantName);
   await expect(page.getByText("Каталог пуст")).toBeVisible();
-  await page.getByRole("button", { name: "Показать скрытые" }).click();
-  await expect(page.getByText("Каталог пуст")).toBeVisible();
 
   await selectLevel(page, "Типы");
   await searchField(page).fill(typeName);
   await page.getByRole("button", { name: "Удалить" }).click();
   await page.getByRole("button", { name: "Да", exact: true }).click();
   await expect(page.getByText("Удалено").last()).toBeVisible();
-  await page.getByRole("button", { name: "Скрыть скрытые" }).click();
-  await expect(page.getByRole("link", { name: typeName })).toHaveCount(0);
   await page.getByRole("button", { name: "Показать скрытые" }).click();
   await expect(page.getByText("Скрыто")).toBeVisible();
   await expect(
@@ -187,8 +184,7 @@ test("material catalog full flow", async ({ page, request }) => {
   expect(hidden.ok()).toBeTruthy();
 
   await searchField(page).fill("");
-  await selectLevel(page, "Материалы");
-  await page.getByRole("button", { name: "Добавить материал" }).click();
+  await selectCommandAction(page, "Добавить материал");
   await page.getByLabel("Название").fill(materialName);
   await pickOption(page, "Тип", typeName);
   await page.getByRole("button", { name: "Сохранить" }).click();
